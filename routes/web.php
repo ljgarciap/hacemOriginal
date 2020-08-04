@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,47 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+
+Route::resource('materias','MateriasController');
+Auth::routes(['register'=>false,'reset'=>false]);
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get("/", "Tb_areaController@index");
+Route::get("/area", "Tb_areaController@index");
+Route::get("/proceso", "Tb_procesoController@index");
+Route::get("/perfil", "Tb_perfilController@index");
+Route::get("/rol", "Tb_rolController@index");
+Route::get("/unidad", "Tb_unidad_baseController@index");
+
+Route::get("/area/create", "Tb_areaController@create");
+Route::get("/area/store", "Tb_areaController@store");
+Route::get("/area/{id?}/edit", "Tb_areaController@edit");
+Route::get("/area/{id?}/update", "Tb_areaController@update");
+Route::get("/area/{id?}/deactivate", "Tb_areaController@deactivate");
+
+Route::get("/proceso/create", "Tb_procesoController@create");
+Route::get("/proceso/store", "Tb_procesoController@store");
+Route::get("/proceso/{id?}/edit", "Tb_procesoController@edit");
+Route::get("/proceso/{id?}/update", "Tb_procesoController@update");
+Route::get("/proceso/{id?}/deactivate", "Tb_procesoController@deactivate");
+
+Route::get("/perfil/create", "Tb_perfilController@create");
+Route::get("/perfil/store", "Tb_perfilController@store");
+Route::get("/perfil/{id?}/edit", "Tb_perfilController@edit");
+Route::get("/perfil/{id?}/update", "Tb_perfilController@update");
+Route::get("/perfil/{id?}/deactivate", "Tb_perfilController@deactivate");
+
+Route::get("/rol/create", "Tb_rolController@create");
+Route::get("/rol/store", "Tb_rolController@store");
+Route::get("/rol/{id?}/edit", "Tb_rolController@edit");
+Route::get("/rol/{id?}/update", "Tb_rolController@update");
+Route::get("/rol/{id?}/deactivate", "Tb_rolController@deactivate");
+
+Route::get("/unidad/create", "Tb_unidad_baseController@create");
+Route::get("/unidad/store", "Tb_unidad_baseController@store");
+Route::get("/unidad/{id?}/edit", "Tb_unidad_baseController@edit");
+Route::get("/unidad/{id?}/update", "Tb_unidad_baseController@update");
+Route::get("/unidad/{id?}/deactivate", "Tb_unidad_baseController@deactivate");

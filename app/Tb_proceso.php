@@ -1,0 +1,14 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Tb_proceso extends Model
+{
+    protected $table = 'tb_proceso';
+
+    protected $fillable = ['proceso','idArea','estado'];
+
+    public $timestamps = false;
+}
