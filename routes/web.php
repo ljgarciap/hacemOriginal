@@ -18,17 +18,16 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::resource('materias','MateriasController');
 Auth::routes(['register'=>false,'reset'=>false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get("/", "Tb_areaController@index");
 Route::get("/area", "Tb_areaController@index");
 Route::get("/proceso", "Tb_procesoController@index");
 Route::get("/perfil", "Tb_perfilController@index");
 Route::get("/rol", "Tb_rolController@index");
 Route::get("/unidad", "Tb_unidad_baseController@index");
+Route::get("/tipomateria", "Tb_tipo_materiaController@index");
 
 Route::get("/area/create", "Tb_areaController@create");
 Route::get("/area/store", "Tb_areaController@store");
@@ -59,3 +58,13 @@ Route::get("/unidad/store", "Tb_unidad_baseController@store");
 Route::get("/unidad/{id?}/edit", "Tb_unidad_baseController@edit");
 Route::get("/unidad/{id?}/update", "Tb_unidad_baseController@update");
 Route::get("/unidad/{id?}/deactivate", "Tb_unidad_baseController@deactivate");
+
+Route::get("/tipomateria/create", "Tb_tipo_materiaController@create");
+Route::get("/tipomateria/store", "Tb_tipo_materiaController@store");
+Route::get("/tipomateria/{id?}/edit", "Tb_tipo_materiaController@edit");
+Route::get("/tipomateria/{id?}/update", "Tb_tipo_materiaController@update");
+Route::get("/tipomateria/{id?}/deactivate", "Tb_tipo_materiaController@deactivate");
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
