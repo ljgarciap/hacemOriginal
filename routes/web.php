@@ -24,6 +24,9 @@ Route::group(['middleware' => ['guest']], function () {
     //accesos para los usuarios que no estan autenticados
 });
 
+
+
+
 Route::group(['middleware' => ['auth']], function () {
     //accesos para los usuarios que si estan autenticados
 

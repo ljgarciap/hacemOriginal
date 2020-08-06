@@ -67,8 +67,9 @@
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="fa fa-lock"></i> Cerrar sesión</a>
 
-                <form id="logout-form" action="{{route('logout')}}" method="post" style="display: none;"></form>
+                <form id="logout-form" action="{{route('logout')}}" method="post" style="display: none;">
                 {{csrf_field()}}
+                </form>
 
             </div>
             </li>
