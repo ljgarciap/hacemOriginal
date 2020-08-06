@@ -16,6 +16,7 @@ class Tb_gestion_materia_primaSeeder extends Seeder
         DB::table('tb_gestion_materia_prima')->insert([
             'nombre' => 'Prueba',
             'idUnidadBase' => '1',
+            'precioBase' => '0',
             'idtipoMateria' => '1',
         ]);
     }
