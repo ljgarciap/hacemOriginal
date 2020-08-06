@@ -12,4 +12,4 @@ Importante sobre el uso de seeders; el seeder unidadBase carga desde su mismo ar
 
 ## 05-08-20
 
-Prueba De commit
+Se crearon seeders y modelos se llenaron con sus campos correspondiente;se creo un archivo llamado cuentas con el cual se poda ver las cuentas que quedaron predeterminadas para el ingreso de la plataforma.

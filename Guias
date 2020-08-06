@@ -46,6 +46,7 @@ php artisan migrate:reset //elimina todas las migraciones
 php artisan migrate:fresh //elimina y rehace las migraciones
 
 php artisan make:seeder Tb_rolSeeder //crea un seeder
+php artisan make:model Tb_rol //crea un modelo
 
 php artisan db:seed //usa los seeders
 ----------------------------------------------------------------------------------------------
