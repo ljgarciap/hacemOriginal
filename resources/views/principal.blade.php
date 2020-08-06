@@ -57,95 +57,40 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img src="img/avatars/6.jpg" class="img-avatar" alt="admin@calculador.com">
-                    <span class="d-md-down-none">admin </span>
+                    <span class="d-md-down-none">{{Auth::user()->name}} </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <div class="dropdown-header text-center">
                         <strong>Cuenta</strong>
                     </div>
-                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Perfil</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-lock"></i> Cerrar sesión</a>
-                </div>
+                <a class="dropdown-item" href="{{route('logout')}}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="fa fa-lock"></i> Cerrar sesión</a>
+
+                <form id="logout-form" action="{{route('logout')}}" method="post" style="display: none;"></form>
+                {{csrf_field()}}
+
+            </div>
             </li>
         </ul>
     </header>
 
     <div class="app-body">
-        <div class="sidebar">
-            <nav class="sidebar-nav">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="main.html"><i class="icon-speedometer"></i> Escritorio</a>
-                    </li>
-                    <li class="nav-title">
-                        Mantenimiento
-                    </li>
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-bag"></i> Almacén</a>
-                        <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-bag"></i> Categorías</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-bag"></i> Artículos</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wallet"></i> Compras</a>
-                        <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a class="nav-link" href="i#"><i class="icon-wallet"></i> Ingresos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-notebook"></i> Proveedores</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-basket"></i> Ventas</a>
-                        <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a class="nav-link" href="i#"><i class="icon-basket-loaded"></i> Ventas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-notebook"></i> Clientes</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-people"></i> Acceso</a>
-                        <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a class="nav-link" href="i#"><i class="icon-user"></i> Usuarios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-user-following"></i> Roles</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item nav-dropdown">
-                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-pie-chart"></i> Reportes</a>
-                        <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a class="nav-link" href="i#"><i class="icon-chart"></i> Reporte Ingresos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="icon-chart"></i> Reporte Ventas</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="main.html"><i class="icon-book-open"></i> Ayuda <span class="badge badge-danger">PDF</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="main.html"><i class="icon-info"></i> Acerca de...<span class="badge badge-info">IT</span></a>
-                    </li>
-                </ul>
-            </nav>
-            <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-        </div>
 
+{{--
+        @if (Auth::check())
+            @if (Auth::user()->idrol==1)
+                @include('contenido.sidebarsa')
+            @elseif (Auth::user()->idrol==2)
+                @include('contenido.sidebarem')
+            @else
+
+            @endif
+
+        @endif
+--}}
+
+        @include('contenido.sidebarsa')
         <!-- Contenido Principal -->
         @yield('contenido')
         <!-- /Fin del contenido principal -->

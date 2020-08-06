@@ -15,14 +15,19 @@ use Illuminate\Support\Facades\Route;
 */
 //Route::get('/', 'Auth\LoginController@showLoginForm');
 
+
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/', 'Auth\LoginController@showLoginForm');
+    Route::get('/login', 'Auth\LoginController@showLoginForm');
     Route::post('/', 'Auth\LoginController@login')->name('login');
+    Route::post('/login', 'Auth\LoginController@login');
     //accesos para los usuarios que no estan autenticados
 });
 
 Route::group(['middleware' => ['auth']], function () {
     //accesos para los usuarios que si estan autenticados
+
+    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::group(['middleware' => ['Superadministrador']], function () {
         //accesos para los usuarios que son superadministrador
