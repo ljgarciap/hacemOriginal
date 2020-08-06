@@ -26,11 +26,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['middleware' => ['Superadministrador']], function () {
         //accesos para los usuarios que son superadministrador
-    };
+    });
 
     Route::group(['middleware' => ['Superadministrador']], function () {
         //accesos para los usuarios que son empresarios
-    };
+    });
 
     Route::get('/principal', function () {
         return view('contenido/contenido');
