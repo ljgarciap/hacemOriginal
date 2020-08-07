@@ -56,8 +56,8 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img src="img/avatars/6.jpg" class="img-avatar" alt="admin@calculador.com">
-                    <span class="d-md-down-none">{{Auth::user()->name}} </span>
+                    <img src="img/avatars/{{Auth::user()->id}}.jpg" class="img-avatar" alt="{{Auth::user()->email}}">
+                    <span class="d-md-down-none">{{Auth::user()->name}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <div class="dropdown-header text-center">
@@ -78,20 +78,18 @@
 
     <div class="app-body">
 
-{{--
-        @if (Auth::check())
-            @if (Auth::user()->idrol==1)
+        @foreach (Auth::user()->roles as $rol)
+
+            @if (($rol->id)==1)
                 @include('contenido.sidebarsa')
-            @elseif (Auth::user()->idrol==2)
+            @elseif (($rol->id)==2)
                 @include('contenido.sidebarem')
             @else
 
             @endif
 
-        @endif
---}}
+        @endforeach
 
-        @include('contenido.sidebarsa')
         <!-- Contenido Principal -->
         @yield('contenido')
         <!-- /Fin del contenido principal -->

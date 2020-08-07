@@ -60,13 +60,6 @@
                     </li>
                 </ul>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="icon-book-open"></i> Ayuda <span class="badge badge-danger">PDF</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="icon-info"></i> Acerca de...<span class="badge badge-info">IT</span></a>
-            </li>
         </ul>
     </nav>
     <button class="sidebar-minimizer brand-minimizer" type="button"></button>

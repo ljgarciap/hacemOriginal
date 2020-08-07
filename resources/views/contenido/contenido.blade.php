@@ -1,6 +1,6 @@
     @extends('principal')
     @section('contenido')
-    
+
         <main class="main">
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
@@ -10,11 +10,15 @@
                 </ol>
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
+
+                    <!-- Traer roles según método del modelo User que trae la relación que tiene
                     <div class="card">
                     @foreach (Auth::user()->roles as $rol)
-                        <p>{{ $rol->rol }} {{ $rol->estado }}</p> 
+                        <p>Rol: {{ $rol->rol }}, IdRol: {{ $rol->id }}</p>
                     @endforeach
                     </div>
+                    -->
+
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Categorías
