@@ -37,7 +37,7 @@
             <div>
               <h2>Calculador - SENA CIDM</h2>
               <p>Sistema para el calculo de producción del área de calzado y marroquineria.</p>
-              <p><img src="img/favicon.png" alt=""></p>
+              <p><img src="img/logo-symbol.png" alt=""></p>
             </div>
           </div>
         </div>

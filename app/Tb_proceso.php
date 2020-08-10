@@ -11,4 +11,8 @@ class Tb_proceso extends Model
     protected $fillable = ['proceso','idArea','estado'];
 
     public $timestamps = false;
+
+    public function areas(){
+        return $this->belongsTo('App\Tb_area', 'idArea');
+    }
 }
