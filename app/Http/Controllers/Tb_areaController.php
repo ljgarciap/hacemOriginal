@@ -11,8 +11,31 @@ class Tb_areaController extends Controller
     public function index(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-        $areas = Tb_area::all();
-        return $areas;
+        //$areas = Tb_area::all();
+        //return $areas;
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
+
+        if ($buscar=='') {
+            # code...
+            $areas = Tb_area::orderBy('id','desc')->paginate(5);
+        }
+        else {
+            # code...
+            $areas = Tb_area::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$areas->total(),
+                'current_page'  =>$areas->currentPage(),
+                'per_page'      =>$areas->perPage(),
+                'last_page'     =>$areas->lastPage(),
+                'from'          =>$areas->firstItem(),
+                'to'            =>$areas->lastItem(),
+            ],
+                'areas' => $areas
+        ];
     }
 
     public function store(Request $request)

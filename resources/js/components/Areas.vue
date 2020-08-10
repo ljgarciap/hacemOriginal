@@ -3,8 +3,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item"><a href="#">Admin</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item active">Areas</li>
                 </ol>
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
@@ -20,12 +19,12 @@
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <select class="form-control col-md-3" id="opcion" name="opcion">
-                                        <option value="nombre">Nombre</option>
-                                        <option value="descripcion">Descripción</option>
+                                        <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="id">Id</option>
+                                        <option value="area">Nombre área</option>
                                         </select>
-                                        <input type="text" id="texto" name="texto" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarArea(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarArea(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -74,23 +73,14 @@
                             </table>
                             <nav>
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Ant</a>
+                                    <li class="page-item" v-if="pagination.current_page > 1">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
                                     </li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">1</a>
+                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
                                     </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">4</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Sig</a>
+                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -162,22 +152,72 @@
                 tituloModal : '',
                 tipoAccion : 0,
                 errorArea : 0,
-                errorMensaje : []
+                errorMensaje : [],
+                pagination : {
+                    'total' : 0,
+                    'current_page' : 0,
+                    'per_page' : 0,
+                    'last_page' : 0,
+                    'from' : 0,
+                    'to' : 0,
+                },
+                offset : 3,
+                criterio : 'area',
+                buscar : ''
+            }
+        },
+        computed:{
+            isActived: function(){
+                return thi.pagination.current_page;
+            },
+            //Calcula los elementos de la paginacion
+            pagesNumber: function(){
+                if (this.pagination.to) {
+                    return[];
+                }
+
+                var from=this.pagination.current_page - this.offset;
+                if (from < 1) {
+                    from = 1;
+                }
+
+                var to = from + (this.offset * 2);
+                if (to >= this.pagination.last_page) {
+                    to = this.pagination.last_page;
+                }
+
+                var pagesArray = [];
+                while (from <= to) {
+                    pagesArray.push(from);
+                    from++;
+                }
+
+                return pagesArray;
             }
         },
         methods : {
-            listarArea(){
+            listarArea(page,buscar,criterio){
                 let me=this;
+                var url='/area?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 // Make a request for a user with a given ID
-                axios.get('/area').then(function (response) {
+                axios.get(url).then(function (response) {
                     // handle success
-                me.arrayAreas=response.data;
+                var respuesta=response.data;
+                me.arrayAreas=respuesta.areas.data;
+                me.pagination=respuesta.pagination;
                     //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
+            },
+            cambiarPagina(page,buscar,criterio){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.listarArea(page,buscar,criterio);
             },
             crearArea(){
                 //valido con el metodo de validacion creado
@@ -192,7 +232,7 @@
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarArea();
+                me.listarArea(1,'','area');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -211,7 +251,7 @@
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarArea();
+                me.listarArea(1,'','area');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -239,7 +279,7 @@
                     axios.put('/area/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarArea();
+                    me.listarArea(1,'','area');
                     swalWithBootstrapButtons.fire(
                     'Area desactivada!'
                     )
@@ -276,7 +316,7 @@
                     axios.put('/area/activate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarArea();
+                    me.listarArea(1,'','area');
                     swalWithBootstrapButtons.fire(
                     'Area activada!'
                     )
@@ -333,7 +373,7 @@
             }
         },
         mounted() {
-            this.listarArea();
+            this.listarArea(1,this.buscar,this.criterio);
         }
     }
 </script>
