@@ -11,12 +11,8 @@
 
   <title>Calculador - SENA CIDM</title>
 
-  <!-- Icons -->
-  <link href="css/font-awesome.min.css" rel="stylesheet">
-  <link href="css/simple-line-icons.min.css" rel="stylesheet">
-
   <!-- Main styles for this application -->
-  <link href="css/style.css" rel="stylesheet">
+  <link href="css/plantilla.css" rel="stylesheet">
 
 </head>
 
@@ -28,9 +24,7 @@
 </div>
 
   <!-- Bootstrap and necessary plugins -->
-  <script src="js/jquery.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
+  <script src="js/plantilla.js"></script>
 
 </body>
 </html>

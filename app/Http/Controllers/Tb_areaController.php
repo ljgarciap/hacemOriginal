@@ -8,56 +8,50 @@ use Illuminate\Support\Facades\DB;
 
 class Tb_areaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if(!$request->ajax()) return redirect('/');
         $areas = Tb_area::all();
-        return view('area.index', ['areas'=>$areas] );
-    }
-
-    public function create()
-    {
-        return view('area.create');
+        return $areas;
     }
 
     public function store(Request $request)
     {
+        if(!$request->ajax()) return redirect('/');
 
-        //$datosMaterias = request()->all();
-        $datosAreas =request()->except('_token');
-        Tb_area::insert($datosAreas);
-        //return response()->json($datosMaterias);
-        return redirect('area');
+        //$datosAreas =request()->except('_token');
+        //Tb_area::insert($datosAreas);
+        //return redirect('area');
+        $tb_area=new Tb_area();
+        $tb_area->area=$request->area;
+        $tb_area->save();
     }
 
-    public function edit($id)
+    public function update(Request $request)
     {
-        $areas = Tb_area::whereId($id)->firstOrFail();
-        return view('area.edit', compact('areas'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_area=Tb_area::findOrFail($request->id);
+        $tb_area->area=$request->area;
+        $tb_area->estado='1';
+        $tb_area->save();
     }
 
-    public function update(Request $request, $id)
+    public function deactivate(Request $request)
     {
-        // Seteamos un nuevo titulo
-            $datosArea=request()->except(['_token','_method']);
-            Tb_area::where('id','=',$id)->update($datosArea);
-            // Guardamos en base de datos
-            return redirect(action('Tb_areaController@index'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_area=Tb_area::findOrFail($request->id);
+        $tb_area->estado='0';
+        $tb_area->save();
     }
 
-    public function deactivate($id)
+    public function activate(Request $request)
     {
-         $user = DB::table('tb_area')->find($id);
-        if($user->estado===1){
-            Tb_area::where('id','=',$id)->update(['estado' => 0]);
-        }
-        else{
-            Tb_area::where('id','=',$id)->update(['estado' => 1]);
-        }
-        return redirect(action('Tb_areaController@index'));
-    }
+        if(!$request->ajax()) return redirect('/');
 
-    public function show($id)
-    {
-        //
+        $tb_area=Tb_area::findOrFail($request->id);
+        $tb_area->estado='1';
+        $tb_area->save();
     }
 }

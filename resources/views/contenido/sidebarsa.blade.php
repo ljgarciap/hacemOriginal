@@ -1,36 +1,36 @@
 <div class="sidebar">
     <nav class="sidebar-nav">
         <ul class="nav">
-            <li class="nav-item">
+            <li @click="menu=14" class="nav-item">
                 <a class="nav-link active" href="#"><i class="icon-speedometer"></i> Escritorio</a>
             </li>
             <li class="nav-title">
                 Mantenimiento
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-bag"></i> Administración</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> Administración</a>
                 <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-bag"></i> Areas</a>
+                    <li @click="menu=1" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Areas</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-bag"></i> Procesos</a>
+                    <li @click="menu=2" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Procesos</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-bag"></i> Perfiles</a>
+                    <li @click="menu=3" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Perfiles</a>
                     </li>
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-notebook"></i> Materiales</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wrench"></i> Materiales</a>
                 <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="i#"><i class="icon-notebook"></i> Unidades</a>
+                    <li @click="menu=4" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-notebook"></i> Unidades</a>
                     </li>
-                    <li class="nav-item">
+                    <li @click="menu=5" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-notebook"></i> Materias</a>
                     </li>
-                    <li class="nav-item">
+                    <li @click="menu=6" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-notebook"></i> Gestión</a>
                     </li>
                 </ul>
@@ -38,24 +38,24 @@
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-basket"></i> Productos</a>
                 <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="i#"><i class="icon-wallet"></i> Colecciones</a>
+                    <li @click="menu=7" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Colecciones</a>
                     </li>
-                    <li class="nav-item">
+                    <li @click="menu=8" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-wallet"></i> Productos</a>
                     </li>
-                    <li class="nav-item">
+                    <li @click="menu=9" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-wallet"></i> Hojas de costo</a>
                     </li>
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-pencil"></i> Usuarios</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> Usuarios</a>
                 <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" href="i#"><i class="icon-pencil"></i> Roles</a>
+                    <li @click="menu=10" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-pencil"></i> Roles</a>
                     </li>
-                    <li class="nav-item">
+                    <li @click="menu=11" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-pencil"></i> Usuarios</a>
                     </li>
                 </ul>
