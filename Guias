@@ -45,6 +45,7 @@ php artisan migrate //esto sirve para la primera migracion
 php artisan migrate:reset //elimina todas las migraciones
 php artisan migrate:fresh //elimina y rehace las migraciones
 
+php artisan make:controller Tb_rolController// crea un controlador
 php artisan make:seeder Tb_rolSeeder //crea un seeder
 php artisan make:model Tb_rol //crea un modelo
 

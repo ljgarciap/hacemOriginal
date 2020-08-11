@@ -120,6 +120,10 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/tipomateria/{id?}/deactivate", "Tb_tipo_materiaController@deactivate");
 
     });
+//---------------------------------------------------------------------------//
 
+//Prueba para las rutas de coleccion
+
+    Route::resource('coleccion','Tb_coleccionController');
 
 });
