@@ -11,4 +11,9 @@ class Tb_producto extends Model
     protected $fillable = ['nombre','referencia','foto','descripcion','idColeccion','estado'];
 
     public $timestamps = false;
+
+    // Relacion con la tabla coleccion
+    public function coleccion(){
+        return $this->belongsTo('App\Tb_coleccion', 'idColeccion');
+    }
 }

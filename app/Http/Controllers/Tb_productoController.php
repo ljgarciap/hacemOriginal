@@ -24,9 +24,9 @@ class Tb_productoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('producto.create');
+        return view('producto.create',['idColeccion'=>$id]);
     }
 
     /**
@@ -43,7 +43,7 @@ class Tb_productoController extends Controller
             }
         Tb_producto::insert($datosProducto);
         //return response()->json($datosProducto);
-        return redirect('producto');
+        return redirect()->route('coleccion.show', ['coleccion'=>$request->idColeccion]);
     }
 
     /**
@@ -88,8 +88,9 @@ class Tb_productoController extends Controller
 
         Tb_producto::where('id','=',$id)->update($datosProducto);
 
-        $producto= Tb_producto::findOrFail($id);
-        return view('producto.edit',compact('producto'));
+        //$producto= Tb_producto::findOrFail($id);
+        //return view('producto.edit',compact('producto'));*/
+        return redirect()->route('coleccion.show', ['coleccion'=>$request->idColeccion]);
     }
 
     /**
@@ -98,8 +99,9 @@ class Tb_productoController extends Controller
      * @param  \App\Tb_producto  $tb_producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tb_producto $tb_producto)
+    public function destroy($id)
     {
         //
+        return redirect()->route('coleccion.show', ['coleccion'=>$id]);
     }
 }
