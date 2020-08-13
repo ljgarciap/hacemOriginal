@@ -126,4 +126,13 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::resource('coleccion','Tb_coleccionController');
 
+    
+//---------------------------------------------------------------------------//
+
+//Prueba para las rutas de producto
+
+    Route::resource('producto','Tb_productoController');
+
 });
+
+//---------------------------------------------------------------------------//
