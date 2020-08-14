@@ -39,8 +39,6 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::group(['middleware' => ['Superadministrador']], function () {
 
-        Route::get("/proceso", "Tb_procesoController@index");
-        Route::get("/perfil", "Tb_perfilController@index");
         Route::get("/rol", "Tb_rolController@index");
         Route::get("/unidad", "Tb_unidad_baseController@index");
         Route::get("/tipomateria", "Tb_tipo_materiaController@index");
@@ -50,18 +48,20 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/area/update", "Tb_areaController@update");
         Route::put("/area/deactivate", "Tb_areaController@deactivate");
         Route::put("/area/activate", "Tb_areaController@activate");
+        Route::get("/area/selectArea", "Tb_areaController@selectArea");
 
-        Route::get("/proceso/create", "Tb_procesoController@create");
-        Route::get("/proceso/store", "Tb_procesoController@store");
-        Route::get("/proceso/{id?}/edit", "Tb_procesoController@edit");
-        Route::get("/proceso/{id?}/update", "Tb_procesoController@update");
-        Route::get("/proceso/{id?}/deactivate", "Tb_procesoController@deactivate");
+        Route::get("/proceso", "Tb_procesoController@index");
+        Route::post("/proceso/store", "Tb_procesoController@store");
+        Route::put("/proceso/update", "Tb_procesoController@update");
+        Route::put("/proceso/deactivate", "Tb_procesoController@deactivate");
+        Route::put("/proceso/activate", "Tb_procesoController@activate");
+        Route::get("/proceso/selectProceso", "Tb_procesoController@selectProceso");
 
-        Route::get("/perfil/create", "Tb_perfilController@create");
-        Route::get("/perfil/store", "Tb_perfilController@store");
-        Route::get("/perfil/{id?}/edit", "Tb_perfilController@edit");
-        Route::get("/perfil/{id?}/update", "Tb_perfilController@update");
-        Route::get("/perfil/{id?}/deactivate", "Tb_perfilController@deactivate");
+        Route::get("/perfil", "Tb_perfilController@index");
+        Route::post("/perfil/store", "Tb_perfilController@store");
+        Route::put("/perfil/update", "Tb_perfilController@update");
+        Route::put("/perfil/deactivate", "Tb_perfilController@deactivate");
+        Route::put("/perfil/activate", "Tb_perfilController@activate");
 
         Route::get("/rol/create", "Tb_rolController@create");
         Route::get("/rol/store", "Tb_rolController@store");
@@ -90,22 +90,21 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::group(['middleware' => ['Empresario']], function () {
         //accesos para los usuarios que son empresarios
-        Route::get("/proceso", "Tb_procesoController@index");
-        Route::get("/perfil", "Tb_perfilController@index");
         Route::get("/unidad", "Tb_unidad_baseController@index");
         Route::get("/tipomateria", "Tb_tipo_materiaController@index");
 
-        Route::get("/proceso/create", "Tb_procesoController@create");
-        Route::get("/proceso/store", "Tb_procesoController@store");
-        Route::get("/proceso/{id?}/edit", "Tb_procesoController@edit");
-        Route::get("/proceso/{id?}/update", "Tb_procesoController@update");
-        Route::get("/proceso/{id?}/deactivate", "Tb_procesoController@deactivate");
+        Route::get("/proceso", "Tb_procesoController@index");
+        Route::post("/proceso/store", "Tb_procesoController@store");
+        Route::put("/proceso/update", "Tb_procesoController@update");
+        Route::put("/proceso/deactivate", "Tb_procesoController@deactivate");
+        Route::put("/proceso/activate", "Tb_procesoController@activate");
+        Route::get("/proceso/selectProceso", "Tb_procesoController@selectProceso");
 
-        Route::get("/perfil/create", "Tb_perfilController@create");
-        Route::get("/perfil/store", "Tb_perfilController@store");
-        Route::get("/perfil/{id?}/edit", "Tb_perfilController@edit");
-        Route::get("/perfil/{id?}/update", "Tb_perfilController@update");
-        Route::get("/perfil/{id?}/deactivate", "Tb_perfilController@deactivate");
+        Route::get("/perfil", "Tb_perfilController@index");
+        Route::post("/perfil/store", "Tb_perfilController@store");
+        Route::put("/perfil/update", "Tb_perfilController@update");
+        Route::put("/perfil/deactivate", "Tb_perfilController@deactivate");
+        Route::put("/perfil/activate", "Tb_perfilController@activate");
 
         Route::get("/unidad/create", "Tb_unidad_baseController@create");
         Route::get("/unidad/store", "Tb_unidad_baseController@store");
@@ -126,7 +125,7 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::resource('coleccion','Tb_coleccionController');
 
-    
+
 //---------------------------------------------------------------------------//
 
 //Prueba para las rutas de producto

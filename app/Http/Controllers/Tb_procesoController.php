@@ -14,75 +14,90 @@ class Tb_procesoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $procesos = Tb_proceso::all();
-        $areas = Tb_area::all();
-        return view('proceso.index', ['procesos'=>$procesos,'areas'=>$areas ] );
+        if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
+
+        if ($buscar=='') {
+            # Modelo::join('tablaqueseune',basicamente un on)
+            $procesos = Tb_proceso::join('tb_area','tb_proceso.idArea','=','tb_area.id')
+            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->orderBy('tb_proceso.id','desc')->paginate(5);
+        }
+        else if($criterio=='area'){
+            $procesos = Tb_proceso::join('tb_area','tb_proceso.idArea','=','tb_area.id')
+            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->where('tb_area.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('tb_proceso.id','desc')->paginate(5);
+        }
+        else {
+            # code...
+            $procesos = Tb_proceso::join('tb_area','tb_proceso.idArea','=','tb_area.id')
+            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->where('tb_proceso.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('tb_proceso.id','desc')->paginate(5);
+
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$procesos->total(),
+                'current_page'  =>$procesos->currentPage(),
+                'per_page'      =>$procesos->perPage(),
+                'last_page'     =>$procesos->lastPage(),
+                'from'          =>$procesos->firstItem(),
+                'to'            =>$procesos->lastItem(),
+            ],
+                'procesos' => $procesos
+        ];
     }
 
-    public function create()
-    {
-        $areas = Tb_area::all();
-        return view('proceso.create',['areas'=>$areas]);
+    public function selectProceso(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $procesos = Tb_proceso::where('estado','=','1')
+        ->select('id','proceso')->orderBy('proceso','asc')->get();
+
+        return ['procesos' => $procesos];
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-
-        //$datosMaterias = request()->all();
-        $datosProcesos =request()->except('_token');
-        Tb_proceso::insert($datosProcesos);
-        //return response()->json($datosMaterias);
-        return redirect('proceso');
+        if(!$request->ajax()) return redirect('/');
+        $tb_proceso=new Tb_proceso();
+        $tb_proceso->proceso=$request->proceso;
+        $tb_proceso->idArea=$request->idArea;
+        $tb_proceso->save();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Materias  $materias
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Request $request)
     {
-        $procesos = Tb_proceso::whereId($id)->firstOrFail();
-        $areas = Tb_area::all();
+        if(!$request->ajax()) return redirect('/');
 
-        return view('proceso.edit', ['procesos'=>$procesos,'areas'=>$areas]);
+        $tb_proceso=Tb_proceso::findOrFail($request->id);
+        $tb_proceso->proceso=$request->proceso;
+        $tb_proceso->idArea=$request->idArea;
+        $tb_proceso->estado='1';
+        $tb_proceso->save();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Materias  $materias
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function deactivate(Request $request)
     {
-        // Seteamos un nuevo titulo
-            $datosProceso=request()->except(['_token','_method']);
-            Tb_proceso::where('id','=',$id)->update($datosProceso);
-            // Guardamos en base de datos
-            return redirect(action('Tb_procesoController@index'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_proceso=Tb_proceso::findOrFail($request->id);
+        $tb_proceso->estado='0';
+        $tb_proceso->save();
     }
 
-    public function deactivate($id)
+    public function activate(Request $request)
     {
-         $user = DB::table('tb_proceso')->find($id);
-        if($user->estado===1){
-            Tb_proceso::where('id','=',$id)->update(['estado' => 0]);
-        }
-        else{
-            Tb_proceso::where('id','=',$id)->update(['estado' => 1]);
-        }
-        return redirect(action('Tb_procesoController@index'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_proceso=Tb_proceso::findOrFail($request->id);
+        $tb_proceso->estado='1';
+        $tb_proceso->save();
     }
 
 }

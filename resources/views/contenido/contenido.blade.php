@@ -10,11 +10,11 @@
     </template>
 
     <template v-if="menu==2">
-        <h1>Prueba de cambio 2</h1>
+        <procesos></procesos>
     </template>
 
     <template v-if="menu==3">
-        <h1>Prueba de cambio 3</h1>
+        <perfiles></perfiles>
     </template>
 
     <template v-if="menu==4">

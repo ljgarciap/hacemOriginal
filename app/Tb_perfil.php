@@ -11,4 +11,8 @@ class Tb_perfil extends Model
     protected $fillable = ['perfil','idProceso','valorMinuto','estado'];
 
     public $timestamps = false;
+
+    public function procesos(){
+        return $this->belongsTo('App\Tb_proceso', 'idProceso');
+    }
 }

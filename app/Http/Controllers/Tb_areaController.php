@@ -38,6 +38,14 @@ class Tb_areaController extends Controller
         ];
     }
 
+    public function selectArea(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $areas = Tb_area::where('estado','=','1')
+        ->select('id','area')->orderBy('area','asc')->get();
+
+        return ['areas' => $areas];
+    }
+
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');

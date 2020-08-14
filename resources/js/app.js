@@ -24,6 +24,8 @@ Vue.component('bienvenida', require('./components/Bienvenida.vue').default);
 Vue.component('admin', require('./components/Admin.vue').default);
 Vue.component('empresa', require('./components/Empresa.vue').default);
 Vue.component('areas', require('./components/Areas.vue').default);
+Vue.component('procesos', require('./components/Procesos.vue').default);
+Vue.component('perfiles', require('./components/Perfiles.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

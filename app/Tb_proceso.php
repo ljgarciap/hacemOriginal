@@ -15,4 +15,8 @@ class Tb_proceso extends Model
     public function areas(){
         return $this->belongsTo('App\Tb_area', 'idArea');
     }
+
+    public function perfiles(){
+        return $this->hasMany('App\Tb_perfil');
+    }
 }

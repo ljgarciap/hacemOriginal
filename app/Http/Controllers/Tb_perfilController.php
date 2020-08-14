@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tb_perfil;
 use App\Tb_proceso;
+use App\Tb_area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,75 +15,102 @@ class Tb_perfilController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $perfiles = Tb_perfil::all();
-        $procesos = Tb_proceso::all();
-        return view('perfil.index', ['perfiles'=>$perfiles,'procesos'=>$procesos] );
+        if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
+
+        if ($buscar=='') {
+            $perfiles = Tb_perfil::join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
+            ->leftJoin('tb_area',function($join){
+                $join->on('tb_proceso.idArea','=','tb_area.id');
+            })
+            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as id_proceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->orderBy('tb_perfil.id','desc')->paginate(5);
+        }
+        else if($criterio=='area'){
+            # code...
+            $perfiles = Tb_perfil::join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
+            ->leftJoin('tb_area',function($join){
+                $join->on('tb_proceso.idArea','=','tb_area.id');
+            })
+            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as id_proceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->where('tb_area.area', 'like', '%'. $buscar . '%')
+            ->orderBy('tb_perfil.id','desc')->paginate(5);
+        }
+        else if($criterio=='proceso'){
+            # code...
+            $perfiles = Tb_perfil::join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
+            ->leftJoin('tb_area',function($join){
+                $join->on('tb_proceso.idArea','=','tb_area.id');
+            })
+            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as id_proceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->where('tb_proceso.proceso', 'like', '%'. $buscar . '%')
+            ->orderBy('tb_perfil.id','desc')->paginate(5);
+        }
+        else {
+            # code...
+            $perfiles = Tb_perfil::join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
+            ->leftJoin('tb_area',function($join){
+                $join->on('tb_proceso.idArea','=','tb_area.id');
+            })
+            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as id_proceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->where('tb_perfil.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('tb_perfil.id','desc')->paginate(5);
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$perfiles->total(),
+                'current_page'  =>$perfiles->currentPage(),
+                'per_page'      =>$perfiles->perPage(),
+                'last_page'     =>$perfiles->lastPage(),
+                'from'          =>$perfiles->firstItem(),
+                'to'            =>$perfiles->lastItem(),
+            ],
+                'perfiles' => $perfiles
+        ];
     }
 
-    public function create()
-    {
-        $procesos = Tb_proceso::all();
-        return view('perfil.create',['procesos'=>$procesos]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-
-        //$datosMaterias = request()->all();
-        $datosPerfiles =request()->except('_token');
-        Tb_perfil::insert($datosPerfiles);
-        //return response()->json($datosMaterias);
-        return redirect('perfil');
+        if(!$request->ajax()) return redirect('/');
+        $tb_perfil=new Tb_perfil();
+        $tb_perfil->perfil=$request->perfil;
+        $tb_perfil->idProceso=$request->idProceso;
+        $tb_perfil->valorMinuto=$request->valorMinuto;
+        $tb_perfil->save();
     }
 
-        /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Materias  $materias
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Request $request)
     {
-        $perfiles = Tb_perfil::whereId($id)->firstOrFail();
-        $procesos = Tb_proceso::all();
+        if(!$request->ajax()) return redirect('/');
 
-        return view('perfil.edit', ['perfiles'=>$perfiles,'procesos'=>$procesos]);
+        $tb_perfil=Tb_perfil::findOrFail($request->id);
+        $tb_perfil->perfil=$request->perfil;
+        $tb_perfil->idProceso=$request->idProceso;
+        $tb_perfil->valorMinuto=$request->valorMinuto;
+        $tb_perfil->estado='1';
+        $tb_perfil->save();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Materias  $materias
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function deactivate(Request $request)
     {
-        // Seteamos un nuevo titulo
-            $datosPerfil=request()->except(['_token','_method']);
-            Tb_perfil::where('id','=',$id)->update($datosPerfil);
-            // Guardamos en base de datos
-            return redirect(action('Tb_perfilController@index'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_perfil=Tb_perfil::findOrFail($request->id);
+        $tb_perfil->estado='0';
+        $tb_perfil->save();
     }
 
-    public function deactivate($id)
+    public function activate(Request $request)
     {
-         $user = DB::table('tb_perfil')->find($id);
-        if($user->estado===1){
-            Tb_perfil::where('id','=',$id)->update(['estado' => 0]);
-        }
-        else{
-            Tb_perfil::where('id','=',$id)->update(['estado' => 1]);
-        }
-        return redirect(action('Tb_perfilController@index'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_perfil=Tb_perfil::findOrFail($request->id);
+        $tb_perfil->estado='1';
+        $tb_perfil->save();
     }
 
 }
