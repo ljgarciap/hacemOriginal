@@ -51,9 +51,12 @@ class Tb_coleccionController extends Controller
      * @param  \App\Tb_coleccion  $tb_coleccion
      * @return \Illuminate\Http\Response
      */
-    public function show(Tb_coleccion $tb_coleccion)
+    public function show($id)
     {
         //
+        $coleccion= Tb_coleccion::findOrFail($id);
+
+        return view('coleccion.show',compact('coleccion'));
     }
 
     /**
@@ -81,8 +84,7 @@ class Tb_coleccionController extends Controller
         $datosColeccion=request()->except(['_token','_method']);
         Tb_coleccion::where('id','=',$id)->update($datosColeccion);
 
-        $coleccion= Tb_coleccion::findOrFail($id);
-        return view('coleccion.edit',compact('coleccion')); 
+        return redirect()->route('coleccion.index');
     }
 
     /**

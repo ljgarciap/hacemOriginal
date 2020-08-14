@@ -131,6 +131,7 @@ Route::group(['middleware' => ['guest']], function () {
 //Prueba para las rutas de producto
 
     Route::resource('producto','Tb_productoController');
+    Route::get('producto/create/{id}', 'Tb_productoController@create');
 
 });
 

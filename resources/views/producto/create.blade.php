@@ -13,9 +13,8 @@ Crear
     <label for="descripcion">{{'Descripcion'}}</label>
     <input type="text" name="descripcion" id="descripcion" value="">
     <br/>
-    <label for="idColeccion">{{'Coleccion'}}</label>
-    <input type="text" name="idColeccion" id="idColeccion" value="">
+    <input type="hidden" name="idColeccion" id="idColeccion" value="{{ $idColeccion }}" />
     <br/>
-    <a href="{{url ('producto')}}">Cerrar</a>
+    <a href="{{url ('coleccion/'.$idColeccion)}}">Cerrar</a>
     <input type="submit" value="Agregar">
 </form>

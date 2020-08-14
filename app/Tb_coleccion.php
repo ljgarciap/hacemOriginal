@@ -11,4 +11,9 @@ class Tb_coleccion extends Model
     protected $fillable = ['nombre','referencia','estado'];
 
     public $timestamps = false;
+
+     // Relacion con la tabla producto
+    public function productos(){
+        return $this->hasMany('App\Tb_producto', 'idColeccion', 'id');
+    }
 }

@@ -15,11 +15,13 @@
     <tbody>
         @foreach($colecciones as $coleccion)
             <tr>
-                <td>Ver| Duplicar | <a href="{{url ('/coleccion/'.$coleccion->id.'/edit')}}">Editar</a> | Borrar</td>
+                <td>
+                <a href="{{ route('coleccion.show',['coleccion'=>$coleccion->id]) }}">
+                    Ver </a>| Duplicar | <a href="{{url ('/coleccion/'.$coleccion->id.'/edit')}}">Editar</a> | Borrar</td>
                 <td>{{$loop->iteration}}</td>
                 <td>{{$coleccion->nombre}}</td>
                 <td>{{$coleccion->referencia}}</td>
-                <td>{{$coleccion->estado}}  </td>
+                <td>{{(($coleccion->estado==1)?"Activo":"Inactivo")}}  </td>
             </tr>
         @endforeach 
     </tbody>
