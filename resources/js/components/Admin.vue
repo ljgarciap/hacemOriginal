@@ -8,7 +8,8 @@
                 </ol>
                 <div class="container-fluid">
                 <center>
-
+                    <p>Herramienta desarrollada por el grupo SENNOVA de investigación del Centro Industrial del Diseño y la Manufactura - C.I.D.M</p>
+                    <p><i><h2>Bienvenido Administrador</h2></i></p>
                 </center>
                 </div><br>
         </main>

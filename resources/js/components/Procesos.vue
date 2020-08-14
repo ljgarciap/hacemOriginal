@@ -377,6 +377,8 @@
                             this.tipoAccion= 2;
                             this.proceso_id=data['id'];
                             this.proceso=data['proceso'];
+                            this.idArea=data['id_area']; // añadido para alimentar el select
+                            this.area=data['area']; //añadido para alimentar el select
                             break;
                         }
                     }

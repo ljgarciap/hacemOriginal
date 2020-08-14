@@ -131,8 +131,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearProceso()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarProceso()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearPerfil()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarPerfil()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -382,6 +382,8 @@
                             this.tipoAccion= 2;
                             this.perfil_id=data['id'];
                             this.perfil=data['perfil'];
+                            this.idProceso=data['id_proceso']; // añadido para alimentar el select
+                            this.proceso=data['proceso']; //añadido para alimentar el select
                             break;
                         }
                     }

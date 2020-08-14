@@ -2903,6 +2903,10 @@ __webpack_require__.r(__webpack_exports__);
                   this.tipoAccion = 2;
                   this.perfil_id = data['id'];
                   this.perfil = data['perfil'];
+                  this.idProceso = data['id_proceso']; // añadido para alimentar el select
+
+                  this.proceso = data['proceso']; //añadido para alimentar el select
+
                   break;
                 }
             }
@@ -3305,6 +3309,10 @@ __webpack_require__.r(__webpack_exports__);
                   this.tipoAccion = 2;
                   this.proceso_id = data['id'];
                   this.proceso = data['proceso'];
+                  this.idArea = data['id_area']; // añadido para alimentar el select
+
+                  this.area = data['area']; //añadido para alimentar el select
+
                   break;
                 }
             }
@@ -39659,7 +39667,22 @@ var render = function() {
   return _c("main", { staticClass: "main" }, [
     _vm._m(0),
     _vm._v(" "),
-    _c("div", { staticClass: "container-fluid" }, [_c("center")], 1),
+    _c(
+      "div",
+      { staticClass: "container-fluid" },
+      [
+        _c("center", [
+          _c("p", [
+            _vm._v(
+              "Herramienta desarrollada por el grupo SENNOVA de investigación del Centro Industrial del Diseño y la Manufactura - C.I.D.M"
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [_c("i", [_c("h2", [_vm._v("Bienvenido Administrador")])])])
+        ])
+      ],
+      1
+    ),
     _c("br")
   ])
 }
@@ -40281,25 +40304,41 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("main", { staticClass: "main" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "container-fluid" },
+      [
+        _c("center", [
+          _c("p", [
+            _vm._v(
+              "Herramienta desarrollada por el grupo SENNOVA de investigación del Centro Industrial del Diseño y la Manufactura - C.I.D.M"
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [_c("i", [_c("h2", [_vm._v("Bienvenido Empresario")])])])
+        ])
+      ],
+      1
+    ),
+    _c("br")
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("main", { staticClass: "main" }, [
-      _c("ol", { staticClass: "breadcrumb" }, [
-        _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
-        _vm._v(" "),
-        _c("li", { staticClass: "breadcrumb-item" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("Empresa")])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "breadcrumb-item active" }, [
-          _vm._v("Dashboard")
-        ])
-      ])
+    return _c("ol", { staticClass: "breadcrumb" }, [
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "breadcrumb-item" }, [
+        _c("a", { attrs: { href: "#" } }, [_vm._v("Empresa")])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
     ])
   }
 ]
@@ -41432,7 +41471,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.crearProceso()
+                            return _vm.crearPerfil()
                           }
                         }
                       },
@@ -41448,7 +41487,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.editarProceso()
+                            return _vm.editarPerfil()
                           }
                         }
                       },
