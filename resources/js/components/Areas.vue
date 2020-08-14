@@ -168,7 +168,7 @@
         },
         computed:{
             isActived: function(){
-                return thi.pagination.current_page;
+                return this.pagination.current_page;
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){

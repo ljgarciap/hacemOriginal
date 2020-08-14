@@ -106,10 +106,17 @@
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                                     <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Area</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idArea">
+                                                <option v-for="area in arrayArea" :key="area.id" :value="area.id" v-text="area.area"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idProceso">
-                                                <option value="0" disabled> Seleccione proceso</option>
                                                 <option v-for="proceso in arrayProceso" :key="proceso.id" :value="proceso.id" v-text="proceso.proceso"></option>
                                             </select>
                                         </div>
@@ -119,6 +126,13 @@
                                         <div class="col-md-9">
                                             <input type="text" v-model="perfil" class="form-control" placeholder="Nombre de perfil">
                                             <span class="help-block">(*) Ingrese el nombre del perfil</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor Minuto</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="valorMinuto" class="form-control" placeholder="Valor Minuto">
+                                            <span class="help-block">(*) Ingrese el valor del minuto</span>
                                         </div>
                                     </div>
                                     <div class="form-group row div-error" v-show="errorPerfil">
@@ -150,12 +164,15 @@
                 perfil_id:0,
                 id:'',
                 perfil:'',
-                valorMinuto:'',
+                valorMinuto:0,
                 estado:'',
                 arrayPerfiles : [],
                 arrayProceso:[],
                 idProceso:0,
                 proceso:'',
+                arrayArea:[],
+                idArea:0,
+                area:'',
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -176,11 +193,11 @@
         },
         computed:{
             isActived: function(){
-                return thi.pagination.current_page;
+                return this.pagination.current_page;
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -199,7 +216,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -224,6 +240,18 @@
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProceso=respuesta.procesos;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            selectArea(){
+                let me=this;
+                var url='/area/selectArea';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayArea=respuesta.areas;
                 })
                 .catch(function (error) {
                     // handle error
@@ -263,6 +291,7 @@
 
                 let me=this;
                 axios.put('/perfil/update',{
+                    'id': this.perfil_id,
                     'perfil': this.perfil,
                     'idProceso': this.idProceso,
                     'valorMinuto': this.valorMinuto
@@ -384,6 +413,8 @@
                             this.perfil=data['perfil'];
                             this.idProceso=data['id_proceso']; // añadido para alimentar el select
                             this.proceso=data['proceso']; //añadido para alimentar el select
+                            this.idArea=data['id_area']; // añadido para alimentar el select
+                            this.area=data['area']; //añadido para alimentar el select
                             break;
                         }
                     }
@@ -391,6 +422,7 @@
 
             }
             this.selectProceso();
+            this.selectArea();
             }
         },
         mounted() {

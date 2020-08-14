@@ -170,11 +170,11 @@
         },
         computed:{
             isActived: function(){
-                return thi.pagination.current_page;
+                return this.pagination.current_page;
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -193,7 +193,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -257,8 +256,8 @@
 
                 let me=this;
                 axios.put('/proceso/update',{
-                    'proceso': this.proceso,
                     'id': this.proceso_id,
+                    'proceso': this.proceso,
                     'idArea': this.idArea
                     //'dato': this.dato
                 }).then(function (response) {

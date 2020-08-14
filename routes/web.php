@@ -62,6 +62,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/perfil/update", "Tb_perfilController@update");
         Route::put("/perfil/deactivate", "Tb_perfilController@deactivate");
         Route::put("/perfil/activate", "Tb_perfilController@activate");
+        Route::get("/perfil/selectRelacion", "Tb_perfilController@selectRelacion");
 
         Route::get("/rol/create", "Tb_rolController@create");
         Route::get("/rol/store", "Tb_rolController@store");

@@ -2077,7 +2077,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isActived: function isActived() {
-      return thi.pagination.current_page;
+      return this.pagination.current_page;
     },
     //Calcula los elementos de la paginacion
     pagesNumber: function pagesNumber() {
@@ -2666,18 +2666,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       perfil_id: 0,
       id: '',
       perfil: '',
-      valorMinuto: '',
+      valorMinuto: 0,
       estado: '',
       arrayPerfiles: [],
       arrayProceso: [],
       idProceso: 0,
       proceso: '',
+      arrayArea: [],
+      idArea: 0,
+      area: '',
       modal: 0,
       tituloModal: '',
       tipoAccion: 0,
@@ -2698,11 +2715,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isActived: function isActived() {
-      return thi.pagination.current_page;
+      return this.pagination.current_page;
     },
     //Calcula los elementos de la paginacion
     pagesNumber: function pagesNumber() {
-      if (this.pagination.to) {
+      if (!this.pagination.to) {
         return [];
       }
 
@@ -2752,6 +2769,17 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
+    selectArea: function selectArea() {
+      var me = this;
+      var url = '/area/selectArea';
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayArea = respuesta.areas;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
     cambiarPagina: function cambiarPagina(page, buscar, criterio) {
       var me = this; //Actualiza la pagina actual
 
@@ -2784,6 +2812,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var me = this;
       axios.put('/perfil/update', {
+        'id': this.perfil_id,
         'perfil': this.perfil,
         'idProceso': this.idProceso,
         'valorMinuto': this.valorMinuto
@@ -2907,6 +2936,10 @@ __webpack_require__.r(__webpack_exports__);
 
                   this.proceso = data['proceso']; //añadido para alimentar el select
 
+                  this.idArea = data['id_area']; // añadido para alimentar el select
+
+                  this.area = data['area']; //añadido para alimentar el select
+
                   break;
                 }
             }
@@ -2914,6 +2947,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.selectProceso();
+      this.selectArea();
     }
   },
   mounted: function mounted() {
@@ -3103,11 +3137,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isActived: function isActived() {
-      return thi.pagination.current_page;
+      return this.pagination.current_page;
     },
     //Calcula los elementos de la paginacion
     pagesNumber: function pagesNumber() {
-      if (this.pagination.to) {
+      if (!this.pagination.to) {
         return [];
       }
 
@@ -3189,8 +3223,8 @@ __webpack_require__.r(__webpack_exports__);
 
       var me = this;
       axios.put('/proceso/update', {
-        'proceso': this.proceso,
         'id': this.proceso_id,
+        'proceso': this.proceso,
         'idArea': this.idArea //'dato': this.dato
 
       }).then(function (response) {
@@ -41321,6 +41355,59 @@ var render = function() {
                           staticClass: "col-md-3 form-control-label",
                           attrs: { for: "text-input" }
                         },
+                        [_vm._v("Area")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.idArea,
+                                expression: "idArea"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.idArea = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          _vm._l(_vm.arrayArea, function(area) {
+                            return _c("option", {
+                              key: area.id,
+                              domProps: {
+                                value: area.id,
+                                textContent: _vm._s(area.area)
+                              }
+                            })
+                          }),
+                          0
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "text-input" }
+                        },
                         [_vm._v("Proceso")]
                       ),
                       _vm._v(" "),
@@ -41353,24 +41440,16 @@ var render = function() {
                               }
                             }
                           },
-                          [
-                            _c(
-                              "option",
-                              { attrs: { value: "0", disabled: "" } },
-                              [_vm._v(" Seleccione proceso")]
-                            ),
-                            _vm._v(" "),
-                            _vm._l(_vm.arrayProceso, function(proceso) {
-                              return _c("option", {
-                                key: proceso.id,
-                                domProps: {
-                                  value: proceso.id,
-                                  textContent: _vm._s(proceso.proceso)
-                                }
-                              })
+                          _vm._l(_vm.arrayProceso, function(proceso) {
+                            return _c("option", {
+                              key: proceso.id,
+                              domProps: {
+                                value: proceso.id,
+                                textContent: _vm._s(proceso.proceso)
+                              }
                             })
-                          ],
-                          2
+                          }),
+                          0
                         )
                       ])
                     ]),
@@ -41413,6 +41492,48 @@ var render = function() {
                         _vm._v(" "),
                         _c("span", { staticClass: "help-block" }, [
                           _vm._v("(*) Ingrese el nombre del perfil")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "text-input" }
+                        },
+                        [_vm._v("Valor Minuto")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.valorMinuto,
+                              expression: "valorMinuto"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "number",
+                            placeholder: "Valor Minuto"
+                          },
+                          domProps: { value: _vm.valorMinuto },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.valorMinuto = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "help-block" }, [
+                          _vm._v("(*) Ingrese el valor del minuto")
                         ])
                       ])
                     ]),
