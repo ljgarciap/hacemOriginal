@@ -40,8 +40,6 @@ Route::group(['middleware' => ['guest']], function () {
     Route::group(['middleware' => ['Superadministrador']], function () {
 
         Route::get("/rol", "Tb_rolController@index");
-        Route::get("/unidad", "Tb_unidad_baseController@index");
-        Route::get("/tipomateria", "Tb_tipo_materiaController@index");
 
         Route::get("/area", "Tb_areaController@index");
         Route::post("/area/store", "Tb_areaController@store");
@@ -64,23 +62,32 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/perfil/activate", "Tb_perfilController@activate");
         Route::get("/perfil/selectRelacion", "Tb_perfilController@selectRelacion");
 
+        Route::get("/unidad", "Tb_unidad_baseController@index");
+        Route::post("/unidad/store", "Tb_unidad_baseController@store");
+        Route::put("/unidad/update", "Tb_unidad_baseController@update");
+        Route::put("/unidad/deactivate", "Tb_unidad_baseController@deactivate");
+        Route::put("/unidad/activate", "Tb_unidad_baseController@activate");
+        Route::get("/unidad/selectUnidad", "Tb_unidad_baseController@selectUnidad");
+
+        Route::get("/materia", "Tb_tipo_materiaController@index");
+        Route::post("/materia/store", "Tb_tipo_materiaController@store");
+        Route::put("/materia/update", "Tb_tipo_materiaController@update");
+        Route::put("/materia/deactivate", "Tb_tipo_materiaController@deactivate");
+        Route::put("/materia/activate", "Tb_tipo_materiaController@activate");
+        Route::get("/materia/selectUnidad", "Tb_tipo_materiaController@selectUnidad");
+
+        Route::get("/coleccion", "Tb_coleccionController@index");
+        Route::post("/coleccion/store", "Tb_coleccionController@store");
+        Route::put("/coleccion/update", "Tb_coleccionController@update");
+        Route::put("/coleccion/deactivate", "Tb_coleccionController@deactivate");
+        Route::put("/coleccion/activate", "Tb_coleccionController@activate");
+        Route::get("/coleccion/selectColeccion", "Tb_coleccionController@selectColeccion");
+
         Route::get("/rol/create", "Tb_rolController@create");
         Route::get("/rol/store", "Tb_rolController@store");
         Route::get("/rol/{id?}/edit", "Tb_rolController@edit");
         Route::get("/rol/{id?}/update", "Tb_rolController@update");
         Route::get("/rol/{id?}/deactivate", "Tb_rolController@deactivate");
-
-        Route::get("/unidad/create", "Tb_unidad_baseController@create");
-        Route::get("/unidad/store", "Tb_unidad_baseController@store");
-        Route::get("/unidad/{id?}/edit", "Tb_unidad_baseController@edit");
-        Route::get("/unidad/{id?}/update", "Tb_unidad_baseController@update");
-        Route::get("/unidad/{id?}/deactivate", "Tb_unidad_baseController@deactivate");
-
-        Route::get("/tipomateria/create", "Tb_tipo_materiaController@create");
-        Route::get("/tipomateria/store", "Tb_tipo_materiaController@store");
-        Route::get("/tipomateria/{id?}/edit", "Tb_tipo_materiaController@edit");
-        Route::get("/tipomateria/{id?}/update", "Tb_tipo_materiaController@update");
-        Route::get("/tipomateria/{id?}/deactivate", "Tb_tipo_materiaController@deactivate");
 
     });
 
@@ -91,8 +98,6 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::group(['middleware' => ['Empresario']], function () {
         //accesos para los usuarios que son empresarios
-        Route::get("/unidad", "Tb_unidad_baseController@index");
-        Route::get("/tipomateria", "Tb_tipo_materiaController@index");
 
         Route::get("/proceso", "Tb_procesoController@index");
         Route::post("/proceso/store", "Tb_procesoController@store");
@@ -107,17 +112,26 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/perfil/deactivate", "Tb_perfilController@deactivate");
         Route::put("/perfil/activate", "Tb_perfilController@activate");
 
-        Route::get("/unidad/create", "Tb_unidad_baseController@create");
-        Route::get("/unidad/store", "Tb_unidad_baseController@store");
-        Route::get("/unidad/{id?}/edit", "Tb_unidad_baseController@edit");
-        Route::get("/unidad/{id?}/update", "Tb_unidad_baseController@update");
-        Route::get("/unidad/{id?}/deactivate", "Tb_unidad_baseController@deactivate");
+        Route::get("/unidad", "Tb_unidad_baseController@index");
+        Route::post("/unidad/store", "Tb_unidad_baseController@store");
+        Route::put("/unidad/update", "Tb_unidad_baseController@update");
+        Route::put("/unidad/deactivate", "Tb_unidad_baseController@deactivate");
+        Route::put("/unidad/activate", "Tb_unidad_baseController@activate");
+        Route::get("/unidad/selectUnidad", "Tb_unidad_baseController@selectUnidad");
 
-        Route::get("/tipomateria/create", "Tb_tipo_materiaController@create");
-        Route::get("/tipomateria/store", "Tb_tipo_materiaController@store");
-        Route::get("/tipomateria/{id?}/edit", "Tb_tipo_materiaController@edit");
-        Route::get("/tipomateria/{id?}/update", "Tb_tipo_materiaController@update");
-        Route::get("/tipomateria/{id?}/deactivate", "Tb_tipo_materiaController@deactivate");
+        Route::get("/materia", "Tb_tipo_materiaController@index");
+        Route::post("/materia/store", "Tb_tipo_materiaController@store");
+        Route::put("/materia/update", "Tb_tipo_materiaController@update");
+        Route::put("/materia/deactivate", "Tb_tipo_materiaController@deactivate");
+        Route::put("/materia/activate", "Tb_tipo_materiaController@activate");
+        Route::get("/materia/selectUnidad", "Tb_tipo_materiaController@selectUnidad");
+
+        Route::get("/coleccion", "Tb_coleccionController@index");
+        Route::post("/coleccion/store", "Tb_coleccionController@store");
+        Route::put("/coleccion/update", "Tb_coleccionController@update");
+        Route::put("/coleccion/deactivate", "Tb_coleccionController@deactivate");
+        Route::put("/coleccion/activate", "Tb_coleccionController@activate");
+        Route::get("/coleccion/selectColeccion", "Tb_coleccionController@selectColeccion");
 
     });
 //---------------------------------------------------------------------------//

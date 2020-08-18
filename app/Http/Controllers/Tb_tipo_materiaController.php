@@ -8,56 +8,75 @@ use Illuminate\Support\Facades\DB;
 
 class Tb_tipo_materiaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tipomateria = Tb_tipo_materia::all();
-        return view('tipomateria.index', ['tipomaterias'=>$tipomateria] );
+        if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
+
+        if ($buscar=='') {
+            # code...
+            $materias = Tb_tipo_materia::orderBy('id','desc')->paginate(5);
+        }
+        else {
+            # code...
+            $materias = Tb_tipo_materia::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$materias->total(),
+                'current_page'  =>$materias->currentPage(),
+                'per_page'      =>$materias->perPage(),
+                'last_page'     =>$materias->lastPage(),
+                'from'          =>$materias->firstItem(),
+                'to'            =>$materias->lastItem(),
+            ],
+                'materias' => $materias
+        ];
     }
 
-    public function create()
-    {
-        return view('tipomateria.create');
+    public function selectMateria(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $materias = Tb_tipo_materia::where('estado','=','1')
+        ->select('id','tipoMateria')->orderBy('tipoMateria','asc')->get();
+
+        return ['materias' => $materias];
     }
 
     public function store(Request $request)
     {
-
-        //$datosMaterias = request()->all();
-        $datostipomateria =request()->except('_token');
-        Tb_tipo_materia::insert($datostipomateria);
-        //return response()->json($datosMaterias);
-        return redirect('tipomateria');
+        if(!$request->ajax()) return redirect('/');
+        $tb_tipo_materia=new Tb_tipo_materia();
+        $tb_tipo_materia->tipoMateria=$request->tipoMateria;
+        $tb_tipo_materia->save();
     }
 
-    public function edit($id)
+    public function update(Request $request)
     {
-        $tipomaterias = Tb_tipo_materia::whereId($id)->firstOrFail();
-        return view('tipomateria.edit', compact('tipomaterias'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_tipo_materia=Tb_tipo_materia::findOrFail($request->id);
+        $tb_tipo_materia->tipoMateria=$request->tipoMateria;
+        $tb_tipo_materia->estado='1';
+        $tb_tipo_materia->save();
     }
 
-    public function update(Request $request, $id)
+    public function deactivate(Request $request)
     {
-        // Seteamos un nuevo titulo
-            $datostipomateria=request()->except(['_token','_method']);
-            Tb_tipo_materia::where('id','=',$id)->update($datostipomateria);
-            // Guardamos en base de datos
-            return redirect(action('Tb_tipo_materiaController@index'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_tipo_materia=Tb_tipo_materia::findOrFail($request->id);
+        $tb_tipo_materia->estado='0';
+        $tb_tipo_materia->save();
     }
 
-    public function deactivate($id)
+    public function activate(Request $request)
     {
-         $unidad = DB::table('tb_tipo_materia')->find($id);
-        if($unidad->estado===1){
-            Tb_tipo_materia::where('id','=',$id)->update(['estado' => 0]);
-        }
-        else{
-            Tb_tipo_materia::where('id','=',$id)->update(['estado' => 1]);
-        }
-        return redirect(action('Tb_tipo_materiaController@index'));
-    }
+        if(!$request->ajax()) return redirect('/');
 
-    public function show($id)
-    {
-        //
+        $tb_tipo_materia=Tb_tipo_materia::findOrFail($request->id);
+        $tb_tipo_materia->estado='1';
+        $tb_tipo_materia->save();
     }
 }

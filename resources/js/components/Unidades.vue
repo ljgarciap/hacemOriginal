@@ -3,15 +3,15 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Perfiles</li>
+                    <li class="breadcrumb-item active">Unidades</li>
                 </ol>
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Perfiles
-                            <button type="button" @click="abrirModal('perfil','crear')" class="btn btn-secondary">
+                            <i class="fa fa-align-justify"></i> Unidades
+                            <button type="button" @click="abrirModal('unidadBase','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
@@ -20,12 +20,11 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="perfil">Perfil</option>
-                                        <option value="area">Area</option>
-                                        <option value="proceso">Proceso</option>
+                                        <option value="unidadBase">Unidad</option>
+                                        <option value="id">Id</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarPerfil(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarPerfil(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarUnidad(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarUnidad(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -33,39 +32,35 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
-                                        <th>Perfil</th>
-                                        <th>Valor Minuto</th>
-                                        <th>Proceso</th>
-                                        <th>Area</th>
+                                        <th>Id</th>
+                                        <th>Unidad</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="perfil in arrayPerfiles" :key="perfil.id">
+                                    <tr v-for="unidad in arrayUnidades" :key="unidad.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('perfil','actualizar',perfil)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="abrirModal('unidadBase','actualizar',unidad)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
-                                        <template v-if="perfil.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarPerfil(perfil.id)">
+                                        <template v-if="unidad.estado">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarUnidad(unidad.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarPerfil(perfil.id)">
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarUnidad(unidad.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
 
                                         </td>
-                                        <td v-text="perfil.perfil"></td>
-                                        <td v-text="perfil.valorMinuto"></td>
-                                        <td v-text="perfil.proceso"></td>
-                                        <td v-text="perfil.area"></td>
+                                        <td v-text="unidad.id"></td>
+                                        <td v-text="unidad.unidadBase"></td>
                                         <td>
-                                            <div v-if="perfil.estado">
+                                            <div v-if="unidad.estado">
                                             <span class="badge badge-success">Activo</span>
                                             </div>
                                             <div v-else>
@@ -106,36 +101,14 @@
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Area</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idArea" @change='cambioSelect()'>
-                                                <option v-for="area in arrayArea" :key="area.id" :value="area.id" v-text="area.area"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idProceso">
-                                                <option v-for="relacion in arrayRelacion" :key="relacion.id_proceso" :value="relacion.id_proceso" v-text="relacion.proceso"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="perfil" class="form-control" placeholder="Nombre de perfil">
-                                            <span class="help-block">(*) Ingrese el nombre del perfil</span>
+                                            <input type="text" v-model="unidadBase" class="form-control" placeholder="Nombre de unidad">
+                                            <span class="help-block">(*) Ingrese el nombre de la unidad</span>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Valor Minuto</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="valorMinuto" class="form-control" placeholder="Valor Minuto">
-                                            <span class="help-block">(*) Ingrese el valor del minuto</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row div-error" v-show="errorPerfil">
+
+                                    <div class="form-group row div-error" v-show="errorUnidad">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -145,8 +118,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearPerfil()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarPerfil()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearUnidad()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarUnidad()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -161,22 +134,15 @@
     export default {
         data(){
             return{
-                perfil_id:0,
+                unidad_id:0,
                 id:'',
-                perfil:'',
-                valorMinuto:0,
+                unidadBase:'',
                 estado:'',
-                arrayPerfiles : [],
-                idProceso:0,
-                proceso:'',
-                arrayArea:[],
-                idArea:0,
-                area:'',
-                arrayRelacion:[],
+                arrayUnidades : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorPerfil : 0,
+                errorUnidad : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -187,7 +153,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'perfil',
+                criterio : 'unidadBase',
                 buscar : ''
             }
         },
@@ -197,7 +163,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (!this.pagination.to) {
+                if (this.pagination.to) {
                     return[];
                 }
 
@@ -216,16 +182,19 @@
                     pagesArray.push(from);
                     from++;
                 }
+
                 return pagesArray;
             }
         },
         methods : {
-            listarPerfil(page,buscar,criterio){
+            listarUnidad(page,buscar,criterio){
                 let me=this;
-                var url='/perfil?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/unidad?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
+                    // handle success
                 var respuesta=response.data;
-                me.arrayPerfiles=respuesta.perfiles.data;
+                me.arrayUnidades=respuesta.unidades.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
                 })
@@ -234,80 +203,52 @@
                     console.log(error);
                 })
             },
-            selectArea(){
-                let me=this;
-                var url='/area/selectArea';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayArea=respuesta.areas;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            selectRelacion(){
-                let me=this;
-                var url='/perfil/selectRelacion';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayRelacion=respuesta.relaciones;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            cambioSelect(){
-                console.log(this.idArea);
-                //do futher processing
-                },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarPerfil(page,buscar,criterio);
+                me.listarUnidad(page,buscar,criterio);
             },
-            crearPerfil(){
+            crearUnidad(){
                 //valido con el metodo de validacion creado
-                if(this.validarPerfil()){
+                if(this.validarUnidad()){
                     return;
                 }
 
                 let me=this;
-                axios.post('/perfil/store',{
-                    'perfil': this.perfil,
-                    'idProceso': this.idProceso,
-                    'valorMinuto': this.valorMinuto
+                axios.post('/unidad/store',{
+                    'unidadBase': this.unidadBase
+                    //'estado': this.estado,
+                    //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarPerfil(1,'','perfil');
+                me.listarUnidad(1,'','unidadBase');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            editarPerfil(){
-                if(this.validarPerfil()){
+            editarUnidad(){
+                if(this.validarUnidad()){
                     return;
                 }
 
                 let me=this;
-                axios.put('/perfil/update',{
-                    'id': this.perfil_id,
-                    'perfil': this.perfil,
-                    'idProceso': this.idProceso,
-                    'valorMinuto': this.valorMinuto
+                axios.put('/unidad/update',{
+                    'unidadBase': this.unidadBase,
+                    'id': this.unidad_id
+                    //'estado': this.estado,
+                    //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarPerfil(1,'','perfil');
+                me.listarUnidad(1,'','unidadBase');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            desactivarPerfil(id){
+            desactivarUnidad(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -326,12 +267,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/perfil/deactivate',{
+                    axios.put('/unidad/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarPerfil(1,'','perfil');
+                    me.listarUnidad(1,'','unidadBase');//verif
                     swalWithBootstrapButtons.fire(
-                    'Perfil desactivado!'
+                    'Unidad desactivada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -340,11 +281,11 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarPerfil();
+                    me.listarUnidad();
                 }
                 })
             },
-            activarPerfil(id){
+            activarUnidad(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -354,7 +295,7 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este perfil?',
+                title: 'Quiere activar esta unidad?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Activar!',
@@ -363,12 +304,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/perfil/activate',{
+                    axios.put('/unidad/activate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarPerfil(1,'','proceso');
+                    me.listarUnidad(1,'','unidadBase');
                     swalWithBootstrapButtons.fire(
-                    'Perfil activado!'
+                    'Unidad activada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -377,65 +318,53 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarPerfil();
+                    me.listarUnidad();
                 }
                 })
             },
-            validarPerfil(){
-                this.errorPerfil=0;
+            validarUnidad(){
+                this.errorUnidad=0;
                 this.errorMensaje=[];
 
-                if (!this.perfil) this.errorMensaje.push("El nombre del perfil no puede estar vacio");
-                if (this.errorMensaje.length) this.errorPerfil=1;
+                if (!this.unidadBase) this.errorMensaje.push("El nombre de la unidad no puede estar vacio");
+                if (this.errorMensaje.length) this.errorUnidad=1;
 
-                return this.errorPerfil;
+                return this.errorUnidad;
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.perfil='';
+                this.unidadBase='';
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "perfil":
+                case "unidadBase":
                 {
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.perfil='';
-                            this.tituloModal='Crear nuevo perfil';
+                            this.unidadBase='';
+                            this.tituloModal='Crear nueva unidad';
                             this.tipoAccion= 1;
-                            this.idArea= 1;
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar perfil';
+                            this.tituloModal='Editar unidad';
                             this.tipoAccion= 2;
-                            this.perfil_id=data['id'];
-                            this.perfil=data['perfil'];
-                            this.idProceso=data['id_proceso']; // añadido para alimentar el select
-                            this.proceso=data['proceso']; //añadido para alimentar el select
-                            this.idArea=data['id_area']; // añadido para alimentar el select
-                            this.area=data['area']; //añadido para alimentar el select
-                            console.log(this.idArea);
-                            console.log(this.area);
-                            console.log(this.idProceso);
-                            console.log(this.proceso);
+                            this.unidad_id=data['id'];
+                            this.unidadBase=data['unidadBase'];
                             break;
                         }
                     }
-              }
-
+                }
             }
-            this.selectRelacion();
             }
         },
         mounted() {
-            this.listarPerfil(1,this.buscar,this.criterio);
-            this.selectArea();
+            this.listarUnidad(1,this.buscar,this.criterio);
         }
     }
 </script>

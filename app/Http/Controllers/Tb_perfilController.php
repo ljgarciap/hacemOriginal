@@ -75,7 +75,7 @@ class Tb_perfilController extends Controller
 
     public function selectRelacion(Request $request){
         //if(!$request->ajax()) return redirect('/');
-        /*
+        /*        */
         $procesos = DB::table('tb_proceso')
                    ->select('id as id_proceso','proceso','idArea')
                    ->where('estado','=','1');
@@ -84,13 +84,11 @@ class Tb_perfilController extends Controller
                 ->joinSub($procesos, 'tb_proceso', function ($join) {
                     $join->on('tb_area.id', '=', 'tb_proceso.idArea');
                 })
-                ->select('id as id_area','area','id_proceso','proceso')
-                ->where('estado','=','1')
+                ->select('id as id_area','id_proceso','proceso')
+                ->where('estado', '=', '1')
                 ->get();
 
                 return ['relaciones' => $relaciones];
-        */
-
     }
 
     public function store(Request $request)

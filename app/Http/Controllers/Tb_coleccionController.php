@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tb_coleccion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Tb_coleccionController extends Controller
 {
@@ -12,11 +13,32 @@ class Tb_coleccionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $datos['colecciones']=Tb_coleccion::paginate(5);
+        //if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
 
-        return view('coleccion.index',$datos);
+        if ($buscar=='') {
+            # code...
+            $colecciones = Tb_coleccion::orderBy('id','desc')->paginate(5);
+        }
+        else {
+            # code...
+            $colecciones = Tb_coleccion::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$colecciones->total(),
+                'current_page'  =>$colecciones->currentPage(),
+                'per_page'      =>$colecciones->perPage(),
+                'last_page'     =>$colecciones->lastPage(),
+                'from'          =>$colecciones->firstItem(),
+                'to'            =>$colecciones->lastItem(),
+            ],
+                'colecciones' => $colecciones
+        ];
     }
 
     /**

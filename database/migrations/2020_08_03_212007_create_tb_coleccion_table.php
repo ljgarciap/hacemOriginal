@@ -15,7 +15,7 @@ class CreateTbColeccionTable extends Migration
     {
         Schema::create('tb_coleccion', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 255);
+            $table->string('coleccion', 255);
             $table->string('referencia', 255);
             $table->boolean('estado')->default(1);
             //$table->timestamps();

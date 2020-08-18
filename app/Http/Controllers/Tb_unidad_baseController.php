@@ -8,56 +8,75 @@ use Illuminate\Support\Facades\DB;
 
 class Tb_unidad_baseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $unidades = Tb_unidad_base::all();
-        return view('unidad.index', ['unidades'=>$unidades] );
+        if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
+
+        if ($buscar=='') {
+            # code...
+            $unidades = Tb_unidad_base::orderBy('id','desc')->paginate(5);
+        }
+        else {
+            # code...
+            $unidades = Tb_unidad_base::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$unidades->total(),
+                'current_page'  =>$unidades->currentPage(),
+                'per_page'      =>$unidades->perPage(),
+                'last_page'     =>$unidades->lastPage(),
+                'from'          =>$unidades->firstItem(),
+                'to'            =>$unidades->lastItem(),
+            ],
+                'unidades' => $unidades
+        ];
     }
 
-    public function create()
-    {
-        return view('unidad.create');
+    public function selectUnidad(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $unidades = Tb_unidad_base::where('estado','=','1')
+        ->select('id','unidadBase')->orderBy('unidadBase','asc')->get();
+
+        return ['unidades' => $unidades];
     }
 
     public function store(Request $request)
     {
-
-        //$datosMaterias = request()->all();
-        $datosUnidades =request()->except('_token');
-        Tb_unidad_base::insert($datosUnidades);
-        //return response()->json($datosMaterias);
-        return redirect('unidad');
+        if(!$request->ajax()) return redirect('/');
+        $tb_unidad_base=new Tb_unidad_base();
+        $tb_unidad_base->unidadBase=$request->unidadBase;
+        $tb_unidad_base->save();
     }
 
-    public function edit($id)
+    public function update(Request $request)
     {
-        $unidades = Tb_unidad_base::whereId($id)->firstOrFail();
-        return view('unidad.edit', compact('unidades'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_unidad_base=Tb_unidad_base::findOrFail($request->id);
+        $tb_unidad_base->unidadBase=$request->unidadBase;
+        $tb_unidad_base->estado='1';
+        $tb_unidad_base->save();
     }
 
-    public function update(Request $request, $id)
+    public function deactivate(Request $request)
     {
-        // Seteamos un nuevo titulo
-            $datosUnidad=request()->except(['_token','_method']);
-            Tb_unidad_base::where('id','=',$id)->update($datosUnidad);
-            // Guardamos en base de datos
-            return redirect(action('Tb_unidad_baseController@index'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_unidad_base=Tb_unidad_base::findOrFail($request->id);
+        $tb_unidad_base->estado='0';
+        $tb_unidad_base->save();
     }
 
-    public function deactivate($id)
+    public function activate(Request $request)
     {
-         $unidad = DB::table('tb_unidad_base')->find($id);
-        if($unidad->estado===1){
-            Tb_unidad_base::where('id','=',$id)->update(['estado' => 0]);
-        }
-        else{
-            Tb_unidad_base::where('id','=',$id)->update(['estado' => 1]);
-        }
-        return redirect(action('Tb_unidad_baseController@index'));
-    }
+        if(!$request->ajax()) return redirect('/');
 
-    public function show($id)
-    {
-        //
+        $tb_unidad_base=Tb_unidad_base::findOrFail($request->id);
+        $tb_unidad_base->estado='1';
+        $tb_unidad_base->save();
     }
 }

@@ -18,11 +18,11 @@
     </template>
 
     <template v-if="menu==4">
-        <h1>Prueba de cambio 4</h1>
+        <unidades></unidades>
     </template>
 
     <template v-if="menu==5">
-        <h1>Prueba de cambio 5</h1>
+        <materias></materias>
     </template>
 
     <template v-if="menu==6">
@@ -30,7 +30,7 @@
     </template>
 
     <template v-if="menu==7">
-        <h1>Prueba de cambio 7</h1>
+        <colecciones></coleciones>
     </template>
 
     <template v-if="menu==8">
