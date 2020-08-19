@@ -15,7 +15,9 @@ class Tb_coleccionController extends Controller
      */
     public function index(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
+        //$areas = Tb_area::all();
+        //return $areas;
         $buscar= $request->buscar;
         $criterio= $request->criterio;
 
@@ -41,82 +43,53 @@ class Tb_coleccionController extends Controller
         ];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('coleccion.create');
+    public function selectColeccion(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $colecciones = Tb_coleccion::where('estado','=','1')
+        ->select('id','coleccion')->orderBy('coleccion','asc')->get();
+
+        return ['colecciones' => $colecciones];
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $datosColeccion=request()->except('_token');
+        if(!$request->ajax()) return redirect('/');
 
-        Tb_coleccion::insert($datosColeccion);
-
-        return redirect('coleccion');
-
+        //$datosAreas =request()->except('_token');
+        //Tb_area::insert($datosAreas);
+        //return redirect('area');
+        $tb_coleccion=new Tb_coleccion();
+        $tb_coleccion->coleccion=$request->coleccion;
+        $tb_coleccion->referencia=$request->referencia;
+        $tb_coleccion->save();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Tb_coleccion  $tb_coleccion
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request)
     {
-        //
-        $coleccion= Tb_coleccion::findOrFail($id);
+        if(!$request->ajax()) return redirect('/');
 
-        return view('coleccion.show',compact('coleccion'));
+        $tb_coleccion=Tb_coleccion::findOrFail($request->id);
+        $tb_coleccion->coleccion=$request->coleccion;
+        $tb_coleccion->referencia=$request->referencia;
+        $tb_coleccion->estado='1';
+        $tb_coleccion->save();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Tb_coleccion  $tb_coleccion
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function deactivate(Request $request)
     {
-        $coleccion= Tb_coleccion::findOrFail($id);
+        if(!$request->ajax()) return redirect('/');
 
-        return view('coleccion.edit',compact('coleccion'));
+        $tb_coleccion=Tb_coleccion::findOrFail($request->id);
+        $tb_coleccion->estado='0';
+        $tb_coleccion->save();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Tb_coleccion  $tb_coleccion
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function activate(Request $request)
     {
-        $datosColeccion=request()->except(['_token','_method']);
-        Tb_coleccion::where('id','=',$id)->update($datosColeccion);
+        if(!$request->ajax()) return redirect('/');
 
-        return redirect()->route('coleccion.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Tb_coleccion  $tb_coleccion
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Tb_coleccion $tb_coleccion)
-    {
-        //
+        $tb_coleccion=Tb_coleccion::findOrFail($request->id);
+        $tb_coleccion->estado='1';
+        $tb_coleccion->save();
     }
 }

@@ -12,7 +12,7 @@
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Colecciones
                             <!--para modificar luego-->
-                            <button type="button" @click="abrirModal('area','crear')" class="btn btn-secondary">
+                            <button type="button" @click="abrirModal('coleccion','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
@@ -49,12 +49,12 @@
                                             </button> &nbsp;
                                         <!--para modificar luego-->
                                         <template v-if="coleccion.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarArea(area.id)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarColeccion(coleccion.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarArea(area.id)">
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarColeccion(coleccion.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
@@ -107,8 +107,16 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="area" class="form-control" placeholder="Nombre de área">
-                                            <span class="help-block">(*) Ingrese el nombre del área</span>
+                                            <input type="text" v-model="coleccion" class="form-control" placeholder="Nombre de colección">
+                                            <span class="help-block">(*) Ingrese el nombre de la colección</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Referencia</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="referencia" class="form-control" placeholder="Nombre de referencia">
+                                            <span class="help-block">(*) Ingrese el nombre de la referencia</span>
                                         </div>
                                     </div>
 
@@ -121,7 +129,7 @@
                                     </div>
                                     -->
 
-                                    <div class="form-group row div-error" v-show="errorArea">
+                                    <div class="form-group row div-error" v-show="errorColeccion">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -131,8 +139,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearArea()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarArea()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearColeccion()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarColeccion()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -224,45 +232,47 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarColeccion(page,buscar,criterio);
             },
-            crearArea(){
+            crearColeccion(){
                 //valido con el metodo de validacion creado
-                if(this.validarArea()){
+                if(this.validarColeccion()){
                     return;
                 }
 
                 let me=this;
-                axios.post('/area/store',{
-                    'area': this.area
+                axios.post('/coleccion/store',{
+                    'coleccion': this.coleccion,
+                    'referencia': this.referencia
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarArea(1,'','area');
+                me.listarColeccion(1,'','coleccion');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            editarArea(){
-                if(this.validarArea()){
+            editarColeccion(){
+                if(this.validarColeccion()){
                     return;
                 }
 
                 let me=this;
-                axios.put('/area/update',{
-                    'area': this.area,
-                    'id': this.area_id
+                axios.put('/coleccion/update',{
+                    'coleccion': this.coleccion,
+                    'id': this.coleccion_id,
+                    'referencia': this.referencia
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarArea(1,'','area');
+                me.listarColeccion(1,'','coleccion');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            desactivarArea(id){
+            desactivarColeccion(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -281,12 +291,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/area/deactivate',{
+                    axios.put('/coleccion/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarArea(1,'','area');
+                    me.listarColeccion(1,'','coleccion');
                     swalWithBootstrapButtons.fire(
-                    'Area desactivada!'
+                    'Colección desactivada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -295,11 +305,11 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarArea();
+                    me.listarColeccion();
                 }
                 })
             },
-            activarArea(id){
+            activarColeccion(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -318,12 +328,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/area/activate',{
+                    axios.put('/coleccion/activate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarArea(1,'','area');
+                    me.listarColeccion(1,'','coleccion');
                     swalWithBootstrapButtons.fire(
-                    'Area activada!'
+                    'Colección activada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -332,44 +342,46 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarArea();
+                    me.listarColeccion();
                 }
                 })
             },
-            validarArea(){
-                this.errorArea=0;
+            validarColeccion(){
+                this.errorColeccion=0;
                 this.errorMensaje=[];
 
-                if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
-                if (this.errorMensaje.length) this.errorArea=1;
+                if (!this.coleccion) this.errorMensaje.push("El nombre de la colección no puede estar vacio");
+                if (this.errorMensaje.length) this.errorColeccion=1;
 
-                return this.errorArea;
+                return this.errorColeccion;
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.area='';
+                this.coleccion='';
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "area":
+                case "coleccion":
                 {
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.area='';
-                            this.tituloModal='Crear nueva área';
+                            this.coleccion='';
+                            this.referencia='';
+                            this.tituloModal='Crear nueva colección';
                             this.tipoAccion= 1;
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar área';
+                            this.tituloModal='Editar colección';
                             this.tipoAccion= 2;
-                            this.area_id=data['id'];
-                            this.area=data['area'];
+                            this.coleccion_id=data['id'];
+                            this.coleccion=data['coleccion'];
+                            this.referencia=data['referencia'];
                             break;
                         }
                     }
@@ -378,7 +390,7 @@
             }
         },
         mounted() {
-            this.listarArea(1,this.buscar,this.criterio);
+            this.listarColeccion(1,this.buscar,this.criterio);
         }
     }
 </script>

@@ -2442,6 +2442,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2523,43 +2531,45 @@ __webpack_require__.r(__webpack_exports__);
 
       me.listarColeccion(page, buscar, criterio);
     },
-    crearArea: function crearArea() {
+    crearColeccion: function crearColeccion() {
       //valido con el metodo de validacion creado
-      if (this.validarArea()) {
+      if (this.validarColeccion()) {
         return;
       }
 
       var me = this;
-      axios.post('/area/store', {
-        'area': this.area //'estado': this.estado,
+      axios.post('/coleccion/store', {
+        'coleccion': this.coleccion,
+        'referencia': this.referencia //'estado': this.estado,
         //'dato': this.dato
 
       }).then(function (response) {
         me.cerrarModal();
-        me.listarArea(1, '', 'area');
+        me.listarColeccion(1, '', 'coleccion');
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    editarArea: function editarArea() {
-      if (this.validarArea()) {
+    editarColeccion: function editarColeccion() {
+      if (this.validarColeccion()) {
         return;
       }
 
       var me = this;
-      axios.put('/area/update', {
-        'area': this.area,
-        'id': this.area_id //'estado': this.estado,
+      axios.put('/coleccion/update', {
+        'coleccion': this.coleccion,
+        'id': this.coleccion_id,
+        'referencia': this.referencia //'estado': this.estado,
         //'dato': this.dato
 
       }).then(function (response) {
         me.cerrarModal();
-        me.listarArea(1, '', 'area');
+        me.listarColeccion(1, '', 'coleccion');
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    desactivarArea: function desactivarArea(id) {
+    desactivarColeccion: function desactivarColeccion(id) {
       var _this = this;
 
       var swalWithBootstrapButtons = Swal.mixin({
@@ -2579,23 +2589,23 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           var _me = _this;
-          axios.put('/area/deactivate', {
+          axios.put('/coleccion/deactivate', {
             'id': id
           }).then(function (response) {
-            _me.listarArea(1, '', 'area');
+            _me.listarColeccion(1, '', 'coleccion');
 
-            swalWithBootstrapButtons.fire('Area desactivada!');
+            swalWithBootstrapButtons.fire('Colección desactivada!');
           })["catch"](function (error) {
             console.log(error);
           });
         } else if (
         /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel) {
-          me.listarArea();
+          me.listarColeccion();
         }
       });
     },
-    activarArea: function activarArea(id) {
+    activarColeccion: function activarColeccion(id) {
       var _this2 = this;
 
       var swalWithBootstrapButtons = Swal.mixin({
@@ -2615,47 +2625,48 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           var _me2 = _this2;
-          axios.put('/area/activate', {
+          axios.put('/coleccion/activate', {
             'id': id
           }).then(function (response) {
-            _me2.listarArea(1, '', 'area');
+            _me2.listarColeccion(1, '', 'coleccion');
 
-            swalWithBootstrapButtons.fire('Area activada!');
+            swalWithBootstrapButtons.fire('Colección activada!');
           })["catch"](function (error) {
             console.log(error);
           });
         } else if (
         /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel) {
-          me.listarArea();
+          me.listarColeccion();
         }
       });
     },
-    validarArea: function validarArea() {
-      this.errorArea = 0;
+    validarColeccion: function validarColeccion() {
+      this.errorColeccion = 0;
       this.errorMensaje = [];
-      if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
-      if (this.errorMensaje.length) this.errorArea = 1;
-      return this.errorArea;
+      if (!this.coleccion) this.errorMensaje.push("El nombre de la colección no puede estar vacio");
+      if (this.errorMensaje.length) this.errorColeccion = 1;
+      return this.errorColeccion;
     },
     cerrarModal: function cerrarModal() {
       this.modal = 0;
       this.tituloModal = '';
-      this.area = '';
+      this.coleccion = '';
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
       //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
       switch (modelo) {
-        case "area":
+        case "coleccion":
           {
             switch (accion) {
               case 'crear':
                 {
                   this.modal = 1;
-                  this.area = '';
-                  this.tituloModal = 'Crear nueva área';
+                  this.coleccion = '';
+                  this.referencia = '';
+                  this.tituloModal = 'Crear nueva colección';
                   this.tipoAccion = 1;
                   break;
                 }
@@ -2664,10 +2675,11 @@ __webpack_require__.r(__webpack_exports__);
                 {
                   //console.log(data);
                   this.modal = 1;
-                  this.tituloModal = 'Editar área';
+                  this.tituloModal = 'Editar colección';
                   this.tipoAccion = 2;
-                  this.area_id = data['id'];
-                  this.area = data['area'];
+                  this.coleccion_id = data['id'];
+                  this.coleccion = data['coleccion'];
+                  this.referencia = data['referencia'];
                   break;
                 }
             }
@@ -2676,7 +2688,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.listarArea(1, this.buscar, this.criterio);
+    this.listarColeccion(1, this.buscar, this.criterio);
   }
 });
 
@@ -42590,7 +42602,7 @@ var render = function() {
               attrs: { type: "button" },
               on: {
                 click: function($event) {
-                  return _vm.abrirModal("area", "crear")
+                  return _vm.abrirModal("coleccion", "crear")
                 }
               }
             },
@@ -42731,7 +42743,9 @@ var render = function() {
                                   attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.desactivarArea(_vm.area.id)
+                                      return _vm.desactivarColeccion(
+                                        coleccion.id
+                                      )
                                     }
                                   }
                                 },
@@ -42746,7 +42760,7 @@ var render = function() {
                                   attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.activarArea(_vm.area.id)
+                                      return _vm.activarColeccion(coleccion.id)
                                     }
                                   }
                                 },
@@ -42950,28 +42964,70 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.area,
-                              expression: "area"
+                              value: _vm.coleccion,
+                              expression: "coleccion"
                             }
                           ],
                           staticClass: "form-control",
                           attrs: {
                             type: "text",
-                            placeholder: "Nombre de área"
+                            placeholder: "Nombre de colección"
                           },
-                          domProps: { value: _vm.area },
+                          domProps: { value: _vm.coleccion },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.area = $event.target.value
+                              _vm.coleccion = $event.target.value
                             }
                           }
                         }),
                         _vm._v(" "),
                         _c("span", { staticClass: "help-block" }, [
-                          _vm._v("(*) Ingrese el nombre del área")
+                          _vm._v("(*) Ingrese el nombre de la colección")
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "text-input" }
+                        },
+                        [_vm._v("Referencia")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.referencia,
+                              expression: "referencia"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Nombre de referencia"
+                          },
+                          domProps: { value: _vm.referencia },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.referencia = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "help-block" }, [
+                          _vm._v("(*) Ingrese el nombre de la referencia")
                         ])
                       ])
                     ]),
@@ -42983,8 +43039,8 @@ var render = function() {
                           {
                             name: "show",
                             rawName: "v-show",
-                            value: _vm.errorArea,
-                            expression: "errorArea"
+                            value: _vm.errorColeccion,
+                            expression: "errorColeccion"
                           }
                         ],
                         staticClass: "form-group row div-error"
@@ -43030,7 +43086,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.crearArea()
+                            return _vm.crearColeccion()
                           }
                         }
                       },
@@ -43046,7 +43102,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.editarArea()
+                            return _vm.editarColeccion()
                           }
                         }
                       },
