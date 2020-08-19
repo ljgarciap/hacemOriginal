@@ -84,14 +84,14 @@ class UserController extends Controller
     }
 //voy aca
     public function selectRelacion(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/'); ajustar con cuidado
         /*        */
-        $procesos = DB::table('tb_proceso')
-                   ->select('id as id_proceso','proceso','idArea')
+        $roles = DB::table('tb_rol')
+                   ->select('id as id_rol','rol')
                    ->where('estado','=','1');
 
-        $relaciones = DB::table('tb_area')
-                ->joinSub($procesos, 'tb_proceso', function ($join) {
+        $relaciones = DB::table('users')
+                ->joinSub($roles, 'tb_proceso', function ($join) {
                     $join->on('tb_area.id', '=', 'tb_proceso.idArea');
                 })
                 ->select('id as id_area','id_proceso','proceso')
@@ -104,41 +104,42 @@ class UserController extends Controller
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-        $tb_perfil=new Tb_perfil();
-        $tb_perfil->perfil=$request->perfil;
-        $tb_perfil->idProceso=$request->idProceso;
-        $tb_perfil->valorMinuto=$request->valorMinuto;
-        $tb_perfil->save();
+        $users=new User();
+        $users->name=$request->name;
+        $users->idRol=$request->idRol;
+        $users->email=$request->email;
+        $users->password=bcrypt($request->email);
+        $users->save();
     }
 
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
 
-        $tb_perfil=Tb_perfil::findOrFail($request->id);
-        $tb_perfil->perfil=$request->perfil;
-        $tb_perfil->idProceso=$request->idProceso;
-        $tb_perfil->valorMinuto=$request->valorMinuto;
-        $tb_perfil->estado='1';
-        $tb_perfil->save();
+        $users=User::findOrFail($request->id);
+        $users->name=$request->name;
+        $users->idRol=$request->idRol;
+        $users->email=$request->email;
+        $users->estado='1';
+        $users->save();
     }
 
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
 
-        $tb_perfil=Tb_perfil::findOrFail($request->id);
-        $tb_perfil->estado='0';
-        $tb_perfil->save();
+        $users=User::findOrFail($request->id);
+        $users->estado='0';
+        $users->save();
     }
 
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
 
-        $tb_perfil=Tb_perfil::findOrFail($request->id);
-        $tb_perfil->estado='1';
-        $tb_perfil->save();
+        $users=User::findOrFail($request->id);
+        $users->estado='1';
+        $users->save();
     }
 
 }
