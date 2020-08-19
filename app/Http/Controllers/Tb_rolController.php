@@ -8,55 +8,75 @@ use Illuminate\Support\Facades\DB;
 
 class Tb_rolController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $rol = Tb_rol::all();
-        return view('rol.index', ['roles'=>$rol] );
+        if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
+
+        if ($buscar=='') {
+            # code...
+            $roles = Tb_rol::orderBy('id','desc')->paginate(5);
+        }
+        else {
+            # code...
+            $roles = Tb_rol::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$roles->total(),
+                'current_page'  =>$roles->currentPage(),
+                'per_page'      =>$roles->perPage(),
+                'last_page'     =>$roles->lastPage(),
+                'from'          =>$roles->firstItem(),
+                'to'            =>$roles->lastItem(),
+            ],
+                'roles' => $roles
+        ];
     }
 
-    public function create()
-    {
-        return view('rol.create');
+    public function selectRol(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $roles = Tb_rol::where('estado','=','1')
+        ->select('id','rol')->orderBy('rol','asc')->get();
+
+        return ['roles' => $roles];
     }
 
     public function store(Request $request)
     {
-
-        //$datosMaterias = request()->all();
-        $datosRoles =request()->except('_token');
-        Tb_rol::insert($datosRoles);
-        return redirect('rol');
+        if(!$request->ajax()) return redirect('/');
+        $tb_rol=new Tb_rol();
+        $tb_rol->rol=$request->rol;
+        $tb_rol->save();
     }
 
-    public function edit($id)
+    public function update(Request $request)
     {
-        $roles = Tb_rol::whereId($id)->firstOrFail();
-        return view('rol.edit', compact('roles'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_rol=Tb_rol::findOrFail($request->id);
+        $tb_rol->rol=$request->rol;
+        $tb_rol->estado='1';
+        $tb_rol->save();
     }
 
-    public function update(Request $request, $id)
+    public function deactivate(Request $request)
     {
-        // Seteamos un nuevo titulo
-            $datosRol=request()->except(['_token','_method']);
-            Tb_rol::where('id','=',$id)->update($datosRol);
-            // Guardamos en base de datos
-            return redirect(action('Tb_rolController@index'));
+        if(!$request->ajax()) return redirect('/');
+
+        $tb_rol=Tb_rol::findOrFail($request->id);
+        $tb_rol->estado='0';
+        $tb_rol->save();
     }
 
-    public function deactivate($id)
+    public function activate(Request $request)
     {
-         $rol = DB::table('tb_rol')->find($id);
-        if($rol->estado===1){
-            Tb_rol::where('id','=',$id)->update(['estado' => 0]);
-        }
-        else{
-            Tb_rol::where('id','=',$id)->update(['estado' => 1]);
-        }
-        return redirect(action('Tb_rolController@index'));
-    }
+        if(!$request->ajax()) return redirect('/');
 
-    public function show($id)
-    {
-        //
+        $tb_rol=Tb_rol::findOrFail($request->id);
+        $tb_rol->estado='1';
+        $tb_rol->save();
     }
 }

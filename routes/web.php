@@ -39,8 +39,6 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::group(['middleware' => ['Superadministrador']], function () {
 
-        Route::get("/rol", "Tb_rolController@index");
-
         Route::get("/area", "Tb_areaController@index");
         Route::post("/area/store", "Tb_areaController@store");
         Route::put("/area/update", "Tb_areaController@update");
@@ -74,7 +72,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/materia/update", "Tb_tipo_materiaController@update");
         Route::put("/materia/deactivate", "Tb_tipo_materiaController@deactivate");
         Route::put("/materia/activate", "Tb_tipo_materiaController@activate");
-        Route::get("/materia/selectUnidad", "Tb_tipo_materiaController@selectUnidad");
+        Route::get("/materia/selectUnidad", "Tb_tipo_materiaController@selectMateria");
 
         Route::get("/coleccion", "Tb_coleccionController@index");
         Route::post("/coleccion/store", "Tb_coleccionController@store");
@@ -83,11 +81,19 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/coleccion/activate", "Tb_coleccionController@activate");
         Route::get("/coleccion/selectColeccion", "Tb_coleccionController@selectColeccion");
 
-        Route::get("/rol/create", "Tb_rolController@create");
-        Route::get("/rol/store", "Tb_rolController@store");
-        Route::get("/rol/{id?}/edit", "Tb_rolController@edit");
-        Route::get("/rol/{id?}/update", "Tb_rolController@update");
-        Route::get("/rol/{id?}/deactivate", "Tb_rolController@deactivate");
+        Route::get("/rol", "Tb_rolController@index");
+        Route::post("/rol/store", "Tb_rolController@store");
+        Route::put("/rol/update", "Tb_rolController@update");
+        Route::put("/rol/deactivate", "Tb_rolController@deactivate");
+        Route::put("/rol/activate", "Tb_rolController@activate");
+        Route::get("/rol/selectRol", "Tb_rolController@selectRol");
+
+        Route::get("/usuario", "UserController@index");
+        Route::post("/usuario/store", "UserController@store");
+        Route::put("/usuario/update", "UserController@update");
+        Route::put("/usuario/deactivate", "UserController@deactivate");
+        Route::put("/usuario/activate", "UserController@activate");
+        Route::get("/usuario/selectUsuario", "UserController@selectUsuario");
 
     });
 
@@ -124,7 +130,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/materia/update", "Tb_tipo_materiaController@update");
         Route::put("/materia/deactivate", "Tb_tipo_materiaController@deactivate");
         Route::put("/materia/activate", "Tb_tipo_materiaController@activate");
-        Route::get("/materia/selectUnidad", "Tb_tipo_materiaController@selectUnidad");
+        Route::get("/materia/selectUnidad", "Tb_tipo_materiaController@selectMateria");
 
         Route::get("/coleccion", "Tb_coleccionController@index");
         Route::post("/coleccion/store", "Tb_coleccionController@store");

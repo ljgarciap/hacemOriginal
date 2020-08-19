@@ -26,7 +26,7 @@
     </template>
 
     <template v-if="menu==6">
-        <h1>Prueba de cambio 6</h1>
+        <h1>Vista para Gestion materia prima</h1>
     </template>
 
     <template v-if="menu==7">
@@ -34,19 +34,19 @@
     </template>
 
     <template v-if="menu==8">
-        <h1>Prueba de cambio 8</h1>
+        <h1>Vista para Productos</h1>
     </template>
 
     <template v-if="menu==9">
-        <h1>Prueba de cambio 9</h1>
+        <h1>Vista para Hojas de costo</h1>
     </template>
 
     <template v-if="menu==10">
-        <h1>Prueba de cambio 10</h1>
+        <roles></roles>
     </template>
 
     <template v-if="menu==11">
-        <h1>Prueba de cambio 11</h1>
+        <usuarios></usuarios>
     </template>
 
     <template v-if="menu==12">
