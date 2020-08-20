@@ -4348,10 +4348,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       descripcion: '',
       estado: '',
       arrayProductos: [],
-      arrayColeccion: [],
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "arrayColeccion", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -46547,9 +46546,9 @@ var render = function() {
                             _vm._v(" "),
                             _vm._l(_vm.arrayColeccion, function(coleccion) {
                               return _c("option", {
-                                key: coleccion.id,
+                                key: coleccion.idColeccion,
                                 domProps: {
-                                  value: coleccion.id,
+                                  value: coleccion.idColeccion,
                                   textContent: _vm._s(coleccion.coleccion)
                                 }
                               })
@@ -46618,8 +46617,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.producto,
-                              expression: "producto"
+                              value: _vm.referencia,
+                              expression: "referencia"
                             }
                           ],
                           staticClass: "form-control",
@@ -46627,13 +46626,13 @@ var render = function() {
                             type: "text",
                             placeholder: "Nombre de referencia"
                           },
-                          domProps: { value: _vm.producto },
+                          domProps: { value: _vm.referencia },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.producto = $event.target.value
+                              _vm.referencia = $event.target.value
                             }
                           }
                         }),
@@ -46660,8 +46659,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.producto,
-                              expression: "producto"
+                              value: _vm.foto,
+                              expression: "foto"
                             }
                           ],
                           staticClass: "form-control",
@@ -46669,13 +46668,13 @@ var render = function() {
                             type: "text",
                             placeholder: "Nombre de foto"
                           },
-                          domProps: { value: _vm.producto },
+                          domProps: { value: _vm.foto },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.producto = $event.target.value
+                              _vm.foto = $event.target.value
                             }
                           }
                         }),
@@ -46702,8 +46701,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.producto,
-                              expression: "producto"
+                              value: _vm.descripcion,
+                              expression: "descripcion"
                             }
                           ],
                           staticClass: "form-control",
@@ -46711,13 +46710,13 @@ var render = function() {
                             type: "text",
                             placeholder: "Nombre de descripcion"
                           },
-                          domProps: { value: _vm.producto },
+                          domProps: { value: _vm.descripcion },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.producto = $event.target.value
+                              _vm.descripcion = $event.target.value
                             }
                           }
                         }),

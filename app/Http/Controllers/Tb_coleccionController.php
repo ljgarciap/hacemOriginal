@@ -46,7 +46,7 @@ class Tb_coleccionController extends Controller
     public function selectColeccion(Request $request){
         if(!$request->ajax()) return redirect('/');
         $colecciones = Tb_coleccion::where('estado','=','1')
-        ->select('id','coleccion')->orderBy('coleccion','asc')->get();
+        ->select('id as idColecion','coleccion')->orderBy('coleccion','asc')->get();
 
         return ['colecciones' => $colecciones];
     }
