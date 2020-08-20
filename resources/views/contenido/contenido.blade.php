@@ -34,7 +34,7 @@
     </template>
 
     <template v-if="menu==8">
-        <h1>Vista para Productos</h1>
+        <productos></productos>
     </template>
 
     <template v-if="menu==9">

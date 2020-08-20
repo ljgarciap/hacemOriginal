@@ -31,6 +31,7 @@ Vue.component('materias', require('./components/Materias.vue').default);
 Vue.component('roles', require('./components/Roles.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
 Vue.component('colecciones', require('./components/Colecciones.vue').default);
+Vue.component('productos', require('./components/Productos.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

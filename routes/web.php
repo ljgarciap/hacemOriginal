@@ -81,6 +81,13 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/coleccion/activate", "Tb_coleccionController@activate");
         Route::get("/coleccion/selectColeccion", "Tb_coleccionController@selectColeccion");
 
+        Route::get("/producto", "Tb_productoController@index");
+        Route::post("/producto/store", "Tb_productoController@store");
+        Route::put("/producto/update", "Tb_productoController@update");
+        Route::put("/producto/deactivate", "Tb_productoController@deactivate");
+        Route::put("/producto/activate", "Tb_productoController@activate");
+        Route::get("/producto/selectproducto", "Tb_productoController@selectProducto");
+
         Route::get("/rol", "Tb_rolController@index");
         Route::post("/rol/store", "Tb_rolController@store");
         Route::put("/rol/update", "Tb_rolController@update");
@@ -139,14 +146,12 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/coleccion/activate", "Tb_coleccionController@activate");
         Route::get("/coleccion/selectColeccion", "Tb_coleccionController@selectColeccion");
 
+        Route::get("/producto", "Tb_productoController@index");
+        Route::post("/producto/store", "Tb_productoController@store");
+        Route::put("/producto/update", "Tb_productoController@update");
+        Route::put("/producto/deactivate", "Tb_productoController@deactivate");
+        Route::put("/producto/activate", "Tb_productoController@activate");
+        Route::get("/producto/selectproducto", "Tb_productoController@selectProducto");
+
     });
 
-//---------------------------------------------------------------------------//
-    //Prueba para las rutas de producto
-
-    Route::resource('producto','Tb_productoController');
-    Route::get('producto/create/{id}', 'Tb_productoController@create');
-
-});
-
-//---------------------------------------------------------------------------//
