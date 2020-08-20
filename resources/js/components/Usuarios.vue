@@ -10,7 +10,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Usuarios
+                            <i class="fa fa-align-justify"></i> Usuarios &nbsp;
                             <button type="button" @click="abrirModal('usuario','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
@@ -109,7 +109,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Rol</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idRol" @change='cambioSelect()'>
+                                            <select class="form-control" v-model="idRol" @change='selectRol()'>
                                                 <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.rol"></option>
                                             </select>
                                         </div>
@@ -163,7 +163,6 @@
                 idRol:0,
                 rol:'',
                 arrayRol:[],
-                arrayRelacion:[],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -376,7 +375,9 @@
                 this.errorUsuario=0;
                 this.errorMensaje=[];
 
-                if (!this.perfil) this.errorMensaje.push("El nombre del usuario no puede estar vacio");
+                if (!this.rol) this.errorMensaje.push("El nombre del rol no puede estar vacio");
+                if (!this.name) this.errorMensaje.push("El nombre del usuario no puede estar vacio");
+                if (!this.email) this.errorMensaje.push("El correo del usuario no puede estar vacio");
                 if (this.errorMensaje.length) this.errorPerfil=1;
 
                 return this.errorPerfil;
@@ -410,10 +411,10 @@
                             this.idRol=data['id_Rol']; // añadido para alimentar el select
                             this.rol=data['rol']; //añadido para alimentar el select
                             this.email=data['email']; //añadido para alimentar el select
-                            console.log(this.idArea);
-                            console.log(this.area);
-                            console.log(this.idProceso);
-                            console.log(this.proceso);
+                            //console.log(this.idArea);
+                            //console.log(this.area);
+                            //console.log(this.idProceso);
+                            //console.log(this.proceso);
                             break;
                         }
                     }

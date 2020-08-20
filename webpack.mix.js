@@ -16,7 +16,8 @@ mix.js('resources/js/app.js', 'public/js')
     .styles([
     'resources/css/font-awesome.min.css',
     'resources/css/simple-line-icons.min.css',
-    'resources/css/style.css'
+    'resources/css/style.css',
+    'resources/css/select2.min.css'
    ], 'public/css/plantilla.css')
     .scripts([
     'resources/js/jquery.min.js',
@@ -25,5 +26,6 @@ mix.js('resources/js/app.js', 'public/js')
     'resources/js/Chart.min.js',
     'resources/js/pace.min.js',
     'resources/js/template.js',
-    'resources/js/sweetalert2.all.js'
+    'resources/js/sweetalert2.all.js',
+    'resources/js/select2.js'
     ], 'public/js/plantilla.js');

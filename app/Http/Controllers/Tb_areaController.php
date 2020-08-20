@@ -11,17 +11,13 @@ class Tb_areaController extends Controller
     public function index(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-        //$areas = Tb_area::all();
-        //return $areas;
         $buscar= $request->buscar;
         $criterio= $request->criterio;
 
         if ($buscar=='') {
-            # code...
             $areas = Tb_area::orderBy('id','desc')->paginate(5);
         }
         else {
-            # code...
             $areas = Tb_area::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
         }
 
@@ -41,7 +37,7 @@ class Tb_areaController extends Controller
     public function selectArea(Request $request){
         if(!$request->ajax()) return redirect('/');
         $areas = Tb_area::where('estado','=','1')
-        ->select('id','area')->orderBy('area','asc')->get();
+        ->select('id as idArea','area')->orderBy('area','asc')->get();
 
         return ['areas' => $areas];
     }
@@ -49,10 +45,6 @@ class Tb_areaController extends Controller
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
-        //$datosAreas =request()->except('_token');
-        //Tb_area::insert($datosAreas);
-        //return redirect('area');
         $tb_area=new Tb_area();
         $tb_area->area=$request->area;
         $tb_area->save();
@@ -61,7 +53,6 @@ class Tb_areaController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_area=Tb_area::findOrFail($request->id);
         $tb_area->area=$request->area;
         $tb_area->estado='1';
@@ -71,7 +62,6 @@ class Tb_areaController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_area=Tb_area::findOrFail($request->id);
         $tb_area->estado='0';
         $tb_area->save();
@@ -80,7 +70,6 @@ class Tb_areaController extends Controller
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_area=Tb_area::findOrFail($request->id);
         $tb_area->estado='1';
         $tb_area->save();

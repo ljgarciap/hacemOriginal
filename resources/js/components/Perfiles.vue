@@ -10,7 +10,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Perfiles
+                            <i class="fa fa-align-justify"></i> Perfiles &nbsp;
                             <button type="button" @click="abrirModal('perfil','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
@@ -21,8 +21,8 @@
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
                                         <option value="perfil">Perfil</option>
-                                        <option value="area">Area</option>
                                         <option value="proceso">Proceso</option>
+                                        <option value="area">Area</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarPerfil(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarPerfil(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -108,8 +108,9 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Area</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idArea" @change='cambioSelect()'>
-                                                <option v-for="area in arrayArea" :key="area.id" :value="area.id" v-text="area.area"></option>
+                                            <select class="form-control" v-model="idArea" @change='selectRelacion(area.idArea)'>
+                                                <option value="0" disabled>Seleccione un área</option>
+                                                <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -117,7 +118,8 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idProceso">
-                                                <option v-for="relacion in arrayRelacion" :key="relacion.id_proceso" :value="relacion.id_proceso" v-text="relacion.proceso"></option>
+                                                <option value="0" disabled>Seleccione un proceso</option>
+                                                <option v-for="relacion in arrayRelacion" :key="relacion.idProceso" :value="relacion.idProceso" v-text="relacion.proceso"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -167,11 +169,11 @@
                 valorMinuto:0,
                 estado:'',
                 arrayPerfiles : [],
-                idProceso:0,
-                proceso:'',
-                arrayArea:[],
                 idArea:0,
                 area:'',
+                arrayArea:[],
+                idProceso:0,
+                proceso:'',
                 arrayRelacion:[],
                 modal : 0,
                 tituloModal : '',
@@ -246,9 +248,9 @@
                     console.log(error);
                 })
             },
-            selectRelacion(){
+            selectRelacion(idArea){
                 let me=this;
-                var url='/perfil/selectRelacion';
+                var url='/perfil/selectRelacion/'+this.idArea;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayRelacion=respuesta.relaciones;
@@ -258,10 +260,6 @@
                     console.log(error);
                 })
             },
-            cambioSelect(){
-                console.log(this.idArea);
-                //do futher processing
-                },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -382,10 +380,16 @@
                 })
             },
             validarPerfil(){
+                this.errorArea=0;
+                this.errorProceso=0;
                 this.errorPerfil=0;
                 this.errorMensaje=[];
 
+                if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
+                if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
                 if (!this.perfil) this.errorMensaje.push("El nombre del perfil no puede estar vacio");
+                if (!this.valorMinuto) this.errorMensaje.push("El valor del minuto no puede estar vacio");
+                if (this.valorMinuto<0) this.errorMensaje.push("El valor del minuto no puede ser negativo");
                 if (this.errorMensaje.length) this.errorPerfil=1;
 
                 return this.errorPerfil;

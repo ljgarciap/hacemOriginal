@@ -15,11 +15,9 @@ class Tb_rolController extends Controller
         $criterio= $request->criterio;
 
         if ($buscar=='') {
-            # code...
             $roles = Tb_rol::orderBy('id','desc')->paginate(5);
         }
         else {
-            # code...
             $roles = Tb_rol::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
         }
 
@@ -37,9 +35,9 @@ class Tb_rolController extends Controller
     }
 
     public function selectRol(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         $roles = Tb_rol::where('estado','=','1')
-        ->select('id','rol')->orderBy('rol','asc')->get();
+        ->select('id as idRol','rol')->orderBy('rol','asc')->get();
 
         return ['roles' => $roles];
     }
@@ -55,7 +53,6 @@ class Tb_rolController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_rol=Tb_rol::findOrFail($request->id);
         $tb_rol->rol=$request->rol;
         $tb_rol->estado='1';
@@ -65,7 +62,6 @@ class Tb_rolController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_rol=Tb_rol::findOrFail($request->id);
         $tb_rol->estado='0';
         $tb_rol->save();
@@ -74,7 +70,6 @@ class Tb_rolController extends Controller
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_rol=Tb_rol::findOrFail($request->id);
         $tb_rol->estado='1';
         $tb_rol->save();

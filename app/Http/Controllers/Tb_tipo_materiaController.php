@@ -15,11 +15,9 @@ class Tb_tipo_materiaController extends Controller
         $criterio= $request->criterio;
 
         if ($buscar=='') {
-            # code...
             $materias = Tb_tipo_materia::orderBy('id','desc')->paginate(5);
         }
         else {
-            # code...
             $materias = Tb_tipo_materia::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
         }
 
@@ -55,7 +53,6 @@ class Tb_tipo_materiaController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_tipo_materia=Tb_tipo_materia::findOrFail($request->id);
         $tb_tipo_materia->tipoMateria=$request->tipoMateria;
         $tb_tipo_materia->estado='1';
@@ -65,7 +62,6 @@ class Tb_tipo_materiaController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_tipo_materia=Tb_tipo_materia::findOrFail($request->id);
         $tb_tipo_materia->estado='0';
         $tb_tipo_materia->save();
@@ -74,7 +70,6 @@ class Tb_tipo_materiaController extends Controller
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_tipo_materia=Tb_tipo_materia::findOrFail($request->id);
         $tb_tipo_materia->estado='1';
         $tb_tipo_materia->save();

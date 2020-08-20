@@ -15,11 +15,9 @@ class Tb_unidad_baseController extends Controller
         $criterio= $request->criterio;
 
         if ($buscar=='') {
-            # code...
             $unidades = Tb_unidad_base::orderBy('id','desc')->paginate(5);
         }
         else {
-            # code...
             $unidades = Tb_unidad_base::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
         }
 
@@ -55,7 +53,6 @@ class Tb_unidad_baseController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_unidad_base=Tb_unidad_base::findOrFail($request->id);
         $tb_unidad_base->unidadBase=$request->unidadBase;
         $tb_unidad_base->estado='1';
@@ -65,7 +62,6 @@ class Tb_unidad_baseController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_unidad_base=Tb_unidad_base::findOrFail($request->id);
         $tb_unidad_base->estado='0';
         $tb_unidad_base->save();
@@ -74,7 +70,6 @@ class Tb_unidad_baseController extends Controller
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_unidad_base=Tb_unidad_base::findOrFail($request->id);
         $tb_unidad_base->estado='1';
         $tb_unidad_base->save();

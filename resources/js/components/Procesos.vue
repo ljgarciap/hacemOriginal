@@ -10,7 +10,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Procesos
+                            <i class="fa fa-align-justify"></i> Procesos &nbsp;
                             <button type="button" @click="abrirModal('proceso','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
@@ -346,6 +346,7 @@
                 this.errorProceso=0;
                 this.errorMensaje=[];
 
+                if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
                 if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
                 if (this.errorMensaje.length) this.errorProceso=1;
 

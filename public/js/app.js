@@ -3463,6 +3463,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3472,11 +3474,11 @@ __webpack_require__.r(__webpack_exports__);
       valorMinuto: 0,
       estado: '',
       arrayPerfiles: [],
-      idProceso: 0,
-      proceso: '',
-      arrayArea: [],
       idArea: 0,
       area: '',
+      arrayArea: [],
+      idProceso: 0,
+      proceso: '',
       arrayRelacion: [],
       modal: 0,
       tituloModal: '',
@@ -3552,9 +3554,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    selectRelacion: function selectRelacion() {
+    selectRelacion: function selectRelacion(idArea) {
       var me = this;
-      var url = '/perfil/selectRelacion';
+      var url = '/perfil/selectRelacion/' + this.idArea;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayRelacion = respuesta.relaciones;
@@ -3562,9 +3564,6 @@ __webpack_require__.r(__webpack_exports__);
         // handle error
         console.log(error);
       });
-    },
-    cambioSelect: function cambioSelect() {
-      console.log(this.idArea); //do futher processing
     },
     cambiarPagina: function cambiarPagina(page, buscar, criterio) {
       var me = this; //Actualiza la pagina actual
@@ -3682,9 +3681,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     validarPerfil: function validarPerfil() {
+      this.errorArea = 0;
+      this.errorProceso = 0;
       this.errorPerfil = 0;
       this.errorMensaje = [];
+      if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
+      if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
       if (!this.perfil) this.errorMensaje.push("El nombre del perfil no puede estar vacio");
+      if (!this.valorMinuto) this.errorMensaje.push("El valor del minuto no puede estar vacio");
+      if (this.valorMinuto < 0) this.errorMensaje.push("El valor del minuto no puede ser negativo");
       if (this.errorMensaje.length) this.errorPerfil = 1;
       return this.errorPerfil;
     },
@@ -4100,6 +4105,7 @@ __webpack_require__.r(__webpack_exports__);
     validarProceso: function validarProceso() {
       this.errorProceso = 0;
       this.errorMensaje = [];
+      if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
       if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
       if (this.errorMensaje.length) this.errorProceso = 1;
       return this.errorProceso;
@@ -5097,7 +5103,6 @@ __webpack_require__.r(__webpack_exports__);
       idRol: 0,
       rol: '',
       arrayRol: [],
-      arrayRelacion: [],
       modal: 0,
       tituloModal: '',
       tipoAccion: 0,
@@ -5304,7 +5309,9 @@ __webpack_require__.r(__webpack_exports__);
     validarUsuario: function validarUsuario() {
       this.errorUsuario = 0;
       this.errorMensaje = [];
-      if (!this.perfil) this.errorMensaje.push("El nombre del usuario no puede estar vacio");
+      if (!this.rol) this.errorMensaje.push("El nombre del rol no puede estar vacio");
+      if (!this.name) this.errorMensaje.push("El nombre del usuario no puede estar vacio");
+      if (!this.email) this.errorMensaje.push("El correo del usuario no puede estar vacio");
       if (this.errorMensaje.length) this.errorPerfil = 1;
       return this.errorPerfil;
     },
@@ -5344,11 +5351,11 @@ __webpack_require__.r(__webpack_exports__);
                   this.rol = data['rol']; //añadido para alimentar el select
 
                   this.email = data['email']; //añadido para alimentar el select
+                  //console.log(this.idArea);
+                  //console.log(this.area);
+                  //console.log(this.idProceso);
+                  //console.log(this.proceso);
 
-                  console.log(this.idArea);
-                  console.log(this.area);
-                  console.log(this.idProceso);
-                  console.log(this.proceso);
                   break;
                 }
             }
@@ -42012,7 +42019,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Areas\n                    "),
+          _vm._v(" Areas  \n                    "),
           _c(
             "button",
             {
@@ -43819,7 +43826,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Materias\n                    "),
+          _vm._v(" Materias  \n                    "),
           _c(
             "button",
             {
@@ -44347,7 +44354,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Perfiles\n                    "),
+          _vm._v(" Perfiles  \n                    "),
           _c(
             "button",
             {
@@ -44403,13 +44410,11 @@ var render = function() {
                       _vm._v("Perfil")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "area" } }, [
-                      _vm._v("Area")
-                    ]),
-                    _vm._v(" "),
                     _c("option", { attrs: { value: "proceso" } }, [
                       _vm._v("Proceso")
-                    ])
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "area" } }, [_vm._v("Area")])
                   ]
                 ),
                 _vm._v(" "),
@@ -44748,21 +44753,29 @@ var render = function() {
                                     : $$selectedVal[0]
                                 },
                                 function($event) {
-                                  return _vm.cambioSelect()
+                                  return _vm.selectRelacion(_vm.area.idArea)
                                 }
                               ]
                             }
                           },
-                          _vm._l(_vm.arrayArea, function(area) {
-                            return _c("option", {
-                              key: area.id,
-                              domProps: {
-                                value: area.id,
-                                textContent: _vm._s(area.area)
-                              }
+                          [
+                            _c(
+                              "option",
+                              { attrs: { value: "0", disabled: "" } },
+                              [_vm._v("Seleccione un área")]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(_vm.arrayArea, function(area) {
+                              return _c("option", {
+                                key: area.idArea,
+                                domProps: {
+                                  value: area.idArea,
+                                  textContent: _vm._s(area.area)
+                                }
+                              })
                             })
-                          }),
-                          0
+                          ],
+                          2
                         )
                       ])
                     ]),
@@ -44806,16 +44819,24 @@ var render = function() {
                               }
                             }
                           },
-                          _vm._l(_vm.arrayRelacion, function(relacion) {
-                            return _c("option", {
-                              key: relacion.id_proceso,
-                              domProps: {
-                                value: relacion.id_proceso,
-                                textContent: _vm._s(relacion.proceso)
-                              }
+                          [
+                            _c(
+                              "option",
+                              { attrs: { value: "0", disabled: "" } },
+                              [_vm._v("Seleccione un proceso")]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(_vm.arrayRelacion, function(relacion) {
+                              return _c("option", {
+                                key: relacion.idProceso,
+                                domProps: {
+                                  value: relacion.idProceso,
+                                  textContent: _vm._s(relacion.proceso)
+                                }
+                              })
                             })
-                          }),
-                          0
+                          ],
+                          2
                         )
                       ])
                     ]),
@@ -45049,7 +45070,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Procesos\n                    "),
+          _vm._v(" Procesos  \n                    "),
           _c(
             "button",
             {
@@ -45640,7 +45661,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Roles\n                    "),
+          _vm._v(" Roles  \n                    "),
           _c(
             "button",
             {
@@ -46157,7 +46178,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Unidades\n                    "),
+          _vm._v(" Unidades  \n                    "),
           _c(
             "button",
             {
@@ -46685,7 +46706,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Usuarios\n                    "),
+          _vm._v(" Usuarios  \n                    "),
           _c(
             "button",
             {
@@ -47084,7 +47105,7 @@ var render = function() {
                                     : $$selectedVal[0]
                                 },
                                 function($event) {
-                                  return _vm.cambioSelect()
+                                  return _vm.selectRol()
                                 }
                               ]
                             }

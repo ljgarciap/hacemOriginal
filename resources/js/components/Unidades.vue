@@ -10,7 +10,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Unidades
+                            <i class="fa fa-align-justify"></i> Unidades &nbsp;
                             <button type="button" @click="abrirModal('unidadBase','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>

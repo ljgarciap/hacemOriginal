@@ -30,7 +30,6 @@ class Tb_perfilController extends Controller
             ->orderBy('tb_perfil.id','desc')->paginate(5);
         }
         else if($criterio=='area'){
-            # code...
             $perfiles = Tb_perfil::join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
@@ -40,7 +39,6 @@ class Tb_perfilController extends Controller
             ->orderBy('tb_perfil.id','desc')->paginate(5);
         }
         else if($criterio=='proceso'){
-            # code...
             $perfiles = Tb_perfil::join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
@@ -50,7 +48,6 @@ class Tb_perfilController extends Controller
             ->orderBy('tb_perfil.id','desc')->paginate(5);
         }
         else {
-            # code...
             $perfiles = Tb_perfil::join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
@@ -74,22 +71,16 @@ class Tb_perfilController extends Controller
     }
 
     public function selectRelacion(Request $request){
-        //if(!$request->ajax()) return redirect('/');
-        /*        */
-        $procesos = DB::table('tb_proceso')
-                   ->select('id as id_proceso','proceso','idArea')
-                   ->where('estado','=','1');
-
-        $relaciones = DB::table('tb_area')
-                ->joinSub($procesos, 'tb_proceso', function ($join) {
-                    $join->on('tb_area.id', '=', 'tb_proceso.idArea');
-                })
-                ->select('id as id_area','id_proceso','proceso')
-                ->where('estado', '=', '1')
-                ->get();
-
+        if(!$request->ajax()) return redirect('/');
+        $id= $request->id;
+        $relaciones = tb_proceso::where([
+                    ['estado','=','1'],
+                    ['idArea','=',$id],
+                ])
+                ->select('id as idProceso','proceso')
+                ->orderBy('proceso','asc')->get();
                 return ['relaciones' => $relaciones];
-    }
+        }
 
     public function store(Request $request)
     {
@@ -104,7 +95,6 @@ class Tb_perfilController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_perfil=Tb_perfil::findOrFail($request->id);
         $tb_perfil->perfil=$request->perfil;
         $tb_perfil->idProceso=$request->idProceso;
@@ -116,7 +106,6 @@ class Tb_perfilController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_perfil=Tb_perfil::findOrFail($request->id);
         $tb_perfil->estado='0';
         $tb_perfil->save();
@@ -125,7 +114,6 @@ class Tb_perfilController extends Controller
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_perfil=Tb_perfil::findOrFail($request->id);
         $tb_perfil->estado='1';
         $tb_perfil->save();
