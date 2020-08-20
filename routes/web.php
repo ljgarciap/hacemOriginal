@@ -86,7 +86,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/producto/update", "Tb_productoController@update");
         Route::put("/producto/deactivate", "Tb_productoController@deactivate");
         Route::put("/producto/activate", "Tb_productoController@activate");
-        Route::get("/producto/selectproducto", "Tb_productoController@selectProducto");
+        Route::get("/producto/selectProducto", "Tb_productoController@selectProducto");
 
         Route::get("/rol", "Tb_rolController@index");
         Route::post("/rol/store", "Tb_rolController@store");
@@ -151,7 +151,10 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/producto/update", "Tb_productoController@update");
         Route::put("/producto/deactivate", "Tb_productoController@deactivate");
         Route::put("/producto/activate", "Tb_productoController@activate");
-        Route::get("/producto/selectproducto", "Tb_productoController@selectProducto");
+        Route::get("/producto/selectProducto", "Tb_productoController@selectProducto");
 
     });
+
+});
+
 
