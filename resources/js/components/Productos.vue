@@ -42,7 +42,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="producto in arrayproductos" :key="producto.id">
+                                    <tr v-for="producto in arrayProductos" :key="producto.id">
                                         <td>
                                             <button type="button" @click="abrirModal('producto','actualizar',producto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
@@ -61,6 +61,9 @@
 
                                         </td>
                                         <td v-text="producto.producto"></td>
+                                        <td v-text="producto.referencia"></td>
+                                        <td v-text="producto.foto"></td>
+                                        <td v-text="producto.descripcion"></td>
                                         <td v-text="producto.coleccion"></td>
                                         <td>
                                             <div v-if="producto.estado">
@@ -381,9 +384,9 @@
                 this.errorMensaje=[];
 
                 if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
-                if (this.errorMensaje.length) this.errorproducto=1;
+                if (this.errorMensaje.length) this.errorProducto=1;
 
-                return this.errorproducto;
+                return this.errorProducto;
             },
             cerrarModal(){
                 this.modal=0;

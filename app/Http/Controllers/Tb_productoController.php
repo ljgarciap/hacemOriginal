@@ -64,6 +64,7 @@ class Tb_productoController extends Controller
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
+        
         $tb_producto=new Tb_producto();
         $tb_producto->producto=$request->producto;
         $tb_producto->referencia=$request->referencia;

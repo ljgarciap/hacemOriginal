@@ -4335,6 +4335,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _ref;
@@ -4540,8 +4543,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.errorProducto = 0;
       this.errorMensaje = [];
       if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
-      if (this.errorMensaje.length) this.errorproducto = 1;
-      return this.errorproducto;
+      if (this.errorMensaje.length) this.errorProducto = 1;
+      return this.errorProducto;
     },
     cerrarModal: function cerrarModal() {
       this.modal = 0;
@@ -46267,7 +46270,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.arrayproductos, function(producto) {
+                _vm._l(_vm.arrayProductos, function(producto) {
                   return _c("tr", { key: producto.id }, [
                     _c(
                       "td",
@@ -46327,6 +46330,18 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", {
                       domProps: { textContent: _vm._s(producto.producto) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(producto.referencia) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(producto.foto) }
+                    }),
+                    _vm._v(" "),
+                    _c("td", {
+                      domProps: { textContent: _vm._s(producto.descripcion) }
                     }),
                     _vm._v(" "),
                     _c("td", {
