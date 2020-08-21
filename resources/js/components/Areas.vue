@@ -143,7 +143,7 @@
     export default {
         data(){
             return{
-                area_id:0,
+                idArea:0,
                 id:'',
                 area:'',
                 estado:'',
@@ -246,7 +246,7 @@
                 let me=this;
                 axios.put('/area/update',{
                     'area': this.area,
-                    'id': this.area_id
+                    'id': this.idArea
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
@@ -363,7 +363,7 @@
                             this.modal=1;
                             this.tituloModal='Editar área';
                             this.tipoAccion= 2;
-                            this.area_id=data['id'];
+                            this.idArea=data['id'];
                             this.area=data['area'];
                             break;
                         }

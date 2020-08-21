@@ -424,10 +424,6 @@
                             this.proceso=data['proceso']; //añadido para alimentar el select
                             this.idArea=data['id_area']; // añadido para alimentar el select
                             this.area=data['area']; //añadido para alimentar el select
-                            console.log(this.idArea);
-                            console.log(this.area);
-                            console.log(this.idProceso);
-                            console.log(this.proceso);
                             break;
                         }
                     }

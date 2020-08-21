@@ -104,8 +104,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Area</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idArea">
-                                                <option value="0" disabled> Seleccione area</option>
-                                                <option v-for="area in arrayArea" :key="area.id" :value="area.id" v-text="area.area"></option>
+                                                <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -142,14 +141,14 @@
     export default {
         data(){
             return{
-                proceso_id:0,
+                idProceso:0,
                 id:'',
                 proceso:'',
                 estado:'',
                 arrayProcesos : [],
-                arrayArea:[],
                 idArea:0,
                 area:'',
+                arrayArea:[],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -240,7 +239,6 @@
                 axios.post('/proceso/store',{
                     'proceso': this.proceso,
                     'idArea': this.idArea
-                    //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarProceso(1,'','proceso');
@@ -256,7 +254,7 @@
 
                 let me=this;
                 axios.put('/proceso/update',{
-                    'id': this.proceso_id,
+                    'id': this.idProceso,
                     'proceso': this.proceso,
                     'idArea': this.idArea
                     //'dato': this.dato
@@ -345,8 +343,6 @@
             validarProceso(){
                 this.errorProceso=0;
                 this.errorMensaje=[];
-
-                if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
                 if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
                 if (this.errorMensaje.length) this.errorProceso=1;
 
@@ -366,8 +362,10 @@
                         case 'crear':{
                             this.modal=1;
                             this.proceso='';
+                            this.idArea=data['idArea'];
                             this.tituloModal='Crear nuevo proceso';
                             this.tipoAccion= 1;
+                            this.idArea=1;
                             break;
                         }
                         case 'actualizar':{
@@ -375,10 +373,9 @@
                             this.modal=1;
                             this.tituloModal='Editar proceso';
                             this.tipoAccion= 2;
-                            this.proceso_id=data['id'];
+                            this.idProceso=data['id'];
                             this.proceso=data['proceso'];
-                            this.idArea=data['id_area']; // añadido para alimentar el select
-                            this.area=data['area']; //añadido para alimentar el select
+                            this.idArea=data['idArea'];
                             break;
                         }
                     }
