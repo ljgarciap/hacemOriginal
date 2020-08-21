@@ -4335,14 +4335,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _ref;
 
     return _ref = {
-      producto_id: 0,
+      idProducto: 0,
       id: '',
       producto: '',
       referencia: '',
       foto: '',
       descripcion: '',
       estado: '',
-      arrayProductos: [],
+      arrayProducto: [],
       idColeccion: 0,
       coleccion: ''
     }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "arrayColeccion", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
@@ -4392,7 +4392,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var url = '/producto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayProductos = respuesta.productos.data;
+        me.arrayProducto = respuesta.productos.data;
         me.pagination = respuesta.pagination; //console.log(response);
       })["catch"](function (error) {
         // handle error
@@ -4445,7 +4445,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var me = this;
       axios.put('/producto/update', {
-        'id': this.producto_id,
+        'id': this.idProducto,
         'producto': this.producto,
         'referencia': this.referencia,
         'foto': this.foto,
@@ -4560,6 +4560,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.descripcion = '';
                   this.tituloModal = 'Crear nuevo producto';
                   this.tipoAccion = 1;
+                  this.idColeccion = 1;
                   break;
                 }
 
@@ -4569,14 +4570,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.modal = 1;
                   this.tituloModal = 'Editar producto';
                   this.tipoAccion = 2;
-                  this.producto_id = data['id'];
+                  this.idProducto = data['id'];
                   this.producto = data['producto'];
                   this.referencia = data['referencia'];
                   this.foto = data['foto'];
                   this.descripcion = data['descripcion'];
-                  this.idColeccion = data['id_coleccion']; // añadido para alimentar el select
-
-                  this.coleccion = data['coleccion']; //añadido para alimentar el select
+                  this.idColeccion = data['idColeccion']; // añadido para alimentar el select
 
                   break;
                 }
@@ -46254,7 +46253,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.arrayProductos, function(producto) {
+                _vm._l(_vm.arrayProducto, function(producto) {
                   return _c("tr", { key: producto.id }, [
                     _c(
                       "td",

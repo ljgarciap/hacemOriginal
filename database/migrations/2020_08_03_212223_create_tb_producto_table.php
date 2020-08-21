@@ -15,7 +15,7 @@ class CreateTbProductoTable extends Migration
     {
         Schema::create('tb_producto', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 255);
+            $table->string('producto', 255);
             $table->string('referencia', 255);
             $table->string('foto', 2038);
             $table->string('descripcion', 255);

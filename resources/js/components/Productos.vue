@@ -42,7 +42,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="producto in arrayProductos" :key="producto.id">
+                                    <tr v-for="producto in arrayProducto" :key="producto.id">
                                         <td>
                                             <button type="button" @click="abrirModal('producto','actualizar',producto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
@@ -169,14 +169,14 @@
     export default {
         data(){
             return{
-                producto_id:0,
+                idProducto:0,
                 id:'',
                 producto:'',
                 referencia:'',
                 foto:'',
                 descripcion:'',
                 estado:'',
-                arrayProductos : [],
+                arrayProducto : [],
                 idColeccion:0,
                 coleccion:'',
                 referencia:'',
@@ -233,7 +233,7 @@
                 var url='/producto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayProductos=respuesta.productos.data;
+                me.arrayProducto=respuesta.productos.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
                 })
@@ -290,7 +290,7 @@
 
                 let me=this;
                 axios.put('/producto/update',{
-                    'id': this.producto_id,
+                    'id': this.idProducto,
                     'producto': this.producto,
                     'referencia': this.referencia,
                     'foto': this.foto,
@@ -407,6 +407,7 @@
                             this.descripcion='';
                             this.tituloModal='Crear nuevo producto';
                             this.tipoAccion= 1;
+                            this.idColeccion= 1;
                             break;
                         }
                         case 'actualizar':{
@@ -414,13 +415,12 @@
                             this.modal=1;
                             this.tituloModal='Editar producto';
                             this.tipoAccion= 2;
-                            this.producto_id=data['id'];
+                            this.idProducto=data['id'];
                             this.producto=data['producto'];
                             this.referencia=data['referencia'];
                             this.foto=data['foto'];
                             this.descripcion=data['descripcion'];
-                            this.idColeccion=data['id_coleccion']; // añadido para alimentar el select
-                            this.coleccion=data['coleccion']; //añadido para alimentar el select
+                            this.idColeccion=data['idColeccion']; // añadido para alimentar el select
                             break;
                         }
                     }
