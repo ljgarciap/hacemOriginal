@@ -15,10 +15,11 @@ class CreateTbGestionMateriaPrimaTable extends Migration
     {
         Schema::create('tb_gestion_materia_prima', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 255);
+            $table->string('gestionMateria', 255);
             $table->foreignId('idUnidadBase')->constrained('tb_unidad_base');
             $table->integer('precioBase')->unsigned();
             $table->foreignId('idTipoMateria')->constrained('tb_tipo_materia');
+            $table->boolean('estado')->default(1);
             //$table->timestamps();
         });
     }

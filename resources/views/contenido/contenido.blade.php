@@ -65,4 +65,8 @@
         <empresa></empresa>
     </template>
 
+    <template v-if="menu==16">
+        <ninguno></ninguno>
+    </template>
+
     @endsection

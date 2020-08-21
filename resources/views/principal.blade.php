@@ -89,7 +89,7 @@
             @elseif (($rol->id)==2)
                 @include('contenido.sidebarem')
             @else
-
+                @include('contenido.sidebarvacio')
             @endif
 
         @endforeach

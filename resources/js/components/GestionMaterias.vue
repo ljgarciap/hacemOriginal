@@ -3,15 +3,15 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Usuarios</li>
+                    <li class="breadcrumb-item active">Gestión Materias</li>
                 </ol>
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Usuarios &nbsp;
-                            <button type="button" @click="abrirModal('usuario','crear')" class="btn btn-secondary">
+                            <i class="fa fa-align-justify"></i> Gestión Materias &nbsp;
+                            <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
@@ -20,13 +20,13 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="name">Usuario</option>
-                                        <option value="rol">Rol</option>
-                                        <option value="email">Email</option>
+                                        <option value="gestionMateria">Nombre</option>
+                                        <option value="unidadBase">Unidad base</option>
+                                        <option value="tipoMateria">Tipo Materia</option>
                                         <option value="id">Id</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarUsuario(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarUsuario(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarGestionMateria(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarGestionMateria(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -34,39 +34,39 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
-                                        <th>Id</th>
-                                        <th>Usuario</th>
-                                        <th>Email</th>
-                                        <th>Rol</th>
+                                        <th>Nombre</th>
+                                        <th>Unidad Base</th>
+                                        <th>Precio Base</th>
+                                        <th>Tipo Materia</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="usuario in arrayUsuario" :key="usuario.id">
+                                    <tr v-for="gestionMateria in arrayGestionMateria" :key="gestionMateria.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('usuario','actualizar',usuario)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="abrirModal('gestionMateria','actualizar',gestionMateria)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
-                                        <template v-if="usuario.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarUsuario(usuario.id)">
+                                        <template v-if="gestionMateria.estado">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarGestionMateria(gestionMateria.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarUsuario(usuario.id)">
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarGestionMateria(proceso.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
 
                                         </td>
-                                        <td v-text="usuario.id"></td>
-                                        <td v-text="usuario.name"></td>
-                                        <td v-text="usuario.email"></td>
-                                        <td v-text="usuario.rol"></td>
+                                        <td v-text="gestionMateria.gestionMateria"></td>
+                                        <td v-text="gestionMateria.unidadBase"></td>
+                                        <td v-text="gestionMateria.precioBase"></td>
+                                        <td v-text="gestionMateria.tipoMateria"></td>
                                         <td>
-                                            <div v-if="usuario.estado">
+                                            <div v-if="gestionMateria.estado">
                                             <span class="badge badge-success">Activo</span>
                                             </div>
                                             <div v-else>
@@ -106,29 +106,42 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Rol</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idRol">
-                                                <option v-for="rol in arrayRol" :key="rol.id" :value="rol.idRol" v-text="rol.rol"></option>
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="name" class="form-control" placeholder="Nombre de usuario">
-                                            <span class="help-block">(*) Ingrese el nombre del usuario</span>
+                                            <input type="text" v-model="gestionMateria" class="form-control" placeholder="Nombre de gestión">
+                                            <span class="help-block">(*) Ingrese el nombre de la gestión</span>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">E-mail</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Unidad Base</label>
                                         <div class="col-md-9">
-                                            <input type="email" v-model="email" class="form-control" placeholder="Correo electrónico">
-                                            <span class="help-block">(*) Ingrese el correo electrónico</span>
+                                            <select class="form-control" v-model="unidadBase">
+                                                <option v-for="unidadBase in arrayUnidadBase" :key="unidadBase.idUnidadBase" :value="unidadBase.idUnidadBase" v-text="unidadBase.unidadBase"></option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row div-error" v-show="errorUsuario">
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Precio base</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="precioBase" class="form-control" placeholder="Precio base">
+                                            <span class="help-block">(*) Ingrese el precio base</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo Materia</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="tipoMateria">
+                                                <option v-for="tipoMateria in arrayTipoMateria" :key="tipoMateria.idTipoMateria" :value="tipoMateria.idTipoMateria" v-text="tipoMateria.tipoMateria"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row div-error" v-show="errorProceso">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -138,8 +151,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearUsuario()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarUsuario()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearGestionMateria()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarGestionMateria()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -154,20 +167,24 @@
     export default {
         data(){
             return{
-                idUser:0,
+                idGestionMateria:0,
                 id:'',
-                name:'',
-                email:'',
+                gestionMateria:'',
+                idUnidadBase:'',
+                precioBase:'',
+                tipoMateria:'',
                 estado:'',
-                arrayUsuario : [],
-                idRol:0,
-                rol:'',
-                idexRol:0,
-                arrayRol:[],
+                arrayGestionMateria : [],
+                idUnidadBase:0,
+                unidadBase:'',
+                arrayUnidadBase:[],
+                idTipoMateria:0,
+                tipoMateria:'',
+                arrayTipoMateria:[],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorUsuario : 0,
+                errorProceso : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -178,7 +195,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'name',
+                criterio : 'gestionMateria',
                 buscar : ''
             }
         },
@@ -211,26 +228,25 @@
             }
         },
         methods : {
-            listarUsuario(page,buscar,criterio){
+            listarGestionMateria(page,buscar,criterio){
                 let me=this;
-                var url='/usuario?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/gestionmateria?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayUsuario=respuesta.usuarios.data;
+                me.arrayGestionMateria=respuesta.gestionmaterias.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
-            selectRol(){
+            selectGestionMateria(){
                 let me=this;
-                var url='/rol/selectRol';
+                var url='/gestionmateria/selectGestionMateria';
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayRol=respuesta.roles;
+                me.arrayGestionMateria=respuesta.gestionmaterias;
                 })
                 .catch(function (error) {
                     // handle error
@@ -242,48 +258,50 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarUsuario(page,buscar,criterio);
+                me.listarGestionMateria(page,buscar,criterio);
             },
-            crearUsuario(){
+            crearGestionMateria(){
                 //valido con el metodo de validacion creado
-                if(this.validarUsuario()){
+                if(this.validarGestionMateria()){
                     return;
                 }
 
                 let me=this;
-                axios.post('/usuario/store',{
-                    'name': this.name,
-                    'idRol': this.idRol,
-                    'email': this.email,
+                axios.post('/gestionmateria/store',{
+                    'gestionMateria': this.gestionMateria,
+                    'idUnidadBase': this.idUnidadBase,
+                    'precioBase': this.precioBase,
+                    'idTipoMateria': this.idTipoMateria,
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarUsuario(1,'','name');
+                me.listarGestionMateria(1,'','gestionmateria');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            editarUsuario(){
-                if(this.validarUsuario()){
+            editarGestionMateria(){
+                if(this.validarGestionMateria()){
                     return;
                 }
 
                 let me=this;
-                axios.put('/usuario/update',{
-                    'id': this.idUser,
-                    'name': this.name,
-                    'idRol': this.idRol,
-                    'email': this.email,
-                    'idexRol':this.idexRol,
+                axios.put('/gestionmateria/update',{
+                    'gestionMateria': this.gestionMateria,
+                    'idUnidadBase': this.idUnidadBase,
+                    'precioBase': this.precioBase,
+                    'idTipoMateria': this.idTipoMateria,
+                    'estado': 1,
+                    //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarUsuario(1,'','name');
+                me.listarGestionMateria(1,'','gestionmateria');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            desactivarUsuario(id){
+            desactivarGestionMateria(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -302,12 +320,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/usuario/deactivate',{
+                    axios.put('/gestionmateria/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarUsuario(1,'','name');
+                    me.listarGestionMateria(1,'','gestionmateria');
                     swalWithBootstrapButtons.fire(
-                    'Usuario desactivado!'
+                    'Gestión desactivada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -316,11 +334,11 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarUsuario();
+                    me.listarGestionMateria();
                 }
                 })
             },
-            activarUsuario(id){
+            activarGestionMateria(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -330,7 +348,7 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este usuario?',
+                title: 'Quiere activar esta gestión?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Activar!',
@@ -339,12 +357,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/usuario/activate',{
+                    axios.put('/gestionmateria/activate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarUsuario(1,'','name');
+                    me.listarGestionMateria(1,'','gestionmateria');
                     swalWithBootstrapButtons.fire(
-                    'Usuario activado!'
+                    'Gestión activada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -353,62 +371,59 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarUsuario();
+                    me.listarGestionMateria();
                 }
                 })
             },
-            validarUsuario(){
-                this.errorUsuario=0;
+            validarGestionMateria(){
+                this.errorGestionMateria=0;
                 this.errorMensaje=[];
+                if (!this.gestionmateria) this.errorMensaje.push("El nombre de la gestión no puede estar vacio");
+                if (this.errorMensaje.length) this.errorGestionMateria=1;
 
-                if (!this.name) this.errorMensaje.push("El nombre del usuario no puede estar vacio");
-                if (!this.email) this.errorMensaje.push("El correo del usuario no puede estar vacio");
-                if (this.errorMensaje.length) this.errorPerfil=1;
-
-                return this.errorPerfil;
+                return this.errorGestionMateria;
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.name='';
+                this.gestionmateria='';
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "usuario":
+                case "gestionMateria":
                 {
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.name='';
-                            this.tituloModal='Crear nuevo usuario';
+                            this.tituloModal='Crear nueva gestión';
                             this.tipoAccion= 1;
-                            this.idRol= 1;
+                            this.gestionmateria='';
+                            this.idUnidadBase=data['idUnidadBase'];
+                            this.precioBase=0;
+                            this.idTipoMateria=data['idTipoMateria'];
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar usuario';
+                            this.tituloModal='Editar proceso';
                             this.tipoAccion= 2;
-                            this.idUser=data['id'];
-                            this.name=data['name'];
-                            this.idRol=data['idRol']; // añadido para alimentar el select
-                            this.rol=data['rol']; //añadido para alimentar el select
-                            this.email=data['email']; //añadido para alimentar el select
-                            this.idexRol=data['idexRol'];
+                            this.gestionMateria=data['gestionMateria'];
+                            this.idUnidadBase=data['idUnidadBase'];
+                            this.precioBase=data['precioBase'];
+                            this.idTipoMateria=data['idTipoMateria'];
                             break;
                         }
                     }
               }
 
             }
-
+            this.selectGestionMateria();
             }
         },
         mounted() {
-            this.listarUsuario(1,this.buscar,this.criterio);
-            this.selectRol();
+            this.listarGestionMateria(1,this.buscar,this.criterio);
         }
     }
 </script>

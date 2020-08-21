@@ -8,5 +8,7 @@ class Tb_gestion_materia_prima extends Model
 {
     protected $table = 'tb_gestion_materia_prima';
 
-    protected $fillable = ['nombre','idUnidadBase','precioBase','idTipoMateria'];
+    protected $fillable = ['gestionMateria','idUnidadBase','precioBase','idTipoMateria','estado'];
+
+    public $timestamps = false;
 }

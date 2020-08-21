@@ -74,6 +74,13 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/materia/activate", "Tb_tipo_materiaController@activate");
         Route::get("/materia/selectUnidad", "Tb_tipo_materiaController@selectMateria");
 
+        Route::get("/gestionmateria", "Tb_gestion_materia_primaController@index");
+        Route::post("/gestionmateria/store", "Tb_gestion_materia_primaController@store");
+        Route::put("/gestionmateria/update", "Tb_gestion_materia_primaController@update");
+        Route::put("/gestionmateria/deactivate", "Tb_gestion_materia_primaController@deactivate");
+        Route::put("/gestionmateria/activate", "Tb_gestion_materia_primaController@activate");
+        Route::get("/gestionmateria/selectUnidad", "Tb_gestion_materia_primaController@selectGestionMateria");
+
         Route::get("/coleccion", "Tb_coleccionController@index");
         Route::post("/coleccion/store", "Tb_coleccionController@store");
         Route::put("/coleccion/update", "Tb_coleccionController@update");
@@ -138,6 +145,13 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/materia/deactivate", "Tb_tipo_materiaController@deactivate");
         Route::put("/materia/activate", "Tb_tipo_materiaController@activate");
         Route::get("/materia/selectUnidad", "Tb_tipo_materiaController@selectMateria");
+
+        Route::get("/gestionmateria", "Tb_gestion_materia_primaController@index");
+        Route::post("/gestionmateria/store", "Tb_gestion_materia_primaController@store");
+        Route::put("/gestionmateria/update", "Tb_gestion_materia_primaController@update");
+        Route::put("/gestionmateria/deactivate", "Tb_gestion_materia_primaController@deactivate");
+        Route::put("/gestionmateria/activate", "Tb_gestion_materia_primaController@activate");
+        Route::get("/gestionmateria/selectUnidad", "Tb_gestion_materia_primaController@selectGestionMateria");
 
         Route::get("/coleccion", "Tb_coleccionController@index");
         Route::post("/coleccion/store", "Tb_coleccionController@store");
