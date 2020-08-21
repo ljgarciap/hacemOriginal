@@ -270,7 +270,7 @@
                     'referencia': this.referencia,
                     'foto': this.foto,
                     'descripcion': this.descripcion,
-                    'idColeccion': this.idColeccion
+                    'idColeccion': this.idColeccion,
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();

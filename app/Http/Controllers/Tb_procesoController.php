@@ -57,7 +57,7 @@ class Tb_procesoController extends Controller
     public function selectProceso(Request $request){
         if(!$request->ajax()) return redirect('/');
         $procesos = Tb_proceso::where('estado','=','1')
-        ->select('id','proceso')->orderBy('proceso','asc')->get();
+        ->select('id as idProceso','proceso')->orderBy('proceso','asc')->get();
 
         return ['procesos' => $procesos];
     }

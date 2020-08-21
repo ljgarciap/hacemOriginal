@@ -2052,7 +2052,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      area_id: 0,
+      idArea: 0,
       id: '',
       area: '',
       estado: '',
@@ -2155,7 +2155,7 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       axios.put('/area/update', {
         'area': this.area,
-        'id': this.area_id //'estado': this.estado,
+        'id': this.idArea //'estado': this.estado,
         //'dato': this.dato
 
       }).then(function (response) {
@@ -2272,7 +2272,7 @@ __webpack_require__.r(__webpack_exports__);
                   this.modal = 1;
                   this.tituloModal = 'Editar área';
                   this.tipoAccion = 2;
-                  this.area_id = data['id'];
+                  this.idArea = data['id'];
                   this.area = data['area'];
                   break;
                 }
@@ -3732,10 +3732,6 @@ __webpack_require__.r(__webpack_exports__);
 
                   this.area = data['area']; //añadido para alimentar el select
 
-                  console.log(this.idArea);
-                  console.log(this.area);
-                  console.log(this.idProceso);
-                  console.log(this.proceso);
                   break;
                 }
             }
@@ -3901,18 +3897,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      proceso_id: 0,
+      idProceso: 0,
       id: '',
       proceso: '',
       estado: '',
       arrayProcesos: [],
-      arrayArea: [],
       idArea: 0,
       area: '',
+      arrayArea: [],
       modal: 0,
       tituloModal: '',
       tipoAccion: 0,
@@ -4003,8 +3998,7 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       axios.post('/proceso/store', {
         'proceso': this.proceso,
-        'idArea': this.idArea //'dato': this.dato
-
+        'idArea': this.idArea
       }).then(function (response) {
         me.cerrarModal();
         me.listarProceso(1, '', 'proceso');
@@ -4019,7 +4013,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var me = this;
       axios.put('/proceso/update', {
-        'id': this.proceso_id,
+        'id': this.idProceso,
         'proceso': this.proceso,
         'idArea': this.idArea //'dato': this.dato
 
@@ -4105,7 +4099,6 @@ __webpack_require__.r(__webpack_exports__);
     validarProceso: function validarProceso() {
       this.errorProceso = 0;
       this.errorMensaje = [];
-      if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
       if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
       if (this.errorMensaje.length) this.errorProceso = 1;
       return this.errorProceso;
@@ -4127,8 +4120,10 @@ __webpack_require__.r(__webpack_exports__);
                 {
                   this.modal = 1;
                   this.proceso = '';
+                  this.idArea = data['idArea'];
                   this.tituloModal = 'Crear nuevo proceso';
                   this.tipoAccion = 1;
+                  this.idArea = 1;
                   break;
                 }
 
@@ -4138,12 +4133,9 @@ __webpack_require__.r(__webpack_exports__);
                   this.modal = 1;
                   this.tituloModal = 'Editar proceso';
                   this.tipoAccion = 2;
-                  this.proceso_id = data['id'];
+                  this.idProceso = data['id'];
                   this.proceso = data['proceso'];
-                  this.idArea = data['id_area']; // añadido para alimentar el select
-
-                  this.area = data['area']; //añadido para alimentar el select
-
+                  this.idArea = data['idArea'];
                   break;
                 }
             }
@@ -45944,24 +45936,16 @@ var render = function() {
                               }
                             }
                           },
-                          [
-                            _c(
-                              "option",
-                              { attrs: { value: "0", disabled: "" } },
-                              [_vm._v(" Seleccione area")]
-                            ),
-                            _vm._v(" "),
-                            _vm._l(_vm.arrayArea, function(area) {
-                              return _c("option", {
-                                key: area.id,
-                                domProps: {
-                                  value: area.id,
-                                  textContent: _vm._s(area.area)
-                                }
-                              })
+                          _vm._l(_vm.arrayArea, function(area) {
+                            return _c("option", {
+                              key: area.idArea,
+                              domProps: {
+                                value: area.idArea,
+                                textContent: _vm._s(area.area)
+                              }
                             })
-                          ],
-                          2
+                          }),
+                          0
                         )
                       ])
                     ]),
