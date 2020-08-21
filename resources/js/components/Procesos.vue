@@ -39,7 +39,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="proceso in arrayProcesos" :key="proceso.id">
+                                    <tr v-for="proceso in arrayProceso" :key="proceso.id">
                                         <td>
                                             <button type="button" @click="abrirModal('proceso','actualizar',proceso)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
@@ -145,7 +145,7 @@
                 id:'',
                 proceso:'',
                 estado:'',
-                arrayProcesos : [],
+                arrayProceso : [],
                 idArea:0,
                 area:'',
                 arrayArea:[],
@@ -201,9 +201,8 @@
                 var url='/proceso?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayProcesos=respuesta.procesos.data;
+                me.arrayProceso=respuesta.procesos.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error

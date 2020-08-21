@@ -42,7 +42,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="perfil in arrayPerfiles" :key="perfil.id">
+                                    <tr v-for="perfil in arrayPerfil" :key="perfil.id">
                                         <td>
                                             <button type="button" @click="abrirModal('perfil','actualizar',perfil)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
@@ -163,12 +163,12 @@
     export default {
         data(){
             return{
-                perfil_id:0,
+                idPerfil:0,
                 id:'',
                 perfil:'',
                 valorMinuto:0,
                 estado:'',
-                arrayPerfiles : [],
+                arrayPerfil : [],
                 idArea:0,
                 area:'',
                 arrayArea:[],
@@ -227,7 +227,7 @@
                 var url='/perfil?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayPerfiles=respuesta.perfiles.data;
+                me.arrayPerfil=respuesta.perfiles.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
                 })
@@ -293,7 +293,7 @@
 
                 let me=this;
                 axios.put('/perfil/update',{
-                    'id': this.perfil_id,
+                    'id': this.idPerfil,
                     'perfil': this.perfil,
                     'idProceso': this.idProceso,
                     'valorMinuto': this.valorMinuto
@@ -385,7 +385,6 @@
                 this.errorPerfil=0;
                 this.errorMensaje=[];
 
-                if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
                 if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
                 if (!this.perfil) this.errorMensaje.push("El nombre del perfil no puede estar vacio");
                 if (!this.valorMinuto) this.errorMensaje.push("El valor del minuto no puede estar vacio");
@@ -410,7 +409,7 @@
                             this.perfil='';
                             this.tituloModal='Crear nuevo perfil';
                             this.tipoAccion= 1;
-                            this.idArea= 1;
+                            this.idProceso= 1;
                             break;
                         }
                         case 'actualizar':{
@@ -418,19 +417,18 @@
                             this.modal=1;
                             this.tituloModal='Editar perfil';
                             this.tipoAccion= 2;
-                            this.perfil_id=data['id'];
+                            this.idPerfil=data['id'];
                             this.perfil=data['perfil'];
-                            this.idProceso=data['id_proceso']; // añadido para alimentar el select
+                            this.idProceso=data['idProceso']; // añadido para alimentar el select
                             this.proceso=data['proceso']; //añadido para alimentar el select
-                            this.idArea=data['id_area']; // añadido para alimentar el select
-                            this.area=data['area']; //añadido para alimentar el select
+                            this.idArea=data['idArea']; // añadido para alimentar el select
                             break;
                         }
                     }
               }
 
             }
-            this.selectRelacion();
+            this.selectRelacion(this.idArea);
             }
         },
         mounted() {

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Tb_rol;
+use App\User;
+use App\Tb_usuario_tiene_rol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,11 +36,9 @@ class Tb_rolController extends Controller
         ];
     }
 
-    public function selectRol(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+    public function selectRol(){
         $roles = Tb_rol::where('estado','=','1')
         ->select('id as idRol','rol')->orderBy('rol','asc')->get();
-
         return ['roles' => $roles];
     }
 

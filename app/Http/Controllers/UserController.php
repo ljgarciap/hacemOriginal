@@ -26,46 +26,42 @@ class UserController extends Controller
             ->leftJoin('tb_rol',function($join){
                 $join->on('tb_usuario_tiene_rol.idRol','=','tb_rol.id');
             })
-            ->select('users.id','users.name','users.email','users.estado','tb_rol.id as id_rol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as id_tb_usuario_tiene_rol')
+            ->select('users.id','users.name','users.email','users.estado','tb_rol.id as idRol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as idexRol')
             ->orderBy('users.id','desc')->paginate(5);
         }
         else if($criterio=='name'){
-            # code...
             $usuarios = User::join("tb_usuario_tiene_rol","tb_usuario_tiene_rol.idUser","=","users.id")
             ->leftJoin('tb_rol',function($join){
                 $join->on('tb_usuario_tiene_rol.idRol','=','tb_rol.id');
             })
-            ->select('users.id','users.name','users.email','users.estado','tb_rol.id as id_rol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as id_tb_usuario_tiene_rol')
+            ->select('users.id','users.name','users.email','users.estado','tb_rol.id as idRol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as idexRol')
             ->where('users.name', 'like', '%'. $buscar . '%')
             ->orderBy('users.id','desc')->paginate(5);
         }
         else if($criterio=='rol'){
-            # code...
             $usuarios = User::join("tb_usuario_tiene_rol","tb_usuario_tiene_rol.idUser","=","users.id")
             ->leftJoin('tb_rol',function($join){
                 $join->on('tb_usuario_tiene_rol.idRol','=','tb_rol.id');
             })
-            ->select('users.id','users.name','users.email','users.estado','tb_rol.id as id_rol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as id_tb_usuario_tiene_rol')
+            ->select('users.id','users.name','users.email','users.estado','tb_rol.id as idRol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as idexRol')
             ->where('tb_rol.rol', 'like', '%'. $buscar . '%')
             ->orderBy('users.id','desc')->paginate(5);
         }
         else if($criterio=='email'){
-            # code...
             $usuarios = User::join("tb_usuario_tiene_rol","tb_usuario_tiene_rol.idUser","=","users.id")
             ->leftJoin('tb_rol',function($join){
                 $join->on('tb_usuario_tiene_rol.idRol','=','tb_rol.id');
             })
-            ->select('users.id','users.name','users.email','users.estado','tb_rol.id as id_rol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as id_tb_usuario_tiene_rol')
+            ->select('users.id','users.name','users.email','users.estado','tb_rol.id as idRol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as idexRol')
             ->where('users.email', 'like', '%'. $buscar . '%')
             ->orderBy('users.id','desc')->paginate(5);
         }
         else {
-                # code...
                 $usuarios = User::join("tb_usuario_tiene_rol","tb_usuario_tiene_rol.idUser","=","users.id")
                 ->leftJoin('tb_rol',function($join){
                     $join->on('tb_usuario_tiene_rol.idRol','=','tb_rol.id');
                 })
-                ->select('users.id','users.name','users.email','users.estado','tb_rol.id as id_rol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as id_tb_usuario_tiene_rol')
+                ->select('users.id','users.name','users.email','users.estado','tb_rol.id as idRol','tb_rol.rol','tb_rol.estado as estado_rol','tb_usuario_tiene_rol.id as idexRol')
                 ->where('users.id', 'like', '%'. $buscar . '%')
                 ->orderBy('users.id','desc')->paginate(5);
         }
@@ -82,46 +78,35 @@ class UserController extends Controller
                 'usuarios' => $usuarios
         ];
     }
-//voy aca
-    public function selectRelacion(Request $request){
-        //if(!$request->ajax()) return redirect('/'); ajustar con cuidado
-        /*        */
-        $roles = DB::table('tb_rol')
-                   ->select('id as id_rol','rol')
-                   ->where('estado','=','1');
-
-        $relaciones = DB::table('users')
-                ->joinSub($roles, 'tb_proceso', function ($join) {
-                    $join->on('tb_area.id', '=', 'tb_proceso.idArea');
-                })
-                ->select('id as id_area','id_proceso','proceso')
-                ->where('estado', '=', '1')
-                ->get();
-
-                return ['relaciones' => $relaciones];
-    }
 
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
         $users=new User();
         $users->name=$request->name;
-        $users->idRol=$request->idRol;
         $users->email=$request->email;
         $users->password=bcrypt($request->email);
         $users->save();
+        $idtabla=DB::getPdo()->lastInsertId();
+        $usersrela=new Tb_usuario_tiene_rol();
+        $usersrela->idUser=$idtabla;
+        $usersrela->idRol=$request->idRol;
+        $usersrela->save();
     }
 
     public function update(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
-
+        //if(!$request->ajax()) return redirect('/');
         $users=User::findOrFail($request->id);
         $users->name=$request->name;
-        $users->idRol=$request->idRol;
         $users->email=$request->email;
         $users->estado='1';
         $users->save();
+
+        $userrela=Tb_usuario_tiene_rol::findOrFail($request->idexRol);
+        $userrela->idUser=$request->id;
+        $userrela->idRol=$request->idRol;
+        $userrela->save();
     }
 
     public function deactivate(Request $request)

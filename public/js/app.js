@@ -3468,12 +3468,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      perfil_id: 0,
+      idPerfil: 0,
       id: '',
       perfil: '',
       valorMinuto: 0,
       estado: '',
-      arrayPerfiles: [],
+      arrayPerfil: [],
       idArea: 0,
       area: '',
       arrayArea: [],
@@ -3536,7 +3536,7 @@ __webpack_require__.r(__webpack_exports__);
       var url = '/perfil?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayPerfiles = respuesta.perfiles.data;
+        me.arrayPerfil = respuesta.perfiles.data;
         me.pagination = respuesta.pagination; //console.log(response);
       })["catch"](function (error) {
         // handle error
@@ -3597,7 +3597,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var me = this;
       axios.put('/perfil/update', {
-        'id': this.perfil_id,
+        'id': this.idPerfil,
         'perfil': this.perfil,
         'idProceso': this.idProceso,
         'valorMinuto': this.valorMinuto
@@ -3685,7 +3685,6 @@ __webpack_require__.r(__webpack_exports__);
       this.errorProceso = 0;
       this.errorPerfil = 0;
       this.errorMensaje = [];
-      if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
       if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
       if (!this.perfil) this.errorMensaje.push("El nombre del perfil no puede estar vacio");
       if (!this.valorMinuto) this.errorMensaje.push("El valor del minuto no puede estar vacio");
@@ -3712,7 +3711,7 @@ __webpack_require__.r(__webpack_exports__);
                   this.perfil = '';
                   this.tituloModal = 'Crear nuevo perfil';
                   this.tipoAccion = 1;
-                  this.idArea = 1;
+                  this.idProceso = 1;
                   break;
                 }
 
@@ -3722,15 +3721,13 @@ __webpack_require__.r(__webpack_exports__);
                   this.modal = 1;
                   this.tituloModal = 'Editar perfil';
                   this.tipoAccion = 2;
-                  this.perfil_id = data['id'];
+                  this.idPerfil = data['id'];
                   this.perfil = data['perfil'];
-                  this.idProceso = data['id_proceso']; // añadido para alimentar el select
+                  this.idProceso = data['idProceso']; // añadido para alimentar el select
 
                   this.proceso = data['proceso']; //añadido para alimentar el select
 
-                  this.idArea = data['id_area']; // añadido para alimentar el select
-
-                  this.area = data['area']; //añadido para alimentar el select
+                  this.idArea = data['idArea']; // añadido para alimentar el select
 
                   break;
                 }
@@ -3738,7 +3735,7 @@ __webpack_require__.r(__webpack_exports__);
           }
       }
 
-      this.selectRelacion();
+      this.selectRelacion(this.idArea);
     }
   },
   mounted: function mounted() {
@@ -3904,7 +3901,7 @@ __webpack_require__.r(__webpack_exports__);
       id: '',
       proceso: '',
       estado: '',
-      arrayProcesos: [],
+      arrayProceso: [],
       idArea: 0,
       area: '',
       arrayArea: [],
@@ -3964,8 +3961,8 @@ __webpack_require__.r(__webpack_exports__);
       var url = '/proceso?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayProcesos = respuesta.procesos.data;
-        me.pagination = respuesta.pagination; //console.log(response);
+        me.arrayProceso = respuesta.procesos.data;
+        me.pagination = respuesta.pagination;
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -5527,14 +5524,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      usuario_id: 0,
+      idUser: 0,
       id: '',
       name: '',
       email: '',
       estado: '',
-      arrayUsuarios: [],
+      arrayUsuario: [],
       idRol: 0,
       rol: '',
+      idexRol: 0,
       arrayRol: [],
       modal: 0,
       tituloModal: '',
@@ -5592,7 +5590,7 @@ __webpack_require__.r(__webpack_exports__);
       var url = '/usuario?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayUsuarios = respuesta.usuarios.data;
+        me.arrayUsuario = respuesta.usuarios.data;
         me.pagination = respuesta.pagination; //console.log(response);
       })["catch"](function (error) {
         // handle error
@@ -5609,20 +5607,6 @@ __webpack_require__.r(__webpack_exports__);
         // handle error
         console.log(error);
       });
-    },
-    selectRelacion: function selectRelacion() {
-      var me = this;
-      var url = '/perfil/selectRelacion';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayRelacion = respuesta.relaciones;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
-    cambioSelect: function cambioSelect() {
-      console.log(this.idRol); //do futher processing
     },
     cambiarPagina: function cambiarPagina(page, buscar, criterio) {
       var me = this; //Actualiza la pagina actual
@@ -5656,10 +5640,11 @@ __webpack_require__.r(__webpack_exports__);
 
       var me = this;
       axios.put('/usuario/update', {
-        'id': this.usuario_id,
-        'usuario': this.usuario,
+        'id': this.idUser,
+        'name': this.name,
         'idRol': this.idRol,
-        'email': this.email
+        'email': this.email,
+        'idexRol': this.idexRol
       }).then(function (response) {
         me.cerrarModal();
         me.listarUsuario(1, '', 'name');
@@ -5742,7 +5727,6 @@ __webpack_require__.r(__webpack_exports__);
     validarUsuario: function validarUsuario() {
       this.errorUsuario = 0;
       this.errorMensaje = [];
-      if (!this.rol) this.errorMensaje.push("El nombre del rol no puede estar vacio");
       if (!this.name) this.errorMensaje.push("El nombre del usuario no puede estar vacio");
       if (!this.email) this.errorMensaje.push("El correo del usuario no puede estar vacio");
       if (this.errorMensaje.length) this.errorPerfil = 1;
@@ -5751,7 +5735,7 @@ __webpack_require__.r(__webpack_exports__);
     cerrarModal: function cerrarModal() {
       this.modal = 0;
       this.tituloModal = '';
-      this.usuario = '';
+      this.name = '';
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -5764,7 +5748,7 @@ __webpack_require__.r(__webpack_exports__);
               case 'crear':
                 {
                   this.modal = 1;
-                  this.usuario = '';
+                  this.name = '';
                   this.tituloModal = 'Crear nuevo usuario';
                   this.tipoAccion = 1;
                   this.idRol = 1;
@@ -5777,25 +5761,20 @@ __webpack_require__.r(__webpack_exports__);
                   this.modal = 1;
                   this.tituloModal = 'Editar usuario';
                   this.tipoAccion = 2;
-                  this.usuario_id = data['id'];
-                  this.usuario = data['name'];
-                  this.idRol = data['id_Rol']; // añadido para alimentar el select
+                  this.idUser = data['id'];
+                  this.name = data['name'];
+                  this.idRol = data['idRol']; // añadido para alimentar el select
 
                   this.rol = data['rol']; //añadido para alimentar el select
 
                   this.email = data['email']; //añadido para alimentar el select
-                  //console.log(this.idArea);
-                  //console.log(this.area);
-                  //console.log(this.idProceso);
-                  //console.log(this.proceso);
 
+                  this.idexRol = data['idexRol'];
                   break;
                 }
             }
           }
       }
-
-      this.selectRelacion();
     }
   },
   mounted: function mounted() {
@@ -44956,7 +44935,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.arrayPerfiles, function(perfil) {
+                _vm._l(_vm.arrayPerfil, function(perfil) {
                   return _c("tr", { key: perfil.id }, [
                     _c(
                       "td",
@@ -45668,7 +45647,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.arrayProcesos, function(proceso) {
+                _vm._l(_vm.arrayProceso, function(proceso) {
                   return _c("tr", { key: proceso.id }, [
                     _c(
                       "td",
@@ -48039,7 +48018,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.arrayUsuarios, function(usuario) {
+                _vm._l(_vm.arrayUsuario, function(usuario) {
                   return _c("tr", { key: usuario.id }, [
                     _c(
                       "td",
@@ -48300,32 +48279,26 @@ var render = function() {
                             ],
                             staticClass: "form-control",
                             on: {
-                              change: [
-                                function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.idRol = $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                },
-                                function($event) {
-                                  return _vm.selectRol()
-                                }
-                              ]
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.idRol = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
                             }
                           },
                           _vm._l(_vm.arrayRol, function(rol) {
                             return _c("option", {
                               key: rol.id,
                               domProps: {
-                                value: rol.id,
+                                value: rol.idRol,
                                 textContent: _vm._s(rol.rol)
                               }
                             })

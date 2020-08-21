@@ -16,21 +16,27 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password','estado'];
+    //protected $fillable = ['name', 'email', 'password','estado'];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    //protected $hidden = ['password', 'remember_token'];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = ['email_verified_at' => 'datetime'];
+    //protected $casts = ['email_verified_at' => 'datetime'];
+
+    protected $table = 'users';
+
+    protected $fillable = ['name','email','password','estado'];
+
+    public $timestamps = false;
 
     public function roles() {
         return $this->belongsToMany('App\Tb_rol','tb_usuario_tiene_rol', 'idUser', 'idRol');

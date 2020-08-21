@@ -17,7 +17,7 @@ class Tb_perfilController extends Controller
      */
     public function index(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
 
@@ -26,7 +26,7 @@ class Tb_perfilController extends Controller
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as id_proceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as idProceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->orderBy('tb_perfil.id','desc')->paginate(5);
         }
         else if($criterio=='area'){
@@ -34,7 +34,7 @@ class Tb_perfilController extends Controller
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as id_proceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as idProceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->where('tb_area.area', 'like', '%'. $buscar . '%')
             ->orderBy('tb_perfil.id','desc')->paginate(5);
         }
@@ -43,7 +43,7 @@ class Tb_perfilController extends Controller
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as id_proceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as idProceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->where('tb_proceso.proceso', 'like', '%'. $buscar . '%')
             ->orderBy('tb_perfil.id','desc')->paginate(5);
         }
@@ -52,7 +52,7 @@ class Tb_perfilController extends Controller
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as id_proceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_perfil.id','tb_perfil.perfil','tb_perfil.valorMinuto','tb_perfil.estado','tb_proceso.id as idProceso','tb_proceso.proceso','tb_proceso.estado as estado_proceso','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->where('tb_perfil.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_perfil.id','desc')->paginate(5);
         }
@@ -70,9 +70,7 @@ class Tb_perfilController extends Controller
         ];
     }
 
-    public function selectRelacion(Request $request){
-        if(!$request->ajax()) return redirect('/');
-        $id= $request->id;
+    public function selectRelacion($id){
         $relaciones = tb_proceso::where([
                     ['estado','=','1'],
                     ['idArea','=',$id],

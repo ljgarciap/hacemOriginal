@@ -23,19 +23,19 @@ class Tb_procesoController extends Controller
         if ($buscar=='') {
             # Modelo::join('tablaqueseune',basicamente un on)
             $procesos = Tb_proceso::join('tb_area','tb_proceso.idArea','=','tb_area.id')
-            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->orderBy('tb_proceso.id','desc')->paginate(5);
         }
         else if($criterio=='area'){
             $procesos = Tb_proceso::join('tb_area','tb_proceso.idArea','=','tb_area.id')
-            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->where('tb_area.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_proceso.id','desc')->paginate(5);
         }
         else {
             # code...
             $procesos = Tb_proceso::join('tb_area','tb_proceso.idArea','=','tb_area.id')
-            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as id_area','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_proceso.id','tb_proceso.proceso','tb_proceso.estado','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->where('tb_proceso.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_proceso.id','desc')->paginate(5);
 
@@ -54,8 +54,7 @@ class Tb_procesoController extends Controller
         ];
     }
 
-    public function selectProceso(Request $request){
-        if(!$request->ajax()) return redirect('/');
+    public function selectProceso(){
         $procesos = Tb_proceso::where('estado','=','1')
         ->select('id as idProceso','proceso')->orderBy('proceso','asc')->get();
 
@@ -74,7 +73,6 @@ class Tb_procesoController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_proceso=Tb_proceso::findOrFail($request->id);
         $tb_proceso->proceso=$request->proceso;
         $tb_proceso->idArea=$request->idArea;
@@ -85,7 +83,6 @@ class Tb_procesoController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_proceso=Tb_proceso::findOrFail($request->id);
         $tb_proceso->estado='0';
         $tb_proceso->save();
@@ -94,7 +91,6 @@ class Tb_procesoController extends Controller
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_proceso=Tb_proceso::findOrFail($request->id);
         $tb_proceso->estado='1';
         $tb_proceso->save();

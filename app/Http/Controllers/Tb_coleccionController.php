@@ -16,17 +16,13 @@ class Tb_coleccionController extends Controller
     public function index(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-        //$areas = Tb_area::all();
-        //return $areas;
         $buscar= $request->buscar;
         $criterio= $request->criterio;
 
         if ($buscar=='') {
-            # code...
             $colecciones = Tb_coleccion::orderBy('id','desc')->paginate(5);
         }
         else {
-            # code...
             $colecciones = Tb_coleccion::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
         }
 
@@ -53,10 +49,6 @@ class Tb_coleccionController extends Controller
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
-        //$datosAreas =request()->except('_token');
-        //Tb_area::insert($datosAreas);
-        //return redirect('area');
         $tb_coleccion=new Tb_coleccion();
         $tb_coleccion->coleccion=$request->coleccion;
         $tb_coleccion->referencia=$request->referencia;
@@ -66,7 +58,6 @@ class Tb_coleccionController extends Controller
     public function update(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_coleccion=Tb_coleccion::findOrFail($request->id);
         $tb_coleccion->coleccion=$request->coleccion;
         $tb_coleccion->referencia=$request->referencia;
@@ -77,7 +68,6 @@ class Tb_coleccionController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_coleccion=Tb_coleccion::findOrFail($request->id);
         $tb_coleccion->estado='0';
         $tb_coleccion->save();
@@ -86,7 +76,6 @@ class Tb_coleccionController extends Controller
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_coleccion=Tb_coleccion::findOrFail($request->id);
         $tb_coleccion->estado='1';
         $tb_coleccion->save();

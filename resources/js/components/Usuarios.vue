@@ -43,7 +43,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="usuario in arrayUsuarios" :key="usuario.id">
+                                    <tr v-for="usuario in arrayUsuario" :key="usuario.id">
                                         <td>
                                             <button type="button" @click="abrirModal('usuario','actualizar',usuario)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
@@ -109,8 +109,8 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Rol</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idRol" @change='selectRol()'>
-                                                <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.rol"></option>
+                                            <select class="form-control" v-model="idRol">
+                                                <option v-for="rol in arrayRol" :key="rol.id" :value="rol.idRol" v-text="rol.rol"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -154,14 +154,15 @@
     export default {
         data(){
             return{
-                usuario_id:0,
+                idUser:0,
                 id:'',
                 name:'',
                 email:'',
                 estado:'',
-                arrayUsuarios : [],
+                arrayUsuario : [],
                 idRol:0,
                 rol:'',
+                idexRol:0,
                 arrayRol:[],
                 modal : 0,
                 tituloModal : '',
@@ -215,7 +216,7 @@
                 var url='/usuario?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayUsuarios=respuesta.usuarios.data;
+                me.arrayUsuario=respuesta.usuarios.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
                 })
@@ -236,22 +237,6 @@
                     console.log(error);
                 })
             },
-            selectRelacion(){
-                let me=this;
-                var url='/perfil/selectRelacion';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayRelacion=respuesta.relaciones;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            cambioSelect(){
-                console.log(this.idRol);
-                //do futher processing
-                },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -269,7 +254,7 @@
                 axios.post('/usuario/store',{
                     'name': this.name,
                     'idRol': this.idRol,
-                    'email': this.email
+                    'email': this.email,
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarUsuario(1,'','name');
@@ -285,10 +270,11 @@
 
                 let me=this;
                 axios.put('/usuario/update',{
-                    'id': this.usuario_id,
-                    'usuario': this.usuario,
+                    'id': this.idUser,
+                    'name': this.name,
                     'idRol': this.idRol,
-                    'email': this.email
+                    'email': this.email,
+                    'idexRol':this.idexRol,
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarUsuario(1,'','name');
@@ -375,7 +361,6 @@
                 this.errorUsuario=0;
                 this.errorMensaje=[];
 
-                if (!this.rol) this.errorMensaje.push("El nombre del rol no puede estar vacio");
                 if (!this.name) this.errorMensaje.push("El nombre del usuario no puede estar vacio");
                 if (!this.email) this.errorMensaje.push("El correo del usuario no puede estar vacio");
                 if (this.errorMensaje.length) this.errorPerfil=1;
@@ -385,7 +370,7 @@
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.usuario='';
+                this.name='';
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
@@ -395,7 +380,7 @@
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.usuario='';
+                            this.name='';
                             this.tituloModal='Crear nuevo usuario';
                             this.tipoAccion= 1;
                             this.idRol= 1;
@@ -406,22 +391,19 @@
                             this.modal=1;
                             this.tituloModal='Editar usuario';
                             this.tipoAccion= 2;
-                            this.usuario_id=data['id'];
-                            this.usuario=data['name'];
-                            this.idRol=data['id_Rol']; // añadido para alimentar el select
+                            this.idUser=data['id'];
+                            this.name=data['name'];
+                            this.idRol=data['idRol']; // añadido para alimentar el select
                             this.rol=data['rol']; //añadido para alimentar el select
                             this.email=data['email']; //añadido para alimentar el select
-                            //console.log(this.idArea);
-                            //console.log(this.area);
-                            //console.log(this.idProceso);
-                            //console.log(this.proceso);
+                            this.idexRol=data['idexRol'];
                             break;
                         }
                     }
               }
 
             }
-            this.selectRelacion();
+
             }
         },
         mounted() {

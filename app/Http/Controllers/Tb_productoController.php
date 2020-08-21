@@ -16,7 +16,7 @@ class Tb_productoController extends Controller
      */
     public function index(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
 
@@ -33,7 +33,6 @@ class Tb_productoController extends Controller
             ->orderBy('tb_producto.id','desc')->paginate(5);
         }
         else {
-            # code...
             $productos = Tb_producto::join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
             ->select('tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion')
             ->where('tb_producto.'.$criterio, 'like', '%'. $buscar . '%')
@@ -64,7 +63,6 @@ class Tb_productoController extends Controller
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_producto=new Tb_producto();
         $tb_producto->producto=$request->producto;
         $tb_producto->referencia=$request->referencia;
@@ -90,7 +88,6 @@ class Tb_productoController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_producto=Tb_producto::findOrFail($request->id);
         $tb_producto->estado='0';
         $tb_producto->save();
@@ -99,7 +96,6 @@ class Tb_productoController extends Controller
     public function activate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
-
         $tb_producto=Tb_producto::findOrFail($request->id);
         $tb_producto->estado='1';
         $tb_producto->save();
