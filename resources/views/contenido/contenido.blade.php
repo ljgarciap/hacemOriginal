@@ -26,7 +26,7 @@
     </template>
 
     <template v-if="menu==6">
-        <h1>Vista para Gestion materia prima</h1>
+        <gestionmaterias></gestionmaterias>
     </template>
 
     <template v-if="menu==7">
