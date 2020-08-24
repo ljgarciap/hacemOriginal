@@ -34,10 +34,9 @@ class Tb_unidad_baseController extends Controller
         ];
     }
 
-    public function selectUnidad(Request $request){
-        if(!$request->ajax()) return redirect('/');
+    public function selectUnidad(){
         $unidades = Tb_unidad_base::where('estado','=','1')
-        ->select('id','unidadBase')->orderBy('unidadBase','asc')->get();
+        ->select('id as idUnidadBase','unidadBase')->orderBy('unidadBase','asc')->get();
 
         return ['unidades' => $unidades];
     }
