@@ -30,6 +30,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
@@ -77,6 +78,7 @@
 
                                 </tbody>
                             </table>
+                            </div>
                             <nav>
                                 <ul class="pagination">
                                     <li class="page-item" v-if="pagination.current_page > 1">
@@ -254,7 +256,7 @@
                 axios.post('/usuario/store',{
                     'name': this.name,
                     'idRol': this.idRol,
-                    'email': this.email,
+                    'email': this.email
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarUsuario(1,'','name');
@@ -274,7 +276,7 @@
                     'name': this.name,
                     'idRol': this.idRol,
                     'email': this.email,
-                    'idexRol':this.idexRol,
+                    'idexRol':this.idexRol
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarUsuario(1,'','name');

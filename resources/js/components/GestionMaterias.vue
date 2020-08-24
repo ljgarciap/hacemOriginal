@@ -30,6 +30,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
@@ -77,6 +78,7 @@
 
                                 </tbody>
                             </table>
+                            </div>
                             <nav>
                                 <ul class="pagination">
                                     <li class="page-item" v-if="pagination.current_page > 1">
@@ -271,7 +273,7 @@
                     'gestionMateria': this.gestionMateria,
                     'idUnidadBase': this.idUnidadBase,
                     'precioBase': this.precioBase,
-                    'idTipoMateria': this.idTipoMateria,
+                    'idTipoMateria': this.idTipoMateria
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarGestionMateria(1,'','gestionmateria');
@@ -291,7 +293,7 @@
                     'idUnidadBase': this.idUnidadBase,
                     'precioBase': this.precioBase,
                     'idTipoMateria': this.idTipoMateria,
-                    'estado': 1,
+                    'estado': 1
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();

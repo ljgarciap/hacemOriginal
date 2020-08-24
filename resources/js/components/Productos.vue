@@ -28,6 +28,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
@@ -37,6 +38,7 @@
                                         <th>Foto</th>
                                         <th>Descripcion</th>
                                         <th>Coleccion</th>
+                                        <th>Area</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
@@ -65,6 +67,7 @@
                                         <td v-text="producto.foto"></td>
                                         <td v-text="producto.descripcion"></td>
                                         <td v-text="producto.coleccion"></td>
+                                        <td v-text="producto.area"></td>
                                         <td>
                                             <div v-if="producto.estado">
                                             <span class="badge badge-success">Activo</span>
@@ -77,6 +80,7 @@
 
                                 </tbody>
                             </table>
+                            </div>
                             <nav>
                                 <ul class="pagination">
                                     <li class="page-item" v-if="pagination.current_page > 1">
@@ -112,6 +116,15 @@
                                             <select class="form-control" v-model="idColeccion">
                                                 <option value="0" disabled> Seleccione Coleccion</option>
                                                 <option v-for="coleccion in arrayColeccion" :key="coleccion.idColeccion" :value="coleccion.idColeccion" v-text="coleccion.coleccion"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Area</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idArea">
+                                                <option value="0" disabled> Seleccione Area</option>
+                                                <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -181,6 +194,9 @@
                 coleccion:'',
                 referencia:'',
                 arrayColeccion:[],
+                idArea:0,
+                area:'',
+                arrayArea:[],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -254,6 +270,18 @@
                     console.log(error);
                 })
             },
+            selectArea(){
+                let me=this;
+                var url='/area/selectArea';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayArea=respuesta.areas;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -274,6 +302,7 @@
                     'foto': this.foto,
                     'descripcion': this.descripcion,
                     'idColeccion': this.idColeccion,
+                    'idArea': this.idArea
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
@@ -295,7 +324,8 @@
                     'referencia': this.referencia,
                     'foto': this.foto,
                     'descripcion': this.descripcion,
-                    'idColeccion': this.idColeccion
+                    'idColeccion': this.idColeccion,
+                    'idArea': this.idArea
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
@@ -408,6 +438,7 @@
                             this.tituloModal='Crear nuevo producto';
                             this.tipoAccion= 1;
                             this.idColeccion= 1;
+                            this.idArea= 1;
                             break;
                         }
                         case 'actualizar':{
@@ -421,6 +452,7 @@
                             this.foto=data['foto'];
                             this.descripcion=data['descripcion'];
                             this.idColeccion=data['idColeccion']; // añadido para alimentar el select
+                            this.idArea=data['idArea']; // añadido para alimentar el select
                             break;
                         }
                     }
@@ -428,6 +460,7 @@
 
             }
             this.selectColeccion();
+            this.selectArea();
             }
         },
         mounted() {
