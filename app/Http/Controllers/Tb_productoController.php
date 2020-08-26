@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Tb_producto;
 use App\Tb_coleccion;
 use App\Tb_area;
+use App\Tb_hoja_de_costo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -81,6 +82,12 @@ class Tb_productoController extends Controller
         $tb_producto->idColeccion=$request->idColeccion;
         $tb_producto->idArea=$request->idArea;
         $tb_producto->save();
+
+        $idProducto=$tb_producto->id;
+
+        $tb_hoja_de_costo=new Tb_hoja_de_costo();
+        $tb_hoja_de_costo->idProducto=$idProducto;
+        $tb_hoja_de_costo->save();
     }
 
     public function update(Request $request)
