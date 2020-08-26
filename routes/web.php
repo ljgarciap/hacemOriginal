@@ -109,6 +109,13 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/usuario/activate", "UserController@activate");
         Route::get("/usuario/selectUsuario", "UserController@selectUsuario");
 
+        Route::get("/manodeobraproducto", "Tb_mano_de_obra_productoController@index");
+        Route::post("/manodeobraproducto/store", "Tb_mano_de_obra_productoController@store");
+        Route::put("/manodeobraproducto/update", "Tb_mano_de_obra_productoController@update");
+        Route::put("/manodeobraproducto/deactivate", "Tb_mano_de_obra_productoController@deactivate");
+        Route::put("/manodeobraproducto/activate", "Tb_mano_de_obra_productoController@activate");
+        Route::get("/manodeobraproducto/selectManoDeObraProducto", "Tb_mano_de_obra_productoController@selectManoDeObraProducto");
+
     });
 
 //---------------------------------------------------------------------------//

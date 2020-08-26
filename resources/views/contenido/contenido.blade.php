@@ -58,7 +58,7 @@
     </template>
 
     <template v-if="menu==14">
-        <admin></admin>
+        <manodeobraproductos></manodeobraproductos>
     </template>
 
     <template v-if="menu==15">
