@@ -38,7 +38,7 @@
     </template>
 
     <template v-if="menu==9">
-        <h1>Vista para Hojas de costo</h1>
+        <hojas></hojas>
     </template>
 
     <template v-if="menu==10">

@@ -8,6 +8,16 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import Vuesax from 'vuesax';
+
+import 'vuesax/dist/vuesax.css'; //Vuesax styles
+
+import 'material-icons/iconfont/material-icons.css';
+
+window.Vue.use(Vuesax, {
+  // options here
+});
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -30,10 +40,10 @@ Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('materias', require('./components/Materias.vue').default);
 Vue.component('gestionmaterias', require('./components/GestionMaterias.vue').default);
 Vue.component('roles', require('./components/Roles.vue').default);
+Vue.component('hojas', require('./components/Hojas.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
 Vue.component('colecciones', require('./components/Colecciones.vue').default);
 Vue.component('productos', require('./components/Productos.vue').default);
-Vue.component('manodeobraproductos', require('./components/ManoDeObraProductos.vue').default);
 Vue.component('ninguno', require('./components/Ninguno.vue').default);
 
 /**
