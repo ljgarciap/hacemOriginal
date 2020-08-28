@@ -13,6 +13,19 @@
                       <!-- Listado -->
                       <template v-if="listado">
                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="producto">Producto</option>
+                                        <option value="coleccion">Coleccion</option>
+                                        <option value="area">Area</option>
+                                        </select>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarProducto(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarProducto(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
@@ -79,7 +92,7 @@
                         <div class="card-body">
                             <vs-tabs :color="colorx">
                             <vs-tab label="Materia Prima" icon="shopping_cart" @click="colorx = '#8B0000'">
-                                <h2>Pestaña materia asociada</h2>
+                                <materiaprima></materiaprima>
                             </vs-tab>
                             <vs-tab label="Mano de Obra" icon="work" @click="colorx = '#FFA500'">
                                 <h2>Pestaña mano de obra asociada</h2>
@@ -90,12 +103,9 @@
                             <vs-tab label="Servicios Directos" icon="account_circle" @click="colorx = '#0000FF'">
                                 <h2>Pestaña servicios asociados</h2>
                             </vs-tab>
+                            <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
+                            </vs-tab>
                             </vs-tabs>
-                            <div class="form-group row">
-                              <div class="col-md-12">
-                                <button type="button" @click="ocultarDetalle()" class="btn btn-primary">Cerrar</button>
-                                </div>
-                            </div>
                         </div>
                     </template>
                     <!-- Fin Detalle -->

@@ -1,31 +1,18 @@
 <template>
-        <main class="main">
-                <!-- Breadcrumb -->
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Productos</li>
-                </ol>
-                <div class="container-fluid">
-                    <!-- Ejemplo de tabla Listado -->
+        <main>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Productos
-                            <button type="button" @click="abrirModal('producto','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
-                            </button>
-                        </div>
-                        <div class="card-body">
+                    <!-- Ejemplo de tabla Listado -->
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-9">
                                     <div class="input-group">
+                                        <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
+                                        <i class="icon-plus"></i>&nbsp;Nueva materia prima
+                                        </button>
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="producto">Producto</option>
-                                        <option value="coleccion">Coleccion</option>
-                                        <option value="area">Area</option>
+                                        <option value="gestionMateria">Materia Prima</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarProducto(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarProducto(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarMateriaPrimaProductos(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarMateriaPrimaProductos(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -35,48 +22,36 @@
                                     <tr>
                                         <th>Opciones</th>
                                         <th>Producto</th>
-                                        <th>Referencia</th>
-                                        <th>Foto</th>
-                                        <th>Descripcion</th>
-                                        <th>Coleccion</th>
-                                        <th>Area</th>
-                                        <th>Estado</th>
+                                        <th>Unidad</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="producto in arrayProducto" :key="producto.id">
+                                    <tr v-for="materiaprimaproducto in arrayMateriaPrimaProductos" :key="materiaprimaproducto.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('producto','actualizar',producto)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="abrirModal('gestionMateria','actualizar',materiaprimaproducto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
-                                        <template v-if="producto.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarProducto(producto.id)">
+                                        <template v-if="materiaprimaproducto.estado">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarMateriaPrimaProducto(materiaprimaproducto.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarProducto(producto.id)">
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarMateriaPrimaProducto(materiaprimaproducto.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
-
                                         </td>
-                                        <td v-text="producto.producto"></td>
-                                        <td v-text="producto.referencia"></td>
-                                        <td v-text="producto.foto"></td>
-                                        <td v-text="producto.descripcion"></td>
-                                        <td v-text="producto.coleccion"></td>
-                                        <td v-text="producto.area"></td>
-                                        <td>
-                                            <div v-if="producto.estado">
-                                            <span class="badge badge-success">Activo</span>
-                                            </div>
-                                            <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
-                                            </div>
-                                        </td>
+                                        <td v-text="materiaprimaproducto.gestionMateria"></td>
+                                        <td v-text="materiaprimaproducto.unidadBase"></td>
+                                        <td v-text="materiaprimaproducto.cantidad"></td>
+                                        <td v-text="materiaprimaproducto.precio"></td>
+                                        <td v-text="materiaprimaproducto.subtotal"></td>
                                     </tr>
 
                                 </tbody>
@@ -95,10 +70,8 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
-                    </div>
                     <!-- Fin ejemplo de tabla Listado -->
-                </div>
+
                 <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -111,53 +84,43 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Coleccion</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idColeccion">
-                                                <option value="0" disabled> Seleccione Coleccion</option>
-                                                <option v-for="coleccion in arrayColeccion" :key="coleccion.idColeccion" :value="coleccion.idColeccion" v-text="coleccion.coleccion"></option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                <!--
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Area</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idArea">
-                                                <option value="0" disabled> Seleccione Area</option>
                                                 <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
                                             </select>
                                         </div>
                                     </div>
+                                -->
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="producto" class="form-control" placeholder="Nombre de producto">
-                                            <span class="help-block">(*) Ingrese el nombre del producto</span>
+                                            <input type="text" v-model="cantidad" class="form-control" placeholder="Nombre de proceso">
+                                            <span class="help-block">(*) Ingrese la cantidad de material</span>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Referencia</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Precio</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="referencia" class="form-control" placeholder="Nombre de referencia">
-                                            <span class="help-block">(*) Ingrese el nombre de la referencia</span>
+                                            <input type="number" v-model="precio" class="form-control">
+                                            <span class="help-block">(*) Ingrese el precio</span>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Foto</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo de costo</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="foto" class="form-control" placeholder="Nombre de foto">
-                                            <span class="help-block">(*) Ingrese el nombre de la foto</span>
+                                            <select class="form-control" v-model="tipoDeCosto">
+                                                <option value="Directo">Costo Directo</option>
+                                                <option value="Indirecto">Costo Indirecto</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Descripcion</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="descripcion" class="form-control" placeholder="Nombre de descripcion">
-                                            <span class="help-block">(*) Ingrese el nombre de la descripcion</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row div-error" v-show="errorProducto">
+
+                                    <div class="form-group row div-error" v-show="errorMateriaPrimaProducto">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -167,8 +130,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearProducto()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarProducto()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearMateriaPrimaProducto()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarMateriaPrimaProducto()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -183,25 +146,20 @@
     export default {
         data(){
             return{
-                idProducto:0,
+                idMateriaPrimaProducto:0,
                 id:'',
-                producto:'',
-                referencia:'',
-                foto:'',
-                descripcion:'',
-                estado:'',
-                arrayProducto : [],
-                idColeccion:0,
-                coleccion:'',
-                referencia:'',
-                arrayColeccion:[],
+                idMateriaPrima:'',
+                cantidad:0,
+                precio:0,
+                tipoDeCosto:'Directo',
+                arrayMateriaPrimaProductos: [],
                 idArea:0,
                 area:'',
                 arrayArea:[],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorProducto : 0,
+                errorMateriaPrimaProducto : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -212,7 +170,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'producto',
+                criterio : 'gestionMateria',
                 buscar : ''
             }
         },
@@ -245,26 +203,13 @@
             }
         },
         methods : {
-            listarProducto(page,buscar,criterio){
+            listarMateriaPrimaProducto(page,buscar,criterio){
                 let me=this;
-                var url='/producto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayProducto=respuesta.productos.data;
+                me.arrayProceso=respuesta.materiaprimaproductos.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            selectColeccion(){
-                let me=this;
-                var url='/coleccion/selectColeccion';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayColeccion=respuesta.colecciones;
                 })
                 .catch(function (error) {
                     // handle error
@@ -283,60 +228,63 @@
                     console.log(error);
                 })
             },
+            selectMateriaPrimaProducto(){
+                let me=this;
+                var url='/materiaprimaproducto/selectMateriaPrimaProducto';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayMateriaPrimaProductos=respuesta.materiaprimaproductos;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarProducto(page,buscar,criterio);
+                me.listarProceso(page,buscar,criterio);
             },
-            crearProducto(){
+            crearMateriaPrimaProducto(){
                 //valido con el metodo de validacion creado
-                if(this.validarProducto()){
+                if(this.validarProceso()){
                     return;
                 }
 
                 let me=this;
-                axios.post('/producto/store',{
-                    'producto': this.producto,
-                    'referencia': this.referencia,
-                    'foto': this.foto,
-                    'descripcion': this.descripcion,
-                    'idColeccion': this.idColeccion,
+                axios.post('/materiaprimaproducto/store',{
+                    'materiaprimaproducto': this.materiaprimaproducto,
                     'idArea': this.idArea
-                    //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarProducto(1,'','producto');
+                me.listarMateriaPrimaProducto(1,'','gestionMateria');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            editarProducto(){
-                if(this.validarProducto()){
+            editarMateriaPrimaProducto(){
+                if(this.validarMateriaPrimaProducto()){
                     return;
                 }
 
                 let me=this;
-                axios.put('/producto/update',{
-                    'id': this.idProducto,
-                    'producto': this.producto,
-                    'referencia': this.referencia,
-                    'foto': this.foto,
-                    'descripcion': this.descripcion,
-                    'idColeccion': this.idColeccion,
+                axios.put('/materiaPrimaProducto/update',{
+                    'id': this.idMateriaPrimaProducto,
+                    'materiaPrimaProducto': this.materiaPrimaProducto,
                     'idArea': this.idArea
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarProducto(1,'','producto');
+                me.listarMateriaPrimaProducto(1,'','materiaprima');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            desactivarProducto(id){
+            desactivarMateriaPrimaProducto(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -355,12 +303,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/producto/deactivate',{
+                    axios.put('/materiaprimaproducto/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarProducto(1,'','producto');
+                    me.listarMateriaPrimaProducto(1,'','gestionMateria');
                     swalWithBootstrapButtons.fire(
-                    'Producto desactivado!'
+                    'Materia prima producto desactivado!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -369,11 +317,11 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarProducto();
+                    me.listarMateriaPrimaProducto();
                 }
                 })
             },
-            activarProducto(id){
+            activarMateriaPrimaProducto(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -383,7 +331,7 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este producto?',
+                title: 'Quiere activar este proceso?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Activar!',
@@ -392,12 +340,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/producto/activate',{
+                    axios.put('/materiaprimaproducto/activate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarProducto(1,'','producto');
+                    me.listarMateriaPrimaProductos(1,'','gestionMateria');
                     swalWithBootstrapButtons.fire(
-                    'Producto activado!'
+                    'Proceso activado!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -406,66 +354,58 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarProducto();
+                    me.listarMateriaPrimaProducto();
                 }
                 })
             },
-            validarProducto(){
-                this.errorProducto=0;
+            validarMateriaPrimaProducto(){
+                this.errorMateriaPrimaProducto=0;
                 this.errorMensaje=[];
+                if (!this.materiaprimaproducto) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
+                if (this.errorMensaje.length) this.errorMateriaPrimaProducto=1;
 
-                if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
-                if (this.errorMensaje.length) this.errorProducto=1;
-
-                return this.errorProducto;
+                return this.errorMateriaPrimaProducto;
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.producto='';
+                this.materiaprimaproducto='';
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "producto":
+                case "gestionMateria":
                 {
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.producto='';
-                            this.referencia='';
-                            this.foto='';
-                            this.descripcion='';
-                            this.tituloModal='Crear nuevo producto';
+                            this.materiaprimaproducto='';
+                            this.idArea=data['idArea'];
+                            this.tituloModal='Crear nuevo proceso';
                             this.tipoAccion= 1;
-                            this.idColeccion= 1;
-                            this.idArea= 1;
+                            this.idArea=1;
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar producto';
+                            this.tituloModal='Editar proceso';
                             this.tipoAccion= 2;
-                            this.idProducto=data['id'];
-                            this.producto=data['producto'];
-                            this.referencia=data['referencia'];
-                            this.foto=data['foto'];
-                            this.descripcion=data['descripcion'];
-                            this.idColeccion=data['idColeccion']; // añadido para alimentar el select
-                            this.idArea=data['idArea']; // añadido para alimentar el select
+                            this.idMateriaPrimaProducto=data['id'];
+                            this.proceso=data['materiaprimaproducto'];
+                            this.idArea=data['idArea'];
                             break;
                         }
                     }
               }
 
             }
-            this.selectColeccion();
             this.selectArea();
             }
         },
         mounted() {
-            this.listarProducto(1,this.buscar,this.criterio);
+            //this.listarMateriaPrimaProducto(1,this.buscar,this.criterio);
+            this.selectMateriaPrimaProducto();
         }
     }
 </script>
