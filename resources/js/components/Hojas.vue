@@ -5,14 +5,12 @@
                     <li class="breadcrumb-item">Home</li>
                     <li class="breadcrumb-item active">Productos</li>
                 </ol>
-                <div class="container-fluid">
-                    <!-- Ejemplo de tabla Listado -->
-
-                    <div class="card">
-
                       <!-- Listado -->
                       <template v-if="listado">
-                       <div class="card-body">
+                    <!-- Ejemplo de tabla Listado -->
+                    <div class="container-fluid">
+                        <div class="card">
+                            <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <div class="input-group">
@@ -83,16 +81,25 @@
                                     </li>
                                 </ul>
                             </nav>
+                            </div>
                         </div>
+                    </div>
                       </template>
                     <!-- Fin Listado -->
 
                     <!-- Detalle -->
                     <template v-else>
-                        <div class="card-body">
+                        <div class="card">
                             <vs-tabs :color="colorx">
                             <vs-tab label="Materia Prima" icon="shopping_cart" @click="colorx = '#8B0000'">
-                                <materiaprima></materiaprima>
+                                <div class="card-header">
+                                    <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
+                                        <i class="icon-plus"></i>&nbsp;Nueva materia prima
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <materiaprima></materiaprima>
+                                </div>
                             </vs-tab>
                             <vs-tab label="Mano de Obra" icon="work" @click="colorx = '#FFA500'">
                                 <h2>Pestaña mano de obra asociada</h2>
@@ -107,14 +114,75 @@
                             </vs-tab>
                             </vs-tabs>
                         </div>
+                      <!--  -->
                     </template>
                     <!-- Fin Detalle -->
+                                    <!--Inicio del modal agregar/actualizar-->
+                <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-primary modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" v-text="tituloModal"></h4>
+                                <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                <!--
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Area</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idArea">
+                                                <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                -->
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="cantidad" class="form-control" placeholder="Nombre de proceso">
+                                            <span class="help-block">(*) Ingrese la cantidad de material</span>
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="precio" class="form-control">
+                                            <span class="help-block">(*) Ingrese el precio</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo de costo</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="tipoDeCosto">
+                                                <option value="Directo">Costo Directo</option>
+                                                <option value="Indirecto">Costo Indirecto</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row div-error" v-show="errorMateriaPrimaProducto">
+                                        <div class="text-center text-error">
+                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearMateriaPrimaProducto()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarMateriaPrimaProducto()">Editar</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
                     </div>
-                    <!-- Fin ejemplo de tabla Listado -->
+                    <!-- /.modal-dialog -->
                 </div>
-                <!--Inicio del modal agregar/actualizar-->
-
                 <!--Fin del modal-->
         </main>
 </template>
@@ -371,48 +439,53 @@
             ocultarDetalle(){
                 this.listado=1;
             },
-            cerrarModal(){
+            listarMateriaPrimaProducto(page,buscar,criterio){
+                let me=this;
+                var url='/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayProceso=respuesta.materiaprimaproductos.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+                        cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.producto='';
+                this.materiaprimaproducto='';
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "producto":
+                case "gestionMateria":
                 {
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.producto='';
-                            this.referencia='';
-                            this.foto='';
-                            this.descripcion='';
-                            this.tituloModal='Crear nuevo producto';
+                            this.materiaprimaproducto='';
+                            this.idArea=data['idArea'];
+                            this.tituloModal='Crear nuevo proceso';
                             this.tipoAccion= 1;
-                            this.idColeccion= 1;
-                            this.idArea= 1;
+                            this.idArea=1;
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar producto';
+                            this.tituloModal='Editar proceso';
                             this.tipoAccion= 2;
-                            this.idProducto=data['id'];
-                            this.producto=data['producto'];
-                            this.referencia=data['referencia'];
-                            this.foto=data['foto'];
-                            this.descripcion=data['descripcion'];
-                            this.idColeccion=data['idColeccion']; // añadido para alimentar el select
-                            this.idArea=data['idArea']; // añadido para alimentar el select
+                            this.idMateriaPrimaProducto=data['id'];
+                            this.proceso=data['materiaprimaproducto'];
+                            this.idArea=data['idArea'];
                             break;
                         }
                     }
               }
 
             }
-            this.selectColeccion();
             this.selectArea();
             }
         },
@@ -421,23 +494,3 @@
         }
     }
 </script>
-<style>
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-    }
-    .mostrar{
-        display: list-item !important;
-        opacity: 1 !important;
-        position: absolute !important;
-        background-color: #3c29297a !important;
-    }
-    .div-error{
-        display: flex;
-        justify-content: center;
-    }
-    .text-error{
-        color: red !important;
-        font-weight: bold;
-    }
-</style>

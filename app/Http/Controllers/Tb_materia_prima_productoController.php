@@ -81,6 +81,17 @@ class Tb_materia_prima_productoController extends Controller
         DB::raw('(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) as subtotal'))
         ->orderBy('tb_gestion_materia_prima.id','desc')->get();
 
-        return ['materiaprimaproductos' => $materiaprimaproductos];
+        return [
+            'pagination' => [
+                'total'         =>$materiaprimaproductos->total(),
+                'current_page'  =>$materiaprimaproductos->currentPage(),
+                'per_page'      =>$materiaprimaproductos->perPage(),
+                'last_page'     =>$materiaprimaproductos->lastPage(),
+                'from'          =>$materiaprimaproductos->firstItem(),
+                'to'            =>$materiaprimaproductos->lastItem(),
+            ],
+                'materiaprimaproductos' => $materiaprimaproductos
+        ];
+
         }
 }
