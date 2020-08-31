@@ -3554,6 +3554,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _ref;
@@ -46841,117 +46842,122 @@ var render = function() {
             ])
           ]
         : [
-            _c(
-              "div",
-              { staticClass: "card" },
-              [
-                _c(
-                  "vs-tabs",
-                  { attrs: { color: _vm.colorx } },
-                  [
-                    _c(
-                      "vs-tab",
-                      {
-                        attrs: {
-                          label: "Materia Prima",
-                          icon: "shopping_cart"
-                        },
-                        on: {
-                          click: function($event) {
-                            _vm.colorx = "#8B0000"
+            _c("div", { staticClass: "container-fluid" }, [
+              _c(
+                "div",
+                { staticClass: "card" },
+                [
+                  _c(
+                    "vs-tabs",
+                    { attrs: { color: _vm.colorx } },
+                    [
+                      _c(
+                        "vs-tab",
+                        {
+                          attrs: {
+                            label: "Materia Prima",
+                            icon: "shopping_cart"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.colorx = "#8B0000"
+                            }
                           }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "card-header" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-secondary",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.abrirModal(
-                                    "gestionMateria",
-                                    "crear"
-                                  )
+                        },
+                        [
+                          _c("div", { staticClass: "card-header" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-secondary",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.abrirModal(
+                                      "gestionMateria",
+                                      "crear"
+                                    )
+                                  }
                                 }
-                              }
-                            },
-                            [
-                              _c("i", { staticClass: "icon-plus" }),
-                              _vm._v(
-                                " Nueva materia prima\n                            "
-                              )
-                            ]
+                              },
+                              [
+                                _c("i", { staticClass: "icon-plus" }),
+                                _vm._v(
+                                  " Nueva materia prima\n                                "
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "card-body" },
+                            [_c("materiaprima")],
+                            1
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "card-body" },
-                          [_c("materiaprima")],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "vs-tab",
-                      {
-                        attrs: { label: "Mano de Obra", icon: "work" },
-                        on: {
-                          click: function($event) {
-                            _vm.colorx = "#FFA500"
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "vs-tab",
+                        {
+                          attrs: { label: "Mano de Obra", icon: "work" },
+                          on: {
+                            click: function($event) {
+                              _vm.colorx = "#FFA500"
+                            }
                           }
-                        }
-                      },
-                      [_c("h2", [_vm._v("Pestaña mano de obra asociada")])]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "vs-tab",
-                      {
-                        attrs: { label: "CIF", icon: "compare_arrows" },
-                        on: {
-                          click: function($event) {
-                            _vm.colorx = "#CB3234"
+                        },
+                        [_c("h2", [_vm._v("Pestaña mano de obra asociada")])]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "vs-tab",
+                        {
+                          attrs: { label: "CIF", icon: "compare_arrows" },
+                          on: {
+                            click: function($event) {
+                              _vm.colorx = "#CB3234"
+                            }
                           }
-                        }
-                      },
-                      [_c("h2", [_vm._v("Pestaña cif asociados")])]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "vs-tab",
-                      {
+                        },
+                        [_c("h2", [_vm._v("Pestaña cif asociados")])]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "vs-tab",
+                        {
+                          attrs: {
+                            label: "Servicios Directos",
+                            icon: "account_circle"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.colorx = "#0000FF"
+                            }
+                          }
+                        },
+                        [_c("h2", [_vm._v("Pestaña servicios asociados")])]
+                      ),
+                      _vm._v(" "),
+                      _c("vs-tab", {
                         attrs: {
-                          label: "Servicios Directos",
-                          icon: "account_circle"
+                          label: "Cerrar",
+                          icon: "cancel_schedule_send"
                         },
                         on: {
                           click: function($event) {
-                            _vm.colorx = "#0000FF"
+                            return _vm.ocultarDetalle()
                           }
                         }
-                      },
-                      [_c("h2", [_vm._v("Pestaña servicios asociados")])]
-                    ),
-                    _vm._v(" "),
-                    _c("vs-tab", {
-                      attrs: { label: "Cerrar", icon: "cancel_schedule_send" },
-                      on: {
-                        click: function($event) {
-                          return _vm.ocultarDetalle()
-                        }
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            )
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ])
           ],
       _vm._v(" "),
       _c(

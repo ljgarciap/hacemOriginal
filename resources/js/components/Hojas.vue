@@ -89,32 +89,33 @@
 
                     <!-- Detalle -->
                     <template v-else>
-                        <div class="card">
-                            <vs-tabs :color="colorx">
-                            <vs-tab label="Materia Prima" icon="shopping_cart" @click="colorx = '#8B0000'">
-                                <div class="card-header">
-                                    <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
-                                        <i class="icon-plus"></i>&nbsp;Nueva materia prima
-                                    </button>
-                                </div>
-                                <div class="card-body">
-                                    <materiaprima></materiaprima>
-                                </div>
-                            </vs-tab>
-                            <vs-tab label="Mano de Obra" icon="work" @click="colorx = '#FFA500'">
-                                <h2>Pestaña mano de obra asociada</h2>
-                            </vs-tab>
-                            <vs-tab label="CIF" icon="compare_arrows" @click="colorx = '#CB3234'">
-                                <h2>Pestaña cif asociados</h2>
-                            </vs-tab>
-                            <vs-tab label="Servicios Directos" icon="account_circle" @click="colorx = '#0000FF'">
-                                <h2>Pestaña servicios asociados</h2>
-                            </vs-tab>
-                            <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
-                            </vs-tab>
-                            </vs-tabs>
+                        <div class="container-fluid">
+                            <div class="card">
+                                <vs-tabs :color="colorx">
+                                <vs-tab label="Materia Prima" icon="shopping_cart" @click="colorx = '#8B0000'">
+                                    <div class="card-header">
+                                        <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
+                                            <i class="icon-plus"></i>&nbsp;Nueva materia prima
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <materiaprima></materiaprima>
+                                    </div>
+                                </vs-tab>
+                                <vs-tab label="Mano de Obra" icon="work" @click="colorx = '#FFA500'">
+                                    <h2>Pestaña mano de obra asociada</h2>
+                                </vs-tab>
+                                <vs-tab label="CIF" icon="compare_arrows" @click="colorx = '#CB3234'">
+                                    <h2>Pestaña cif asociados</h2>
+                                </vs-tab>
+                                <vs-tab label="Servicios Directos" icon="account_circle" @click="colorx = '#0000FF'">
+                                    <h2>Pestaña servicios asociados</h2>
+                                </vs-tab>
+                                <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
+                                </vs-tab>
+                                </vs-tabs>
+                            </div>
                         </div>
-                      <!--  -->
                     </template>
                     <!-- Fin Detalle -->
                                     <!--Inicio del modal agregar/actualizar-->
