@@ -92,6 +92,7 @@
                         <div class="container-fluid">
                             <div class="card">
                                 <vs-tabs :color="colorx">
+
                                 <vs-tab label="Materia Prima" icon="shopping_cart" @click="colorx = '#8B0000'">
 
                                     <div class="card-header">
@@ -104,18 +105,35 @@
                                     <div class="card-body">
                                         <materiaprima v-bind:identificador="identificador"></materiaprima>
                                     </div>
+
                                 </vs-tab>
+
                                 <vs-tab label="Mano de Obra" icon="work" @click="colorx = '#FFA500'">
-                                    <h2>Pestaña mano de obra asociada</h2>
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto &nbsp;
+                                        <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
+                                            <i class="icon-plus"></i>&nbsp;Nueva mano de obra
+                                        </button>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <manodeobra v-bind:identificador="identificador"></manodeobra>
+                                    </div>
+
                                 </vs-tab>
+
                                 <vs-tab label="CIF" icon="compare_arrows" @click="colorx = '#CB3234'">
                                     <h2>Pestaña cif asociados</h2>
                                 </vs-tab>
+
                                 <vs-tab label="Servicios Directos" icon="account_circle" @click="colorx = '#0000FF'">
                                     <h2>Pestaña servicios asociados</h2>
                                 </vs-tab>
+
                                 <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
                                 </vs-tab>
+
                                 </vs-tabs>
                             </div>
                         </div>
@@ -193,9 +211,11 @@
 
 <script>
     import materiaprima from '../components/MateriaPrimaProductos';
+    import manodeobra from '../components/ManoDeObraProductos';
     export default {
         components: {
-            materiaprima
+            materiaprima,
+            manodeobra
         },
         data(){
             return{

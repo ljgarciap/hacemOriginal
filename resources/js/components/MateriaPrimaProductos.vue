@@ -148,11 +148,11 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarProceso(page,buscar,criterio);
+                me.listarMateriaPrimaProducto(page,buscar,criterio);
             },
             crearMateriaPrimaProducto(){
                 //valido con el metodo de validacion creado
-                if(this.validarProceso()){
+                if(this.validarMateriaPrimaProducto()){
                     return;
                 }
 

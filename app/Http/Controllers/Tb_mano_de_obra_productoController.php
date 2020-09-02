@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Tb_mano_de_obra_producto;
+use App\Tb_proceso;
+use App\Tb_perfil;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class Tb_mano_de_obra_productoController extends Controller
 {
@@ -18,58 +20,63 @@ class Tb_mano_de_obra_productoController extends Controller
         //if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
+        $identificador= $request->identificador;
 
         if ($buscar=='') {
             # Modelo::join('tablaqueseune',basicamente un on)
-            $manodeobra = Tb_mano_de_obra_producto::join("tb_perfil","tb_mano_de_obra_producto.idPerfil","=","tb_perfil.id")
+            $manodeobraproductos = Tb_mano_de_obra_producto::join("tb_perfil","tb_mano_de_obra_producto.idPerfil","=","tb_perfil.id")
             ->join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
-            ->join("tb_hoja_de_costo","tb_mano_de_obra_producto.idHoja","=","tb_hoja_de_costo.id")
             ->leftJoin('tb_area',function($join){
-                $join->on('tb_area.id','=','tb_proceso.idArea');
+                $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_proceso.idArea','tb_area.area','tb_perfil.idProceso as idProceso','tb_proceso.proceso','tb_perfil.perfil','tb_perfil.valorMinuto','tb_mano_de_obra_producto.precio','tb_mano_de_obra_producto.tiempo','tb_hoja_de_costo.id as idHoja')
-            ->orderBy('tb_perfil.id','desc')->paginate(5);
+            ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
+            'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
+            'tb_mano_de_obra_producto.idHoja',DB::raw('(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) as subtotal'))
+            ->where('tb_mano_de_obra_producto.idHoja', '=', $identificador)
+            ->orderBy('tb_mano_de_obra_producto.id','desc')->paginate(5);
         }
         else if($criterio=='perfil'){
-            $manodeobra = Tb_mano_de_obra_producto::join("tb_perfil","tb_mano_de_obra_producto.idPerfil","=","tb_perfil.id")
+            $manodeobraproductos = Tb_mano_de_obra_producto::join("tb_perfil","tb_mano_de_obra_producto.idPerfil","=","tb_perfil.id")
             ->join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
-            ->join("tb_hoja_de_costo","tb_mano_de_obra_producto.idHoja","=","tb_hoja_de_costo.id")
             ->leftJoin('tb_area',function($join){
-                $join->on('tb_area.id','=','tb_proceso.idArea');
+                $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_proceso.idArea','tb_area.area','tb_perfil.idProceso as idProceso','tb_proceso.proceso','tb_perfil.perfil','tb_perfil.valorMinuto','tb_mano_de_obra_producto.precio','tb_mano_de_obra_producto.tiempo','tb_hoja_de_costo.id as idHoja')
-            ->orderBy('tb_perfil.id','desc')->paginate(5);
+            ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
+            'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
+            'tb_mano_de_obra_producto.idHoja',DB::raw('(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) as subtotal'))
+            ->where([
+                ['tb_perfil.perfil', 'like', '%'. $buscar . '%'],
+                ['tb_mano_de_obra_producto.idHoja', '=', $identificador],
+                     ])
+            ->orderBy('tb_mano_de_obra_producto.id','desc')->paginate(5);
         }
         else {
-            $manodeobra = Tb_mano_de_obra_producto::join("tb_perfil","tb_mano_de_obra_producto.idPerfil","=","tb_perfil.id")
+            $manodeobraproductos = Tb_mano_de_obra_producto::join("tb_perfil","tb_mano_de_obra_producto.idPerfil","=","tb_perfil.id")
             ->join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
-            ->join("tb_hoja_de_costo","tb_mano_de_obra_producto.idHoja","=","tb_hoja_de_costo.id")
             ->leftJoin('tb_area',function($join){
-                $join->on('tb_area.id','=','tb_proceso.idArea');
+                $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_proceso.idArea','tb_area.area','tb_perfil.idProceso as idProceso','tb_proceso.proceso','tb_perfil.perfil','tb_perfil.valorMinuto','tb_mano_de_obra_producto.precio','tb_mano_de_obra_producto.tiempo','tb_hoja_de_costo.id as idHoja')
-            ->orderBy('tb_perfil.id','desc')->paginate(5);
-
+            ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
+            'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
+            'tb_mano_de_obra_producto.idHoja',DB::raw('(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) as subtotal'))
+            ->where([
+                ['tb_proceso.proceso', 'like', '%'. $buscar . '%'],
+                ['tb_mano_de_obra_producto.idHoja', '=', $identificador],
+                     ])
+            ->orderBy('tb_mano_de_obra_producto.id','desc')->paginate(5);
         }
 
         return [
             'pagination' => [
-                'total'         =>$manodeobra->total(),
-                'current_page'  =>$manodeobra->currentPage(),
-                'per_page'      =>$manodeobra->perPage(),
-                'last_page'     =>$manodeobra->lastPage(),
-                'from'          =>$manodeobra->firstItem(),
-                'to'            =>$manodeobra->lastItem(),
+                'total'         =>$manodeobraproductos->total(),
+                'current_page'  =>$manodeobraproductos->currentPage(),
+                'per_page'      =>$manodeobraproductos->perPage(),
+                'last_page'     =>$manodeobraproductos->lastPage(),
+                'from'          =>$manodeobraproductos->firstItem(),
+                'to'            =>$manodeobraproductos->lastItem(),
             ],
-                'manodeobra' => $manodeobra
+                'manodeobraproductos' => $manodeobraproductos
         ];
-    }
-
-    public function selectManoDeObraProducto(){
-        $manodeobra = Tb_mano_de_obra_producto::where('estado','=','1')
-        ->select('id as idPerfil','perfil')->orderBy('perfil','asc')->get();
-
-        return ['manodeobra' => $manodeobra];
     }
 
     public function store(Request $request)

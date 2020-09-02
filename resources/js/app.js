@@ -45,7 +45,7 @@ Vue.component('hojas', require('./components/Hojas.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
 Vue.component('colecciones', require('./components/Colecciones.vue').default);
 Vue.component('productos', require('./components/Productos.vue').default);
-Vue.component('manodeobraproductos', require('./components/ManoDeObraProductos.vue').default);
+Vue.component('manodeobra', require('./components/ManoDeObraProductos.vue').default);
 Vue.component('ninguno', require('./components/Ninguno.vue').default);
 
 /**
