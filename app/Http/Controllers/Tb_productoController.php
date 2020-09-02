@@ -18,43 +18,47 @@ class Tb_productoController extends Controller
      */
     public function index(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
 
         if ($buscar=='') {
             # Modelo::join('tablaqueseune',basicamente un on)
-            $productos = Tb_producto::join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
+            $productos = Tb_hoja_de_costo::join('tb_producto','tb_hoja_de_costo.idProducto','=','tb_producto.id')
+            ->join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_producto.idArea','=','tb_area.id');
             })
-            ->select('tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_hoja_de_costo.id as idHojaDeCosto','tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->orderBy('tb_producto.id','desc')->paginate(5);
         }
         else if($criterio=='coleccion'){
-            $productos = Tb_producto::join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
+            $productos = Tb_hoja_de_costo::join('tb_producto','tb_hoja_de_costo.idProducto','=','tb_producto.id')
+            ->join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_producto.idArea','=','tb_area.id');
             })
-            ->select('tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_hoja_de_costo.id as idHojaDeCosto','tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->where('tb_coleccion.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_producto.id','desc')->paginate(5);
         }
         else if($criterio=='area'){
-            $productos = Tb_producto::join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
+            $productos = Tb_hoja_de_costo::join('tb_producto','tb_hoja_de_costo.idProducto','=','tb_producto.id')
+            ->join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_producto.idArea','=','tb_area.id');
             })
-            ->select('tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_hoja_de_costo.id as idHojaDeCosto','tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->where('tb_area.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_producto.id','desc')->paginate(5);
         }
         else {
-            $productos = Tb_producto::join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
+            $productos = Tb_hoja_de_costo::join('tb_producto','tb_hoja_de_costo.idProducto','=','tb_producto.id')
+            ->join('tb_coleccion','tb_producto.idColeccion','=','tb_coleccion.id')
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_producto.idArea','=','tb_area.id');
             })
-            ->select('tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
+            ->select('tb_hoja_de_costo.id as idHojaDeCosto','tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto','tb_producto.descripcion','tb_producto.estado','tb_coleccion.id as idColeccion','tb_coleccion.coleccion','tb_coleccion.estado as estado_coleccion','tb_area.id as idArea','tb_area.area','tb_area.estado as estado_area')
             ->where('tb_producto.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_producto.id','desc')->paginate(5);
 

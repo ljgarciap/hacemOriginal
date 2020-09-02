@@ -42,7 +42,7 @@
 
                                     <tr v-for="producto in arrayProducto" :key="producto.id">
                                         <td>
-                                            <button type="button" @click="mostrarDetalle()" class="btn btn-success btn-sm">
+                                            <button type="button" @click="mostrarDetalle(producto.idHojaDeCosto)" class="btn btn-success btn-sm">
                                             <i class="icon-eye"></i>
                                             </button> &nbsp;
                                             <button type="button" class="btn btn-warning btn-sm">
@@ -99,7 +99,7 @@
                                         </button>
                                     </div>
                                     <div class="card-body">
-                                        <materiaprima></materiaprima>
+                                        <materiaprima v-bind:identificador="identificador"></materiaprima>
                                     </div>
                                 </vs-tab>
                                 <vs-tab label="Mano de Obra" icon="work" @click="colorx = '#FFA500'">
@@ -189,11 +189,16 @@
 </template>
 
 <script>
+    import materiaprima from '../components/MateriaPrimaProductos';
     export default {
+        components: {
+            materiaprima
+        },
         data(){
             return{
                 colorx: '#8B0000',
                 listado: 1,
+                idHojaDeCosto:0,
                 idProducto:0,
                 id:'',
                 producto:'',
@@ -201,14 +206,12 @@
                 foto:'',
                 descripcion:'',
                 estado:'',
-                arrayProducto : [],
                 idColeccion:0,
                 coleccion:'',
                 referencia:'',
-                arrayColeccion:[],
                 idArea:0,
                 area:'',
-                arrayArea:[],
+                arrayProducto : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -224,6 +227,7 @@
                 },
                 offset : 3,
                 criterio : 'producto',
+                identificador: 0,
                 buscar : ''
             }
         },
@@ -274,30 +278,6 @@
                     console.log(error);
                 })
             },
-            selectColeccion(){
-                let me=this;
-                var url='/coleccion/selectColeccion';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayColeccion=respuesta.colecciones;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            selectArea(){
-                let me=this;
-                var url='/area/selectArea';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayArea=respuesta.areas;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -305,155 +285,15 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarProducto(page,buscar,criterio);
             },
-            crearProducto(){
-                //valido con el metodo de validacion creado
-                if(this.validarProducto()){
-                    return;
-                }
-
-                let me=this;
-                axios.post('/producto/store',{
-                    'producto': this.producto,
-                    'referencia': this.referencia,
-                    'foto': this.foto,
-                    'descripcion': this.descripcion,
-                    'idColeccion': this.idColeccion,
-                    'idArea': this.idArea
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarProducto(1,'','producto');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            editarProducto(){
-                if(this.validarProducto()){
-                    return;
-                }
-
-                let me=this;
-                axios.put('/producto/update',{
-                    'id': this.idProducto,
-                    'producto': this.producto,
-                    'referencia': this.referencia,
-                    'foto': this.foto,
-                    'descripcion': this.descripcion,
-                    'idColeccion': this.idColeccion,
-                    'idArea': this.idArea
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarProducto(1,'','producto');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            desactivarProducto(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Está seguro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/producto/deactivate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarProducto(1,'','producto');
-                    swalWithBootstrapButtons.fire(
-                    'Producto desactivado!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarProducto();
-                }
-                })
-            },
-            activarProducto(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este producto?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/producto/activate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarProducto(1,'','producto');
-                    swalWithBootstrapButtons.fire(
-                    'Producto activado!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarProducto();
-                }
-                })
-            },
-            validarProducto(){
-                this.errorProducto=0;
-                this.errorMensaje=[];
-
-                if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
-                if (this.errorMensaje.length) this.errorProducto=1;
-
-                return this.errorProducto;
-            },
-            mostrarDetalle(){
+            mostrarDetalle(id){
                 this.listado=0;
+                this.identificador=id;
             },
             ocultarDetalle(){
                 this.listado=1;
+                this.identificador=0;
             },
-            listarMateriaPrimaProducto(page,buscar,criterio){
-                let me=this;
-                var url='/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayProceso=respuesta.materiaprimaproductos.data;
-                me.pagination=respuesta.pagination;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-                        cerrarModal(){
+            cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
                 this.materiaprimaproducto='';
@@ -491,7 +331,7 @@
             }
         },
         mounted() {
-            this.listarProducto(1,this.buscar,this.criterio);
+            this.listarProducto(1,this.buscar,this.criterio)
         }
     }
 </script>

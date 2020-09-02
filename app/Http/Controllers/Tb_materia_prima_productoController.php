@@ -15,6 +15,7 @@ class Tb_materia_prima_productoController extends Controller
         //if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
+        $identificador= $request->identificador;
 
         if ($buscar=='') {
             $materiaprimaproductos = Tb_materia_prima_producto::join("tb_gestion_materia_prima","tb_materia_prima_producto.idMateriaPrima","=","tb_gestion_materia_prima.id")
@@ -26,6 +27,7 @@ class Tb_materia_prima_productoController extends Controller
             'tb_unidad_base.id AS idUnidadBase', 'tb_unidad_base.unidadBase', 'tb_materia_prima_producto.cantidad',
             'tb_materia_prima_producto.precio', 'tb_materia_prima_producto.tipoDeCosto', 'tb_materia_prima_producto.idHoja',
             DB::raw('(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) as subtotal'))
+            ->where('tb_materia_prima_producto.idHoja', '=', $identificador)
             ->orderBy('tb_gestion_materia_prima.id','desc')->paginate(5);
         }
         else if($criterio=='materiaprima'){
@@ -38,7 +40,10 @@ class Tb_materia_prima_productoController extends Controller
             'tb_unidad_base.id AS idUnidadBase', 'tb_unidad_base.unidadBase', 'tb_materia_prima_producto.cantidad',
             'tb_materia_prima_producto.precio', 'tb_materia_prima_producto.tipoDeCosto', 'tb_materia_prima_producto.idHoja',
             DB::raw('(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) as subtotal'))
-            ->where('tb_gestion_materia_prima.gestionMateria', 'like', '%'. $buscar . '%')
+            ->where([
+                ['tb_gestion_materia_prima.gestionMateria', 'like', '%'. $buscar . '%'],
+                ['tb_materia_prima_producto.idHoja', '=', $identificador],
+                     ])
             ->orderBy('tb_gestion_materia_prima.id','desc')->paginate(5);
         }
         else {
@@ -51,7 +56,10 @@ class Tb_materia_prima_productoController extends Controller
             'tb_unidad_base.id AS idUnidadBase', 'tb_unidad_base.unidadBase', 'tb_materia_prima_producto.cantidad',
             'tb_materia_prima_producto.precio', 'tb_materia_prima_producto.tipoDeCosto', 'tb_materia_prima_producto.idHoja',
             DB::raw('(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) as subtotal'))
-            ->where('tb_gestion_materia_prima.'.$criterio, 'like', '%'. $buscar . '%')
+            ->where([
+                ['tb_gestion_materia_prima.'.$criterio, 'like', '%'. $buscar . '%'],
+                ['tb_materia_prima_producto.idHoja', '=', $identificador],
+                     ])
             ->orderBy('tb_gestion_materia_prima.id','desc')->paginate(5);
         }
 

@@ -3363,6 +3363,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_MateriaPrimaProductos__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/MateriaPrimaProductos */ "./resources/js/components/MateriaPrimaProductos.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -3555,13 +3556,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    materiaprima: _components_MateriaPrimaProductos__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     var _ref;
 
     return _ref = {
       colorx: '#8B0000',
       listado: 1,
+      idHojaDeCosto: 0,
       idProducto: 0,
       id: '',
       producto: '',
@@ -3569,17 +3575,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       foto: '',
       descripcion: '',
       estado: '',
-      arrayProducto: [],
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "arrayColeccion", []), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayArea", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
       'last_page': 0,
       'from': 0,
       'to': 0
-    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'producto'), _defineProperty(_ref, "buscar", ''), _ref;
+    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'producto'), _defineProperty(_ref, "identificador", 0), _defineProperty(_ref, "buscar", ''), _ref;
   },
   computed: {
     isActived: function isActived() {
@@ -3630,28 +3635,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
-    selectColeccion: function selectColeccion() {
-      var me = this;
-      var url = '/coleccion/selectColeccion';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayColeccion = respuesta.colecciones;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
-    selectArea: function selectArea() {
-      var me = this;
-      var url = '/area/selectArea';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayArea = respuesta.areas;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
     cambiarPagina: function cambiarPagina(page, buscar, criterio) {
       var me = this; //Actualiza la pagina actual
 
@@ -3659,146 +3642,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       me.listarProducto(page, buscar, criterio);
     },
-    crearProducto: function crearProducto() {
-      //valido con el metodo de validacion creado
-      if (this.validarProducto()) {
-        return;
-      }
-
-      var me = this;
-      axios.post('/producto/store', {
-        'producto': this.producto,
-        'referencia': this.referencia,
-        'foto': this.foto,
-        'descripcion': this.descripcion,
-        'idColeccion': this.idColeccion,
-        'idArea': this.idArea //'dato': this.dato
-
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarProducto(1, '', 'producto');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    editarProducto: function editarProducto() {
-      if (this.validarProducto()) {
-        return;
-      }
-
-      var me = this;
-      axios.put('/producto/update', {
-        'id': this.idProducto,
-        'producto': this.producto,
-        'referencia': this.referencia,
-        'foto': this.foto,
-        'descripcion': this.descripcion,
-        'idColeccion': this.idColeccion,
-        'idArea': this.idArea //'dato': this.dato
-
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarProducto(1, '', 'producto');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    desactivarProducto: function desactivarProducto(id) {
-      var _this = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Está seguro?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Desactivar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var _me = _this;
-          axios.put('/producto/deactivate', {
-            'id': id
-          }).then(function (response) {
-            _me.listarProducto(1, '', 'producto');
-
-            swalWithBootstrapButtons.fire('Producto desactivado!');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {
-          me.listarProducto();
-        }
-      });
-    },
-    activarProducto: function activarProducto(id) {
-      var _this2 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Quiere activar este producto?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Activar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var _me2 = _this2;
-          axios.put('/producto/activate', {
-            'id': id
-          }).then(function (response) {
-            _me2.listarProducto(1, '', 'producto');
-
-            swalWithBootstrapButtons.fire('Producto activado!');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {
-          me.listarProducto();
-        }
-      });
-    },
-    validarProducto: function validarProducto() {
-      this.errorProducto = 0;
-      this.errorMensaje = [];
-      if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
-      if (this.errorMensaje.length) this.errorProducto = 1;
-      return this.errorProducto;
-    },
-    mostrarDetalle: function mostrarDetalle() {
+    mostrarDetalle: function mostrarDetalle(id) {
       this.listado = 0;
+      this.identificador = id;
     },
     ocultarDetalle: function ocultarDetalle() {
       this.listado = 1;
-    },
-    listarMateriaPrimaProducto: function listarMateriaPrimaProducto(page, buscar, criterio) {
-      var me = this;
-      var url = '/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayProceso = respuesta.materiaprimaproductos.data;
-        me.pagination = respuesta.pagination;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
+      this.identificador = 0;
     },
     cerrarModal: function cerrarModal() {
       this.modal = 0;
@@ -3929,18 +3779,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    identificador: {
+      type: Number
+    }
+  },
   data: function data() {
     return {
       idMateriaPrimaProducto: 0,
-      id: '',
       idMateriaPrima: '',
       cantidad: 0,
       precio: 0,
       tipoDeCosto: 'Directo',
       arrayMateriaPrimaProductos: [],
-      idArea: 0,
-      area: '',
-      arrayArea: [],
       modal: 0,
       tituloModal: '',
       tipoAccion: 0,
@@ -3956,6 +3807,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       offset: 3,
       criterio: 'gestionMateria',
+      identificador: 1,
       buscar: ''
     };
   },
@@ -3992,35 +3844,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    listarMateriaPrimaProducto: function listarMateriaPrimaProducto(page, buscar, criterio) {
+    listarMateriaPrimaProducto: function listarMateriaPrimaProducto(page, buscar, criterio, identificador) {
       var me = this;
-      var url = '/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+      var url = '/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayMateriaPrimaProductos = respuesta.materiaprimaproductos.data;
         me.pagination = respuesta.pagination;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
-    selectArea: function selectArea() {
-      var me = this;
-      var url = '/area/selectArea';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayArea = respuesta.areas;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
-    selectMateriaPrimaProducto: function selectMateriaPrimaProducto() {
-      var me = this;
-      var url = '/materiaprimaproducto/selectMateriaPrimaProducto';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayMateriaPrimaProductos = respuesta.materiaprimaproductos;
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -4068,78 +3898,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    desactivarMateriaPrimaProducto: function desactivarMateriaPrimaProducto(id) {
-      var _this = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Está seguro?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Desactivar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var _me = _this;
-          axios.put('/materiaprimaproducto/deactivate', {
-            'id': id
-          }).then(function (response) {
-            _me.listarMateriaPrimaProducto(1, '', 'gestionMateria');
-
-            swalWithBootstrapButtons.fire('Materia prima producto desactivado!');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {
-          me.listarMateriaPrimaProducto();
-        }
-      });
-    },
-    activarMateriaPrimaProducto: function activarMateriaPrimaProducto(id) {
-      var _this2 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Quiere activar este proceso?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Activar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var _me2 = _this2;
-          axios.put('/materiaprimaproducto/activate', {
-            'id': id
-          }).then(function (response) {
-            _me2.listarMateriaPrimaProductos(1, '', 'gestionMateria');
-
-            swalWithBootstrapButtons.fire('Proceso activado!');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {
-          me.listarMateriaPrimaProducto();
-        }
-      });
-    },
     validarMateriaPrimaProducto: function validarMateriaPrimaProducto() {
       this.errorMateriaPrimaProducto = 0;
       this.errorMensaje = [];
@@ -4149,8 +3907,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    //this.listarMateriaPrimaProducto(1,this.buscar,this.criterio);
-    this.listarMateriaPrimaProducto(1, this.buscar, this.criterio);
+    this.listarMateriaPrimaProducto(1, '', '', this.identificador);
   }
 });
 
@@ -46685,7 +46442,9 @@ var render = function() {
                                     attrs: { type: "button" },
                                     on: {
                                       click: function($event) {
-                                        return _vm.mostrarDetalle()
+                                        return _vm.mostrarDetalle(
+                                          producto.idHojaDeCosto
+                                        )
                                       }
                                     }
                                   },
@@ -46892,7 +46651,11 @@ var render = function() {
                           _c(
                             "div",
                             { staticClass: "card-body" },
-                            [_c("materiaprima")],
+                            [
+                              _c("materiaprima", {
+                                attrs: { identificador: _vm.identificador }
+                              })
+                            ],
                             1
                           )
                         ]
@@ -47369,7 +47132,8 @@ var render = function() {
                 return _vm.listarMateriaPrimaProductos(
                   1,
                   _vm.buscar,
-                  _vm.criterio
+                  _vm.criterio,
+                  this.identificador
                 )
               },
               input: function($event) {
@@ -47391,7 +47155,8 @@ var render = function() {
                   return _vm.listarMateriaPrimaProductos(
                     1,
                     _vm.buscar,
-                    _vm.criterio
+                    _vm.criterio,
+                    this.identificador
                   )
                 }
               }
@@ -47599,7 +47364,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Opciones")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Producto")]),
+        _c("th", [_vm._v("Materia prima")]),
         _vm._v(" "),
         _c("th", [_vm._v("Unidad")]),
         _vm._v(" "),

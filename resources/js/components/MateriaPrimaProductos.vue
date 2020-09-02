@@ -7,8 +7,8 @@
                         <select class="form-control col-md-3" v-model="criterio">
                               <option value="gestionMateria">Materia Prima</option>
                         </select>
-                        <input type="text" v-model="buscar" @keyup.enter="listarMateriaPrimaProductos(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                          <button type="submit" @click="listarMateriaPrimaProductos(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                        <input type="text" v-model="buscar" @keyup.enter="listarMateriaPrimaProductos(1,buscar,criterio,this.identificador)" class="form-control" placeholder="Texto a buscar">
+                          <button type="submit" @click="listarMateriaPrimaProductos(1,buscar,criterio,this.identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
-                                        <th>Producto</th>
+                                        <th>Materia prima</th>
                                         <th>Unidad</th>
                                         <th>Cantidad</th>
                                         <th>Precio</th>
@@ -70,18 +70,19 @@
 
 <script>
     export default {
+        props: {
+            identificador: {
+            type: Number
+            }
+         },
         data(){
             return{
                 idMateriaPrimaProducto:0,
-                id:'',
                 idMateriaPrima:'',
                 cantidad:0,
                 precio:0,
                 tipoDeCosto:'Directo',
-                arrayMateriaPrimaProductos: [],
-                idArea:0,
-                area:'',
-                arrayArea:[],
+                arrayMateriaPrimaProductos : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -97,6 +98,7 @@
                 },
                 offset : 3,
                 criterio : 'gestionMateria',
+                identificador:1,
                 buscar : ''
             }
         },
@@ -129,37 +131,13 @@
             }
         },
         methods : {
-            listarMateriaPrimaProducto(page,buscar,criterio){
+                listarMateriaPrimaProducto(page,buscar,criterio,identificador){
                 let me=this;
-                var url='/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayMateriaPrimaProductos=respuesta.materiaprimaproductos.data;
                 me.pagination=respuesta.pagination;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            selectArea(){
-                let me=this;
-                var url='/area/selectArea';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayArea=respuesta.areas;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            selectMateriaPrimaProducto(){
-                let me=this;
-                var url='/materiaprimaproducto/selectMateriaPrimaProducto';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayMateriaPrimaProductos=respuesta.materiaprimaproductos;
                 })
                 .catch(function (error) {
                     // handle error
@@ -210,80 +188,6 @@
                     console.log(error);
                 });
             },
-            desactivarMateriaPrimaProducto(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Está seguro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/materiaprimaproducto/deactivate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarMateriaPrimaProducto(1,'','gestionMateria');
-                    swalWithBootstrapButtons.fire(
-                    'Materia prima producto desactivado!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarMateriaPrimaProducto();
-                }
-                })
-            },
-            activarMateriaPrimaProducto(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este proceso?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/materiaprimaproducto/activate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarMateriaPrimaProductos(1,'','gestionMateria');
-                    swalWithBootstrapButtons.fire(
-                    'Proceso activado!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarMateriaPrimaProducto();
-                }
-                })
-            },
             validarMateriaPrimaProducto(){
                 this.errorMateriaPrimaProducto=0;
                 this.errorMensaje=[];
@@ -294,8 +198,7 @@
             },
         },
         mounted() {
-            //this.listarMateriaPrimaProducto(1,this.buscar,this.criterio);
-            this.listarMateriaPrimaProducto(1,this.buscar,this.criterio);
+            this.listarMateriaPrimaProducto(1,'','',this.identificador)
         }
     }
 </script>
