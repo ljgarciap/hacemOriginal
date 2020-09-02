@@ -6,16 +6,17 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Mano De Obra Producto
+                            
                             <button type="button" @click="abrirModal('manodeobraproducto','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
+                                <i class="icon-plus"></i>&nbsp;Nueva mano de obra
                             </button>
                         </div>
                         <div class="card-body">
                             <div class="form-group row">
-                                <div class="col-md-9">
+                                <div class="col-md-6">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="producto">Producto</option>
                                         <option value="perfil">Perfil</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarManoDeObraProducto(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
@@ -31,24 +32,25 @@
                                         <th>Perfil</th>
                                         <th>Tiempo</th>
                                         <th>Precio</th>
-                                        <th>Hoja De Costo</th>
+                                        <th>Subtotal</th>
+                                        <th>Producto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="manodeobraproducto in arraymanodeobraproducto" :key="manodeobraproducto.id">
+                                    <tr v-for="manodeobraproducto in arrayManoDeObraProducto" :key="manodeobraproducto.id">
                                         <td>
                                             <button type="button" @click="abrirModal('manodeobraproducto','actualizar',manodeobraproducto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
                                         <template v-if="manodeobraproducto.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarmanodeobraproducto(manodeobraproducto.id)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarManodeObraProducto(manodeobraproducto.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarProducto(manodeobraproducto.id)">
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarManoDeObraProducto(manodeobraproducto.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
@@ -57,15 +59,8 @@
                                         <td v-text="manodeobraproducto.perfil"></td>
                                         <td v-text="manodeobraproducto.tiempo"></td>
                                         <td v-text="manodeobraproducto.precio"></td>
-                                        <td v-text="manodeobraproducto.hoja"></td>
-                                        <td>
-                                            <div v-if="manodeobraproducto.estado">
-                                            <span class="badge badge-success">Activo</span>
-                                            </div>
-                                            <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
-                                            </div>
-                                        </td>
+                                        <td v-text="manodeobraproducto.subtotal"></td>
+                                        <td v-text="manodeobraproducto.producto"></td>
                                     </tr>
 
                                 </tbody>
@@ -104,16 +99,9 @@
                                         <label class="col-md-3 form-control-label" for="text-input">perfil</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idperfil">
-                                                <option value="0" disabled> Seleccione perfil</option>
+                                                <option value="0" disabled> Seleccione Perfil</option>
                                                 <option v-for="perfil in arrayPerfil" :key="perfil.idperfil" :value="perfil.idperfil" v-text="perfil.perfil"></option>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="idPerfil" class="form-control" placeholder="Nombre de la mano de obra">
-                                            <span class="help-block">(*) Ingrese el nombre de la mano de obra</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -133,8 +121,10 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Hoja</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="idHoja" class="form-control" placeholder="Nombre de hoja de costo">
-                                            <span class="help-block">(*) Ingrese el nombre de hoja de costo</span>
+                                            <select class="form-control" v-model="idHoja">
+                                                <option value="0" disabled> Seleccione la hoja</option>
+                                                <option v-for="perfil in arrayHoja" :key="perfil.idperfil" :value="perfil.idperfil" v-text="perfil.perfil"></option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group row div-error" v-show="errorManoDeObraProducto">
@@ -242,7 +232,7 @@
                 var url='/manodeobraproducto/selectManoDeObraProducto';
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayPerfil=respuesta.perfiles;
+                me.arrayManoDeObraProducto=respuesta.manodeobraproductos;
                 })
                 .catch(function (error) {
                     // handle error
@@ -404,24 +394,24 @@
                 {
                     switch (accion) {
                         case 'crear':{
-                            this.modal=1;
-                            this.idPerfil='';
+                            this.modal=1;                            
                             this.tiempo='';
                             this.precio='';
                             this.tituloModal='Crear nueva mano de obra';
                             this.tipoAccion= 1;
+                            this.idPerfil=1;
                             this.idHoja= 1;
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar producto';
+                            this.tituloModal='Editar mano de obra';
                             this.tipoAccion= 2;
                             this.idManoDeObraProducto=data['id'];
-                            this.idPerfil=data['idPerfil'];
                             this.tiempo=data['tiempo'];
                             this.precio=data['precio'];
+                            this.idPerfil=data['idPerfil'];
                             this.idHoja=data['idHoja']; // añadido para alimentar el select
                             break;
                         }

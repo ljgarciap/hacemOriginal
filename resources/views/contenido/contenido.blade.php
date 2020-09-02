@@ -58,7 +58,7 @@
     </template>
 
     <template v-if="menu==14">
-        <materiaprima></materiaprima>
+        <manodeobraproducto></manodeobraproducto>
     </template>
 
     <template v-if="menu==15">
