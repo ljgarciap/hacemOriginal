@@ -98,7 +98,6 @@
                 },
                 offset : 3,
                 criterio : 'gestionMateria',
-                identificador:1,
                 buscar : ''
             }
         },

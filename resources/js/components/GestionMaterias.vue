@@ -17,13 +17,12 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
                                         <option value="gestionMateria">Nombre</option>
                                         <option value="unidadBase">Unidad base</option>
                                         <option value="tipoMateria">Tipo Materia</option>
-                                        <option value="id">Id</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarGestionMateria(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarGestionMateria(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -56,7 +55,7 @@
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarGestionMateria(proceso.id)">
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarGestionMateria(gestionMateria.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
@@ -120,8 +119,9 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Unidad Base</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="unidadBase">
-                                                <option v-for="unidadBase in arrayUnidadBase" :key="unidadBase.idUnidadBase" :value="unidadBase.idUnidadBase" v-text="unidadBase.unidadBase"></option>
+                                            <select class="form-control" v-model="idUnidadBase">
+                                                <option value="0" disabled>Seleccione una unidad</option>
+                                                <option v-for="unidadbase in arrayUnidadBase" :key="unidadbase.idUnidadBase" :value="unidadbase.idUnidadBase" v-text="unidadbase.unidadBase"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -137,13 +137,14 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tipo Materia</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="tipoMateria">
-                                                <option v-for="tipoMateria in arrayTipoMateria" :key="tipoMateria.idTipoMateria" :value="tipoMateria.idTipoMateria" v-text="tipoMateria.tipoMateria"></option>
+                                            <select class="form-control" v-model="idTipoMateria">
+                                                <option value="0" disabled>Seleccione el tipo de material</option>
+                                                <option v-for="tipomateria in arrayTipoMateria" :key="tipomateria.idTipoMateria" :value="tipomateria.idTipoMateria" v-text="tipomateria.tipoMateria"></option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div class="form-group row div-error" v-show="errorProceso">
+                                    <div class="form-group row div-error" v-show="errorGestionMateria">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -169,24 +170,23 @@
     export default {
         data(){
             return{
-                idGestionMateria:0,
+                idGestionMateria: 0,
                 id:'',
                 gestionMateria:'',
-                idUnidadBase:'',
+                idPrecioBase: 0,
                 precioBase:'',
-                tipoMateria:'',
                 estado:'',
                 arrayGestionMateria : [],
-                idUnidadBase:0,
-                unidadBase:'',
+                idUnidadBase: 0,
+                unidadBase: 0,
                 arrayUnidadBase:[],
-                idTipoMateria:0,
-                tipoMateria:'',
+                idTipoMateria: 0,
+                tipoMateria: 0,
                 arrayTipoMateria:[],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorProceso : 0,
+                errorGestionMateria : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -243,12 +243,24 @@
                     console.log(error);
                 })
             },
-            selectGestionMateria(){
+            selectTipoMateria(){
                 let me=this;
-                var url='/gestionmateria/selectGestionMateria';
+                var url='/gestionmateria/selectTipoMateria';
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayGestionMateria=respuesta.gestionmaterias;
+                me.arrayTipoMateria=respuesta.tipomaterias;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            selectUnidadBase(){
+                let me=this;
+                var url='/gestionmateria/selectUnidadBase';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayUnidadBase=respuesta.unidadesbase;
                 })
                 .catch(function (error) {
                     // handle error
@@ -267,7 +279,6 @@
                 if(this.validarGestionMateria()){
                     return;
                 }
-
                 let me=this;
                 axios.post('/gestionmateria/store',{
                     'gestionMateria': this.gestionMateria,
@@ -286,9 +297,9 @@
                 if(this.validarGestionMateria()){
                     return;
                 }
-
                 let me=this;
                 axios.put('/gestionmateria/update',{
+                    'id': this.id,
                     'gestionMateria': this.gestionMateria,
                     'idUnidadBase': this.idUnidadBase,
                     'precioBase': this.precioBase,
@@ -311,7 +322,6 @@
                 },
                 buttonsStyling: false
                 })
-
                 swalWithBootstrapButtons.fire({
                 title: 'Está seguro?',
                 icon: 'warning',
@@ -348,7 +358,6 @@
                 },
                 buttonsStyling: false
                 })
-
                 swalWithBootstrapButtons.fire({
                 title: 'Quiere activar esta gestión?',
                 icon: 'warning',
@@ -380,7 +389,7 @@
             validarGestionMateria(){
                 this.errorGestionMateria=0;
                 this.errorMensaje=[];
-                if (!this.gestionmateria) this.errorMensaje.push("El nombre de la gestión no puede estar vacio");
+                if (!this.gestionMateria) this.errorMensaje.push("El nombre de la gestión no puede estar vacio");
                 if (this.errorMensaje.length) this.errorGestionMateria=1;
 
                 return this.errorGestionMateria;
@@ -409,12 +418,13 @@
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar proceso';
+                            this.tituloModal='Editar gestión';
                             this.tipoAccion= 2;
                             this.gestionMateria=data['gestionMateria'];
                             this.idUnidadBase=data['idUnidadBase'];
                             this.precioBase=data['precioBase'];
                             this.idTipoMateria=data['idTipoMateria'];
+                            this.id=data['id'];
                             break;
                         }
                     }
@@ -425,7 +435,9 @@
             }
         },
         mounted() {
-            this.listarGestionMateria(1,this.buscar,this.criterio);
+            this.listarGestionMateria(1,'','');
+            this.selectTipoMateria();
+            this.selectUnidadBase();
         }
     }
 </script>

@@ -35,7 +35,7 @@ class Tb_gestion_materia_primaController extends Controller
                 ->leftJoin('tb_tipo_materia',function($join){
                     $join->on('tb_gestion_materia_prima.idTipoMateria','=','tb_tipo_materia.id');
                 })
-                ->select('tb_gestion_materia_prima.id','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.proceso','tb_gestion_materia_prima.estado','tb_unidad_base.id as idUnidadBase','tb_unidad_base.area','tb_unidad_base.estado as estado_unidad_base')
+                ->select('tb_gestion_materia_prima.id','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.precioBase','tb_gestion_materia_prima.idTipoMateria','tb_gestion_materia_prima.estado','tb_unidad_base.unidadBase as unidadBase','tb_unidad_base.estado as estado_unidad_base','tb_tipo_materia.tipoMateria as tipoMateria','tb_tipo_materia.estado as estado_tipo_materia')
                 ->where('tb_tipo_materia.'.$criterio, 'like', '%'. $buscar . '%')
                 ->orderBy('tb_gestion_materia_prima.id','desc')->paginate(5);
             }
@@ -44,7 +44,7 @@ class Tb_gestion_materia_primaController extends Controller
                 ->leftJoin('tb_tipo_materia',function($join){
                     $join->on('tb_gestion_materia_prima.idTipoMateria','=','tb_tipo_materia.id');
                 })
-                ->select('tb_gestion_materia_prima.id','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.proceso','tb_gestion_materia_prima.estado','tb_unidad_base.id as idUnidadBase','tb_unidad_base.area','tb_unidad_base.estado as estado_unidad_base')
+                ->select('tb_gestion_materia_prima.id','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.precioBase','tb_gestion_materia_prima.idTipoMateria','tb_gestion_materia_prima.estado','tb_unidad_base.unidadBase as unidadBase','tb_unidad_base.estado as estado_unidad_base','tb_tipo_materia.tipoMateria as tipoMateria','tb_tipo_materia.estado as estado_tipo_materia')
                 ->where('tb_unidad_base.'.$criterio, 'like', '%'. $buscar . '%')
                 ->orderBy('tb_gestion_materia_prima.id','desc')->paginate(5);
             }
@@ -54,7 +54,7 @@ class Tb_gestion_materia_primaController extends Controller
                 ->leftJoin('tb_tipo_materia',function($join){
                     $join->on('tb_gestion_materia_prima.idTipoMateria','=','tb_tipo_materia.id');
                 })
-                ->select('tb_gestion_materia_prima.id','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.proceso','tb_gestion_materia_prima.estado','tb_unidad_base.id as idUnidadBase','tb_unidad_base.area','tb_unidad_base.estado as estado_unidad_base')
+                ->select('tb_gestion_materia_prima.id','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.precioBase','tb_gestion_materia_prima.idTipoMateria','tb_gestion_materia_prima.estado','tb_unidad_base.unidadBase as unidadBase','tb_unidad_base.estado as estado_unidad_base','tb_tipo_materia.tipoMateria as tipoMateria','tb_tipo_materia.estado as estado_tipo_materia')
                 ->where('tb_gestion_materia_prima.'.$criterio, 'like', '%'. $buscar . '%')
                 ->orderBy('tb_gestion_materia_prima.id','desc')->paginate(5);
 
@@ -81,7 +81,7 @@ class Tb_gestion_materia_primaController extends Controller
         }
 
         public function selectUnidadBase(){
-            $unidadesbase = Tb_tipo_materia::where('estado','=','1')
+            $unidadesbase = Tb_unidad_base::where('estado','=','1')
             ->select('id as idUnidadBase','unidadBase')->orderBy('unidadBase','asc')->get();
 
             return ['unidadesbase' => $unidadesbase];

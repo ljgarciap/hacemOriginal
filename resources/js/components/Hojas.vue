@@ -12,7 +12,7 @@
                         <div class="card">
                             <div class="card-body">
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
                                         <option value="producto">Producto</option>
@@ -93,11 +93,14 @@
                             <div class="card">
                                 <vs-tabs :color="colorx">
                                 <vs-tab label="Materia Prima" icon="shopping_cart" @click="colorx = '#8B0000'">
+
                                     <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto &nbsp;
                                         <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
                                             <i class="icon-plus"></i>&nbsp;Nueva materia prima
                                         </button>
                                     </div>
+
                                     <div class="card-body">
                                         <materiaprima v-bind:identificador="identificador"></materiaprima>
                                     </div>
@@ -143,7 +146,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="cantidad" class="form-control" placeholder="Nombre de proceso">
+                                            <input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
                                             <span class="help-block">(*) Ingrese la cantidad de material</span>
                                         </div>
                                     </div>
@@ -212,10 +215,13 @@
                 idArea:0,
                 area:'',
                 arrayProducto : [],
+                cantidad:0,
+                precio:0,
+                tipoDeCosto:'',
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorProducto : 0,
+                errorMateriaPrimaProducto : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -228,6 +234,7 @@
                 offset : 3,
                 criterio : 'producto',
                 identificador: 0,
+                productoNombre:'',
                 buscar : ''
             }
         },
@@ -288,6 +295,7 @@
             mostrarDetalle(id){
                 this.listado=0;
                 this.identificador=id;
+                this.productoNombre=this.producto;
             },
             ocultarDetalle(){
                 this.listado=1;

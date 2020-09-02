@@ -2931,8 +2931,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
 //
 //
 //
@@ -3102,25 +3101,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    var _ref;
-
-    return _ref = {
+    return {
       idGestionMateria: 0,
       id: '',
       gestionMateria: '',
-      idUnidadBase: '',
+      idPrecioBase: 0,
       precioBase: '',
-      tipoMateria: '',
       estado: '',
-      arrayGestionMateria: []
-    }, _defineProperty(_ref, "idUnidadBase", 0), _defineProperty(_ref, "unidadBase", ''), _defineProperty(_ref, "arrayUnidadBase", []), _defineProperty(_ref, "idTipoMateria", 0), _defineProperty(_ref, "tipoMateria", ''), _defineProperty(_ref, "arrayTipoMateria", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorProceso", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
-      'total': 0,
-      'current_page': 0,
-      'per_page': 0,
-      'last_page': 0,
-      'from': 0,
-      'to': 0
-    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'gestionMateria'), _defineProperty(_ref, "buscar", ''), _ref;
+      arrayGestionMateria: [],
+      idUnidadBase: 0,
+      unidadBase: 0,
+      arrayUnidadBase: [],
+      idTipoMateria: 0,
+      tipoMateria: 0,
+      arrayTipoMateria: [],
+      modal: 0,
+      tituloModal: '',
+      tipoAccion: 0,
+      errorGestionMateria: 0,
+      errorMensaje: [],
+      pagination: {
+        'total': 0,
+        'current_page': 0,
+        'per_page': 0,
+        'last_page': 0,
+        'from': 0,
+        'to': 0
+      },
+      offset: 3,
+      criterio: 'gestionMateria',
+      buscar: ''
+    };
   },
   computed: {
     isActived: function isActived() {
@@ -3167,12 +3178,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
-    selectGestionMateria: function selectGestionMateria() {
+    selectTipoMateria: function selectTipoMateria() {
       var me = this;
-      var url = '/gestionmateria/selectGestionMateria';
+      var url = '/gestionmateria/selectTipoMateria';
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayGestionMateria = respuesta.gestionmaterias;
+        me.arrayTipoMateria = respuesta.tipomaterias;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    selectUnidadBase: function selectUnidadBase() {
+      var me = this;
+      var url = '/gestionmateria/selectUnidadBase';
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayUnidadBase = respuesta.unidadesbase;
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -3211,6 +3233,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var me = this;
       axios.put('/gestionmateria/update', {
+        'id': this.id,
         'gestionMateria': this.gestionMateria,
         'idUnidadBase': this.idUnidadBase,
         'precioBase': this.precioBase,
@@ -3299,7 +3322,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     validarGestionMateria: function validarGestionMateria() {
       this.errorGestionMateria = 0;
       this.errorMensaje = [];
-      if (!this.gestionmateria) this.errorMensaje.push("El nombre de la gestión no puede estar vacio");
+      if (!this.gestionMateria) this.errorMensaje.push("El nombre de la gestión no puede estar vacio");
       if (this.errorMensaje.length) this.errorGestionMateria = 1;
       return this.errorGestionMateria;
     },
@@ -3332,12 +3355,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 {
                   //console.log(data);
                   this.modal = 1;
-                  this.tituloModal = 'Editar proceso';
+                  this.tituloModal = 'Editar gestión';
                   this.tipoAccion = 2;
                   this.gestionMateria = data['gestionMateria'];
                   this.idUnidadBase = data['idUnidadBase'];
                   this.precioBase = data['precioBase'];
                   this.idTipoMateria = data['idTipoMateria'];
+                  this.id = data['id'];
                   break;
                 }
             }
@@ -3348,7 +3372,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   mounted: function mounted() {
-    this.listarGestionMateria(1, this.buscar, this.criterio);
+    this.listarGestionMateria(1, '', '');
+    this.selectTipoMateria();
+    this.selectUnidadBase();
   }
 });
 
@@ -3366,6 +3392,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_MateriaPrimaProductos__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/MateriaPrimaProductos */ "./resources/js/components/MateriaPrimaProductos.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
 //
 //
 //
@@ -3577,14 +3606,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", ''), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
       'last_page': 0,
       'from': 0,
       'to': 0
-    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'producto'), _defineProperty(_ref, "identificador", 0), _defineProperty(_ref, "buscar", ''), _ref;
+    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'producto'), _defineProperty(_ref, "identificador", 0), _defineProperty(_ref, "productoNombre", ''), _defineProperty(_ref, "buscar", ''), _ref;
   },
   computed: {
     isActived: function isActived() {
@@ -3645,6 +3674,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     mostrarDetalle: function mostrarDetalle(id) {
       this.listado = 0;
       this.identificador = id;
+      this.productoNombre = this.producto;
     },
     ocultarDetalle: function ocultarDetalle() {
       this.listado = 1;
@@ -3807,7 +3837,6 @@ __webpack_require__.r(__webpack_exports__);
       },
       offset: 3,
       criterio: 'gestionMateria',
-      identificador: 1,
       buscar: ''
     };
   },
@@ -4684,7 +4713,7 @@ __webpack_require__.r(__webpack_exports__);
       this.errorProceso = 0;
       this.errorPerfil = 0;
       this.errorMensaje = [];
-      if (!this.proceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
+      if (!this.idProceso) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
       if (!this.perfil) this.errorMensaje.push("El nombre del perfil no puede estar vacio");
       if (!this.valorMinuto) this.errorMensaje.push("El valor del minuto no puede estar vacio");
       if (this.valorMinuto < 0) this.errorMensaje.push("El valor del minuto no puede ser negativo");
@@ -43777,7 +43806,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -44367,7 +44396,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -45600,7 +45629,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -45641,9 +45670,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("option", { attrs: { value: "tipoMateria" } }, [
                       _vm._v("Tipo Materia")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "id" } }, [_vm._v("Id")])
+                    ])
                   ]
                 ),
                 _vm._v(" "),
@@ -45762,7 +45789,7 @@ var render = function() {
                                     on: {
                                       click: function($event) {
                                         return _vm.activarGestionMateria(
-                                          _vm.proceso.id
+                                          gestionMateria.id
                                         )
                                       }
                                     }
@@ -46028,8 +46055,8 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.unidadBase,
-                                expression: "unidadBase"
+                                value: _vm.idUnidadBase,
+                                expression: "idUnidadBase"
                               }
                             ],
                             staticClass: "form-control",
@@ -46043,22 +46070,30 @@ var render = function() {
                                     var val = "_value" in o ? o._value : o.value
                                     return val
                                   })
-                                _vm.unidadBase = $event.target.multiple
+                                _vm.idUnidadBase = $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
                               }
                             }
                           },
-                          _vm._l(_vm.arrayUnidadBase, function(unidadBase) {
-                            return _c("option", {
-                              key: unidadBase.idUnidadBase,
-                              domProps: {
-                                value: unidadBase.idUnidadBase,
-                                textContent: _vm._s(unidadBase.unidadBase)
-                              }
+                          [
+                            _c(
+                              "option",
+                              { attrs: { value: "0", disabled: "" } },
+                              [_vm._v("Seleccione una unidad")]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(_vm.arrayUnidadBase, function(unidadbase) {
+                              return _c("option", {
+                                key: unidadbase.idUnidadBase,
+                                domProps: {
+                                  value: unidadbase.idUnidadBase,
+                                  textContent: _vm._s(unidadbase.unidadBase)
+                                }
+                              })
                             })
-                          }),
-                          0
+                          ],
+                          2
                         )
                       ])
                     ]),
@@ -46120,8 +46155,8 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.tipoMateria,
-                                expression: "tipoMateria"
+                                value: _vm.idTipoMateria,
+                                expression: "idTipoMateria"
                               }
                             ],
                             staticClass: "form-control",
@@ -46135,22 +46170,30 @@ var render = function() {
                                     var val = "_value" in o ? o._value : o.value
                                     return val
                                   })
-                                _vm.tipoMateria = $event.target.multiple
+                                _vm.idTipoMateria = $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
                               }
                             }
                           },
-                          _vm._l(_vm.arrayTipoMateria, function(tipoMateria) {
-                            return _c("option", {
-                              key: tipoMateria.idTipoMateria,
-                              domProps: {
-                                value: tipoMateria.idTipoMateria,
-                                textContent: _vm._s(tipoMateria.tipoMateria)
-                              }
+                          [
+                            _c(
+                              "option",
+                              { attrs: { value: "0", disabled: "" } },
+                              [_vm._v("Seleccione el tipo de material")]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(_vm.arrayTipoMateria, function(tipomateria) {
+                              return _c("option", {
+                                key: tipomateria.idTipoMateria,
+                                domProps: {
+                                  value: tipomateria.idTipoMateria,
+                                  textContent: _vm._s(tipomateria.tipoMateria)
+                                }
+                              })
                             })
-                          }),
-                          0
+                          ],
+                          2
                         )
                       ])
                     ]),
@@ -46162,8 +46205,8 @@ var render = function() {
                           {
                             name: "show",
                             rawName: "v-show",
-                            value: _vm.errorProceso,
-                            expression: "errorProceso"
+                            value: _vm.errorGestionMateria,
+                            expression: "errorGestionMateria"
                           }
                         ],
                         staticClass: "form-group row div-error"
@@ -46307,7 +46350,7 @@ var render = function() {
               _c("div", { staticClass: "card" }, [
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "form-group row" }, [
-                    _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "col-md-9" }, [
                       _c("div", { staticClass: "input-group" }, [
                         _c(
                           "select",
@@ -46625,6 +46668,10 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "card-header" }, [
+                            _c("i", { staticClass: "fa fa-align-justify" }),
+                            _vm._v(
+                              " Producto  \n                                "
+                            ),
                             _c(
                               "button",
                               {
@@ -46805,7 +46852,7 @@ var render = function() {
                             staticClass: "form-control",
                             attrs: {
                               type: "text",
-                              placeholder: "Nombre de proceso"
+                              placeholder: "Cantidad de material"
                             },
                             domProps: { value: _vm.cantidad },
                             on: {
@@ -47426,7 +47473,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -48021,7 +48068,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -48743,7 +48790,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -49332,7 +49379,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -50146,7 +50193,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -50673,7 +50720,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
@@ -51209,7 +51256,7 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
-            _c("div", { staticClass: "col-md-6" }, [
+            _c("div", { staticClass: "col-md-9" }, [
               _c("div", { staticClass: "input-group" }, [
                 _c(
                   "select",
