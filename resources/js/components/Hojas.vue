@@ -42,7 +42,7 @@
 
                                     <tr v-for="producto in arrayProducto" :key="producto.id">
                                         <td>
-                                            <button type="button" @click="mostrarDetalle(producto.idHojaDeCosto)" class="btn btn-success btn-sm">
+                                            <button type="button" @click="mostrarDetalle(producto.idHojaDeCosto,producto.producto)" class="btn btn-success btn-sm">
                                             <i class="icon-eye"></i>
                                             </button> &nbsp;
                                             <button type="button" class="btn btn-warning btn-sm">
@@ -96,7 +96,7 @@
                                 <vs-tab label="Materia Prima" icon="shopping_cart" @click="colorx = '#8B0000'">
 
                                     <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto &nbsp;
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
                                         <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
                                             <i class="icon-plus"></i>&nbsp;Nueva materia prima
                                         </button>
@@ -111,8 +111,8 @@
                                 <vs-tab label="Mano de Obra" icon="work" @click="colorx = '#FFA500'">
 
                                     <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto &nbsp;
-                                        <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                        <button type="button" @click="abrirModal('gestionManoDeObra','crear')" class="btn btn-secondary">
                                             <i class="icon-plus"></i>&nbsp;Nueva mano de obra
                                         </button>
                                     </div>
@@ -142,6 +142,7 @@
                                     <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
+
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" v-text="tituloModal"></h4>
@@ -151,17 +152,8 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                <!--
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Area</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idArea">
-                                                <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                -->
-                                    <div class="form-group row">
+
+                                    <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
@@ -169,7 +161,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
+                                    <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Precio</label>
                                         <div class="col-md-9">
                                             <input type="number" v-model="precio" class="form-control">
@@ -177,7 +169,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
+                                    <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tipo de costo</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="tipoDeCosto">
@@ -187,7 +179,41 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row div-error" v-show="errorMateriaPrimaProducto">
+                                    <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorMateriaPrimaProducto">
+                                        <div class="text-center text-error">
+                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
+                                        </div>
+                                    </div>
+
+                                        <!--------------divs para modal tipo 2--------------------->
+
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idPerfil">
+                                                <option value="Directo">Costo Directo</option>
+                                                <option value="Indirecto">Costo Indirecto</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tiempo</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="tiempo" class="form-control" placeholder="Tiempo de mano de obra">
+                                            <span class="help-block">(*) Ingrese el tiempo de mano de obra</span>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="precio" class="form-control">
+                                            <span class="help-block">(*) Ingrese el precio</span>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorMateriaPrimaProducto">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -195,15 +221,25 @@
 
                                 </form>
                             </div>
-                            <div class="modal-footer">
+
+                                <!--------------------------divs para footer tipo 1 y 2--------------------------------->
+
+                            <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearMateriaPrimaProducto()">Guardar</button>
                                 <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarMateriaPrimaProducto()">Editar</button>
                             </div>
+
+                            <div v-if="tipoModal==2" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearMateriaPrimaProducto()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarMateriaPrimaProducto()">Editar</button>
+                            </div>
+
                         </div>
                         <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-dialog -->
+                    <!-- /.modal-dialog tipo Modal 1 -->
                 </div>
                 <!--Fin del modal-->
         </main>
@@ -237,9 +273,10 @@
                 arrayProducto : [],
                 cantidad:0,
                 precio:0,
-                tipoDeCosto:'',
+                tipoDeCosto:'Directo',
                 modal : 0,
                 tituloModal : '',
+                tipoModal : 0,
                 tipoAccion : 0,
                 errorMateriaPrimaProducto : 0,
                 errorMensaje : [],
@@ -312,47 +349,90 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarProducto(page,buscar,criterio);
             },
-            mostrarDetalle(id){
+            mostrarDetalle(id,producto){
                 this.listado=0;
                 this.identificador=id;
-                this.productoNombre=this.producto;
+                this.productoNombre=producto;
             },
             ocultarDetalle(){
                 this.listado=1;
                 this.identificador=0;
+                this.productoNombre='';
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
                 this.materiaprimaproducto='';
+                this.manodeobraproducto='';
+                this.tipoModal=0;
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
+
                 case "gestionMateria":
                 {
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
+                            this.tipoModal=1; //carga tupos de campos y footers
                             this.materiaprimaproducto='';
-                            this.idArea=data['idArea'];
-                            this.tituloModal='Crear nuevo proceso';
-                            this.tipoAccion= 1;
-                            this.idArea=1;
+                            this.idMateriaPrima=data['idMateriaPrima'];
+                            this.cantidad=data['cantidad'];
+                            this.precio=data['precio'];
+                            this.idHoja=this.identificador;
+                            this.tituloModal='Asignar nueva materia';
+                            this.tipoAccion= 1; //carga tipos de botón en el footer
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar proceso';
+                            this.tipoModal=1;
+                            this.idMateriaPrima=data['id'];
+                            this.cantidad=data['cantidad'];
+                            this.precio=data['precio'];
+                            this.tipoDeCosto=data['tipoDeCosto'];
+                            this.idHoja=this.identificador;
+                            this.tituloModal='Editar materia prima';
                             this.tipoAccion= 2;
-                            this.idMateriaPrimaProducto=data['id'];
-                            this.proceso=data['materiaprimaproducto'];
-                            this.idArea=data['idArea'];
                             break;
                         }
                     }
-              }
+                    break;
+                }
+
+                case "gestionManoDeObra":
+                {
+                    switch (accion) {
+                        case 'crear':{
+                            this.modal=1;
+                            this.tipoModal=2;
+                            this.manodeobraproducto='';
+                            this.idPerfil=data['idPerfil'];
+                            this.tiempo=data['tiempo'];
+                            this.precio=data['precio'];
+                            this.idHoja=this.identificador;
+                            this.tituloModal='Asignar nueva mano de obra';
+                            this.tipoAccion= 1;
+                            break;
+                        }
+                        case 'actualizar':{
+                            //console.log(data);
+                            this.modal=1;
+                            this.tipoModal=2;
+                            this.idManoDeObraProducto=data['id'];
+                            this.idPerfil=data['idPerfil'];
+                            this.tiempo=data['tiempo'];
+                            this.precio=data['precio'];
+                            this.idHoja=this.identificador;
+                            this.tituloModal='Editar mano de obra';
+                            this.tipoAccion= 2;
+                            break;
+                        }
+                    }
+                    break;
+                }
 
             }
             this.selectArea();

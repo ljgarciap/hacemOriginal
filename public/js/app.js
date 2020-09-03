@@ -3604,6 +3604,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3627,7 +3663,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", ''), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -3692,19 +3728,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       me.listarProducto(page, buscar, criterio);
     },
-    mostrarDetalle: function mostrarDetalle(id) {
+    mostrarDetalle: function mostrarDetalle(id, producto) {
       this.listado = 0;
       this.identificador = id;
-      this.productoNombre = this.producto;
+      this.productoNombre = producto;
     },
     ocultarDetalle: function ocultarDetalle() {
       this.listado = 1;
       this.identificador = 0;
+      this.productoNombre = '';
     },
     cerrarModal: function cerrarModal() {
       this.modal = 0;
       this.tituloModal = '';
       this.materiaprimaproducto = '';
+      this.manodeobraproducto = '';
+      this.tipoModal = 0;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -3717,11 +3756,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 'crear':
                 {
                   this.modal = 1;
+                  this.tipoModal = 1; //carga tupos de campos y footers
+
                   this.materiaprimaproducto = '';
-                  this.idArea = data['idArea'];
-                  this.tituloModal = 'Crear nuevo proceso';
-                  this.tipoAccion = 1;
-                  this.idArea = 1;
+                  this.idMateriaPrima = data['idMateriaPrima'];
+                  this.cantidad = data['cantidad'];
+                  this.precio = data['precio'];
+                  this.idHoja = this.identificador;
+                  this.tituloModal = 'Asignar nueva materia';
+                  this.tipoAccion = 1; //carga tipos de botón en el footer
+
                   break;
                 }
 
@@ -3729,14 +3773,55 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 {
                   //console.log(data);
                   this.modal = 1;
-                  this.tituloModal = 'Editar proceso';
+                  this.tipoModal = 1;
+                  this.idMateriaPrima = data['id'];
+                  this.cantidad = data['cantidad'];
+                  this.precio = data['precio'];
+                  this.tipoDeCosto = data['tipoDeCosto'];
+                  this.idHoja = this.identificador;
+                  this.tituloModal = 'Editar materia prima';
                   this.tipoAccion = 2;
-                  this.idMateriaPrimaProducto = data['id'];
-                  this.proceso = data['materiaprimaproducto'];
-                  this.idArea = data['idArea'];
                   break;
                 }
             }
+
+            break;
+          }
+
+        case "gestionManoDeObra":
+          {
+            switch (accion) {
+              case 'crear':
+                {
+                  this.modal = 1;
+                  this.tipoModal = 2;
+                  this.manodeobraproducto = '';
+                  this.idPerfil = data['idPerfil'];
+                  this.tiempo = data['tiempo'];
+                  this.precio = data['precio'];
+                  this.idHoja = this.identificador;
+                  this.tituloModal = 'Asignar nueva mano de obra';
+                  this.tipoAccion = 1;
+                  break;
+                }
+
+              case 'actualizar':
+                {
+                  //console.log(data);
+                  this.modal = 1;
+                  this.tipoModal = 2;
+                  this.idManoDeObraProducto = data['id'];
+                  this.idPerfil = data['idPerfil'];
+                  this.tiempo = data['tiempo'];
+                  this.precio = data['precio'];
+                  this.idHoja = this.identificador;
+                  this.tituloModal = 'Editar mano de obra';
+                  this.tipoAccion = 2;
+                  break;
+                }
+            }
+
+            break;
           }
       }
 
@@ -46773,7 +46858,8 @@ var render = function() {
                                     on: {
                                       click: function($event) {
                                         return _vm.mostrarDetalle(
-                                          producto.idHojaDeCosto
+                                          producto.idHojaDeCosto,
+                                          producto.producto
                                         )
                                       }
                                     }
@@ -46957,7 +47043,9 @@ var render = function() {
                           _c("div", { staticClass: "card-header" }, [
                             _c("i", { staticClass: "fa fa-align-justify" }),
                             _vm._v(
-                              " Producto  \n                                "
+                              " Producto: " +
+                                _vm._s(this.productoNombre) +
+                                "  \n                                "
                             ),
                             _c(
                               "button",
@@ -47009,7 +47097,9 @@ var render = function() {
                           _c("div", { staticClass: "card-header" }, [
                             _c("i", { staticClass: "fa fa-align-justify" }),
                             _vm._v(
-                              " Producto  \n                                "
+                              " Producto: " +
+                                _vm._s(this.productoNombre) +
+                                "  \n                                "
                             ),
                             _c(
                               "button",
@@ -47019,7 +47109,7 @@ var render = function() {
                                 on: {
                                   click: function($event) {
                                     return _vm.abrirModal(
-                                      "gestionMateria",
+                                      "gestionManoDeObra",
                                       "crear"
                                     )
                                   }
@@ -47155,218 +47245,460 @@ var render = function() {
                       }
                     },
                     [
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-3 form-control-label",
-                            attrs: { for: "text-input" }
-                          },
-                          [_vm._v("Cantidad")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-9" }, [
-                          _c("input", {
-                            directives: [
+                      _vm.tipoModal == 1
+                        ? _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
                               {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.cantidad,
-                                expression: "cantidad"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              placeholder: "Cantidad de material"
-                            },
-                            domProps: { value: _vm.cantidad },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Cantidad")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.cantidad,
+                                    expression: "cantidad"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Cantidad de material"
+                                },
+                                domProps: { value: _vm.cantidad },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.cantidad = $event.target.value
+                                  }
                                 }
-                                _vm.cantidad = $event.target.value
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "help-block" }, [
-                            _vm._v("(*) Ingrese la cantidad de material")
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "help-block" }, [
+                                _vm._v("(*) Ingrese la cantidad de material")
+                              ])
+                            ])
                           ])
-                        ])
-                      ]),
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-3 form-control-label",
-                            attrs: { for: "text-input" }
-                          },
-                          [_vm._v("Precio")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-9" }, [
-                          _c("input", {
-                            directives: [
+                      _vm.tipoModal == 1
+                        ? _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
                               {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.precio,
-                                expression: "precio"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "number" },
-                            domProps: { value: _vm.precio },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Precio")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.precio,
+                                    expression: "precio"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "number" },
+                                domProps: { value: _vm.precio },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.precio = $event.target.value
+                                  }
                                 }
-                                _vm.precio = $event.target.value
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "help-block" }, [
-                            _vm._v("(*) Ingrese el precio")
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "help-block" }, [
+                                _vm._v("(*) Ingrese el precio")
+                              ])
+                            ])
                           ])
-                        ])
-                      ]),
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-3 form-control-label",
-                            attrs: { for: "text-input" }
-                          },
-                          [_vm._v("Tipo de costo")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-9" }, [
-                          _c(
-                            "select",
+                      _vm.tipoModal == 1
+                        ? _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Tipo de costo")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.tipoDeCosto,
+                                      expression: "tipoDeCosto"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.tipoDeCosto = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "Directo" } },
+                                    [_vm._v("Costo Directo")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "Indirecto" } },
+                                    [_vm._v("Costo Indirecto")]
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.tipoModal == 1
+                        ? _c(
+                            "div",
                             {
                               directives: [
                                 {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.tipoDeCosto,
-                                  expression: "tipoDeCosto"
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.errorMateriaPrimaProducto,
+                                  expression: "errorMateriaPrimaProducto"
                                 }
                               ],
-                              staticClass: "form-control",
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.tipoDeCosto = $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                }
-                              }
+                              staticClass: "form-group row div-error"
                             },
                             [
-                              _c("option", { attrs: { value: "Directo" } }, [
-                                _vm._v("Costo Directo")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "Indirecto" } }, [
-                                _vm._v("Costo Indirecto")
-                              ])
+                              _c(
+                                "div",
+                                { staticClass: "text-center text-error" },
+                                _vm._l(_vm.errorMensaje, function(error) {
+                                  return _c("div", {
+                                    key: error,
+                                    domProps: { textContent: _vm._s(error) }
+                                  })
+                                }),
+                                0
+                              )
                             ]
                           )
-                        ])
-                      ]),
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.errorMateriaPrimaProducto,
-                              expression: "errorMateriaPrimaProducto"
-                            }
-                          ],
-                          staticClass: "form-group row div-error"
-                        },
-                        [
-                          _c(
+                      _vm.tipoModal == 2
+                        ? _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Perfil")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.idPerfil,
+                                      expression: "idPerfil"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.idPerfil = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "Directo" } },
+                                    [_vm._v("Costo Directo")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "Indirecto" } },
+                                    [_vm._v("Costo Indirecto")]
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.tipoModal == 2
+                        ? _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Tiempo")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.tiempo,
+                                    expression: "tiempo"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: {
+                                  type: "text",
+                                  placeholder: "Tiempo de mano de obra"
+                                },
+                                domProps: { value: _vm.tiempo },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.tiempo = $event.target.value
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "help-block" }, [
+                                _vm._v("(*) Ingrese el tiempo de mano de obra")
+                              ])
+                            ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.tipoModal == 2
+                        ? _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Precio")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.precio,
+                                    expression: "precio"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "number" },
+                                domProps: { value: _vm.precio },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.precio = $event.target.value
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "help-block" }, [
+                                _vm._v("(*) Ingrese el precio")
+                              ])
+                            ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.tipoModal == 2
+                        ? _c(
                             "div",
-                            { staticClass: "text-center text-error" },
-                            _vm._l(_vm.errorMensaje, function(error) {
-                              return _c("div", {
-                                key: error,
-                                domProps: { textContent: _vm._s(error) }
-                              })
-                            }),
-                            0
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.errorMateriaPrimaProducto,
+                                  expression: "errorMateriaPrimaProducto"
+                                }
+                              ],
+                              staticClass: "form-group row div-error"
+                            },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "text-center text-error" },
+                                _vm._l(_vm.errorMensaje, function(error) {
+                                  return _c("div", {
+                                    key: error,
+                                    domProps: { textContent: _vm._s(error) }
+                                  })
+                                }),
+                                0
+                              )
+                            ]
                           )
-                        ]
-                      )
+                        : _vm._e()
                     ]
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "modal-footer" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.cerrarModal()
-                        }
-                      }
-                    },
-                    [_vm._v("Cerrar")]
-                  ),
-                  _vm._v(" "),
-                  _vm.tipoAccion == 1
-                    ? _c(
+                _vm.tipoModal == 1
+                  ? _c("div", { staticClass: "modal-footer" }, [
+                      _c(
                         "button",
                         {
-                          staticClass: "btn btn-primary",
+                          staticClass: "btn btn-secondary",
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.crearMateriaPrimaProducto()
+                              return _vm.cerrarModal()
                             }
                           }
                         },
-                        [_vm._v("Guardar")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.tipoAccion == 2
-                    ? _c(
+                        [_vm._v("Cerrar")]
+                      ),
+                      _vm._v(" "),
+                      _vm.tipoAccion == 1
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.crearMateriaPrimaProducto()
+                                }
+                              }
+                            },
+                            [_vm._v("Guardar")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.tipoAccion == 2
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-warning",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editarMateriaPrimaProducto()
+                                }
+                              }
+                            },
+                            [_vm._v("Editar")]
+                          )
+                        : _vm._e()
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.tipoModal == 2
+                  ? _c("div", { staticClass: "modal-footer" }, [
+                      _c(
                         "button",
                         {
-                          staticClass: "btn btn-warning",
+                          staticClass: "btn btn-secondary",
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.editarMateriaPrimaProducto()
+                              return _vm.cerrarModal()
                             }
                           }
                         },
-                        [_vm._v("Editar")]
-                      )
-                    : _vm._e()
-                ])
+                        [_vm._v("Cerrar")]
+                      ),
+                      _vm._v(" "),
+                      _vm.tipoAccion == 1
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.crearMateriaPrimaProducto()
+                                }
+                              }
+                            },
+                            [_vm._v("Guardar")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.tipoAccion == 2
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-warning",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editarMateriaPrimaProducto()
+                                }
+                              }
+                            },
+                            [_vm._v("Editar")]
+                          )
+                        : _vm._e()
+                    ])
+                  : _vm._e()
               ])
             ]
           )
