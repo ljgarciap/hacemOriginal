@@ -117,4 +117,15 @@ class Tb_mano_de_obra_productoController extends Controller
         $tb_mano_de_obra_producto->estado='1';
         $tb_mano_de_obra_producto->save();
     }
+
+    public function selectRelacionPerfil($id){
+        $perfilrelaciones = tb_perfil::where([
+                    ['estado','=','1'],
+                    ['idProceso','=',$id],
+                ])
+                ->select('id as idPerfil','perfil')
+                ->orderBy('perfil','asc')->get();
+                return ['perfilrelaciones' => $perfilrelaciones];
+        }
+
 }

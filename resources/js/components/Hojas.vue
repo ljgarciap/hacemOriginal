@@ -49,7 +49,7 @@
 
                                     <tr v-for="producto in arrayProducto" :key="producto.id">
                                         <td>
-                                            <button type="button" @click="mostrarDetalle(producto.idHojaDeCosto,producto.producto)" class="btn btn-success btn-sm">
+                                            <button type="button" @click="mostrarDetalle(producto.idHojaDeCosto,producto.producto,producto.idArea)" class="btn btn-success btn-sm">
                                             <i class="icon-eye"></i>
                                             </button> &nbsp;
                                             <button type="button" class="btn btn-warning btn-sm">
@@ -195,11 +195,21 @@
                                         <!--------------divs para modal tipo 2--------------------->
 
                                     <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idProceso" @change='selectRelacionPerfil(relacion.idProceso)'>
+                                                <option value="0" disabled>Seleccione un proceso</option>
+                                                <option v-for="relacion in arrayRelacion" :key="relacion.idProceso" :value="relacion.idProceso" v-text="relacion.proceso"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idPerfil">
-                                                <option value="Directo">Costo Directo</option>
-                                                <option value="Indirecto">Costo Indirecto</option>
+                                                <option value="0" disabled>Seleccione un perfil</option>
+                                                <option v-for="perfilrelacion in arrayPerfilRelacion" :key="perfilrelacion.idPerfil" :value="perfilrelacion.idPerfil" v-text="perfilrelacion.perfil"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -281,6 +291,14 @@
                 cantidad:0,
                 precio:0,
                 tipoDeCosto:'Directo',
+                idProceso:0,
+                proceso:'',
+                relacion:'',
+                perfilrelacion:'',
+                arrayRelacion:[],
+                idPerfil:0,
+                perfil:'',
+                arrayPerfilRelacion:[],
                 modal : 0,
                 tituloModal : '',
                 tipoModal : 0,
@@ -299,6 +317,7 @@
                 offset : 3,
                 criterio : 'producto',
                 identificador: 0,
+                identificadorArea: 0,
                 productoNombre:'',
                 buscar : ''
             }
@@ -357,14 +376,16 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarProducto(page,buscar,criterio);
             },
-            mostrarDetalle(id,producto){
+            mostrarDetalle(id,producto,area){
                 this.listado=0;
                 this.identificador=id;
+                this.identificadorArea=area;
                 this.productoNombre=producto;
             },
             ocultarDetalle(){
                 this.listado=1;
                 this.identificador=0;
+                this.identificadorArea=0;
                 this.productoNombre='';
             },
             cerrarModal(){
@@ -421,8 +442,10 @@
                             this.tiempo=data['tiempo'];
                             this.precio=data['precio'];
                             this.idHoja=this.identificador;
+                            this.idArea=this.identificadorArea;
                             this.tituloModal='Asignar nueva mano de obra';
                             this.tipoAccion= 1;
+                            this.selectRelacion(this.idArea);
                             break;
                         }
                         case 'actualizar':{
@@ -443,7 +466,31 @@
                 }
 
             }
-            this.selectArea();
+
+            },
+            selectRelacion(idArea){
+                let me=this;
+                var url='/perfil/selectRelacion/'+this.idArea;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayRelacion=respuesta.relaciones;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            selectRelacionPerfil(idProceso){
+                let me=this;
+                var url='/manodeobraproducto/selectRelacionPerfil/'+this.idProceso;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayPerfilRelacion=respuesta.perfilrelaciones;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             //funciones para uso del lightbox
             showLightbox(fotoCarga) {

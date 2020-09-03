@@ -3647,6 +3647,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3670,14 +3680,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
       'last_page': 0,
       'from': 0,
       'to': 0
-    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'producto'), _defineProperty(_ref, "identificador", 0), _defineProperty(_ref, "productoNombre", ''), _defineProperty(_ref, "buscar", ''), _ref;
+    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'producto'), _defineProperty(_ref, "identificador", 0), _defineProperty(_ref, "identificadorArea", 0), _defineProperty(_ref, "productoNombre", ''), _defineProperty(_ref, "buscar", ''), _ref;
   },
   computed: {
     isActived: function isActived() {
@@ -3735,14 +3745,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       me.listarProducto(page, buscar, criterio);
     },
-    mostrarDetalle: function mostrarDetalle(id, producto) {
+    mostrarDetalle: function mostrarDetalle(id, producto, area) {
       this.listado = 0;
       this.identificador = id;
+      this.identificadorArea = area;
       this.productoNombre = producto;
     },
     ocultarDetalle: function ocultarDetalle() {
       this.listado = 1;
       this.identificador = 0;
+      this.identificadorArea = 0;
       this.productoNombre = '';
     },
     cerrarModal: function cerrarModal() {
@@ -3807,8 +3819,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.tiempo = data['tiempo'];
                   this.precio = data['precio'];
                   this.idHoja = this.identificador;
+                  this.idArea = this.identificadorArea;
                   this.tituloModal = 'Asignar nueva mano de obra';
                   this.tipoAccion = 1;
+                  this.selectRelacion(this.idArea);
                   break;
                 }
 
@@ -3831,8 +3845,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
           }
       }
-
-      this.selectArea();
+    },
+    selectRelacion: function selectRelacion(idArea) {
+      var me = this;
+      var url = '/perfil/selectRelacion/' + this.idArea;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayRelacion = respuesta.relaciones;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    selectRelacionPerfil: function selectRelacionPerfil(idProceso) {
+      var me = this;
+      var url = '/manodeobraproducto/selectRelacionPerfil/' + this.idProceso;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayPerfilRelacion = respuesta.perfilrelaciones;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
     },
     //funciones para uso del lightbox
     showLightbox: function showLightbox(fotoCarga) {
@@ -46975,7 +47009,8 @@ var render = function() {
                                       click: function($event) {
                                         return _vm.mostrarDetalle(
                                           producto.idHojaDeCosto,
-                                          producto.producto
+                                          producto.producto,
+                                          producto.idArea
                                         )
                                       }
                                     }
@@ -47555,6 +47590,79 @@ var render = function() {
                                 staticClass: "col-md-3 form-control-label",
                                 attrs: { for: "text-input" }
                               },
+                              [_vm._v("Proceso")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-9" }, [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.idProceso,
+                                      expression: "idProceso"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  on: {
+                                    change: [
+                                      function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.idProceso = $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      },
+                                      function($event) {
+                                        return _vm.selectRelacionPerfil(
+                                          _vm.relacion.idProceso
+                                        )
+                                      }
+                                    ]
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "0", disabled: "" } },
+                                    [_vm._v("Seleccione un proceso")]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.arrayRelacion, function(relacion) {
+                                    return _c("option", {
+                                      key: relacion.idProceso,
+                                      domProps: {
+                                        value: relacion.idProceso,
+                                        textContent: _vm._s(relacion.proceso)
+                                      }
+                                    })
+                                  })
+                                ],
+                                2
+                              )
+                            ])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.tipoModal == 2
+                        ? _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-3 form-control-label",
+                                attrs: { for: "text-input" }
+                              },
                               [_vm._v("Perfil")]
                             ),
                             _vm._v(" "),
@@ -47593,16 +47701,25 @@ var render = function() {
                                 [
                                   _c(
                                     "option",
-                                    { attrs: { value: "Directo" } },
-                                    [_vm._v("Costo Directo")]
+                                    { attrs: { value: "0", disabled: "" } },
+                                    [_vm._v("Seleccione un perfil")]
                                   ),
                                   _vm._v(" "),
-                                  _c(
-                                    "option",
-                                    { attrs: { value: "Indirecto" } },
-                                    [_vm._v("Costo Indirecto")]
-                                  )
-                                ]
+                                  _vm._l(_vm.arrayPerfilRelacion, function(
+                                    perfilrelacion
+                                  ) {
+                                    return _c("option", {
+                                      key: perfilrelacion.idPerfil,
+                                      domProps: {
+                                        value: perfilrelacion.idPerfil,
+                                        textContent: _vm._s(
+                                          perfilrelacion.perfil
+                                        )
+                                      }
+                                    })
+                                  })
+                                ],
+                                2
                               )
                             ])
                           ])
