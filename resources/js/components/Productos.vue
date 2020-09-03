@@ -1,5 +1,12 @@
 <template>
         <main class="main">
+            <div id="over" class="overbox">
+                <a v-on:click="hideLightbox()"><p class="cierre"><b>Cerrar</b></p></a>
+                <div id="content">
+                    <center><img :src="fotoCarga" alt=""></center>
+                </div>
+            </div>
+            <div id="fade" class="fadebox">&nbsp;</div>
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
@@ -65,7 +72,7 @@
                                         </td>
                                         <td v-text="producto.producto"></td>
                                         <td v-text="producto.referencia"></td>
-                                        <td v-text="producto.foto"></td>
+                                        <td><a v-on:click="showLightbox(producto.foto)">Ver producto</a></td>
                                         <td v-text="producto.descripcion"></td>
                                         <td v-text="producto.coleccion"></td>
                                         <td v-text="producto.area"></td>
@@ -201,6 +208,7 @@
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
+                fotoCarga:'',
                 errorProducto : 0,
                 errorMensaje : [],
                 pagination : {
@@ -462,7 +470,19 @@
             }
             this.selectColeccion();
             this.selectArea();
-            }
+            },
+            //funciones para uso del lightbox
+            showLightbox(fotoCarga) {
+                this.fotoCarga=fotoCarga;
+                document.getElementById('over').style.display='block';
+                document.getElementById('fade').style.display='block';
+            },
+            hideLightbox() {
+                this.fotoCarga='';
+                document.getElementById('over').style.display='none';
+                document.getElementById('fade').style.display='none';
+            },
+            //cierre de funciones para uso del lightbox
         },
         mounted() {
             this.listarProducto(1,this.buscar,this.criterio);
@@ -487,5 +507,37 @@
     .text-error{
         color: red !important;
         font-weight: bold;
+    }
+    .fadebox {
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index:3001;
+	-moz-opacity: 0.8;
+	opacity:.80;
+	filter: alpha(opacity=80);
+    }
+    .overbox {
+        display: none;
+        position: absolute;
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        z-index:3002;
+        overflow: auto;
+    }
+    #content {
+        background: #FFFFFF;
+        border: solid 3px #CCCCCC;
+        padding: 10px;
+    }
+    .cierre {
+        font-weight: 9rem;
+        color:#FFFFFF;
     }
 </style>

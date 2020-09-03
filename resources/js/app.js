@@ -15,8 +15,8 @@ import 'vuesax/dist/vuesax.css'; //Vuesax styles
 import 'material-icons/iconfont/material-icons.css';
 
 window.Vue.use(Vuesax, {
-  // options here
-});
+    // options here
+  });
 
 /**
  * The following block of code may be used to automatically register your
