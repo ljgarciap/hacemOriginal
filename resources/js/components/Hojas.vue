@@ -634,7 +634,8 @@
             //cierre de funciones para uso del lightbox
         },
         mounted() {
-            this.listarProducto(1,this.buscar,this.criterio)
+            this.listarProducto(1,this.buscar,this.criterio),
+            this.selectGestionMateria()
         }
     }
 </script>
