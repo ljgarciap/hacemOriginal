@@ -153,51 +153,7 @@
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarManoDeObraProducto(page,buscar,criterio);
-            },
-            crearManoDeObraProducto(){
-                //valido con el metodo de validacion creado
-                if(this.validarManoDeObraProducto()){
-                    return;
-                }
-                let me=this;
-                axios.post('/manodeobraproducto/store',{
-                    'manodeobraproducto': this.manodeobraproducto,
-                    'idArea': this.idArea
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarManoDeObraProducto(1,'','gestionMateria');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            editarManoDeObraProducto(){
-                if(this.validarManoDeObraProducto()){
-                    return;
-                }
-
-                let me=this;
-                axios.put('/manodeobraproducto/update',{
-                    'id': this.idManoDeObraProducto,
-                    'manoDeObraProducto': this.manoDeObraProducto,
-                    'idArea': this.idArea
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarManoDeObraProducto(1,'','manodeobraproducto');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            validarManoDeObraProducto(){
-                this.errorManoDeObraProducto=0;
-                this.errorMensaje=[];
-                if (!this.manodeobraproducto) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
-                if (this.errorMensaje.length) this.errorManoDeObraProducto=1;
-
-                return this.errorManoDeObraProducto;
-            },
+            }
         },
         mounted() {
             this.listarManoDeObraProducto(1,'','',this.identificador)

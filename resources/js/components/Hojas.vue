@@ -3,7 +3,7 @@
             <div id="over" class="overbox">
                 <a v-on:click="hideLightbox()"><p class="cierre"><b>Cerrar</b></p></a>
                 <div id="content">
-                    <center><img :src="fotoCarga" alt=""></center>
+                    <center><img :src="fotoCarga" alt="" class="imglight"></center>
                 </div>
             </div>
             <div id="fade" class="fadebox">&nbsp;</div>
@@ -161,6 +161,16 @@
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
                                     <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idGestionMateria">
+                                                <option value="0" disabled>Seleccione una materia prima</option>
+                                                <option v-for="gestionmateria in arrayGestionMaterias" :key="gestionmateria.idGestionMateria" :value="gestionmateria.idGestionMateria" v-text="gestionmateria.gestionMateria"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
@@ -217,7 +227,7 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tiempo</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="tiempo" class="form-control" placeholder="Tiempo de mano de obra">
+                                            <input type="number" v-model="tiempo" class="form-control" placeholder="Tiempo de mano de obra">
                                             <span class="help-block">(*) Ingrese el tiempo de mano de obra</span>
                                         </div>
                                     </div>
@@ -249,8 +259,8 @@
 
                             <div v-if="tipoModal==2" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearMateriaPrimaProducto()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarMateriaPrimaProducto()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearManoDeObraProducto()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarManoDeObraProducto()">Editar</button>
                             </div>
 
                         </div>
@@ -292,6 +302,8 @@
                 precio:0,
                 tipoDeCosto:'Directo',
                 idProceso:0,
+                tiempo:0,
+                precio:0,
                 proceso:'',
                 relacion:'',
                 perfilrelacion:'',
@@ -299,6 +311,9 @@
                 idPerfil:0,
                 perfil:'',
                 arrayPerfilRelacion:[],
+                idGestionMateria:0,
+                gestionMateria:'',
+                arrayGestionMaterias:[],
                 modal : 0,
                 tituloModal : '',
                 tipoModal : 0,
@@ -468,6 +483,18 @@
             }
 
             },
+            selectGestionMateria(){
+                let me=this;
+                var url='/gestionmateria/selectGestionMateria/';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayGestionMaterias=respuesta.gestionmaterias;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             selectRelacion(idArea){
                 let me=this;
                 var url='/perfil/selectRelacion/'+this.idArea;
@@ -491,6 +518,107 @@
                     // handle error
                     console.log(error);
                 })
+            },
+            crearMateriaPrimaProducto(){
+                //valido con el metodo de validacion creado
+                if(this.validarMateriaPrimaProducto()){
+                    return;
+                }
+
+                let me=this;
+                axios.post('/materiaprimaproducto/store',{
+                    'idMateriaPrima': this.idMateriaPrima,
+                    'cantidad': this.cantidad,
+                    'precio': this.precio,
+                    'tipoDeCosto': this.tipoDeCosto,
+                    'idHoja': this.idHoja
+
+                }).then(function (response) {
+                me.cerrarModal();
+                me.listarMateriaPrimaProducto(1,'','gestionMateria');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            editarMateriaPrimaProducto(){
+                if(this.validarMateriaPrimaProducto()){
+                    return;
+                }
+
+                let me=this;
+                axios.put('/materiaPrimaProducto/update',{
+                    'id': this.idMateriaPrimaProducto,
+                    'idMateriaPrima': this.idMateriaPrima,
+                    'cantidad': this.cantidad,
+                    'precio': this.precio,
+                    'tipoDeCosto': this.tipoDeCosto,
+                    'idHoja': this.idHoja
+
+                }).then(function (response) {
+                me.cerrarModal();
+                me.listarMateriaPrimaProducto(1,'','materiaprima');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            validarMateriaPrimaProducto(){
+                this.errorMateriaPrimaProducto=0;
+                this.errorMensaje=[];
+                if (!this.cantidad) this.errorMensaje.push("La cantidad no puede estar vacio");
+                if (this.errorMensaje.length) this.errorMateriaPrimaProducto=1;
+
+                return this.errorMateriaPrimaProducto;
+            },
+            crearManoDeObraProducto(){
+                //valido con el metodo de validacion creado
+                if(this.validarManoDeObraProducto()){
+                    return;
+                }
+                let me=this;
+                axios.post('/manodeobraproducto/store',{
+                    'idPerfil': this.idPerfil,
+                    'tiempo': this.tiempo,
+                    'precio': this.precio,
+                    'idHoja': this.idHoja
+
+                }).then(function (response) {
+                me.cerrarModal();
+                me.listarManoDeObraProducto(1,'','gestionMateria');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            editarManoDeObraProducto(){
+                if(this.validarManoDeObraProducto()){
+                    return;
+                }
+
+                let me=this;
+                axios.put('/manodeobraproducto/update',{
+                    'id': this.idManoDeObraProducto,
+                    'idPerfil': this.idPerfil,
+                    'tiempo': this.tiempo,
+                    'precio': this.precio,
+                    'idHoja': this.idHoja
+
+                }).then(function (response) {
+                me.cerrarModal();
+                me.listarManoDeObraProducto(1,'','manodeobraproducto');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            validarManoDeObraProducto(){
+                this.errorManoDeObraProducto=0;
+                this.errorMensaje=[];
+                if (!this.tiempo) this.errorMensaje.push("El tiempo no puede estar vacio");
+                if (this.errorMensaje.length) this.errorManoDeObraProducto=1;
+
+                return this.errorManoDeObraProducto;
             },
             //funciones para uso del lightbox
             showLightbox(fotoCarga) {
@@ -535,12 +663,15 @@
         overflow: auto;
     }
     #content {
-        background: #FFFFFF;
-        border: solid 3px #CCCCCC;
+        background: transparent;
+        border: solid 3px transparent;
         padding: 10px;
     }
     .cierre {
         font-weight: 9rem;
         color:#FFFFFF;
+    }
+    .imglight{
+        max-height:500px;
     }
 </style>

@@ -102,4 +102,45 @@ class Tb_materia_prima_productoController extends Controller
         ];
 
         }
+
+        public function store(Request $request)
+        {
+            if(!$request->ajax()) return redirect('/');
+            $tb_materia_prima_producto=new Tb_materia_prima_producto();
+            $tb_materia_prima_producto->idMateriaPrima=$request->idMateriaPrima;
+            $tb_materia_prima_producto->cantidad=$request->cantidad;
+            $tb_materia_prima_producto->precio=$request->precio;
+            $tb_materia_prima_producto->tipoDeCosto=$request->tipoDeCosto;
+            $tb_materia_prima_producto->idHoja=$request->idHoja;
+            $tb_materia_prima_producto->save();
+        }
+
+        public function update(Request $request)
+        {
+            if(!$request->ajax()) return redirect('/');
+            $tb_materia_prima_producto=Tb_materia_prima_producto::findOrFail($request->id);
+            $tb_materia_prima_producto->idMateriaPrima=$request->idMateriaPrima;
+            $tb_materia_prima_producto->cantidad=$request->cantidad;
+            $tb_materia_prima_producto->precio=$request->precio;
+            $tb_materia_prima_producto->tipoDeCosto=$request->tipoDeCosto;
+            $tb_materia_prima_producto->estado='1';
+            $tb_materia_prima_producto->save();
+        }
+
+        public function deactivate(Request $request)
+        {
+            if(!$request->ajax()) return redirect('/');
+            $tb_materia_prima_producto=Tb_materia_prima_producto::findOrFail($request->id);
+            $tb_materia_prima_producto->estado='0';
+            $tb_materia_prima_producto->save();
+        }
+
+        public function activate(Request $request)
+        {
+            if(!$request->ajax()) return redirect('/');
+            $tb_materia_prima_producto=Tb_materia_prima_producto::findOrFail($request->id);
+            $tb_materia_prima_producto->estado='1';
+            $tb_materia_prima_producto->save();
+        }
+
 }

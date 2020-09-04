@@ -73,6 +73,13 @@ class Tb_gestion_materia_primaController extends Controller
             ];
         }
 
+        public function selectGestionMateria(){
+            $gestionmaterias = Tb_gestion_materia_prima::where('estado','=','1')
+            ->select('id as idGestionMateria','gestionMateria')->orderBy('gestionMateria','asc')->get();
+
+            return ['gestionmaterias' => $gestionmaterias];
+        }
+
         public function selectTipoMateria(){
             $tipomaterias = Tb_tipo_materia::where('estado','=','1')
             ->select('id as idTipoMateria','tipoMateria')->orderBy('tipoMateria','asc')->get();

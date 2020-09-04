@@ -149,52 +149,7 @@
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarMateriaPrimaProducto(page,buscar,criterio);
-            },
-            crearMateriaPrimaProducto(){
-                //valido con el metodo de validacion creado
-                if(this.validarMateriaPrimaProducto()){
-                    return;
-                }
-
-                let me=this;
-                axios.post('/materiaprimaproducto/store',{
-                    'materiaprimaproducto': this.materiaprimaproducto,
-                    'idArea': this.idArea
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarMateriaPrimaProducto(1,'','gestionMateria');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            editarMateriaPrimaProducto(){
-                if(this.validarMateriaPrimaProducto()){
-                    return;
-                }
-
-                let me=this;
-                axios.put('/materiaPrimaProducto/update',{
-                    'id': this.idMateriaPrimaProducto,
-                    'materiaPrimaProducto': this.materiaPrimaProducto,
-                    'idArea': this.idArea
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarMateriaPrimaProducto(1,'','materiaprima');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            validarMateriaPrimaProducto(){
-                this.errorMateriaPrimaProducto=0;
-                this.errorMensaje=[];
-                if (!this.materiaprimaproducto) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
-                if (this.errorMensaje.length) this.errorMateriaPrimaProducto=1;
-
-                return this.errorMateriaPrimaProducto;
-            },
+            }
         },
         mounted() {
             this.listarMateriaPrimaProducto(1,'','',this.identificador)

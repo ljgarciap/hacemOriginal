@@ -81,6 +81,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/gestionmateria/activate", "Tb_gestion_materia_primaController@activate");
         Route::get("/gestionmateria/selectTipoMateria", "Tb_gestion_materia_primaController@selectTipoMateria");
         Route::get("/gestionmateria/selectUnidadBase", "Tb_gestion_materia_primaController@selectUnidadBase");
+        Route::get("/gestionmateria/selectGestionMateria", "Tb_gestion_materia_primaController@selectGestionMateria");
 
         Route::get("/coleccion", "Tb_coleccionController@index");
         Route::post("/coleccion/store", "Tb_coleccionController@store");

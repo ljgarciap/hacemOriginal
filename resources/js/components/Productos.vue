@@ -3,7 +3,7 @@
             <div id="over" class="overbox">
                 <a v-on:click="hideLightbox()"><p class="cierre"><b>Cerrar</b></p></a>
                 <div id="content">
-                    <center><img :src="fotoCarga" alt=""></center>
+                    <center><img :src="fotoCarga" alt="" class="imglight"></center>
                 </div>
             </div>
             <div id="fade" class="fadebox">&nbsp;</div>
@@ -532,12 +532,15 @@
         overflow: auto;
     }
     #content {
-        background: #FFFFFF;
-        border: solid 3px #CCCCCC;
+        background: transparent;
+        border: solid 3px transparent;
         padding: 10px;
     }
     .cierre {
         font-weight: 9rem;
         color:#FFFFFF;
+    }
+    .imglight{
+        max-height:500px;
     }
 </style>

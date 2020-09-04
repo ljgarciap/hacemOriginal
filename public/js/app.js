@@ -3680,7 +3680,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -3868,6 +3868,98 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
+    crearMateriaPrimaProducto: function crearMateriaPrimaProducto() {
+      //valido con el metodo de validacion creado
+      if (this.validarMateriaPrimaProducto()) {
+        return;
+      }
+
+      var me = this;
+      axios.post('/materiaprimaproducto/store', {
+        'idMateriaPrima': this.idMateriaPrima,
+        'cantidad': this.cantidad,
+        'precio': this.precio,
+        'tipoDeCosto': this.tipoDeCosto,
+        'idHoja': this.idHoja
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarMateriaPrimaProducto(1, '', 'gestionMateria');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editarMateriaPrimaProducto: function editarMateriaPrimaProducto() {
+      if (this.validarMateriaPrimaProducto()) {
+        return;
+      }
+
+      var me = this;
+      axios.put('/materiaPrimaProducto/update', {
+        'id': this.idMateriaPrimaProducto,
+        'idMateriaPrima': this.idMateriaPrima,
+        'cantidad': this.cantidad,
+        'precio': this.precio,
+        'tipoDeCosto': this.tipoDeCosto,
+        'idHoja': this.idHoja
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarMateriaPrimaProducto(1, '', 'materiaprima');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    validarMateriaPrimaProducto: function validarMateriaPrimaProducto() {
+      this.errorMateriaPrimaProducto = 0;
+      this.errorMensaje = [];
+      if (!this.cantidad) this.errorMensaje.push("La cantidad no puede estar vacio");
+      if (this.errorMensaje.length) this.errorMateriaPrimaProducto = 1;
+      return this.errorMateriaPrimaProducto;
+    },
+    crearManoDeObraProducto: function crearManoDeObraProducto() {
+      //valido con el metodo de validacion creado
+      if (this.validarManoDeObraProducto()) {
+        return;
+      }
+
+      var me = this;
+      axios.post('/manodeobraproducto/store', {
+        'idPerfil': this.idPerfil,
+        'tiempo': this.tiempo,
+        'precio': this.precio,
+        'idHoja': this.idHoja
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarManoDeObraProducto(1, '', 'gestionMateria');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editarManoDeObraProducto: function editarManoDeObraProducto() {
+      if (this.validarManoDeObraProducto()) {
+        return;
+      }
+
+      var me = this;
+      axios.put('/manodeobraproducto/update', {
+        'id': this.idManoDeObraProducto,
+        'idPerfil': this.idPerfil,
+        'tiempo': this.tiempo,
+        'precio': this.precio,
+        'idHoja': this.idHoja
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarManoDeObraProducto(1, '', 'manodeobraproducto');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    validarManoDeObraProducto: function validarManoDeObraProducto() {
+      this.errorManoDeObraProducto = 0;
+      this.errorMensaje = [];
+      if (!this.tiempo) this.errorMensaje.push("El tiempo no puede estar vacio");
+      if (this.errorMensaje.length) this.errorManoDeObraProducto = 1;
+      return this.errorManoDeObraProducto;
+    },
     //funciones para uso del lightbox
     showLightbox: function showLightbox(fotoCarga) {
       this.fotoCarga = fotoCarga;
@@ -4054,48 +4146,6 @@ __webpack_require__.r(__webpack_exports__);
       me.pagination.current_page = page; //envia peticion para ver los valores asociados a esa pagina
 
       me.listarManoDeObraProducto(page, buscar, criterio);
-    },
-    crearManoDeObraProducto: function crearManoDeObraProducto() {
-      //valido con el metodo de validacion creado
-      if (this.validarManoDeObraProducto()) {
-        return;
-      }
-
-      var me = this;
-      axios.post('/manodeobraproducto/store', {
-        'manodeobraproducto': this.manodeobraproducto,
-        'idArea': this.idArea
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarManoDeObraProducto(1, '', 'gestionMateria');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    editarManoDeObraProducto: function editarManoDeObraProducto() {
-      if (this.validarManoDeObraProducto()) {
-        return;
-      }
-
-      var me = this;
-      axios.put('/manodeobraproducto/update', {
-        'id': this.idManoDeObraProducto,
-        'manoDeObraProducto': this.manoDeObraProducto,
-        'idArea': this.idArea //'dato': this.dato
-
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarManoDeObraProducto(1, '', 'manodeobraproducto');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    validarManoDeObraProducto: function validarManoDeObraProducto() {
-      this.errorManoDeObraProducto = 0;
-      this.errorMensaje = [];
-      if (!this.manodeobraproducto) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
-      if (this.errorMensaje.length) this.errorManoDeObraProducto = 1;
-      return this.errorManoDeObraProducto;
     }
   },
   mounted: function mounted() {
@@ -4267,48 +4317,6 @@ __webpack_require__.r(__webpack_exports__);
       me.pagination.current_page = page; //envia peticion para ver los valores asociados a esa pagina
 
       me.listarMateriaPrimaProducto(page, buscar, criterio);
-    },
-    crearMateriaPrimaProducto: function crearMateriaPrimaProducto() {
-      //valido con el metodo de validacion creado
-      if (this.validarMateriaPrimaProducto()) {
-        return;
-      }
-
-      var me = this;
-      axios.post('/materiaprimaproducto/store', {
-        'materiaprimaproducto': this.materiaprimaproducto,
-        'idArea': this.idArea
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarMateriaPrimaProducto(1, '', 'gestionMateria');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    editarMateriaPrimaProducto: function editarMateriaPrimaProducto() {
-      if (this.validarMateriaPrimaProducto()) {
-        return;
-      }
-
-      var me = this;
-      axios.put('/materiaPrimaProducto/update', {
-        'id': this.idMateriaPrimaProducto,
-        'materiaPrimaProducto': this.materiaPrimaProducto,
-        'idArea': this.idArea //'dato': this.dato
-
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarMateriaPrimaProducto(1, '', 'materiaprima');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    validarMateriaPrimaProducto: function validarMateriaPrimaProducto() {
-      this.errorMateriaPrimaProducto = 0;
-      this.errorMensaje = [];
-      if (!this.materiaprimaproducto) this.errorMensaje.push("El nombre del proceso no puede estar vacio");
-      if (this.errorMensaje.length) this.errorMateriaPrimaProducto = 1;
-      return this.errorMateriaPrimaProducto;
     }
   },
   mounted: function mounted() {
@@ -11785,7 +11793,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.fadebox {\n\tdisplay: none;\n\tposition: absolute;\n\ttop: 0%;\n\tleft: 0%;\n\twidth: 100%;\n\theight: 100%;\n\tbackground-color: black;\n\tz-index:3001;\n\t-moz-opacity: 0.8;\n\topacity:.80;\n\tfilter: alpha(opacity=80);\n}\n.overbox {\n        display: none;\n        position: absolute;\n        top: 5%;\n        left: 5%;\n        width: 90%;\n        height: 90%;\n        z-index:3002;\n        overflow: auto;\n}\n#content {\n        background: #FFFFFF;\n        border: solid 3px #CCCCCC;\n        padding: 10px;\n}\n.cierre {\n        font-weight: 9rem;\n        color:#FFFFFF;\n}\n", ""]);
+exports.push([module.i, "\n.fadebox {\n\tdisplay: none;\n\tposition: absolute;\n\ttop: 0%;\n\tleft: 0%;\n\twidth: 100%;\n\theight: 100%;\n\tbackground-color: black;\n\tz-index:3001;\n\t-moz-opacity: 0.8;\n\topacity:.80;\n\tfilter: alpha(opacity=80);\n}\n.overbox {\n        display: none;\n        position: absolute;\n        top: 5%;\n        left: 5%;\n        width: 90%;\n        height: 90%;\n        z-index:3002;\n        overflow: auto;\n}\n#content {\n        background: transparent;\n        border: solid 3px transparent;\n        padding: 10px;\n}\n.cierre {\n        font-weight: 9rem;\n        color:#FFFFFF;\n}\n.imglight{\n        max-height:500px;\n}\n", ""]);
 
 // exports
 
@@ -11899,7 +11907,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n        width: 100% !important;\n        position: absolute !important;\n}\n.mostrar{\n        display: list-item !important;\n        opacity: 1 !important;\n        position: absolute !important;\n        background-color: #3c29297a !important;\n}\n.div-error{\n        display: flex;\n        justify-content: center;\n}\n.text-error{\n        color: red !important;\n        font-weight: bold;\n}\n.fadebox {\n\tdisplay: none;\n\tposition: absolute;\n\ttop: 0%;\n\tleft: 0%;\n\twidth: 100%;\n\theight: 100%;\n\tbackground-color: black;\n\tz-index:3001;\n\t-moz-opacity: 0.8;\n\topacity:.80;\n\tfilter: alpha(opacity=80);\n}\n.overbox {\n        display: none;\n        position: absolute;\n        top: 5%;\n        left: 5%;\n        width: 90%;\n        height: 90%;\n        z-index:3002;\n        overflow: auto;\n}\n#content {\n        background: #FFFFFF;\n        border: solid 3px #CCCCCC;\n        padding: 10px;\n}\n.cierre {\n        font-weight: 9rem;\n        color:#FFFFFF;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n        width: 100% !important;\n        position: absolute !important;\n}\n.mostrar{\n        display: list-item !important;\n        opacity: 1 !important;\n        position: absolute !important;\n        background-color: #3c29297a !important;\n}\n.div-error{\n        display: flex;\n        justify-content: center;\n}\n.text-error{\n        color: red !important;\n        font-weight: bold;\n}\n.fadebox {\n\tdisplay: none;\n\tposition: absolute;\n\ttop: 0%;\n\tleft: 0%;\n\twidth: 100%;\n\theight: 100%;\n\tbackground-color: black;\n\tz-index:3001;\n\t-moz-opacity: 0.8;\n\topacity:.80;\n\tfilter: alpha(opacity=80);\n}\n.overbox {\n        display: none;\n        position: absolute;\n        top: 5%;\n        left: 5%;\n        width: 90%;\n        height: 90%;\n        z-index:3002;\n        overflow: auto;\n}\n#content {\n        background: transparent;\n        border: solid 3px transparent;\n        padding: 10px;\n}\n.cierre {\n        font-weight: 9rem;\n        color:#FFFFFF;\n}\n.imglight{\n        max-height:500px;\n}\n", ""]);
 
 // exports
 
@@ -46853,7 +46861,10 @@ var render = function() {
           { attrs: { id: "content" } },
           [
             _c("center", [
-              _c("img", { attrs: { src: _vm.fotoCarga, alt: "" } })
+              _c("img", {
+                staticClass: "imglight",
+                attrs: { src: _vm.fotoCarga, alt: "" }
+              })
             ])
           ],
           1
@@ -47748,7 +47759,7 @@ var render = function() {
                                 ],
                                 staticClass: "form-control",
                                 attrs: {
-                                  type: "text",
+                                  type: "number",
                                   placeholder: "Tiempo de mano de obra"
                                 },
                                 domProps: { value: _vm.tiempo },
@@ -47917,7 +47928,7 @@ var render = function() {
                               attrs: { type: "button" },
                               on: {
                                 click: function($event) {
-                                  return _vm.crearMateriaPrimaProducto()
+                                  return _vm.crearManoDeObraProducto()
                                 }
                               }
                             },
@@ -47933,7 +47944,7 @@ var render = function() {
                               attrs: { type: "button" },
                               on: {
                                 click: function($event) {
-                                  return _vm.editarMateriaPrimaProducto()
+                                  return _vm.editarManoDeObraProducto()
                                 }
                               }
                             },
@@ -50593,7 +50604,14 @@ var render = function() {
       _c(
         "div",
         { attrs: { id: "content" } },
-        [_c("center", [_c("img", { attrs: { src: _vm.fotoCarga, alt: "" } })])],
+        [
+          _c("center", [
+            _c("img", {
+              staticClass: "imglight",
+              attrs: { src: _vm.fotoCarga, alt: "" }
+            })
+          ])
+        ],
         1
       )
     ]),

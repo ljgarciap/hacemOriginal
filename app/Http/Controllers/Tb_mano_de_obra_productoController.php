@@ -97,7 +97,6 @@ class Tb_mano_de_obra_productoController extends Controller
         $tb_mano_de_obra_producto->idPerfil=$request->idPerfil;
         $tb_mano_de_obra_producto->tiempo=$request->tiempo;
         $tb_mano_de_obra_producto->precio=$request->precio;
-        $tb_mano_de_obra_producto->idHoja=$request->idHoja;
         $tb_mano_de_obra_producto->estado='1';
         $tb_mano_de_obra_producto->save();
     }
