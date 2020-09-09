@@ -42,15 +42,15 @@
     </template>
 
     <template v-if="menu==10">
-        <roles></roles>
+        <conceptos></conceptos>
     </template>
 
     <template v-if="menu==11">
-        <usuarios></usuarios>
+        <roles></roles>
     </template>
 
     <template v-if="menu==12">
-        <h1>Pdf de ayuda</h1>
+        <usuarios></usuarios>
     </template>
 
     <template v-if="menu==13">
