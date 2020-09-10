@@ -110,7 +110,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <materiaprima v-bind:identificador="identificador"></materiaprima>
+                                        <materiaprima v-bind:identificador="identificador" :key="componentKey"></materiaprima>
                                     </div>
 
                                 </vs-tab>
@@ -125,7 +125,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <manodeobra v-bind:identificador="identificador"></manodeobra>
+                                        <manodeobra v-bind:identificador="identificador" :key="componentKey"></manodeobra>
                                     </div>
 
                                 </vs-tab>
@@ -161,9 +161,9 @@
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Materia Prima</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idGestionMateria">
+                                            <select class="form-control" v-model="idMateriaPrima">
                                                 <option value="0" disabled>Seleccione una materia prima</option>
                                                 <option v-for="gestionmateria in arrayGestionMaterias" :key="gestionmateria.idGestionMateria" :value="gestionmateria.idGestionMateria" v-text="gestionmateria.gestionMateria"></option>
                                             </select>
@@ -312,6 +312,7 @@
                 perfil:'',
                 arrayPerfilRelacion:[],
                 idGestionMateria:0,
+                idMateriaPrima:0,
                 gestionMateria:'',
                 arrayGestionMaterias:[],
                 modal : 0,
@@ -334,7 +335,8 @@
                 identificador: 0,
                 identificadorArea: 0,
                 productoNombre:'',
-                buscar : ''
+                buscar : '',
+                componentKey:0
             }
         },
         computed:{
@@ -370,6 +372,9 @@
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)
                 },
+            forceRerender() {
+                this.componentKey += 1;
+               },
             listarProducto(page,buscar,criterio){
                 let me=this;
                 var url='/producto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
@@ -535,6 +540,7 @@
 
                 }).then(function (response) {
                 me.cerrarModal();
+                me.forceRerender();
                 me.listarMateriaPrimaProducto(1,'','gestionMateria');
                 })
                 .catch(function (error) {
@@ -557,6 +563,7 @@
 
                 }).then(function (response) {
                 me.cerrarModal();
+                me.forceRerender();
                 me.listarMateriaPrimaProducto(1,'','materiaprima');
                 })
                 .catch(function (error) {
@@ -585,6 +592,7 @@
 
                 }).then(function (response) {
                 me.cerrarModal();
+                me.forceRerender();
                 me.listarManoDeObraProducto(1,'','gestionMateria');
                 })
                 .catch(function (error) {
@@ -606,6 +614,7 @@
 
                 }).then(function (response) {
                 me.cerrarModal();
+                me.forceRerender();
                 me.listarManoDeObraProducto(1,'','manodeobraproducto');
                 })
                 .catch(function (error) {

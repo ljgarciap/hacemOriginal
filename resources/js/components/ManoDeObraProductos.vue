@@ -28,20 +28,15 @@
                                 <tbody>
                                     <tr v-for="manodeobraproducto in arrayManoDeObraProductos" :key="manodeobraproducto.id">
                                         <td>
+
                                             <button type="button" @click="abrirModal('gestionMateria','actualizar',manodeobraproducto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
-                                        <template v-if="manodeobraproducto.estado">
                                             <button type="button" class="btn btn-danger btn-sm" @click="desactivarManoDeObraProducto(manodeobraproducto.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
-                                        </template>
-                                        <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarManoDeObraProducto(manodeobraproducto.id)">
-                                                <i class="icon-check"></i>
-                                            </button>
-                                        </template>
+
                                         </td>
                                         <td v-text="manodeobraproducto.perfil"></td>
                                         <td v-text="manodeobraproducto.proceso"></td>

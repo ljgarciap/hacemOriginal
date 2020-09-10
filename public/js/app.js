@@ -4083,14 +4083,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idGestionMateria", 0), _defineProperty(_ref, "gestionMateria", ''), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idGestionMateria", 0), _defineProperty(_ref, "idMateriaPrima", 0), _defineProperty(_ref, "gestionMateria", ''), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
       'last_page': 0,
       'from': 0,
       'to': 0
-    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'producto'), _defineProperty(_ref, "identificador", 0), _defineProperty(_ref, "identificadorArea", 0), _defineProperty(_ref, "productoNombre", ''), _defineProperty(_ref, "buscar", ''), _ref;
+    }), _defineProperty(_ref, "offset", 3), _defineProperty(_ref, "criterio", 'producto'), _defineProperty(_ref, "identificador", 0), _defineProperty(_ref, "identificadorArea", 0), _defineProperty(_ref, "productoNombre", ''), _defineProperty(_ref, "buscar", ''), _defineProperty(_ref, "componentKey", 0), _ref;
   },
   computed: {
     isActived: function isActived() {
@@ -4128,6 +4128,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     indexChange: function indexChange(args) {
       var newIndex = args.value;
       console.log('Current tab index: ' + newIndex);
+    },
+    forceRerender: function forceRerender() {
+      this.componentKey += 1;
     },
     listarProducto: function listarProducto(page, buscar, criterio) {
       var me = this;
@@ -4297,6 +4300,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'idHoja': this.idHoja
       }).then(function (response) {
         me.cerrarModal();
+        me.forceRerender();
         me.listarMateriaPrimaProducto(1, '', 'gestionMateria');
       })["catch"](function (error) {
         console.log(error);
@@ -4317,6 +4321,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'idHoja': this.idHoja
       }).then(function (response) {
         me.cerrarModal();
+        me.forceRerender();
         me.listarMateriaPrimaProducto(1, '', 'materiaprima');
       })["catch"](function (error) {
         console.log(error);
@@ -4343,6 +4348,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'idHoja': this.idHoja
       }).then(function (response) {
         me.cerrarModal();
+        me.forceRerender();
         me.listarManoDeObraProducto(1, '', 'gestionMateria');
       })["catch"](function (error) {
         console.log(error);
@@ -4362,6 +4368,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'idHoja': this.idHoja
       }).then(function (response) {
         me.cerrarModal();
+        me.forceRerender();
         me.listarManoDeObraProducto(1, '', 'manodeobraproducto');
       })["catch"](function (error) {
         console.log(error);
@@ -4403,11 +4410,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4578,12 +4580,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -48294,6 +48290,7 @@ var render = function() {
                             { staticClass: "card-body" },
                             [
                               _c("materiaprima", {
+                                key: _vm.componentKey,
                                 attrs: { identificador: _vm.identificador }
                               })
                             ],
@@ -48348,6 +48345,7 @@ var render = function() {
                             { staticClass: "card-body" },
                             [
                               _c("manodeobra", {
+                                key: _vm.componentKey,
                                 attrs: { identificador: _vm.identificador }
                               })
                             ],
@@ -48472,7 +48470,7 @@ var render = function() {
                                 staticClass: "col-md-3 form-control-label",
                                 attrs: { for: "text-input" }
                               },
-                              [_vm._v("Proceso")]
+                              [_vm._v("Materia Prima")]
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-md-9" }, [
@@ -48483,8 +48481,8 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.idGestionMateria,
-                                      expression: "idGestionMateria"
+                                      value: _vm.idMateriaPrima,
+                                      expression: "idMateriaPrima"
                                     }
                                   ],
                                   staticClass: "form-control",
@@ -48501,7 +48499,7 @@ var render = function() {
                                             "_value" in o ? o._value : o.value
                                           return val
                                         })
-                                      _vm.idGestionMateria = $event.target
+                                      _vm.idMateriaPrima = $event.target
                                         .multiple
                                         ? $$selectedVal
                                         : $$selectedVal[0]
@@ -49261,65 +49259,41 @@ var render = function() {
             "tbody",
             _vm._l(_vm.arrayManoDeObraProductos, function(manodeobraproducto) {
               return _c("tr", { key: manodeobraproducto.id }, [
-                _c(
-                  "td",
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-warning btn-sm",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.abrirModal(
-                              "gestionMateria",
-                              "actualizar",
-                              manodeobraproducto
-                            )
-                          }
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-warning btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.abrirModal(
+                            "gestionMateria",
+                            "actualizar",
+                            manodeobraproducto
+                          )
                         }
-                      },
-                      [_c("i", { staticClass: "icon-pencil" })]
-                    ),
-                    _vm._v("  \n\n                                "),
-                    manodeobraproducto.estado
-                      ? [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger btn-sm",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.desactivarManoDeObraProducto(
-                                    manodeobraproducto.id
-                                  )
-                                }
-                              }
-                            },
-                            [_c("i", { staticClass: "icon-trash" })]
+                      }
+                    },
+                    [_c("i", { staticClass: "icon-pencil" })]
+                  ),
+                  _vm._v("  \n\n                                    "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.desactivarManoDeObraProducto(
+                            manodeobraproducto.id
                           )
-                        ]
-                      : [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-success btn-sm",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.activarManoDeObraProducto(
-                                    manodeobraproducto.id
-                                  )
-                                }
-                              }
-                            },
-                            [_c("i", { staticClass: "icon-check" })]
-                          )
-                        ]
-                  ],
-                  2
-                ),
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "icon-trash" })]
+                  )
+                ]),
                 _vm._v(" "),
                 _c("td", {
                   domProps: { textContent: _vm._s(manodeobraproducto.perfil) }
@@ -49581,65 +49555,41 @@ var render = function() {
               materiaprimaproducto
             ) {
               return _c("tr", { key: materiaprimaproducto.id }, [
-                _c(
-                  "td",
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-warning btn-sm",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.abrirModal(
-                              "gestionMateria",
-                              "actualizar",
-                              materiaprimaproducto
-                            )
-                          }
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-warning btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.abrirModal(
+                            "gestionMateria",
+                            "actualizar",
+                            materiaprimaproducto
+                          )
                         }
-                      },
-                      [_c("i", { staticClass: "icon-pencil" })]
-                    ),
-                    _vm._v("  \n\n                                "),
-                    materiaprimaproducto.estado
-                      ? [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger btn-sm",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.desactivarMateriaPrimaProducto(
-                                    materiaprimaproducto.id
-                                  )
-                                }
-                              }
-                            },
-                            [_c("i", { staticClass: "icon-trash" })]
+                      }
+                    },
+                    [_c("i", { staticClass: "icon-pencil" })]
+                  ),
+                  _vm._v("  \n\n                                    "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-sm",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.desactivarMateriaPrimaProducto(
+                            materiaprimaproducto.id
                           )
-                        ]
-                      : [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-success btn-sm",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.activarMateriaPrimaProducto(
-                                    materiaprimaproducto.id
-                                  )
-                                }
-                              }
-                            },
-                            [_c("i", { staticClass: "icon-check" })]
-                          )
-                        ]
-                  ],
-                  2
-                ),
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "icon-trash" })]
+                  )
+                ]),
                 _vm._v(" "),
                 _c("td", {
                   domProps: {

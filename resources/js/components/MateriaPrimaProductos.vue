@@ -31,16 +31,10 @@
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
-                                        <template v-if="materiaprimaproducto.estado">
                                             <button type="button" class="btn btn-danger btn-sm" @click="desactivarMateriaPrimaProducto(materiaprimaproducto.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
-                                        </template>
-                                        <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarMateriaPrimaProducto(materiaprimaproducto.id)">
-                                                <i class="icon-check"></i>
-                                            </button>
-                                        </template>
+
                                         </td>
                                         <td v-text="materiaprimaproducto.gestionMateria"></td>
                                         <td v-text="materiaprimaproducto.unidadBase"></td>
