@@ -33,7 +33,7 @@
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarManoDeObraProducto(manodeobraproducto.id)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmanodeobra',manodeobraproducto.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
 

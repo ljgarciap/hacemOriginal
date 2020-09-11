@@ -48554,7 +48554,11 @@ var render = function() {
                               _c("materiaprima", {
                                 key: _vm.componentKey,
                                 attrs: { identificador: _vm.identificador },
-                                on: { abrirmodal: _vm.abrirModal }
+                                on: {
+                                  abrirmodal: _vm.abrirModal,
+                                  eliminarmateria:
+                                    _vm.eliminarMateriaPrimaProducto
+                                }
                               })
                             ],
                             1
@@ -48610,7 +48614,11 @@ var render = function() {
                               _c("manodeobra", {
                                 key: _vm.componentKey,
                                 attrs: { identificador: _vm.identificador },
-                                on: { abrirmodal: _vm.abrirModal }
+                                on: {
+                                  abrirmodal: _vm.abrirModal,
+                                  eliminarmanodeobra:
+                                    _vm.eliminarManoDeObraProducto
+                                }
                               })
                             ],
                             1
@@ -49587,7 +49595,8 @@ var render = function() {
                       attrs: { type: "button" },
                       on: {
                         click: function($event) {
-                          return _vm.desactivarManoDeObraProducto(
+                          return _vm.$emit(
+                            "eliminarmanodeobra",
                             manodeobraproducto.id
                           )
                         }
@@ -49884,7 +49893,8 @@ var render = function() {
                       attrs: { type: "button" },
                       on: {
                         click: function($event) {
-                          return _vm.desactivarMateriaPrimaProducto(
+                          return _vm.$emit(
+                            "eliminarmateria",
                             materiaprimaproducto.id
                           )
                         }

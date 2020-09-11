@@ -31,7 +31,7 @@
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarMateriaPrimaProducto(materiaprimaproducto.id)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',materiaprimaproducto.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
 

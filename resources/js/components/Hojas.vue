@@ -110,7 +110,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <materiaprima v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal"></materiaprima>
+                                        <materiaprima v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarMateriaPrimaProducto"></materiaprima>
                                     </div>
 
                                 </vs-tab>
@@ -125,7 +125,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <manodeobra v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal"></manodeobra>
+                                        <manodeobra v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmanodeobra="eliminarManoDeObraProducto"></manodeobra>
                                     </div>
 
                                 </vs-tab>
