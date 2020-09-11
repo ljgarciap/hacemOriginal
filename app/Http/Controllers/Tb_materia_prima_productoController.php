@@ -119,11 +119,9 @@ class Tb_materia_prima_productoController extends Controller
         {
             if(!$request->ajax()) return redirect('/');
             $tb_materia_prima_producto=Tb_materia_prima_producto::findOrFail($request->id);
-            $tb_materia_prima_producto->idMateriaPrima=$request->idMateriaPrima;
             $tb_materia_prima_producto->cantidad=$request->cantidad;
             $tb_materia_prima_producto->precio=$request->precio;
             $tb_materia_prima_producto->tipoDeCosto=$request->tipoDeCosto;
-            $tb_materia_prima_producto->estado='1';
             $tb_materia_prima_producto->save();
         }
 
@@ -141,6 +139,16 @@ class Tb_materia_prima_productoController extends Controller
             $tb_materia_prima_producto=Tb_materia_prima_producto::findOrFail($request->id);
             $tb_materia_prima_producto->estado='1';
             $tb_materia_prima_producto->save();
+        }
+
+        public function selectGestionMateria(){
+            $gestionmaterias = Tb_gestion_materia_prima::join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
+            ->select('tb_gestion_materia_prima.id as idGestionMateria','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.idUnidadBase','tb_unidad_base.unidadBase as unidadBase','tb_gestion_materia_prima.estado')
+            ->where('tb_gestion_materia_prima.estado','=','1')
+            ->orderBy('gestionMateria','asc')
+            ->get();
+
+            return ['gestionmaterias' => $gestionmaterias];
         }
 
 }

@@ -29,7 +29,7 @@
                                     <tr v-for="manodeobraproducto in arrayManoDeObraProductos" :key="manodeobraproducto.id">
                                         <td>
 
-                                            <button type="button" @click="abrirModal('gestionMateria','actualizar',manodeobraproducto)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="$emit('abrirmodal','gestionManoDeObra','actualizar',manodeobraproducto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
@@ -76,6 +76,7 @@
                 idManoDeObraProducto:0,
                 idPerfil: 0,
                 perfil:'',
+                idProceso: 0,
                 proceso:'',
                 tiempo:0,
                 precio:0,

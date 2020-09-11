@@ -27,7 +27,7 @@
                                 <tbody>
                                     <tr v-for="materiaprimaproducto in arrayMateriaPrimaProductos" :key="materiaprimaproducto.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('gestionMateria','actualizar',materiaprimaproducto)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="$emit('abrirmodal','gestionMateria','actualizar',materiaprimaproducto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 

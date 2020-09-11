@@ -124,6 +124,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/materiaprimaproducto/deactivate", "Tb_materia_prima_productoController@deactivate");
         Route::put("/materiaprimaproducto/activate", "Tb_materia_prima_productoController@activate");
         Route::get("/materiaprimaproducto/selectMateriaPrimaProducto", "Tb_materia_prima_productoController@selectMateriaPrimaProducto");
+        Route::get("/materiaprimaproducto/selectGestionMateria", "Tb_materia_prima_productoController@selectGestionMateria");
 
         Route::get("/concepto", "Tb_concepto_cifController@index");
         Route::post("/concepto/store", "Tb_concepto_cifController@store");
@@ -131,6 +132,10 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/concepto/deactivate", "Tb_concepto_cifController@deactivate");
         Route::put("/concepto/activate", "Tb_concepto_cifController@activate");
         Route::get("/concepto/selectConcepto", "Tb_concepto_cifController@selectArea");
+
+        Route::get("/hojadecosto/materiadirecta/{identificador}", "Hoja_De_CostosController@materiaDirecta");
+        Route::get("/hojadecosto/materiaindirecta/{identificador}", "Hoja_De_CostosController@materiaIndirecta");
+        Route::get("/hojadecosto/manodeobra/{identificador}", "Hoja_De_CostosController@manoDeObra");
 
     });
 

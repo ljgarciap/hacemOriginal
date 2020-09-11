@@ -110,7 +110,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <materiaprima v-bind:identificador="identificador" :key="componentKey"></materiaprima>
+                                        <materiaprima v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal"></materiaprima>
                                     </div>
 
                                 </vs-tab>
@@ -125,7 +125,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <manodeobra v-bind:identificador="identificador" :key="componentKey"></manodeobra>
+                                        <manodeobra v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal"></manodeobra>
                                     </div>
 
                                 </vs-tab>
@@ -136,6 +136,18 @@
 
                                 <vs-tab label="Servicios Directos" icon="account_circle" @click="colorx = '#0000FF'">
                                     <h2>Pestaña servicios asociados</h2>
+                                </vs-tab>
+
+                                <vs-tab label="Consolidado" icon="view_list" @click="colorx = '#20603d'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                    </div>
+
+                                    <div class="card-body">
+                                        <hojadecostos v-bind:identificador="identificador" :key="componentKey"></hojadecostos>
+                                    </div>
+
                                 </vs-tab>
 
                                 <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
@@ -275,10 +287,12 @@
 <script>
     import materiaprima from '../components/MateriaPrimaProductos';
     import manodeobra from '../components/ManoDeObraProductos';
+    import hojadecostos from '../components/HojaDeCostos';
     export default {
         components: {
             materiaprima,
-            manodeobra
+            manodeobra,
+            hojadecostos
         },
         data(){
             return{
@@ -320,6 +334,7 @@
                 tipoModal : 0,
                 tipoAccion : 0,
                 fotoCarga:'',
+                materiaprimaproducto:'',
                 errorMateriaPrimaProducto : 0,
                 errorMensaje : [],
                 pagination : {
@@ -424,11 +439,11 @@
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.tipoModal=1; //carga tupos de campos y footers
+                            this.tipoModal=1; //carga tipos de campos y footers
                             this.materiaprimaproducto='';
-                            this.idMateriaPrima=data['idMateriaPrima'];
-                            this.cantidad=data['cantidad'];
-                            this.precio=data['precio'];
+                            this.idMateriaPrima=data['idGestionMateria'];
+                            this.cantidad='1';
+                            this.precio='1';
                             this.idHoja=this.identificador;
                             this.tituloModal='Asignar nueva materia';
                             this.tipoAccion= 1; //carga tipos de botón en el footer
@@ -438,7 +453,9 @@
                             //console.log(data);
                             this.modal=1;
                             this.tipoModal=1;
-                            this.idMateriaPrima=data['id'];
+                            this.id=data['id'];
+                            this.idMateriaPrima=data['idGestionMateria'];
+                            this.gestionMateria=data['gestionMateria'];
                             this.cantidad=data['cantidad'];
                             this.precio=data['precio'];
                             this.tipoDeCosto=data['tipoDeCosto'];
@@ -469,16 +486,20 @@
                             break;
                         }
                         case 'actualizar':{
-                            //console.log(data);
+                            console.log(data);
                             this.modal=1;
                             this.tipoModal=2;
                             this.idManoDeObraProducto=data['id'];
                             this.idPerfil=data['idPerfil'];
+                            this.idProceso=data['idProceso'];
                             this.tiempo=data['tiempo'];
                             this.precio=data['precio'];
                             this.idHoja=this.identificador;
+                            this.idArea=this.identificadorArea;
                             this.tituloModal='Editar mano de obra';
                             this.tipoAccion= 2;
+                            this.selectRelacion(this.idArea);
+                            this.selectRelacionPerfil(this.idProceso);
                             break;
                         }
                     }
@@ -490,7 +511,7 @@
             },
             selectGestionMateria(){
                 let me=this;
-                var url='/gestionmateria/selectGestionMateria/';
+                var url='/materiaprimaproducto/selectGestionMateria/';
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayGestionMaterias=respuesta.gestionmaterias;
@@ -553,13 +574,11 @@
                 }
 
                 let me=this;
-                axios.put('/materiaPrimaProducto/update',{
-                    'id': this.idMateriaPrimaProducto,
-                    'idMateriaPrima': this.idMateriaPrima,
+                axios.put('/materiaprimaproducto/update',{
+                    'id': this.id,
                     'cantidad': this.cantidad,
                     'precio': this.precio,
-                    'tipoDeCosto': this.tipoDeCosto,
-                    'idHoja': this.idHoja
+                    'tipoDeCosto': this.tipoDeCosto
 
                 }).then(function (response) {
                 me.cerrarModal();
@@ -593,7 +612,6 @@
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
-                me.listarManoDeObraProducto(1,'','gestionMateria');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -607,15 +625,12 @@
                 let me=this;
                 axios.put('/manodeobraproducto/update',{
                     'id': this.idManoDeObraProducto,
-                    'idPerfil': this.idPerfil,
                     'tiempo': this.tiempo,
-                    'precio': this.precio,
-                    'idHoja': this.idHoja
+                    'precio': this.precio
 
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
-                me.listarManoDeObraProducto(1,'','manodeobraproducto');
                 })
                 .catch(function (error) {
                     console.log(error);

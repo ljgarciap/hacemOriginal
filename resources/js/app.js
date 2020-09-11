@@ -30,23 +30,24 @@ window.Vue.use(Vuesax, {
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('bienvenida', require('./components/Bienvenida.vue').default);
 Vue.component('admin', require('./components/Admin.vue').default);
-Vue.component('empresa', require('./components/Empresa.vue').default);
 Vue.component('areas', require('./components/Areas.vue').default);
-Vue.component('procesos', require('./components/Procesos.vue').default);
-Vue.component('perfiles', require('./components/Perfiles.vue').default);
-Vue.component('unidades', require('./components/Unidades.vue').default);
-Vue.component('materias', require('./components/Materias.vue').default);
-Vue.component('gestionmaterias', require('./components/GestionMaterias.vue').default);
-Vue.component('materiaprima', require('./components/MateriaPrimaProductos.vue').default);
-Vue.component('roles', require('./components/Roles.vue').default);
-Vue.component('hojas', require('./components/Hojas.vue').default);
-Vue.component('usuarios', require('./components/Usuarios.vue').default);
+Vue.component('bienvenida', require('./components/Bienvenida.vue').default);
 Vue.component('colecciones', require('./components/Colecciones.vue').default);
-Vue.component('productos', require('./components/Productos.vue').default);
 Vue.component('conceptos', require('./components/Conceptos.vue').default);
+Vue.component('empresa', require('./components/Empresa.vue').default);
+Vue.component('gestionmaterias', require('./components/GestionMaterias.vue').default);
+Vue.component('hojadecostos', require('./components/HojaDeCostos.vue').default);
+Vue.component('hojas', require('./components/Hojas.vue').default);
+Vue.component('manodeobra', require('./components/ManoDeObraProductos.vue').default);
+Vue.component('materiaprima', require('./components/MateriaPrimaProductos.vue').default);
+Vue.component('materias', require('./components/Materias.vue').default);
 Vue.component('ninguno', require('./components/Ninguno.vue').default);
+Vue.component('perfiles', require('./components/Perfiles.vue').default);
+Vue.component('procesos', require('./components/Procesos.vue').default);
+Vue.component('roles', require('./components/Roles.vue').default);
+Vue.component('unidades', require('./components/Unidades.vue').default);
+Vue.component('usuarios', require('./components/Usuarios.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
