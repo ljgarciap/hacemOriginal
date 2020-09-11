@@ -102,17 +102,10 @@ class Tb_mano_de_obra_productoController extends Controller
     public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $tb_mano_de_obra_producto=Tb_mano_de_obra_producto::findOrFail($request->id);
-        $tb_mano_de_obra_producto->estado='0';
-        $tb_mano_de_obra_producto->save();
-    }
-
-    public function activate(Request $request)
-    {
-        if(!$request->ajax()) return redirect('/');
-        $tb_mano_de_obra_producto=Tb_mano_de_obra_producto::findOrFail($request->id);
-        $tb_mano_de_obra_producto->estado='1';
-        $tb_mano_de_obra_producto->save();
+        $tb_mano_de_obra_producto->delete();
+       DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     public function selectRelacionPerfil($id){

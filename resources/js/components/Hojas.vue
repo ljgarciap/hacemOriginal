@@ -193,7 +193,7 @@
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Precio</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="precio" class="form-control">
+                                            <input type="text" v-model="precio" class="form-control" v-text="precioBase">
                                             <span class="help-block">(*) Ingrese el precio</span>
                                         </div>
                                     </div>
@@ -328,6 +328,7 @@
                 idGestionMateria:0,
                 idMateriaPrima:0,
                 gestionMateria:'',
+                precioBase:0,
                 arrayGestionMaterias:[],
                 modal : 0,
                 tituloModal : '',
@@ -383,7 +384,7 @@
             }
         },
         methods : {
-              indexChange: function(args) {
+            indexChange: function(args) {
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)
                 },
@@ -443,7 +444,8 @@
                             this.materiaprimaproducto='';
                             this.idMateriaPrima=data['idGestionMateria'];
                             this.cantidad='1';
-                            this.precio='1';
+                            this.precio=data['precioBase'];
+                            this.precioBase=data['precioBase'];
                             this.idHoja=this.identificador;
                             this.tituloModal='Asignar nueva materia';
                             this.tipoAccion= 1; //carga tipos de botón en el footer
@@ -589,6 +591,18 @@
                     console.log(error);
                 });
             },
+            eliminarMateriaPrimaProducto(){
+                let me=this;
+                axios.put('/materiaprimaproducto/deactivate',{
+                    'id': this.id
+                }).then(function (response) {
+                me.forceRerender();
+                me.listarMateriaPrimaProducto(1,'','materiaprima');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
             validarMateriaPrimaProducto(){
                 this.errorMateriaPrimaProducto=0;
                 this.errorMensaje=[];
@@ -631,6 +645,18 @@
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            eliminarManoDeObraProducto(){
+                let me=this;
+                axios.put('/manodeobraproducto/deactivate',{
+                    'id': this.id
+                }).then(function (response) {
+                me.forceRerender();
+                me.listarManoDeObraProducto(1,'','manodeobra');
                 })
                 .catch(function (error) {
                     console.log(error);

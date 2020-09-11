@@ -115,14 +115,12 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/manodeobraproducto/store", "Tb_mano_de_obra_productoController@store");
         Route::put("/manodeobraproducto/update", "Tb_mano_de_obra_productoController@update");
         Route::put("/manodeobraproducto/deactivate", "Tb_mano_de_obra_productoController@deactivate");
-        Route::put("/manodeobraproducto/activate", "Tb_mano_de_obra_productoController@activate");
         Route::get("/manodeobraproducto/selectRelacionPerfil/{id}", "Tb_mano_de_obra_productoController@selectRelacionPerfil");
 
         Route::get("/materiaprimaproducto", "Tb_materia_prima_productoController@index");
         Route::post("/materiaprimaproducto/store", "Tb_materia_prima_productoController@store");
         Route::put("/materiaprimaproducto/update", "Tb_materia_prima_productoController@update");
         Route::put("/materiaprimaproducto/deactivate", "Tb_materia_prima_productoController@deactivate");
-        Route::put("/materiaprimaproducto/activate", "Tb_materia_prima_productoController@activate");
         Route::get("/materiaprimaproducto/selectMateriaPrimaProducto", "Tb_materia_prima_productoController@selectMateriaPrimaProducto");
         Route::get("/materiaprimaproducto/selectGestionMateria", "Tb_materia_prima_productoController@selectGestionMateria");
 

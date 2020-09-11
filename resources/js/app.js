@@ -45,6 +45,7 @@ Vue.component('materias', require('./components/Materias.vue').default);
 Vue.component('ninguno', require('./components/Ninguno.vue').default);
 Vue.component('perfiles', require('./components/Perfiles.vue').default);
 Vue.component('procesos', require('./components/Procesos.vue').default);
+Vue.component('productos', require('./components/Productos.vue').default);
 Vue.component('roles', require('./components/Roles.vue').default);
 Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);

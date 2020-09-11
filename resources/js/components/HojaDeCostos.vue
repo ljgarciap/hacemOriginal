@@ -10,25 +10,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="materiadirecta in arrayMateriaDirecta" :key="materiadirecta">
+                                    <tr v-for="materiadirecta in arrayMateriaDirecta" :key="materiadirecta.acumuladomd">
                                         <td>Total Materia prima directa</td>
-                                        <td>{{materiadirecta.acumuladomd}}</td>
+                                        <td id="materiadirecta">{{materiadirecta.acumuladomd}}</td>
                                     </tr>
-                                    <tr v-for="materiaindirecta in arrayMateriaIndirecta" :key="materiaindirecta">
+                                    <tr v-for="materiaindirecta in arrayMateriaIndirecta" :key="materiaindirecta.acumuladomi">
                                         <td>Total Materia prima indirecta</td>
-                                        <td>{{materiaindirecta.acumuladomi}}</td>
+                                        <td id="materiaindirecta">{{materiaindirecta.acumuladomi}}</td>
                                     </tr>
-                                    <tr v-for="manodeobra in arrayManoDeObra" :key="manodeobra">
+                                    <tr v-for="manodeobra in arrayManoDeObra" :key="manodeobra.acumuladomo">
                                         <td>Total Mano de obra</td>
-                                        <td>{{manodeobra.acumuladomo}}</td>
+                                        <td id="manodeobra">{{manodeobra.acumuladomo}}</td>
                                     </tr>
-                                    <tr v-for="cif in arrayCif" :key="cif">
+                                    <tr v-for="cif in arrayCif" :key="cif.acumuladocif">
                                         <td>Total cif</td>
-                                        <td>{{cif.acumuladocif}}</td>
+                                        <td id="cif">{{cif.acumuladocif}}</td>
                                     </tr>
                                     <tr>
                                         <td><b>COSTO TOTAL</b></td>
-                                        <td>Calcular</td>
+                                        <td id="total"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -93,12 +93,24 @@
                     // handle error
                     console.log(error);
                 })
+            },
+            calcular(){
+                var ma=0;
+
+                var valor1=document.getElementById("materiadirecta").innerText;
+                var valor2=document.getElementById("materiaindirecta").innerText;
+                var valor3=document.getElementById("manodeobra").innerText;
+                var valor4=document.getElementById("cif").innerText;
+                ma=valor1+valor2+valor3+valor4;
+
+                $("#total").val(ma);
             }
         },
         mounted() {
             this.materiaDirecta(this.identificador),
             this.materiaIndirecta(this.identificador),
-            this.manoDeObra(this.identificador)
+            this.manoDeObra(this.identificador),
+            this.calcular()
         }
     }
 </script>
