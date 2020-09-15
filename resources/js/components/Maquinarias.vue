@@ -3,16 +3,15 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Colecciones </li>
+                    <li class="breadcrumb-item active">Maquinarias</li>
                 </ol>
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Colecciones
-                            <!--para modificar luego-->
-                            <button type="button" @click="abrirModal('coleccion','crear')" class="btn btn-secondary">
+                            <i class="fa fa-align-justify"></i> Maquinarias &nbsp;
+                            <button type="button" @click="abrirModal('maquinaria','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
@@ -21,12 +20,10 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="coleccion">Coleccion</option>
-                                        <option value="id">Id</option>
+                                        <option value="maquinaria">Maquinaria</option>
                                         </select>
-                                        <!--para modificar luego-->
-                                        <input type="text" v-model="buscar" @keyup.enter="listarColeccion(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarColeccion(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarMaquinaria(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarMaquinaria(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -36,36 +33,44 @@
                                     <tr>
                                         <th>Opciones</th>
                                         <th>Id</th>
-                                        <th>Coleccion</th>
-                                        <th>Referencia</th>
+                                        <th>Maquinaria</th>
+                                        <th>Valor</th>
+                                        <th>Tiempo de vida util</th>
+                                        <th>depreciacion anual</th>
+                                        <th>Depreciacion mensual</th>
+                                        <th>Fecha</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="coleccion in arrayColecciones" :key="coleccion.id">
+                                    <tr v-for="maquinaria in arrayMaquinarias" :key="maquinaria.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('coleccion','actualizar',coleccion)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="abrirModal('maquinaria','actualizar',maquinaria)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
-                                        <!--para modificar luego-->
-                                        <template v-if="coleccion.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarColeccion(coleccion.id)">
+
+                                        <template v-if="maquinaria.estado">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarMaquinaria(maquinaria.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarColeccion(coleccion.id)">
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarMaquinaria(maquinaria.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
 
                                         </td>
-                                        <td v-text="coleccion.id"></td>
-                                        <td v-text="coleccion.coleccion"></td>
-                                        <td v-text="coleccion.referencia"></td>
+                                        <td v-text="maquinaria.id"></td>
+                                        <td v-text="maquinaria.maquinaria"></td>
+                                        <td v-text="maquinaria.valor"></td>
+                                        <td v-text="maquinaria.tiempoDeVidaUtil"></td>
+                                        <td v-text="maquinaria.depreciacionAnual"></td>
+                                        <td v-text="maquinaria.depreciacionMensual"></td>
+                                        <td v-text="maquinaria.fecha"></td>
                                         <td>
-                                            <div v-if="coleccion.estado">
+                                            <div v-if="maquinaria.estado">
                                             <span class="badge badge-success">Activo</span>
                                             </div>
                                             <div v-else>
@@ -73,7 +78,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                             </div>
@@ -109,29 +113,32 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="coleccion" class="form-control" placeholder="Nombre de colección">
-                                            <span class="help-block">(*) Ingrese el nombre de la colección</span>
+                                            <input type="text" v-model="maquinaria" class="form-control" placeholder="Nombre de la maquinaria">
+                                            <span class="help-block">(*) Ingrese el nombre de la maquinaria</span>
                                         </div>
                                     </div>
-
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Referencia</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="referencia" class="form-control" placeholder="Nombre de referencia">
-                                            <span class="help-block">(*) Ingrese el nombre de la referencia</span>
+                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor de la maquinaria">
+                                            <span class="help-block">(*) Ingrese el valor de la maquinaria</span>
                                         </div>
                                     </div>
-
-                                    <!--
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Tiempo de vida util</label>
                                         <div class="col-md-9">
-                                            <input type="email" v-model="estado" class="form-control" placeholder="Enter Email">
+                                            <input type="number" v-model="tiempoDeVidaUtil" class="form-control" placeholder="Tiempo de vida util">
+                                            <span class="help-block">(*) Ingrese el tiempo de vida util</span>
                                         </div>
                                     </div>
-                                    -->
-
-                                    <div class="form-group row div-error" v-show="errorColeccion">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha</label>
+                                        <div class="col-md-9">
+                                            <input type="date" v-model="fecha" class="form-control" placeholder="Fecha">
+                                            <span class="help-block">(*) Ingrese la fecha</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row div-error" v-show="errorMaquinaria">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -141,8 +148,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearColeccion()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarColeccion()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearMaquinaria()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarMaquinaria()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -157,16 +164,20 @@
     export default {
         data(){
             return{
-                coleccion_id:0,
+                idMaquinaria:0,
                 id:'',
-                coleccion:'',
-                referencia:'',
+                maquinaria:'',
+                valor:'',
+                tiempoDeVidaUtil:'',
+                depreciacionAnual:'',
+                depreciacionMensual:'',
+                fecha:'',
                 estado:'',
-                arrayColecciones : [],
+                arrayMaquinarias : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorColeccion : 0,
+                errorMaquinaria : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -177,7 +188,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'coleccion',
+                criterio : 'maquinaria',
                 buscar : ''
             }
         },
@@ -206,19 +217,18 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
         methods : {
-            listarColeccion(page,buscar,criterio){
+            listarMaquinaria(page,buscar,criterio){
                 let me=this;
-                var url='/coleccion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/maquinaria?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
                 var respuesta=response.data;
-                me.arrayColecciones=respuesta.colecciones.data;
+                me.arrayMaquinarias=respuesta.maquinarias.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
                 })
@@ -232,49 +242,53 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarColeccion(page,buscar,criterio);
+                me.listarMaquinaria(page,buscar,criterio);
             },
-            crearColeccion(){
+            crearMaquinaria(){
                 //valido con el metodo de validacion creado
-                if(this.validarColeccion()){
+                if(this.validarMaquinaria()){
                     return;
                 }
 
                 let me=this;
-                axios.post('/coleccion/store',{
-                    'coleccion': this.coleccion,
-                    'referencia': this.referencia
+                axios.post('/maquinaria/store',{
+                    'maquinaria': this.maquinaria,
+                    'valor': this.valor,
+                    'tiempoDeVidaUtil': this.tiempoDeVidaUtil,
+                    'fecha': this.fecha,
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarColeccion(1,'','coleccion');
+                me.listarMaquinaria(1,'','maquinaria');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            editarColeccion(){
-                if(this.validarColeccion()){
+            editarMaquinaria(){
+                if(this.validarMaquinaria()){
                     return;
                 }
 
                 let me=this;
-                axios.put('/coleccion/update',{
-                    'coleccion': this.coleccion,
-                    'id': this.coleccion_id,
-                    'referencia': this.referencia
+                axios.put('/maquinaria/update',{
+                    'fecha': this.fecha,
+                    'tiempoDeVidaUtil': this.tiempoDeVidaUtil,
+                    'valor': this.valor,
+                    'maquinaria': this.maquinaria,
+                    'id': this.idMaquinaria
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarColeccion(1,'','coleccion');
+                me.listarMaquinaria(1,'','maquinaria');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            desactivarColeccion(id){
+            desactivarMaquinaria(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -293,12 +307,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/coleccion/deactivate',{
+                    axios.put('/maquinaria/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarColeccion(1,'','coleccion');
+                    me.listarMaquinaria(1,'','maquinaria');
                     swalWithBootstrapButtons.fire(
-                    'Colección desactivada!'
+                    'maquinaria desactivada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -307,11 +321,11 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarColeccion();
+                    me.listarMaquinaria();
                 }
                 })
             },
-            activarColeccion(id){
+            activarMaquinaria(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -321,7 +335,7 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este registro?',
+                title: 'Quiere activar esta maquinaria?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Activar!',
@@ -330,12 +344,12 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/coleccion/activate',{
+                    axios.put('/maquinaria/activate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarColeccion(1,'','coleccion');
+                    me.listarMaquinaria(1,'','maquinaria');
                     swalWithBootstrapButtons.fire(
-                    'Colección activada!'
+                    'Maquinaria activada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -344,46 +358,54 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarColeccion();
+                    me.listarMaquinaria();
                 }
                 })
             },
-            validarColeccion(){
-                this.errorColeccion=0;
+            validarMaquinaria(){
+                this.errorMaquinaria=0;
                 this.errorMensaje=[];
 
-                if (!this.coleccion) this.errorMensaje.push("El nombre de la colección no puede estar vacio");
-                if (this.errorMensaje.length) this.errorColeccion=1;
+                if (!this.maquinaria) this.errorMensaje.push("El nombre de la maquinaria no puede estar vacio");
+                if (this.errorMensaje.length) this.errorMaquinaria=1;
 
-                return this.errorColeccion;
+                return this.errorMaquinaria;
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.coleccion='';
+                this.maquinaria='';
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "coleccion":
+                case "maquinaria":
                 {
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.coleccion='';
-                            this.referencia='';
-                            this.tituloModal='Crear nueva colección';
+                            this.maquinaria='';
+                            this.valor='';
+                            this.tiempoDeVidaUtil='';
+                            this.depreciacionAnual='';
+                            this.depreciacionMensual='';
+                            this.fecha='';
+                            this.tituloModal='Crear nueva maquinaria';
                             this.tipoAccion= 1;
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar colección';
+                            this.tituloModal='Editar maquinaria';
                             this.tipoAccion= 2;
-                            this.coleccion_id=data['id'];
-                            this.coleccion=data['coleccion'];
-                            this.referencia=data['referencia'];
+                            this.idMaquinaria=data['id'];
+                            this.maquinaria=data['maquinaria'];
+                            this.valor=data['valor'];
+                            this.tiempoDeVidaUtil=data['tiempoDeVidaUtil'];
+                            this.depreciacionAnual=data['depreciacionAnual'];
+                            this.depreciacionMensual=data['depreciacionMensual'];
+                            this.fecha=data['fecha'];
                             break;
                         }
                     }
@@ -392,7 +414,7 @@
             }
         },
         mounted() {
-            this.listarColeccion(1,this.buscar,this.criterio);
+            this.listarMaquinaria(1,this.buscar,this.criterio);
         }
     }
 </script>

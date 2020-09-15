@@ -52,6 +52,9 @@
                     <li @click="menu=10" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-folder-alt"></i> Conceptos</a>
                     </li>
+                    <li @click="menu=11" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-folder-alt"></i> Maquinaria</a>
+                    </li>
                 </ul>
             </li>
             <li @click="menu=12" class="nav-item">

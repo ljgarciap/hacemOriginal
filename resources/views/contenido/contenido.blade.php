@@ -46,26 +46,30 @@
     </template>
 
     <template v-if="menu==11">
-        <roles></roles>
+        <maquinarias></maquinarias>
     </template>
 
     <template v-if="menu==12">
-        <usuarios></usuarios>
+        <roles></roles>
     </template>
 
     <template v-if="menu==13">
-        <h1>Generalidades</h1>
+        <usuarios></usuarios>
     </template>
 
     <template v-if="menu==14">
-        <admin></admin>
+        <h1>Generalidades</h1>
     </template>
 
     <template v-if="menu==15">
-        <empresa></empresa>
+        <admin></admin>
     </template>
 
     <template v-if="menu==16">
+        <empresa></empresa>
+    </template>
+
+    <template v-if="menu==17">
         <ninguno></ninguno>
     </template>
 

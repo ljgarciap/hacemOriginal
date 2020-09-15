@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTbConceptoCifTable extends Migration
+class CreateTbMaquinariaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class CreateTbConceptoCifTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_concepto_cif', function (Blueprint $table) {
+        Schema::create('tb_maquinaria', function (Blueprint $table) {
             $table->id();
-            $table->string('concepto', 255);
+            $table->string('maquinaria', 255);
             $table->integer('valor');
+            $table->integer('tiempoDeVidaUtil');
+            $table->integer('depreciacionAnual');
+            $table->integer('depreciacionMensual');
+            $table->date('fecha');
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });
@@ -29,6 +33,6 @@ class CreateTbConceptoCifTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_concepto');
+        Schema::dropIfExists('tb_maquinaria');
     }
 }

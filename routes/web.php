@@ -131,6 +131,13 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/concepto/activate", "Tb_concepto_cifController@activate");
         Route::get("/concepto/selectConcepto", "Tb_concepto_cifController@selectArea");
 
+        Route::get("/maquinaria", "Tb_maquinariaController@index");
+        Route::post("/maquinaria/store", "Tb_maquinariaController@store");
+        Route::put("/maquinaria/update", "Tb_maquinariaController@update");
+        Route::put("/maquinaria/deactivate", "Tb_maquinariaController@deactivate");
+        Route::put("/maquinaria/activate", "Tb_maquinariaController@activate");
+        Route::get("/maquinaria/selectMaquinaria", "Tb_maquinariaController@selectMaquinaria");
+
         Route::get("/hojadecosto/materiadirecta/{identificador}", "Hoja_De_CostosController@materiaDirecta");
         Route::get("/hojadecosto/materiaindirecta/{identificador}", "Hoja_De_CostosController@materiaIndirecta");
         Route::get("/hojadecosto/manodeobra/{identificador}", "Hoja_De_CostosController@manoDeObra");
@@ -199,6 +206,13 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/concepto/deactivate", "Tb_concepto_cifController@deactivate");
         Route::put("/concepto/activate", "Tb_concepto_cifController@activate");
         Route::get("/concepto/selectConcepto", "Tb_concepto_cifController@selectArea");
+
+        Route::get("/maquinaria", "Tb_maquinariaController@index");
+        Route::post("/maquinaria/store", "Tb_maquinariaController@store");
+        Route::put("/maquinaria/update", "Tb_maquinariaController@update");
+        Route::put("/maquinaria/deactivate", "Tb_maquinariaController@deactivate");
+        Route::put("/maquinaria/activate", "Tb_maquinariaController@activate");
+        Route::get("/maquinaria/selectMaquinaria", "Tb_maquinariaController@selectMaquinaria");
 
     });
 

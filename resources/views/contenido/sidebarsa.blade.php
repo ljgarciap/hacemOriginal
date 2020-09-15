@@ -55,15 +55,18 @@
                     <li @click="menu=10" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-folder-alt"></i> Conceptos</a>
                     </li>
+                    <li @click="menu=11" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-folder-alt"></i> Maquinaria</a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> Usuarios</a>
                 <ul class="nav-dropdown-items">
-                    <li @click="menu=11" class="nav-item">
+                    <li @click="menu=12" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-pencil"></i> Roles</a>
                     </li>
-                    <li @click="menu=12" class="nav-item">
+                    <li @click="menu=13" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-pencil"></i> Usuarios</a>
                     </li>
                 </ul>
