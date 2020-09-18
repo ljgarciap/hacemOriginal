@@ -468,7 +468,7 @@
                             this.materiaprimaproducto='';
                             this.idMateriaPrima=data['idGestionMateria'];
                             this.cantidad='1';
-                            this.precio=data['precioBase'];
+                            this.precio='';
                             this.idHoja=this.identificador;
                             this.tituloModal='Asignar nueva materia';
                             this.tipoAccion= 1; //carga tipos de botón en el footer
@@ -582,6 +582,19 @@
                     console.log(error);
                 })
             },
+            listarMateriaPrimaProducto(page,buscar,criterio,identificador){
+                let me=this;
+                var url='/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayMateriaPrimaProductos=respuesta.materiaprimaproductos.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             crearMateriaPrimaProducto(){
                 //valido con el metodo de validacion creado
                 if(this.validarMateriaPrimaProducto()){
@@ -592,7 +605,7 @@
                 axios.post('/materiaprimaproducto/store',{
                     'idMateriaPrima': this.idMateriaPrima,
                     'cantidad': this.cantidad,
-                    'precio': this.precioBase,
+                    'precio': this.precio,
                     'tipoDeCosto': this.tipoDeCosto,
                     'idHoja': this.idHoja
 

@@ -3986,6 +3986,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      total: '',
       acumuladomd: 0,
       acumuladomi: 0,
       acumuladomo: 0,
@@ -3996,61 +3997,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    materiaDirecta: function materiaDirecta(identificador) {
-      var me = this;
-      var url = '/hojadecosto/materiadirecta/' + this.identificador;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayMateriaDirecta = respuesta.materiadirecta;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
-    materiaIndirecta: function materiaIndirecta(identificador) {
-      var me = this;
-      var url = '/hojadecosto/materiaindirecta/' + this.identificador;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayMateriaIndirecta = respuesta.materiaindirecta;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
-    manoDeObra: function manoDeObra(identificador) {
-      var me = this;
-      var url = '/hojadecosto/manodeobra/' + this.identificador;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayManoDeObra = respuesta.manodeobra;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
-    cifTotal: function cifTotal() {
-      var me = this;
-      var url = '/hojadecosto/ciftotal/';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayCif = respuesta.ciftotales;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
-    maquinariaTotal: function maquinariaTotal() {
-      var me = this;
-      var url = '/hojadecosto/maquinaria/';
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.arrayMaquinaria = respuesta.maquinarias;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
     acumuladoTotal: function acumuladoTotal(identificador) {
       var me = this;
       var url = '/hojadecosto/total/' + this.identificador;
@@ -4520,7 +4466,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.materiaprimaproducto = '';
                   this.idMateriaPrima = data['idGestionMateria'];
                   this.cantidad = '1';
-                  this.precio = data['precioBase'];
+                  this.precio = '';
                   this.idHoja = this.identificador;
                   this.tituloModal = 'Asignar nueva materia';
                   this.tipoAccion = 1; //carga tipos de botón en el footer
@@ -4636,6 +4582,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
+    listarMateriaPrimaProducto: function listarMateriaPrimaProducto(page, buscar, criterio, identificador) {
+      var me = this;
+      var url = '/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayMateriaPrimaProductos = respuesta.materiaprimaproductos.data;
+        me.pagination = respuesta.pagination;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
     crearMateriaPrimaProducto: function crearMateriaPrimaProducto() {
       //valido con el metodo de validacion creado
       if (this.validarMateriaPrimaProducto()) {
@@ -4646,7 +4604,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       axios.post('/materiaprimaproducto/store', {
         'idMateriaPrima': this.idMateriaPrima,
         'cantidad': this.cantidad,
-        'precio': this.precioBase,
+        'precio': this.precio,
         'tipoDeCosto': this.tipoDeCosto,
         'idHoja': this.idHoja
       }).then(function (response) {
@@ -5594,6 +5552,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     identificador: {
@@ -5676,7 +5643,7 @@ __webpack_require__.r(__webpack_exports__);
 
       me.pagination.current_page = page; //envia peticion para ver los valores asociados a esa pagina
 
-      me.listarMateriaPrimaProducto(page, buscar, criterio);
+      me.listarMateriaPrimaProducto(page, buscar, criterio, this.identificador);
     }
   },
   mounted: function mounted() {
@@ -52022,7 +51989,7 @@ var render = function() {
                 ) {
                   return null
                 }
-                return _vm.listarMateriaPrimaProductos(
+                return _vm.listarMateriaPrimaProducto(
                   1,
                   _vm.buscar,
                   _vm.criterio,
@@ -52045,7 +52012,7 @@ var render = function() {
               attrs: { type: "submit" },
               on: {
                 click: function($event) {
-                  return _vm.listarMateriaPrimaProductos(
+                  return _vm.listarMateriaPrimaProducto(
                     1,
                     _vm.buscar,
                     _vm.criterio,
@@ -52137,7 +52104,21 @@ var render = function() {
                   domProps: {
                     textContent: _vm._s(materiaprimaproducto.subtotal)
                   }
-                })
+                }),
+                _vm._v(" "),
+                _c("td", [
+                  materiaprimaproducto.tipoDeCosto == "Directo"
+                    ? _c("div", [
+                        _c("span", { staticClass: "badge badge-success" }, [
+                          _vm._v("Directo")
+                        ])
+                      ])
+                    : _c("div", [
+                        _c("span", { staticClass: "badge badge-danger" }, [
+                          _vm._v("Indirecto")
+                        ])
+                      ])
+                ])
               ])
             }),
             0
@@ -52243,7 +52224,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Precio")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Subtotal")])
+        _c("th", [_vm._v("Subtotal")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tipo")])
       ])
     ])
   }

@@ -7,8 +7,8 @@
                         <select class="form-control col-md-3" v-model="criterio">
                               <option value="gestionMateria">Materia Prima</option>
                         </select>
-                        <input type="text" v-model="buscar" @keyup.enter="listarMateriaPrimaProductos(1,buscar,criterio,this.identificador)" class="form-control" placeholder="Texto a buscar">
-                          <button type="submit" @click="listarMateriaPrimaProductos(1,buscar,criterio,this.identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                        <input type="text" v-model="buscar" @keyup.enter="listarMateriaPrimaProducto(1,buscar,criterio,this.identificador)" class="form-control" placeholder="Texto a buscar">
+                          <button type="submit" @click="listarMateriaPrimaProducto(1,buscar,criterio,this.identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                     </div>
                 </div>
             </div>
@@ -22,6 +22,7 @@
                                         <th>Cantidad</th>
                                         <th>Precio</th>
                                         <th>Subtotal</th>
+                                        <th>Tipo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,6 +42,14 @@
                                         <td v-text="materiaprimaproducto.cantidad"></td>
                                         <td v-text="materiaprimaproducto.precio"></td>
                                         <td v-text="materiaprimaproducto.subtotal"></td>
+                                        <td>
+                                            <div v-if="materiaprimaproducto.tipoDeCosto=='Directo'">
+                                            <span class="badge badge-success">Directo</span>
+                                            </div>
+                                            <div v-else>
+                                            <span class="badge badge-danger">Indirecto</span>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -142,7 +151,7 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarMateriaPrimaProducto(page,buscar,criterio);
+                me.listarMateriaPrimaProducto(page,buscar,criterio,this.identificador);
             }
         },
         mounted() {
