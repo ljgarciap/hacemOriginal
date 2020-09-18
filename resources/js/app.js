@@ -40,16 +40,18 @@ Vue.component('gestionmaterias', require('./components/GestionMaterias.vue').def
 Vue.component('hojadecostos', require('./components/HojaDeCostos.vue').default);
 Vue.component('hojas', require('./components/Hojas.vue').default);
 Vue.component('manodeobra', require('./components/ManoDeObraProductos.vue').default);
+Vue.component('maquinarias', require('./components/Maquinarias.vue').default);
 Vue.component('materiaprima', require('./components/MateriaPrimaProductos.vue').default);
 Vue.component('materias', require('./components/Materias.vue').default);
 Vue.component('ninguno', require('./components/Ninguno.vue').default);
 Vue.component('perfiles', require('./components/Perfiles.vue').default);
 Vue.component('procesos', require('./components/Procesos.vue').default);
 Vue.component('productos', require('./components/Productos.vue').default);
-Vue.component('maquinarias', require('./components/Maquinarias.vue').default);
 Vue.component('roles', require('./components/Roles.vue').default);
 Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
+Vue.component('maquinaria', require('./components/Maquinaria.vue').default);
+Vue.component('cif', require('./components/Cif.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

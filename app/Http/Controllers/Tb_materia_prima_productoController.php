@@ -145,4 +145,14 @@ class Tb_materia_prima_productoController extends Controller
             return ['gestionmaterias' => $gestionmaterias];
         }
 
+        public function selectDatosMateria($id){
+            $datosmaterias = Tb_gestion_materia_prima::join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
+            ->select('tb_gestion_materia_prima.id as idGestionMateria','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.precioBase','tb_gestion_materia_prima.idUnidadBase','tb_unidad_base.unidadBase as unidadBase','tb_gestion_materia_prima.estado')
+            ->where('tb_gestion_materia_prima.id','=',$id)
+            ->orderBy('gestionMateria','asc')
+            ->get();
+
+            return ['datosmaterias' => $datosmaterias];
+        }
+
 }

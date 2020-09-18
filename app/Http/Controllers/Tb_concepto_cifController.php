@@ -36,7 +36,7 @@ class Tb_concepto_cifController extends Controller
 
     public function selectConcepto(){
         $conceptos = Tb_concepto_cif::where('estado','=','1')
-        ->select('id as idConcepto','concepto')->orderBy('concepto','asc')->get();
+        ->select('id as idConcepto','concepto','valor')->orderBy('concepto','asc')->get();
 
         return ['conceptos' => $conceptos];
     }

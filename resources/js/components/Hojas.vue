@@ -104,7 +104,7 @@
 
                                     <div class="card-header">
                                         <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                        <button type="button" @click="abrirModal('gestionMateria','crear')" class="btn btn-secondary">
+                                        <button type="button" @click="abrirModal('gestionMateria','crear','arrayGestionMaterias')" class="btn btn-secondary">
                                             <i class="icon-plus"></i>&nbsp;Nueva materia prima
                                         </button>
                                     </div>
@@ -131,7 +131,29 @@
                                 </vs-tab>
 
                                 <vs-tab label="CIF" icon="compare_arrows" @click="colorx = '#CB3234'">
-                                    <h2>Pestaña cif asociados</h2>
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                            <i class="icon-plus"></i>&nbsp;Cif asociados
+                                    </div>
+
+                                    <div class="card-body">
+                                        <cif></cif>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="MAQUINARIA" icon="compare_arrows" @click="colorx = '#FFC89A'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                            <i class="icon-plus"></i>&nbsp;Maquinaria
+                                    </div>
+
+                                    <div class="card-body">
+                                        <maquinaria></maquinaria>
+                                    </div>
+
                                 </vs-tab>
 
                                 <vs-tab label="Servicios Directos" icon="account_circle" @click="colorx = '#0000FF'">
@@ -175,7 +197,7 @@
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Materia Prima</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idMateriaPrima">
+                                            <select class="form-control" v-model="idMateriaPrima"  @change='selectDatosMateria(gestionmateria.idGestionMateria)'>
                                                 <option value="0" disabled>Seleccione una materia prima</option>
                                                 <option v-for="gestionmateria in arrayGestionMaterias" :key="gestionmateria.idGestionMateria" :value="gestionmateria.idGestionMateria" v-text="gestionmateria.gestionMateria"></option>
                                             </select>
@@ -326,10 +348,12 @@
                 perfil:'',
                 arrayPerfilRelacion:[],
                 idGestionMateria:0,
-                idMateriaPrima:0,
+                idMateriaPrima:1,
                 gestionMateria:'',
+                gestionmateria:'',
                 precioBase:0,
                 arrayGestionMaterias:[],
+                arrayDatosMaterias:[],
                 modal : 0,
                 tituloModal : '',
                 tipoModal : 0,
@@ -445,7 +469,6 @@
                             this.idMateriaPrima=data['idGestionMateria'];
                             this.cantidad='1';
                             this.precio=data['precioBase'];
-                            this.precioBase=data['precioBase'];
                             this.idHoja=this.identificador;
                             this.tituloModal='Asignar nueva materia';
                             this.tipoAccion= 1; //carga tipos de botón en el footer
@@ -523,6 +546,18 @@
                     console.log(error);
                 })
             },
+            selectDatosMateria(idGestionMateria){
+                let me=this;
+                var url='/materiaprimaproducto/selectDatosMateria/'+this.idGestionMateria;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayDatosMaterias=respuesta.datosmaterias;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             selectRelacion(idArea){
                 let me=this;
                 var url='/perfil/selectRelacion/'+this.idArea;
@@ -557,7 +592,7 @@
                 axios.post('/materiaprimaproducto/store',{
                     'idMateriaPrima': this.idMateriaPrima,
                     'cantidad': this.cantidad,
-                    'precio': this.precio,
+                    'precio': this.precioBase,
                     'tipoDeCosto': this.tipoDeCosto,
                     'idHoja': this.idHoja
 
