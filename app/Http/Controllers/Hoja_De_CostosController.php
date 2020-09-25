@@ -23,7 +23,7 @@ class Hoja_De_CostosController extends Controller
 
             //directa
             $query = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
-            ELSE SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) END) as acumuladomd");
+            ELSE ROUND(SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) END) as acumuladomd");
             $materiadirecta = DB::table('tb_materia_prima_producto')
             ->select($query)
             ->where([
@@ -37,7 +37,7 @@ class Hoja_De_CostosController extends Controller
 
             //indirecta
             $query1 = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
-            ELSE SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) END) as acumuladomi");
+            ELSE ROUND(SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) END) as acumuladomi");
             $materiaindirecta = DB::table('tb_materia_prima_producto')
             ->select($query1)
             ->where([
@@ -51,7 +51,7 @@ class Hoja_De_CostosController extends Controller
 
             //manodeobra
             $query2 = DB::raw("(CASE WHEN SUM(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) IS NULL THEN 0
-            ELSE SUM(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) END) as acumuladomo");
+            ELSE ROUND(SUM(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) END) as acumuladomo");
             $manodeobra = DB::table('tb_mano_de_obra_producto')
             ->select($query2)
             ->where('tb_mano_de_obra_producto.idHoja','=',$identificador)

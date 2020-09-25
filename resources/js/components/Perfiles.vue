@@ -165,7 +165,7 @@
     export default {
         data(){
             return{
-                idPerfil:0,
+                idPerfil:0, //variable usada en el modal de actualización de perfil
                 id:'',
                 perfil:'',
                 valorMinuto:0,

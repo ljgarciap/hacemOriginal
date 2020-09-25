@@ -13,11 +13,15 @@ class Tb_gestion_materia_primaSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tb_gestion_materia_prima')->insert([
-            'gestionMateria' => 'Prueba',
-            'idUnidadBase' => '1',
-            'precioBase' => '0',
-            'idtipoMateria' => '1',
-        ]);
+        $data = json_decode(file_get_contents(__DIR__ . '/json/tb_gestion_materia_prima.json'));
+        foreach ($data as $item){
+            Tb_gestion_materia_prima::create(array(
+                'gestionMateria' => $item->gestionMateria,
+                'idUnidadBase' => $item->idUnidadBase,
+                'precioBase' => $item->precioBase,
+                'idtipoMateria' => $item->idtipoMateria,
+                'estado' => $item->estado,
+            ));
+            }
     }
 }

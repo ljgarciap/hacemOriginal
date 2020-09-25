@@ -26,7 +26,7 @@ class Tb_materia_prima_productoController extends Controller
             'tb_gestion_materia_prima.gestionMateria', 'tb_gestion_materia_prima.precioBase',
             'tb_unidad_base.id AS idUnidadBase', 'tb_unidad_base.unidadBase', 'tb_materia_prima_producto.cantidad',
             'tb_materia_prima_producto.precio', 'tb_materia_prima_producto.tipoDeCosto', 'tb_materia_prima_producto.idHoja',
-            DB::raw('(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) as subtotal'))
+            DB::raw('ROUND((tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) as subtotal'))
             ->where('tb_materia_prima_producto.idHoja', '=', $identificador)
             ->orderBy('tb_gestion_materia_prima.id','desc')->paginate(5);
         }
@@ -39,7 +39,7 @@ class Tb_materia_prima_productoController extends Controller
             'tb_gestion_materia_prima.gestionMateria', 'tb_gestion_materia_prima.precioBase',
             'tb_unidad_base.id AS idUnidadBase', 'tb_unidad_base.unidadBase', 'tb_materia_prima_producto.cantidad',
             'tb_materia_prima_producto.precio', 'tb_materia_prima_producto.tipoDeCosto', 'tb_materia_prima_producto.idHoja',
-            DB::raw('(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) as subtotal'))
+            DB::raw('ROUND((tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) as subtotal'))
             ->where([
                 ['tb_gestion_materia_prima.gestionMateria', 'like', '%'. $buscar . '%'],
                 ['tb_materia_prima_producto.idHoja', '=', $identificador],
@@ -55,7 +55,7 @@ class Tb_materia_prima_productoController extends Controller
             'tb_gestion_materia_prima.gestionMateria', 'tb_gestion_materia_prima.precioBase',
             'tb_unidad_base.id AS idUnidadBase', 'tb_unidad_base.unidadBase', 'tb_materia_prima_producto.cantidad',
             'tb_materia_prima_producto.precio', 'tb_materia_prima_producto.tipoDeCosto', 'tb_materia_prima_producto.idHoja',
-            DB::raw('(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) as subtotal'))
+            DB::raw('ROUND((tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) as subtotal'))
             ->where([
                 ['tb_gestion_materia_prima.'.$criterio, 'like', '%'. $buscar . '%'],
                 ['tb_materia_prima_producto.idHoja', '=', $identificador],
@@ -86,7 +86,7 @@ class Tb_materia_prima_productoController extends Controller
         'tb_gestion_materia_prima.gestionMateria', 'tb_gestion_materia_prima.precioBase',
         'tb_unidad_base.id AS idUnidadBase', 'tb_unidad_base.unidadBase', 'tb_materia_prima_producto.cantidad',
         'tb_materia_prima_producto.precio', 'tb_materia_prima_producto.tipoDeCosto', 'tb_materia_prima_producto.idHoja',
-        DB::raw('(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) as subtotal'))
+        DB::raw('ROUND((tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) as subtotal'))
         ->orderBy('tb_gestion_materia_prima.id','desc')->get();
 
         return [
@@ -147,12 +147,11 @@ class Tb_materia_prima_productoController extends Controller
 
         public function selectDatosMateria($id){
             $datosmaterias = Tb_gestion_materia_prima::join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
-            ->select('tb_gestion_materia_prima.id as idGestionMateria','tb_gestion_materia_prima.gestionMateria','tb_gestion_materia_prima.precioBase','tb_gestion_materia_prima.idUnidadBase','tb_unidad_base.unidadBase as unidadBase','tb_gestion_materia_prima.estado')
+            ->select('tb_gestion_materia_prima.precioBase as precioBase')
             ->where('tb_gestion_materia_prima.id','=',$id)
-            ->orderBy('gestionMateria','asc')
             ->get();
 
-            return ['datosmaterias' => $datosmaterias];
+            return $datosmaterias;
         }
 
 }

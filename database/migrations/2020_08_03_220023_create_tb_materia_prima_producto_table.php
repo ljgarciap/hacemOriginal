@@ -16,7 +16,7 @@ class CreateTbMateriaPrimaProductoTable extends Migration
         Schema::create('tb_materia_prima_producto', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idMateriaPrima')->constrained('tb_gestion_materia_prima');
-            $table->integer('cantidad')->unsigned();
+            $table->float('cantidad');
             $table->integer('precio')->unsigned();
             $table->string('tipoDeCosto', 255);
             $table->foreignId('idHoja')->constrained('tb_hoja_de_costo');

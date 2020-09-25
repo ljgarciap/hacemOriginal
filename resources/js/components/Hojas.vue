@@ -198,7 +198,6 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Materia Prima</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idMateriaPrima"  @change='selectDatosMateria(gestionmateria.idGestionMateria)'>
-                                                <option value="0" disabled>Seleccione una materia prima</option>
                                                 <option v-for="gestionmateria in arrayGestionMaterias" :key="gestionmateria.idGestionMateria" :value="gestionmateria.idGestionMateria" v-text="gestionmateria.gestionMateria"></option>
                                             </select>
                                         </div>
@@ -215,7 +214,7 @@
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Precio</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="precio" class="form-control" v-text="precioBase">
+                                            <input type="text" v-model="precio" class="form-control">
                                             <span class="help-block">(*) Ingrese el precio</span>
                                         </div>
                                     </div>
@@ -347,13 +346,11 @@
                 idPerfil:0,
                 perfil:'',
                 arrayPerfilRelacion:[],
-                idGestionMateria:0,
                 idMateriaPrima:1,
-                gestionMateria:'',
+                datosMaterias:'',
                 gestionmateria:'',
                 precioBase:0,
                 arrayGestionMaterias:[],
-                arrayDatosMaterias:[],
                 modal : 0,
                 tituloModal : '',
                 tipoModal : 0,
@@ -490,6 +487,7 @@
                             break;
                         }
                     }
+                    this.selectGestionMateria();
                     break;
                 }
 
@@ -546,12 +544,12 @@
                     console.log(error);
                 })
             },
-            selectDatosMateria(idGestionMateria){
+            selectDatosMateria(idMateriaPrima){
                 let me=this;
-                var url='/materiaprimaproducto/selectDatosMateria/'+this.idGestionMateria;
+                var url='/materiaprimaproducto/selectDatosMateria/'+this.idMateriaPrima;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayDatosMaterias=respuesta.datosmaterias;
+                me.datosMaterias=respuesta.datosmaterias;
                 })
                 .catch(function (error) {
                     // handle error
@@ -732,8 +730,7 @@
             //cierre de funciones para uso del lightbox
         },
         mounted() {
-            this.listarProducto(1,this.buscar,this.criterio),
-            this.selectGestionMateria()
+            this.listarProducto(1,this.buscar,this.criterio)
         }
     }
 </script>

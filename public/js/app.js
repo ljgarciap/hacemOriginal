@@ -4337,7 +4337,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -4363,7 +4362,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idGestionMateria", 0), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "gestionMateria", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "arrayDatosMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "datosMaterias", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -4492,6 +4491,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
             }
 
+            this.selectGestionMateria();
             break;
           }
 
@@ -4549,12 +4549,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
-    selectDatosMateria: function selectDatosMateria(idGestionMateria) {
+    selectDatosMateria: function selectDatosMateria(idMateriaPrima) {
       var me = this;
-      var url = '/materiaprimaproducto/selectDatosMateria/' + this.idGestionMateria;
+      var url = '/materiaprimaproducto/selectDatosMateria/' + this.idMateriaPrima;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayDatosMaterias = respuesta.datosmaterias;
+        me.datosMaterias = respuesta.datosmaterias;
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -4720,7 +4720,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   },
   mounted: function mounted() {
-    this.listarProducto(1, this.buscar, this.criterio), this.selectGestionMateria();
+    this.listarProducto(1, this.buscar, this.criterio);
   }
 });
 
@@ -6208,6 +6208,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       idPerfil: 0,
+      //variable usada en el modal de actualización de perfil
       id: '',
       perfil: '',
       valorMinuto: 0,
@@ -50051,28 +50052,20 @@ var render = function() {
                                     ]
                                   }
                                 },
-                                [
-                                  _c(
-                                    "option",
-                                    { attrs: { value: "0", disabled: "" } },
-                                    [_vm._v("Seleccione una materia prima")]
-                                  ),
-                                  _vm._v(" "),
-                                  _vm._l(_vm.arrayGestionMaterias, function(
-                                    gestionmateria
-                                  ) {
-                                    return _c("option", {
-                                      key: gestionmateria.idGestionMateria,
-                                      domProps: {
-                                        value: gestionmateria.idGestionMateria,
-                                        textContent: _vm._s(
-                                          gestionmateria.gestionMateria
-                                        )
-                                      }
-                                    })
+                                _vm._l(_vm.arrayGestionMaterias, function(
+                                  gestionmateria
+                                ) {
+                                  return _c("option", {
+                                    key: gestionmateria.idGestionMateria,
+                                    domProps: {
+                                      value: gestionmateria.idGestionMateria,
+                                      textContent: _vm._s(
+                                        gestionmateria.gestionMateria
+                                      )
+                                    }
                                   })
-                                ],
-                                2
+                                }),
+                                0
                               )
                             ])
                           ])
@@ -50145,10 +50138,7 @@ var render = function() {
                                 ],
                                 staticClass: "form-control",
                                 attrs: { type: "text" },
-                                domProps: {
-                                  value: _vm.precio,
-                                  textContent: _vm._s(_vm.precioBase)
-                                },
+                                domProps: { value: _vm.precio },
                                 on: {
                                   input: function($event) {
                                     if ($event.target.composing) {

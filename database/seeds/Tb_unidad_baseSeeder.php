@@ -31,11 +31,19 @@ class Tb_unidad_baseSeeder extends Seeder
         ]);
 
         DB::table('tb_unidad_base')->insert([
-            'unidadBase' => 'hoja',
+            'unidadBase' => 'Hoja',
         ]);
 
         DB::table('tb_unidad_base')->insert([
-            'unidadBase' => 'unidad',
+            'unidadBase' => 'Unidad',
+        ]);
+
+        DB::table('tb_unidad_base')->insert([
+            'unidadBase' => 'Par',
+        ]);
+
+        DB::table('tb_unidad_base')->insert([
+            'unidadBase' => 'ml',
         ]);
     }
 }

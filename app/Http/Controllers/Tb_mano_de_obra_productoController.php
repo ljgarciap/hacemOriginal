@@ -31,7 +31,7 @@ class Tb_mano_de_obra_productoController extends Controller
             })
             ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
             'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
-            'tb_mano_de_obra_producto.idHoja',DB::raw('(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) as subtotal'))
+            'tb_mano_de_obra_producto.idHoja',DB::raw('ROUND((tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) as subtotal'))
             ->where('tb_mano_de_obra_producto.idHoja', '=', $identificador)
             ->orderBy('tb_mano_de_obra_producto.id','desc')->paginate(5);
         }
@@ -43,7 +43,7 @@ class Tb_mano_de_obra_productoController extends Controller
             })
             ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
             'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
-            'tb_mano_de_obra_producto.idHoja',DB::raw('(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) as subtotal'))
+            'tb_mano_de_obra_producto.idHoja',DB::raw('ROUND((tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) as subtotal'))
             ->where([
                 ['tb_perfil.perfil', 'like', '%'. $buscar . '%'],
                 ['tb_mano_de_obra_producto.idHoja', '=', $identificador],
@@ -58,7 +58,7 @@ class Tb_mano_de_obra_productoController extends Controller
             })
             ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
             'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
-            'tb_mano_de_obra_producto.idHoja',DB::raw('(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) as subtotal'))
+            'tb_mano_de_obra_producto.idHoja',DB::raw('ROUND((tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) as subtotal'))
             ->where([
                 ['tb_proceso.proceso', 'like', '%'. $buscar . '%'],
                 ['tb_mano_de_obra_producto.idHoja', '=', $identificador],
