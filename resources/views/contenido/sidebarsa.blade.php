@@ -10,6 +10,9 @@
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> Administración</a>
                 <ul class="nav-dropdown-items">
+                    <li @click="menu=17" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Variables financieras</a>
+                    </li>
                     <li @click="menu=1" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-book-open"></i> Areas</a>
                     </li>

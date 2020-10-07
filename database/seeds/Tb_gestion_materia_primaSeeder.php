@@ -19,7 +19,7 @@ class Tb_gestion_materia_primaSeeder extends Seeder
                 'gestionMateria' => $item->gestionMateria,
                 'idUnidadBase' => $item->idUnidadBase,
                 'precioBase' => $item->precioBase,
-                'idtipoMateria' => $item->idtipoMateria,
+                'idTipoMateria' => $item->idTipoMateria,
                 'estado' => $item->estado,
             ));
             }

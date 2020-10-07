@@ -6,6 +6,7 @@ use App\Tb_materia_prima_producto;
 use App\Tb_mano_de_obra_producto;
 use App\Tb_concepto_cif;
 use App\Tb_maquinaria;
+use App\Tb_producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -20,6 +21,7 @@ class Hoja_De_CostosController extends Controller
             $acumuladomo = 0;
             $acumuladocif = 0;
             $acumuladomaquinaria = 0;
+            $acumuladotiempomo = 0;
 
             //directa
             $query = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
@@ -83,6 +85,24 @@ class Hoja_De_CostosController extends Controller
                 $total = $acumuladomaquinaria + $total;
             }
 
+            //tiempomanodeobra
+            $query5 = DB::raw("(CASE WHEN SUM(tb_mano_de_obra_producto.tiempo) IS NULL THEN 0
+            ELSE ROUND(SUM(tb_mano_de_obra_producto.tiempo),0) END) as acumuladotiempomo");
+            $tiempomanodeobra = DB::table('tb_mano_de_obra_producto')
+            ->select($query5)
+            ->where('tb_mano_de_obra_producto.idHoja','=',$identificador)
+            ->get();
+            foreach($tiempomanodeobra as $tmanodeo){
+                $acumuladotiempomo = $tmanodeo->acumuladotiempomo + $acumuladotiempomo;
+            }
+
+            $productos=Tb_producto::findOrFail($identificador)->select('foto','producto')->get();
+            foreach($productos as $producto){
+                $foto = $producto->foto;
+                $producto = $producto->producto;
+            }
+
+
             $totales = ([
                 [
                 'acumuladomd'         => $acumuladomd,
@@ -91,7 +111,10 @@ class Hoja_De_CostosController extends Controller
                 'acumuladomo'         => $acumuladomo,
                 'acumuladocif'        => $acumuladocif,
                 'acumuladomaquinaria' => $acumuladomaquinaria,
-                'acumuladototal'      => $total
+                'acumuladototal'      => $total,
+                'acumuladotiempomo'   => $acumuladotiempomo,
+                'foto'                => $foto,
+                'producto'            => $producto
                 ]
             ]);
 

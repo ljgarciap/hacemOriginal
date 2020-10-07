@@ -16,6 +16,7 @@ class CreateTbHojaDeCostoTable extends Migration
         Schema::create('tb_hoja_de_costo', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idProducto')->constrained('tb_producto');
+            $table->integer('capacidadMensual')->default(1);
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });

@@ -58,19 +58,19 @@
     </template>
 
     <template v-if="menu==14">
-        <h1>Generalidades</h1>
-    </template>
-
-    <template v-if="menu==15">
         <admin></admin>
     </template>
 
-    <template v-if="menu==16">
+    <template v-if="menu==15">
         <empresa></empresa>
     </template>
 
-    <template v-if="menu==17">
+    <template v-if="menu==16">
         <ninguno></ninguno>
+    </template>
+
+    <template v-if="menu==17">
+        <financieras></financieras>
     </template>
 
     @endsection

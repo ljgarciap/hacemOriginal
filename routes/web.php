@@ -33,11 +33,21 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get('/principal', function () {
             return view('contenido/contenido');
         })->name('principal');
+
+        Route::get('/pruebas', function () {
+            return view('home');
+        })->name('pruebas');
 //---------------------------------------------------------------------------//
 
 //accesos para los usuarios que son superadministrador
 
     Route::group(['middleware' => ['Superadministrador']], function () {
+
+        Route::get("/financiera", "Tb_informacion_financieraController@index");
+        Route::post("/financiera/store", "Tb_informacion_financieraController@store");
+        Route::put("/financiera/update", "Tb_informacion_financieraController@update");
+        Route::put("/financiera/deactivate", "Tb_informacion_financieraController@deactivate");
+        Route::put("/financiera/activate", "Tb_informacion_financieraController@activate");
 
         Route::get("/area", "Tb_areaController@index");
         Route::post("/area/store", "Tb_areaController@store");

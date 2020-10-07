@@ -35,8 +35,8 @@
         <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
           <div class="card-body text-center">
             <div>
-              <h2>Calculador - SENA CIDM</h2>
-              <p>Sistema para el calculo de producción del área de calzado y marroquineria.</p>
+              <h2>H.A.C.E.M - SENA CIDM</h2>
+              <p>Herramienta de apoyo para el costeo en las empresas manufactureras.</p>
               <p><img src="img/logo-symbol.png" alt=""></p>
             </div>
           </div>

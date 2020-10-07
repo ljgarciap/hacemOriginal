@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTbConceptoCifTable extends Migration
+class CreateTbInformacionFinancieraTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTbConceptoCifTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_concepto_cif', function (Blueprint $table) {
+        Schema::create('tb_informacion_financiera', function (Blueprint $table) {
             $table->id();
-            $table->string('concepto', 255);
-            $table->integer('valor');
+            $table->string('conceptoFinanciero', 255);
+            $table->float('porcentaje')->default(0);
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateTbConceptoCifTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_concepto_cif');
+        Schema::dropIfExists('tb_informacion_financiera');
     }
 }

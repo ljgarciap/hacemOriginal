@@ -148,7 +148,7 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarManoDeObraProducto(page,buscar,criterio);
+                me.listarManoDeObraProducto(page,buscar,criterio,this.identificador);
             }
         },
         mounted() {

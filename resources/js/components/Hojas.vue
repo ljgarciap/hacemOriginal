@@ -100,7 +100,7 @@
                             <div class="card">
                                 <vs-tabs :color="colorx">
 
-                                <vs-tab label="Materia Prima" icon="shopping_cart" @click="colorx = '#8B0000'">
+                                <vs-tab label="Materia Prima" icon="open_with" @click="colorx = '#8B0000'">
 
                                     <div class="card-header">
                                         <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
@@ -115,7 +115,7 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="Mano de Obra" icon="work" @click="colorx = '#FFA500'">
+                                <vs-tab label="Mano de Obra" icon="pan_tool" @click="colorx = '#FFA500'">
 
                                     <div class="card-header">
                                         <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
@@ -130,7 +130,7 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="CIF" icon="compare_arrows" @click="colorx = '#CB3234'">
+                                <vs-tab label="CIF" icon="account_balance" @click="colorx = '#CB3234'">
 
                                     <div class="card-header">
                                         <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
@@ -143,7 +143,8 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="MAQUINARIA" icon="compare_arrows" @click="colorx = '#FFC89A'">
+                                <!-- //comentariada pestaña maquinaria; valor va incluido en la de cif
+                                <vs-tab label="MAQUINARIA" icon="build" @click="colorx = '#FFC89A'">
 
                                     <div class="card-header">
                                         <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
@@ -155,10 +156,7 @@
                                     </div>
 
                                 </vs-tab>
-
-                                <vs-tab label="Servicios Directos" icon="account_circle" @click="colorx = '#0000FF'">
-                                    <h2>Pestaña servicios asociados</h2>
-                                </vs-tab>
+                                -->
 
                                 <vs-tab label="Consolidado" icon="view_list" @click="colorx = '#20603d'">
 
@@ -260,8 +258,8 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tiempo</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="tiempo" class="form-control" placeholder="Tiempo de mano de obra">
-                                            <span class="help-block">(*) Ingrese el tiempo de mano de obra</span>
+                                            <input type="number" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
+                                            <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra</span>
                                         </div>
                                     </div>
 
@@ -269,7 +267,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Precio</label>
                                         <div class="col-md-9">
                                             <input type="number" v-model="precio" class="form-control">
-                                            <span class="help-block">(*) Ingrese el precio</span>
+                                            <span class="help-block">(*) Ingrese el costo por tarea</span>
                                         </div>
                                     </div>
 

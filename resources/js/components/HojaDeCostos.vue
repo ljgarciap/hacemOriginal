@@ -5,21 +5,25 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
+                                        <!--<th>Foto</th>-->
+                                        <th>Tiempo mano de obra</th>
                                         <th>Total Materia prima directa</th>
                                         <th>Total Materia prima indirecta</th>
                                         <th>Total Mano de obra</th>
                                         <th>Total Cif</th>
-                                        <th>Total Maquinaria</th>
+                                        <!--<th>Total Maquinaria</th>-->
                                         <th><b>COSTO TOTAL</b></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="total in arrayTotales" :key="total.id">
+                                        <!--<td v-text="total.foto"></td>-->
+                                        <td v-text="total.acumuladotiempomo"></td>
                                         <td v-text="total.acumuladomd"></td>
                                         <td v-text="total.acumuladomi"></td>
                                         <td v-text="total.acumuladomo"></td>
                                         <td v-text="total.acumuladocif"></td>
-                                        <td v-text="total.acumuladomaquinaria"></td>
+                                        <!--<td v-text="total.acumuladomaquinaria"></td>-->
                                         <td v-text="total.acumuladototal"></td>
                                     </tr>
                                 </tbody>
