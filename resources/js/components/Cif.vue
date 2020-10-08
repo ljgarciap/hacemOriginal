@@ -23,11 +23,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="maquinaria in arrayMaquinarias" :key="maquinaria.id">
+                                    <tr>
                                         <td><span class="badge badge-success">Maquinaria</span></td>
                                         <td>0</td>
-                                        <td>Depreciación total</td>
-                                        <td v-text="maquinaria.acumuladomaquinaria"></td>
+                                        <td>Depreciación mensual total</td>
+                                        <td>{{this.maquinaria}}</td>
                                     </tr>
                                     <tr v-for="concepto in arrayConceptos" :key="concepto.id">
                                         <td>
@@ -85,8 +85,8 @@
                 concepto:'',
                 valor:'',
                 estado:'',
+                maquinaria:'',
                 arrayConceptos : [],
-                arrayMaquinarias : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -163,7 +163,7 @@
                 var url='/hojadecosto/depreciacion/'+this.identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayMaquinarias=respuesta.maquinarias;
+                me.maquinaria=respuesta.maquinarias;
                 })
                 .catch(function (error) {
                     // handle error
@@ -172,8 +172,8 @@
             }
         },
         mounted() {
-            this.listarConcepto(1,this.buscar,this.criterio);
-            this.maquinariaTotal(this.identificador)
+            this.maquinariaTotal(this.identificador);
+            this.listarConcepto(1,this.buscar,this.criterio)
         }
     }
 </script>

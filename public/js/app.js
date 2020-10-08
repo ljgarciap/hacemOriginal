@@ -2385,8 +2385,8 @@ __webpack_require__.r(__webpack_exports__);
       concepto: '',
       valor: '',
       estado: '',
+      maquinaria: '',
       arrayConceptos: [],
-      arrayMaquinarias: [],
       modal: 0,
       tituloModal: '',
       tipoAccion: 0,
@@ -2464,7 +2464,7 @@ __webpack_require__.r(__webpack_exports__);
       var url = '/hojadecosto/depreciacion/' + this.identificador;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayMaquinarias = respuesta.maquinarias;
+        me.maquinaria = respuesta.maquinarias;
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -2472,8 +2472,8 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.listarConcepto(1, this.buscar, this.criterio);
     this.maquinariaTotal(this.identificador);
+    this.listarConcepto(1, this.buscar, this.criterio);
   }
 });
 
@@ -4016,6 +4016,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -46627,21 +46628,15 @@ var render = function() {
           _c(
             "tbody",
             [
-              _vm._l(_vm.arrayMaquinarias, function(maquinaria) {
-                return _c("tr", { key: maquinaria.id }, [
-                  _vm._m(1, true),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("0")]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v("Depreciación total")]),
-                  _vm._v(" "),
-                  _c("td", {
-                    domProps: {
-                      textContent: _vm._s(maquinaria.acumuladomaquinaria)
-                    }
-                  })
-                ])
-              }),
+              _c("tr", [
+                _vm._m(1),
+                _vm._v(" "),
+                _c("td", [_vm._v("0")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Depreciación mensual total")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(this.maquinaria))])
+              ]),
               _vm._v(" "),
               _vm._l(_vm.arrayConceptos, function(concepto) {
                 return _c("tr", { key: concepto.id }, [
@@ -49240,6 +49235,10 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("td", {
+                  domProps: { textContent: _vm._s(total.capacidadproducto) }
+                }),
+                _vm._v(" "),
+                _c("td", {
                   domProps: { textContent: _vm._s(total.acumuladomd) }
                 }),
                 _vm._v(" "),
@@ -49252,7 +49251,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("td", {
-                  domProps: { textContent: _vm._s(total.acumuladocift) }
+                  domProps: { textContent: _vm._s(total.cifporproducto) }
                 }),
                 _vm._v(" "),
                 _c("td", {
@@ -49274,7 +49273,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Minutos producción")]),
+        _c("th", [_vm._v("Minutos")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Unidades proyección")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total Materia directa")]),
         _vm._v(" "),
@@ -49282,7 +49283,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Total Mano de obra")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Total Cif acumulados")]),
+        _c("th", [_vm._v("Total Cif aterrizados")]),
         _vm._v(" "),
         _c("th", [_c("b", [_vm._v("COSTO TOTAL")])])
       ])

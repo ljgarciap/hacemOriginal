@@ -6,11 +6,12 @@
                                 <thead>
                                     <tr>
                                         <!--<th>Foto</th>-->
-                                        <th>Minutos producción</th>
+                                        <th>Minutos</th>
+                                        <th>Unidades proyección</th>
                                         <th>Total Materia directa</th>
                                         <th>Total Materia indirecta</th>
                                         <th>Total Mano de obra</th>
-                                        <th>Total Cif acumulados</th>
+                                        <th>Total Cif aterrizados</th>
                                         <!--<th>Total Maquinaria</th>-->
                                         <th><b>COSTO TOTAL</b></th>
                                     </tr>
@@ -19,11 +20,11 @@
                                     <tr v-for="total in arrayTotales" :key="total.id">
                                         <!--<td v-text="total.foto"></td>-->
                                         <td v-text="total.acumuladotiempomo"></td>
+                                        <td v-text="total.capacidadproducto"></td>
                                         <td v-text="total.acumuladomd"></td>
                                         <td v-text="total.acumuladomi"></td>
                                         <td v-text="total.acumuladomo"></td>
-                                        <td v-text="total.acumuladocift"></td>
-                                        <!--<td v-text="total.acumuladomaquinaria"></td>-->
+                                        <td v-text="total.cifporproducto"></td>
                                         <td v-text="total.acumuladototal"></td>
                                     </tr>
                                 </tbody>

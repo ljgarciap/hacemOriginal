@@ -24,6 +24,8 @@ class Hoja_De_CostosController extends Controller
             $acumuladomaquinaria = 0;
             $acumuladocift = 0;
             $acumuladotiempomo = 0;
+            $capacidadproducto = 0;
+            $acumuladocapacidad = 0;
 
             //directa
             $query = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
@@ -74,7 +76,6 @@ class Hoja_De_CostosController extends Controller
             foreach($ciftotales as $ciftotal){
                 $acumuladocif = $ciftotal->acumuladocif + $acumuladocif;
                 $acumuladocift = $acumuladocift + $acumuladocif;
-                $total = $acumuladocif + $total;
             }
 
             //maquinaria
@@ -86,7 +87,6 @@ class Hoja_De_CostosController extends Controller
             foreach($totales as $totalg){
                 $acumuladomaquinaria = $totalg->acumuladomaquinaria + $acumuladomaquinaria;
                 $acumuladocift = $acumuladocift + $acumuladomaquinaria;
-                $total = $acumuladomaquinaria + $total;
             }
 
             //tiempomanodeobra
@@ -106,6 +106,21 @@ class Hoja_De_CostosController extends Controller
                 $producto = $producto->producto;
             }
 
+            //capacidadproduccion
+            $productos=tb_hoja_de_costo::where('id','=',$identificador)->select('capacidadMensual')->first();
+            $capacidadmensual = $productos->capacidadMensual;
+            $capacidadproducto = $capacidadproducto+$capacidadmensual;
+
+            $capacidades = tb_hoja_de_costo::where('estado','=','1')
+            ->select('capacidadMensual')->get();
+            foreach($capacidades as $capacidad){
+                $acumuladocapacidad = $capacidad->capacidadMensual + $acumuladocapacidad;
+            }
+
+            $cifporproducto=intval($acumuladocift/$capacidadproducto);
+            $ciftotalaterrizada=intval($acumuladocift/$acumuladocapacidad);
+            $total=$total+$cifporproducto;
+
             $totales = ([
                 [
                 'acumuladomd'         => $acumuladomd,
@@ -116,6 +131,9 @@ class Hoja_De_CostosController extends Controller
                 'acumuladomaquinaria' => $acumuladomaquinaria,
                 'acumuladocift'       => $acumuladocift,
                 'acumuladototal'      => $total,
+                'capacidadproducto'   => $capacidadproducto,
+                'cifporproducto'      => $cifporproducto,
+                'ciftotalaterrizada'  => $ciftotalaterrizada,
                 'acumuladotiempomo'   => $acumuladotiempomo,
                 'foto'                => $foto,
                 'producto'            => $producto
@@ -129,8 +147,6 @@ class Hoja_De_CostosController extends Controller
         public function maquinariaTotal($identificador)
         {
             $acumuladomaquinaria = 0;
-            $capacidadproducto = 0;
-            $acumuladocapacidad = 0;
             $id = 1;
 
             //maquinaria
@@ -143,30 +159,8 @@ class Hoja_De_CostosController extends Controller
                 $acumuladomaquinaria = $totalg->acumuladomaquinaria + $acumuladomaquinaria;
             }
 
-            $productos=tb_hoja_de_costo::findOrFail($identificador)->select('capacidadMensual')->get();
-            foreach($productos as $producto){
-                $capacidadmensual = $producto->capacidadMensual;
-                $capacidadproducto = $capacidadproducto+$capacidadmensual;
-            }
-
-            //capacidadproduccion
-            $capacidades = tb_hoja_de_costo::where('estado','=','1')
-            ->select('capacidadMensual')->get();
-            foreach($capacidades as $capacidad){
-                $acumuladocapacidad = $capacidad->capacidadMensual + $acumuladocapacidad;
-            }
-
-            $maquinarias = ([
-                [
-                'id'                  => $id,
-                'acumuladomaquinaria' => $acumuladomaquinaria,
-                'capacidadproducto'   => $capacidadproducto,
-                'acumuladocapacidad'  => $acumuladocapacidad
-                ]
-            ]);
-
+            $maquinarias = $acumuladomaquinaria;
             return ['maquinarias' => $maquinarias];
-
         }
 
 }
