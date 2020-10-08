@@ -10,7 +10,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Productos</li>
+                    <li class="breadcrumb-item active">Hojas de costos</li>
                 </ol>
                       <!-- Listado -->
                       <template v-if="listado">
@@ -138,7 +138,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <cif></cif>
+                                        <cif v-bind:identificador="identificador" :key="componentKey"></cif>
                                     </div>
 
                                 </vs-tab>

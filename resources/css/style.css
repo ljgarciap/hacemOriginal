@@ -3365,7 +3365,7 @@ button.close {
   -webkit-appearance: none; }
 
 .modal-open {
-  overflow: hidden; }
+  overflow: scroll; }
 
 .modal {
   position: fixed;
@@ -3375,7 +3375,7 @@ button.close {
   left: 0;
   z-index: 1050;
   display: none;
-  overflow: hidden;
+  overflow: scroll;
   outline: 0; }
   .modal.fade .modal-dialog {
     transition: -webkit-transform 0.3s ease-out;
@@ -7845,7 +7845,7 @@ base-chart.chart {
   .sidebar .nav-link, .sidebar .navbar .dropdown-toggle, .navbar .sidebar .dropdown-toggle {
     display: block;
     padding: 0.75rem 1rem;
-    color: #fff;
+    color: #ff671b; /*cambio de color1 para dropdown*/
     text-decoration: none;
     background: transparent; }
     .sidebar .nav-link i, .sidebar .navbar .dropdown-toggle i, .navbar .sidebar .dropdown-toggle i {

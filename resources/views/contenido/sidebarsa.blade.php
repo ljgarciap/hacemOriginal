@@ -2,13 +2,13 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li @click="menu=14" class="nav-item">
-                <a class="nav-link active" href="#"><i class="icon-speedometer"></i> Escritorio</a>
+                <a class="nav-link active" href="#"><i class="icon-speedometer"></i> <b>Escritorio</b></a>
             </li>
-            <li class="nav-title">
+            <li class="nav-title" style="color:#ff671b">
                 Mantenimiento
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> Administración</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> <b>Administración</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=17" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-book-open"></i> Variables financieras</a>
@@ -25,7 +25,7 @@
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wrench"></i> Materiales</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wrench"></i> <b>Materiales</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=4" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-notebook"></i> Unidades</a>
@@ -39,7 +39,7 @@
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-basket"></i> Productos</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-basket"></i> <b>Productos</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=7" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-wallet"></i> Colecciones</a>
@@ -53,7 +53,7 @@
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-folder"></i> Conceptos cif</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-folder"></i> <b>Conceptos cif</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=10" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-folder-alt"></i> Conceptos</a>
@@ -64,7 +64,7 @@
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> Usuarios</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> <b>Usuarios</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=12" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-pencil"></i> Roles</a>

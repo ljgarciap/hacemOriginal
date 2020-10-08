@@ -118,24 +118,30 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Coleccion</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idColeccion">
-                                                <option value="0" disabled> Seleccione Coleccion</option>
-                                                <option v-for="coleccion in arrayColeccion" :key="coleccion.idColeccion" :value="coleccion.idColeccion" v-text="coleccion.coleccion"></option>
-                                            </select>
+                                   <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 form-control-label" for="text-input">Coleccion</label>
+                                                <div class="col-md-9">
+                                                    <select class="form-control" v-model="idColeccion">
+                                                        <option value="0" disabled> Seleccione Coleccion</option>
+                                                        <option v-for="coleccion in arrayColeccion" :key="coleccion.idColeccion" :value="coleccion.idColeccion" v-text="coleccion.coleccion"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Area</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idArea">
-                                                <option value="0" disabled> Seleccione Area</option>
-                                                <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
-                                            </select>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 form-control-label" for="text-input">Area</label>
+                                                <div class="col-md-9">
+                                                    <select class="form-control" v-model="idArea">
+                                                        <option value="0" disabled> Seleccione Area</option>
+                                                        <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                   </div>
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                         <div class="col-md-9">
@@ -150,18 +156,27 @@
                                             <span class="help-block">(*) Ingrese el nombre de la referencia</span>
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Capacidad</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="capacidadMensual" class="form-control" placeholder="Capacidad de producción">
+                                            <span class="help-block">(*) Ingrese la capacidad de producción mensual</span>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Foto</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="foto" class="form-control" placeholder="Nombre de foto">
-                                            <span class="help-block">(*) Ingrese el nombre de la foto</span>
+                                            <span class="help-block">(*) Ingrese la url de la foto</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Descripcion</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="descripcion" class="form-control" placeholder="Nombre de descripcion">
-                                            <span class="help-block">(*) Ingrese el nombre de la descripcion</span>
+                                            <span class="help-block">(*) Ingrese la descripcion</span>
                                         </div>
                                     </div>
                                     <div class="form-group row div-error" v-show="errorProducto">
@@ -197,6 +212,7 @@
                 foto:'',
                 descripcion:'',
                 estado:'',
+                capacidadMensual:'',
                 arrayProducto : [],
                 idColeccion:0,
                 coleccion:'',
@@ -311,7 +327,8 @@
                     'foto': this.foto,
                     'descripcion': this.descripcion,
                     'idColeccion': this.idColeccion,
-                    'idArea': this.idArea
+                    'idArea': this.idArea,
+                    'capacidadMensual': this.capacidadMensual
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();

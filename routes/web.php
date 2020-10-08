@@ -150,6 +150,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/maquinaria/selectMaquinaria", "Tb_maquinariaController@selectMaquinaria");
 
         Route::get("/hojadecosto/total/{identificador}", "Hoja_De_CostosController@acumuladoTotal");
+        Route::get("/hojadecosto/depreciacion/{identificador}", "Hoja_De_CostosController@maquinariaTotal");
 
     });
 

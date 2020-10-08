@@ -23,6 +23,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr v-for="maquinaria in arrayMaquinarias" :key="maquinaria.id">
+                                        <td><span class="badge badge-success">Maquinaria</span></td>
+                                        <td>0</td>
+                                        <td>Depreciación total</td>
+                                        <td v-text="maquinaria.acumuladomaquinaria"></td>
+                                    </tr>
                                     <tr v-for="concepto in arrayConceptos" :key="concepto.id">
                                         <td>
                                             <button type="button" @click="abrirModal('concepto','actualizar',concepto)" class="btn btn-warning btn-sm">
@@ -67,6 +73,11 @@
 
 <script>
     export default {
+        props: {
+            identificador: {
+            type: Number
+            }
+         },
         data(){
             return{
                 idConcepto:0,
@@ -75,6 +86,7 @@
                 valor:'',
                 estado:'',
                 arrayConceptos : [],
+                arrayMaquinarias : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -145,10 +157,23 @@
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarConcepto(page,buscar,criterio);
+            },
+            maquinariaTotal(identificador){
+                let me=this;
+                var url='/hojadecosto/depreciacion/'+this.identificador;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayMaquinarias=respuesta.maquinarias;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             }
         },
         mounted() {
             this.listarConcepto(1,this.buscar,this.criterio);
+            this.maquinariaTotal(this.identificador)
         }
     }
 </script>

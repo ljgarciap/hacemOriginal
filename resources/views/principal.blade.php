@@ -9,7 +9,7 @@
     <meta name="author" content="SENA CIDM">
     <meta name="keyword" content="Sistema Calculador de costos">
     <link rel="shortcut icon" href="img/favicon.png">
-    <title>Calculador - SENA CIDM</title>
+    <title>H.A.C.E.M - SENA CIDM</title>
     <!-- Icons -->
     <link href="css/simple-line-icons.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">

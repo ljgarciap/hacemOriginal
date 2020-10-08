@@ -6,11 +6,11 @@
                                 <thead>
                                     <tr>
                                         <!--<th>Foto</th>-->
-                                        <th>Tiempo mano de obra</th>
-                                        <th>Total Materia prima directa</th>
-                                        <th>Total Materia prima indirecta</th>
+                                        <th>Minutos producción</th>
+                                        <th>Total Materia directa</th>
+                                        <th>Total Materia indirecta</th>
                                         <th>Total Mano de obra</th>
-                                        <th>Total Cif</th>
+                                        <th>Total Cif acumulados</th>
                                         <!--<th>Total Maquinaria</th>-->
                                         <th><b>COSTO TOTAL</b></th>
                                     </tr>
@@ -22,7 +22,7 @@
                                         <td v-text="total.acumuladomd"></td>
                                         <td v-text="total.acumuladomi"></td>
                                         <td v-text="total.acumuladomo"></td>
-                                        <td v-text="total.acumuladocif"></td>
+                                        <td v-text="total.acumuladocift"></td>
                                         <!--<td v-text="total.acumuladomaquinaria"></td>-->
                                         <td v-text="total.acumuladototal"></td>
                                     </tr>
@@ -48,6 +48,7 @@
                 acumuladomo:0,
                 acumuladocif:0,
                 acumuladomaquinaria:0,
+                acumuladocift:0,
                 acumuladototal:0,
                 arrayTotales:[]
             }

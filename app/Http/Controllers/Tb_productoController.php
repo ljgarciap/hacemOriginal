@@ -100,6 +100,7 @@ class Tb_productoController extends Controller
 
         $tb_hoja_de_costo=new Tb_hoja_de_costo();
         $tb_hoja_de_costo->idProducto=$idProducto;
+        $tb_hoja_de_costo->capacidadMensual=$request->capacidadMensual;
         $tb_hoja_de_costo->save();
     }
 
