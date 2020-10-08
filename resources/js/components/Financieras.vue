@@ -31,7 +31,8 @@
 
                                         <tr v-for="financiera in arrayFinancieras" :key="financiera.id">
                                             <td v-text="financiera.id"></td>
-                                            <td><input type="text" :value="financiera.conceptoFinanciero"></td>
+                                            <td v-text="financiera.conceptoFinanciero"></td>
+                                            <!--<td><input type="text" :value="financiera.conceptoFinanciero"></td>-->
                                             <td><input type="number" step="0.01" :value="financiera.porcentaje"></td>
                                         </tr>
 

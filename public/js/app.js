@@ -3444,6 +3444,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4410,6 +4411,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4435,7 +4470,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "datosMaterias", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 0), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "datosMaterias", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -4477,6 +4512,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   methods: {
+    onChange: function onChange(event) {
+      console.log(event.target.value);
+      this.flag = event.target.value;
+    },
     indexChange: function indexChange(args) {
       var newIndex = args.value;
       console.log('Current tab index: ' + newIndex);
@@ -4580,6 +4619,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.tiempo = data['tiempo'];
                   this.precio = data['precio'];
                   this.idHoja = this.identificador;
+                  this.tipoPago = this.flag;
                   this.idArea = this.identificadorArea;
                   this.tituloModal = 'Asignar nueva mano de obra';
                   this.tipoAccion = 1;
@@ -4736,6 +4776,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'idPerfil': this.idPerfil,
         'tiempo': this.tiempo,
         'precio': this.precio,
+        'tipoPago': this.tipoPago,
         'idHoja': this.idHoja
       }).then(function (response) {
         me.cerrarModal();
@@ -48237,12 +48278,11 @@ var render = function() {
                           domProps: { textContent: _vm._s(financiera.id) }
                         }),
                         _vm._v(" "),
-                        _c("td", [
-                          _c("input", {
-                            attrs: { type: "text" },
-                            domProps: { value: financiera.conceptoFinanciero }
-                          })
-                        ]),
+                        _c("td", {
+                          domProps: {
+                            textContent: _vm._s(financiera.conceptoFinanciero)
+                          }
+                        }),
                         _vm._v(" "),
                         _c("td", [
                           _c("input", {
@@ -50332,88 +50372,286 @@ var render = function() {
                         : _vm._e(),
                       _vm._v(" "),
                       _vm.tipoModal == 2
-                        ? _c("div", { staticClass: "form-group row" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "col-md-3 form-control-label",
-                                attrs: { for: "text-input" }
-                              },
-                              [_vm._v("Tiempo")]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-md-9" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.tiempo,
-                                    expression: "tiempo"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "number",
-                                  placeholder: "Tiempo estandar de mano de obra"
+                        ? _c("div", [
+                            _c("div", { staticClass: "form-group row" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "col-md-3 form-control-label",
+                                  attrs: { for: "text-input" }
                                 },
-                                domProps: { value: _vm.tiempo },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.tiempo = $event.target.value
-                                  }
-                                }
-                              }),
+                                [_vm._v("Tipo de Pago")]
+                              ),
                               _vm._v(" "),
-                              _c("span", { staticClass: "help-block" }, [
-                                _vm._v(
-                                  "(*) Ingrese el tiempo estandar de mano de obra"
+                              _c("div", { staticClass: "col-md-9" }, [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.selected,
+                                        expression: "selected"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    on: {
+                                      change: [
+                                        function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.selected = $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        },
+                                        function($event) {
+                                          return _vm.onChange($event)
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "option",
+                                      { attrs: { disabled: "", value: "" } },
+                                      [_vm._v("Seleccione un tipo de pago")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("option", { attrs: { value: "1" } }, [
+                                      _vm._v("Fijo")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("option", { attrs: { value: "2" } }, [
+                                      _vm._v("Destajo")
+                                    ])
+                                  ]
                                 )
                               ])
-                            ])
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.tipoModal == 2
-                        ? _c("div", { staticClass: "form-group row" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "col-md-3 form-control-label",
-                                attrs: { for: "text-input" }
-                              },
-                              [_vm._v("Precio")]
-                            ),
+                            ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "col-md-9" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.precio,
-                                    expression: "precio"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: { type: "number" },
-                                domProps: { value: _vm.precio },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.precio = $event.target.value
-                                  }
-                                }
-                              }),
+                            _c("div", { staticClass: "form-group row" }, [
+                              _vm.flag > 0
+                                ? _c(
+                                    "label",
+                                    {
+                                      staticClass:
+                                        "col-md-3 form-control-label",
+                                      attrs: { for: "text-input" }
+                                    },
+                                    [_vm._v("Pago")]
+                                  )
+                                : _vm._e(),
                               _vm._v(" "),
-                              _c("span", { staticClass: "help-block" }, [
-                                _vm._v("(*) Ingrese el costo por tarea")
-                              ])
+                              _vm.flag == 1
+                                ? _c("div", { staticClass: "col-md-9" }, [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.tiempo,
+                                          expression: "tiempo"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        placeholder:
+                                          "Tiempo estandar de mano de obra"
+                                      },
+                                      domProps: { value: _vm.tiempo },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.tiempo = $event.target.value
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", { staticClass: "help-block" }, [
+                                      _vm._v(
+                                        "(*) Ingrese el tiempo estandar de mano de obra"
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.flag == 2
+                                ? _c("div", { staticClass: "col-md-9" }, [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.precio,
+                                          expression: "precio"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: {
+                                        type: "number",
+                                        placeholder:
+                                          "Valor de mano de obra por tarea"
+                                      },
+                                      domProps: { value: _vm.precio },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.precio = $event.target.value
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", { staticClass: "help-block" }, [
+                                      _vm._v(
+                                        "(*) Ingrese el valor de mano de obra por tarea"
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group row" }, [
+                              _vm.flag == 2
+                                ? _c(
+                                    "label",
+                                    {
+                                      staticClass:
+                                        "col-md-4 form-control-label",
+                                      attrs: { for: "text-input" }
+                                    },
+                                    [_vm._v("Porcentajes adicionales")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.flag == 2
+                                ? _c("div", { staticClass: "col-md-4" }, [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.checkedNames,
+                                          expression: "checkedNames"
+                                        }
+                                      ],
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "liquidacion",
+                                        value: "3",
+                                        checked: ""
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(_vm.checkedNames)
+                                          ? _vm._i(_vm.checkedNames, "3") > -1
+                                          : _vm.checkedNames
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = _vm.checkedNames,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = "3",
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                (_vm.checkedNames = $$a.concat([
+                                                  $$v
+                                                ]))
+                                            } else {
+                                              $$i > -1 &&
+                                                (_vm.checkedNames = $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1)))
+                                            }
+                                          } else {
+                                            _vm.checkedNames = $$c
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "liquidacion" } },
+                                      [_vm._v("Liquidación")]
+                                    )
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.flag == 2
+                                ? _c("div", { staticClass: "col-md-4" }, [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.checkedNames,
+                                          expression: "checkedNames"
+                                        }
+                                      ],
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "parafiscales",
+                                        value: "4",
+                                        checked: ""
+                                      },
+                                      domProps: {
+                                        checked: Array.isArray(_vm.checkedNames)
+                                          ? _vm._i(_vm.checkedNames, "4") > -1
+                                          : _vm.checkedNames
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = _vm.checkedNames,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = "4",
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                (_vm.checkedNames = $$a.concat([
+                                                  $$v
+                                                ]))
+                                            } else {
+                                              $$i > -1 &&
+                                                (_vm.checkedNames = $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1)))
+                                            }
+                                          } else {
+                                            _vm.checkedNames = $$c
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "parafiscales" } },
+                                      [_vm._v("Parafiscales")]
+                                    )
+                                  ])
+                                : _vm._e()
                             ])
                           ])
                         : _vm._e(),

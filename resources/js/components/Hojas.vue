@@ -255,20 +255,54 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="tipoModal==2" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Tiempo</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
-                                            <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra</span>
-                                        </div>
-                                    </div>
+                                    <div v-if="tipoModal==2">
 
-                                    <div v-if="tipoModal==2" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Precio</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="precio" class="form-control">
-                                            <span class="help-block">(*) Ingrese el costo por tarea</span>
+                                        <div  class="form-group row">
+
+                                            <label class="col-md-3 form-control-label" for="text-input">Tipo de Pago</label>
+                                            
+                                            <div class="col-md-9">
+                                                <select class="form-control" v-model="selected" @change='onChange($event)'>
+                                                    <option disabled value="">Seleccione un tipo de pago</option>
+                                                    <option value="1">Fijo</option>
+                                                    <option value="2">Destajo</option>
+                                                </select>
+                                            </div>
+                                        
                                         </div>
+
+                                        <div  class="form-group row">
+
+                                            <label v-if="flag>0" class="col-md-3 form-control-label" for="text-input">Pago</label>
+
+                                            <div v-if="flag==1" class="col-md-9">
+                                                <input type="number" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
+                                                <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra</span>
+                                            </div>
+
+                                            <div v-if="flag==2" class="col-md-9">
+                                                <input type="number" v-model="precio" class="form-control" placeholder="Valor de mano de obra por tarea">
+                                                <span class="help-block">(*) Ingrese el valor de mano de obra por tarea</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div  class="form-group row">
+
+                                            <label v-if="flag==2" class="col-md-4 form-control-label" for="text-input">Porcentajes adicionales</label>
+
+                                            <div v-if="flag==2" class="col-md-4">
+                                                <input type="checkbox" id="liquidacion" value="3" v-model="checkedNames" checked>
+                                                <label for="liquidacion">Liquidación</label>
+                                            </div>
+
+                                            <div v-if="flag==2" class="col-md-4">
+                                                <input type="checkbox" id="parafiscales" value="4" v-model="checkedNames" checked>
+                                                <label for="parafiscales">Parafiscales</label>
+                                            </div>
+
+                                        </div>
+
                                     </div>
 
                                     <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorMateriaPrimaProducto">
@@ -336,6 +370,7 @@
                 tipoDeCosto:'Directo',
                 idProceso:0,
                 tiempo:0,
+                valor:0,
                 precio:0,
                 proceso:'',
                 relacion:'',
@@ -350,6 +385,8 @@
                 precioBase:0,
                 arrayGestionMaterias:[],
                 modal : 0,
+                tipoPago : 0,
+                flag : 0,
                 tituloModal : '',
                 tipoModal : 0,
                 tipoAccion : 0,
@@ -403,6 +440,10 @@
             }
         },
         methods : {
+            onChange(event) {
+            console.log(event.target.value);
+            this.flag=event.target.value;
+            },
             indexChange: function(args) {
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)
@@ -500,6 +541,7 @@
                             this.tiempo=data['tiempo'];
                             this.precio=data['precio'];
                             this.idHoja=this.identificador;
+                            this.tipoPago=this.flag;
                             this.idArea=this.identificadorArea;
                             this.tituloModal='Asignar nueva mano de obra';
                             this.tipoAccion= 1;
@@ -665,6 +707,7 @@
                     'idPerfil': this.idPerfil,
                     'tiempo': this.tiempo,
                     'precio': this.precio,
+                    'tipoPago': this.tipoPago,
                     'idHoja': this.idHoja
 
                 }).then(function (response) {

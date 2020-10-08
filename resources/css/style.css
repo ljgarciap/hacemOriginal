@@ -3365,7 +3365,8 @@ button.close {
   -webkit-appearance: none; }
 
 .modal-open {
-  overflow: scroll; }
+  overflow-y: scroll;
+  overflow-x: hidden; }
 
 .modal {
   position: fixed;
@@ -3375,7 +3376,8 @@ button.close {
   left: 0;
   z-index: 1050;
   display: none;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   outline: 0; }
   .modal.fade .modal-dialog {
     transition: -webkit-transform 0.3s ease-out;
