@@ -260,7 +260,7 @@
                                         <div  class="form-group row">
 
                                             <label class="col-md-3 form-control-label" for="text-input">Tipo de Pago</label>
-                                            
+
                                             <div class="col-md-9">
                                                 <select class="form-control" v-model="selected" @change='onChange($event)'>
                                                     <option disabled value="">Seleccione un tipo de pago</option>
@@ -268,7 +268,7 @@
                                                     <option value="2">Destajo</option>
                                                 </select>
                                             </div>
-                                        
+
                                         </div>
 
                                         <div  class="form-group row">
@@ -289,15 +289,15 @@
 
                                         <div  class="form-group row">
 
-                                            <label v-if="flag==2" class="col-md-4 form-control-label" for="text-input">Porcentajes adicionales</label>
+                                            <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Porcentajes adicionales</label>
 
-                                            <div v-if="flag==2" class="col-md-4">
-                                                <input type="checkbox" id="liquidacion" value="3" v-model="checkedNames" checked>
+                                            <div v-if="flag==4" class="col-md-3">
+                                                <input type="checkbox" id="liquidacion" value="3" v-model="liquidacion" checked>
                                                 <label for="liquidacion">Liquidación</label>
                                             </div>
 
-                                            <div v-if="flag==2" class="col-md-4">
-                                                <input type="checkbox" id="parafiscales" value="4" v-model="checkedNames" checked>
+                                            <div v-if="flag==4" class="col-md-3">
+                                                <input type="checkbox" id="parafiscales" value="4" v-model="parafiscales" checked>
                                                 <label for="parafiscales">Parafiscales</label>
                                             </div>
 
@@ -490,6 +490,7 @@
                 this.materiaprimaproducto='';
                 this.manodeobraproducto='';
                 this.tipoModal=0;
+                this.flag=0;
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

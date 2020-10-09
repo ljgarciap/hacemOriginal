@@ -2411,7 +2411,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     //Calcula los elementos de la paginacion
     pagesNumber: function pagesNumber() {
-      if (this.pagination.to) {
+      if (!this.pagination.to) {
         return [];
       }
 
@@ -4560,6 +4560,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.materiaprimaproducto = '';
       this.manodeobraproducto = '';
       this.tipoModal = 0;
+      this.flag = 0;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -4849,6 +4850,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -46670,8 +46678,6 @@ var render = function() {
             "tbody",
             [
               _c("tr", [
-                _vm._m(1),
-                _vm._v(" "),
                 _c("td", [_vm._v("0")]),
                 _vm._v(" "),
                 _c("td", [_vm._v("Depreciación mensual total")]),
@@ -46681,62 +46687,6 @@ var render = function() {
               _vm._v(" "),
               _vm._l(_vm.arrayConceptos, function(concepto) {
                 return _c("tr", { key: concepto.id }, [
-                  _c(
-                    "td",
-                    [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-warning btn-sm",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.abrirModal(
-                                "concepto",
-                                "actualizar",
-                                concepto
-                              )
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "icon-pencil" })]
-                      ),
-                      _vm._v("  \n\n                                "),
-                      concepto.estado
-                        ? [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-danger btn-sm",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.desactivarConcepto(concepto.id)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "icon-trash" })]
-                            )
-                          ]
-                        : [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-success btn-sm",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.activarConcepto(concepto.id)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "icon-check" })]
-                            )
-                          ]
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
                   _c("td", { domProps: { textContent: _vm._s(concepto.id) } }),
                   _vm._v(" "),
                   _c("td", {
@@ -46842,22 +46792,12 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Opciones")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Id")]),
         _vm._v(" "),
         _c("th", [_vm._v("Concepto")]),
         _vm._v(" "),
         _c("th", [_vm._v("Valor")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("span", { staticClass: "badge badge-success" }, [_vm._v("Maquinaria")])
     ])
   }
 ]
@@ -48493,7 +48433,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Id")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Variable Financiera")]),
+        _c("th", [_vm._v("Conceptos")]),
         _vm._v(" "),
         _c("th", [_vm._v("Porcentaje")])
       ])
@@ -49271,10 +49211,6 @@ var render = function() {
             _vm._l(_vm.arrayTotales, function(total) {
               return _c("tr", { key: total.id }, [
                 _c("td", {
-                  domProps: { textContent: _vm._s(total.acumuladotiempomo) }
-                }),
-                _vm._v(" "),
-                _c("td", {
                   domProps: { textContent: _vm._s(total.capacidadproducto) }
                 }),
                 _vm._v(" "),
@@ -49313,8 +49249,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Minutos")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Unidades proyección")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total Materia directa")]),
@@ -50529,27 +50463,27 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group row" }, [
-                              _vm.flag == 2
+                              _vm.flag == 4
                                 ? _c(
                                     "label",
                                     {
                                       staticClass:
-                                        "col-md-4 form-control-label",
+                                        "col-md-3 form-control-label",
                                       attrs: { for: "text-input" }
                                     },
                                     [_vm._v("Porcentajes adicionales")]
                                   )
                                 : _vm._e(),
                               _vm._v(" "),
-                              _vm.flag == 2
-                                ? _c("div", { staticClass: "col-md-4" }, [
+                              _vm.flag == 4
+                                ? _c("div", { staticClass: "col-md-3" }, [
                                     _c("input", {
                                       directives: [
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.checkedNames,
-                                          expression: "checkedNames"
+                                          value: _vm.liquidacion,
+                                          expression: "liquidacion"
                                         }
                                       ],
                                       attrs: {
@@ -50559,13 +50493,13 @@ var render = function() {
                                         checked: ""
                                       },
                                       domProps: {
-                                        checked: Array.isArray(_vm.checkedNames)
-                                          ? _vm._i(_vm.checkedNames, "3") > -1
-                                          : _vm.checkedNames
+                                        checked: Array.isArray(_vm.liquidacion)
+                                          ? _vm._i(_vm.liquidacion, "3") > -1
+                                          : _vm.liquidacion
                                       },
                                       on: {
                                         change: function($event) {
-                                          var $$a = _vm.checkedNames,
+                                          var $$a = _vm.liquidacion,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -50573,17 +50507,17 @@ var render = function() {
                                               $$i = _vm._i($$a, $$v)
                                             if ($$el.checked) {
                                               $$i < 0 &&
-                                                (_vm.checkedNames = $$a.concat([
+                                                (_vm.liquidacion = $$a.concat([
                                                   $$v
                                                 ]))
                                             } else {
                                               $$i > -1 &&
-                                                (_vm.checkedNames = $$a
+                                                (_vm.liquidacion = $$a
                                                   .slice(0, $$i)
                                                   .concat($$a.slice($$i + 1)))
                                             }
                                           } else {
-                                            _vm.checkedNames = $$c
+                                            _vm.liquidacion = $$c
                                           }
                                         }
                                       }
@@ -50597,15 +50531,15 @@ var render = function() {
                                   ])
                                 : _vm._e(),
                               _vm._v(" "),
-                              _vm.flag == 2
-                                ? _c("div", { staticClass: "col-md-4" }, [
+                              _vm.flag == 4
+                                ? _c("div", { staticClass: "col-md-3" }, [
                                     _c("input", {
                                       directives: [
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.checkedNames,
-                                          expression: "checkedNames"
+                                          value: _vm.parafiscales,
+                                          expression: "parafiscales"
                                         }
                                       ],
                                       attrs: {
@@ -50615,13 +50549,13 @@ var render = function() {
                                         checked: ""
                                       },
                                       domProps: {
-                                        checked: Array.isArray(_vm.checkedNames)
-                                          ? _vm._i(_vm.checkedNames, "4") > -1
-                                          : _vm.checkedNames
+                                        checked: Array.isArray(_vm.parafiscales)
+                                          ? _vm._i(_vm.parafiscales, "4") > -1
+                                          : _vm.parafiscales
                                       },
                                       on: {
                                         change: function($event) {
-                                          var $$a = _vm.checkedNames,
+                                          var $$a = _vm.parafiscales,
                                             $$el = $event.target,
                                             $$c = $$el.checked ? true : false
                                           if (Array.isArray($$a)) {
@@ -50629,17 +50563,17 @@ var render = function() {
                                               $$i = _vm._i($$a, $$v)
                                             if ($$el.checked) {
                                               $$i < 0 &&
-                                                (_vm.checkedNames = $$a.concat([
+                                                (_vm.parafiscales = $$a.concat([
                                                   $$v
                                                 ]))
                                             } else {
                                               $$i > -1 &&
-                                                (_vm.checkedNames = $$a
+                                                (_vm.parafiscales = $$a
                                                   .slice(0, $$i)
                                                   .concat($$a.slice($$i + 1)))
                                             }
                                           } else {
-                                            _vm.checkedNames = $$c
+                                            _vm.parafiscales = $$c
                                           }
                                         }
                                       }
@@ -51026,9 +50960,21 @@ var render = function() {
                   domProps: { textContent: _vm._s(manodeobraproducto.proceso) }
                 }),
                 _vm._v(" "),
-                _c("td", {
-                  domProps: { textContent: _vm._s(manodeobraproducto.tiempo) }
-                }),
+                manodeobraproducto.tipoPago == 1
+                  ? _c("td", {
+                      domProps: {
+                        textContent: _vm._s(manodeobraproducto.tiempo)
+                      }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                manodeobraproducto.tipoPago > 1
+                  ? _c("td", [
+                      _c("span", { staticClass: "badge badge-secondary" }, [
+                        _vm._v("Por tarea")
+                      ])
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("td", {
                   domProps: { textContent: _vm._s(manodeobraproducto.precio) }
@@ -51036,7 +50982,47 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", {
                   domProps: { textContent: _vm._s(manodeobraproducto.subtotal) }
-                })
+                }),
+                _vm._v(" "),
+                manodeobraproducto.tipoPago == 1
+                  ? _c("td", [
+                      _c("span", { staticClass: "badge badge-success" }, [
+                        _vm._v("Sueldo Fijo")
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                manodeobraproducto.tipoPago == 2
+                  ? _c("td", [
+                      _c("span", { staticClass: "badge badge-danger" }, [
+                        _vm._v("Destajo sin provision")
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                manodeobraproducto.tipoPago == 3
+                  ? _c("td", [
+                      _c("span", { staticClass: "badge badge-warning" }, [
+                        _vm._v("Destajo + liquidación")
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                manodeobraproducto.tipoPago == 4
+                  ? _c("td", [
+                      _c("span", { staticClass: "badge badge-info" }, [
+                        _vm._v("Destajo + parafiscales")
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                manodeobraproducto.tipoPago == 5
+                  ? _c("td", [
+                      _c("span", { staticClass: "badge badge-secondary" }, [
+                        _vm._v("Destajo + provisión total")
+                      ])
+                    ])
+                  : _vm._e()
               ])
             }),
             0
@@ -51142,7 +51128,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Precio")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Subtotal")])
+        _c("th", [_vm._v("Subtotal")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tipo pago")])
       ])
     ])
   }

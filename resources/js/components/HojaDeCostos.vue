@@ -6,7 +6,7 @@
                                 <thead>
                                     <tr>
                                         <!--<th>Foto</th>-->
-                                        <th>Minutos</th>
+                                        <!--<th>Minutos</th>-->
                                         <th>Unidades proyección</th>
                                         <th>Total Materia directa</th>
                                         <th>Total Materia indirecta</th>
@@ -19,7 +19,7 @@
                                 <tbody>
                                     <tr v-for="total in arrayTotales" :key="total.id">
                                         <!--<td v-text="total.foto"></td>-->
-                                        <td v-text="total.acumuladotiempomo"></td>
+                                        <!--<td v-text="total.acumuladotiempomo"></td>-->
                                         <td v-text="total.capacidadproducto"></td>
                                         <td v-text="total.acumuladomd"></td>
                                         <td v-text="total.acumuladomi"></td>

@@ -30,7 +30,7 @@ class Tb_mano_de_obra_productoController extends Controller
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
             ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
-            'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
+            'tb_mano_de_obra_producto.tipoPago','tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
             'tb_mano_de_obra_producto.idHoja',DB::raw('ROUND((tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) as subtotal'))
             ->where('tb_mano_de_obra_producto.idHoja', '=', $identificador)
             ->orderBy('tb_mano_de_obra_producto.id','desc')->paginate(5);
@@ -42,7 +42,7 @@ class Tb_mano_de_obra_productoController extends Controller
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
             ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
-            'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
+            'tb_mano_de_obra_producto.tipoPago','tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
             'tb_mano_de_obra_producto.idHoja',DB::raw('ROUND((tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) as subtotal'))
             ->where([
                 ['tb_perfil.perfil', 'like', '%'. $buscar . '%'],
@@ -57,7 +57,7 @@ class Tb_mano_de_obra_productoController extends Controller
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
             ->select('tb_mano_de_obra_producto.id','tb_mano_de_obra_producto.idPerfil','tb_mano_de_obra_producto.tiempo','tb_mano_de_obra_producto.precio',
-            'tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
+            'tb_mano_de_obra_producto.tipoPago','tb_perfil.perfil','tb_perfil.idProceso','tb_perfil.valorMinuto','tb_proceso.proceso','tb_proceso.idArea','tb_area.area',
             'tb_mano_de_obra_producto.idHoja',DB::raw('ROUND((tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) as subtotal'))
             ->where([
                 ['tb_proceso.proceso', 'like', '%'. $buscar . '%'],
@@ -86,6 +86,7 @@ class Tb_mano_de_obra_productoController extends Controller
         $tb_mano_de_obra_producto->idPerfil=$request->idPerfil;
         $tb_mano_de_obra_producto->tiempo=$request->tiempo;
         $tb_mano_de_obra_producto->precio=$request->precio;
+        $tb_mano_de_obra_producto->tipoPago=$request->tipoPago;
         $tb_mano_de_obra_producto->idHoja=$request->idHoja;
         $tb_mano_de_obra_producto->save();
     }

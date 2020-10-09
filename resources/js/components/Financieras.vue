@@ -21,7 +21,7 @@
                                 <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Variable Financiera</th>
+                                        <th>Conceptos</th>
                                         <th>Porcentaje</th>
                                     </tr>
                                 </thead>

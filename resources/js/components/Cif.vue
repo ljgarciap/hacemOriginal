@@ -16,7 +16,7 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Opciones</th>
+                                        <!--<th>Opciones</th>-->
                                         <th>Id</th>
                                         <th>Concepto</th>
                                         <th>Valor</th>
@@ -24,13 +24,13 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><span class="badge badge-success">Maquinaria</span></td>
+                                        <!--<td><span class="badge badge-success">Maquinaria</span></td>-->
                                         <td>0</td>
                                         <td>Depreciación mensual total</td>
                                         <td>{{this.maquinaria}}</td>
                                     </tr>
                                     <tr v-for="concepto in arrayConceptos" :key="concepto.id">
-                                        <td>
+                                        <!--<td>
                                             <button type="button" @click="abrirModal('concepto','actualizar',concepto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
@@ -46,7 +46,7 @@
                                             </button>
                                         </template>
 
-                                        </td>
+                                        </td>-->
                                         <td v-text="concepto.id"></td>
                                         <td v-text="concepto.concepto"></td>
                                         <td v-text="concepto.valor"></td>
@@ -111,7 +111,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -130,7 +130,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
