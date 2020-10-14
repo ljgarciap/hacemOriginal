@@ -126,6 +126,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/manodeobraproducto/update", "Tb_mano_de_obra_productoController@update");
         Route::put("/manodeobraproducto/deactivate", "Tb_mano_de_obra_productoController@deactivate");
         Route::get("/manodeobraproducto/selectRelacionPerfil/{id}", "Tb_mano_de_obra_productoController@selectRelacionPerfil");
+        Route::get("/manodeobraproducto/valorMinuto/{id}", "Tb_mano_de_obra_productoController@valorMinuto");
 
         Route::get("/materiaprimaproducto", "Tb_materia_prima_productoController@index");
         Route::post("/materiaprimaproducto/store", "Tb_materia_prima_productoController@store");

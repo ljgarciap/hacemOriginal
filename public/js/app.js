@@ -4451,6 +4451,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -4476,7 +4477,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "datosMaterias", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "valorMinuto", 0), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "datosMaterias", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -4521,6 +4522,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     onChange: function onChange(event) {
       console.log(event.target.value);
       this.flag = event.target.value;
+    },
+    nuevoValor: function nuevoValor(event) {
+      console.log(event.target.value);
+      this.identificadorPerfil = event.target.value;
+      var me = this;
+      var url = '/manodeobraproducto/valorMinuto/' + this.identificadorPerfil;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.valor = respuesta.valorminutos;
+        console.log(me.valor);
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
     },
     indexChange: function indexChange(args) {
       var newIndex = args.value;
@@ -4779,7 +4794,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.flag == 1) {
         this.tipoPago = 1;
         this.tiempo = this.tiempo;
-        this.precio = 3; //este precio debo traerlo de consulta
+        this.precio = this.valor; //este precio debo traerlo de consulta
       } else if (this.flag == 2) {
         this.tiempo = 1;
         this.precio = parseInt(this.preciom * this.liquidacion * 0.073 + this.preciom * this.parafiscales * 0.046 + parseInt(this.preciom));
@@ -50283,22 +50298,27 @@ var render = function() {
                                   ],
                                   staticClass: "form-control",
                                   on: {
-                                    change: function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.idPerfil = $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    }
+                                    change: [
+                                      function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.idPerfil = $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      },
+                                      function($event) {
+                                        return _vm.nuevoValor($event)
+                                      }
+                                    ]
                                   }
                                 },
                                 [
@@ -50408,7 +50428,20 @@ var render = function() {
                                         "col-md-3 form-control-label",
                                       attrs: { for: "text-input" }
                                     },
-                                    [_vm._v("Tiempo")]
+                                    [
+                                      _vm._v("Tiempo"),
+                                      _c("br"),
+                                      _vm._v(" "),
+                                      _c("sub", [
+                                        _c("i", [
+                                          _vm._v(
+                                            "(Valor minuto: $ " +
+                                              _vm._s(_vm.valor) +
+                                              ")"
+                                          )
+                                        ])
+                                      ])
+                                    ]
                                   )
                                 : _vm._e(),
                               _vm._v(" "),
@@ -50442,7 +50475,7 @@ var render = function() {
                                     _vm._v(" "),
                                     _c("span", { staticClass: "help-block" }, [
                                       _vm._v(
-                                        "(*) Ingrese el tiempo estandar de mano de obra"
+                                        "(*) Ingrese el tiempo estandar de mano de obra en minutos"
                                       )
                                     ])
                                   ])

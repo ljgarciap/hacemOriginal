@@ -114,9 +114,27 @@ class Tb_mano_de_obra_productoController extends Controller
                     ['estado','=','1'],
                     ['idProceso','=',$id],
                 ])
-                ->select('id as idPerfil','perfil')
+                ->select('id as idPerfil','perfil','valorMinuto as valor')
                 ->orderBy('perfil','asc')->get();
                 return ['perfilrelaciones' => $perfilrelaciones];
+        }
+
+    public function valorMinuto($id){
+            $valor = 0;
+
+            //valorMinuto Perfil
+            $valores = tb_perfil::where([
+                ['estado','=','1'],
+                ['id','=',$id],
+            ])
+            ->select('valorMinuto')->get();
+
+            foreach($valores as $totalg){
+                $valor = $totalg->valorMinuto + $valor;
+            }
+
+            $valorminutos = $valor;
+            return ['valorminutos' => $valorminutos];
         }
 
 }

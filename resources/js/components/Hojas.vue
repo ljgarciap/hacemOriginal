@@ -248,7 +248,7 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idPerfil">
+                                            <select class="form-control" v-model="idPerfil"  @change='nuevoValor($event)'>
                                                 <option value="0" disabled>Seleccione un perfil</option>
                                                 <option v-for="perfilrelacion in arrayPerfilRelacion" :key="perfilrelacion.idPerfil" :value="perfilrelacion.idPerfil" v-text="perfilrelacion.perfil"></option>
                                             </select>
@@ -273,11 +273,12 @@
 
                                         <div  class="form-group row">
 
-                                            <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Tiempo</label>
+                                            <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Tiempo<br>
+                                            <sub><i>(Valor minuto: $ {{valor}})</i></sub></label>
 
                                             <div v-if="flag==1" class="col-md-9">
                                                 <input type="number" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
-                                                <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra</span>
+                                                <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra en minutos</span>
                                             </div>
 
                                             <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Precio</label>
@@ -386,6 +387,7 @@
                 arrayRelacion:[],
                 idPerfil:0,
                 perfil:'',
+                valorMinuto:0,
                 arrayPerfilRelacion:[],
                 idMateriaPrima:1,
                 datosMaterias:'',
@@ -452,6 +454,21 @@
             onChange(event) {
             console.log(event.target.value);
             this.flag=event.target.value;
+            },
+            nuevoValor(event){
+                console.log(event.target.value);
+                this.identificadorPerfil=event.target.value;
+                let me=this;
+                var url='/manodeobraproducto/valorMinuto/'+this.identificadorPerfil;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.valor=respuesta.valorminutos;
+                console.log(me.valor);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -710,10 +727,11 @@
                 if(this.validarManoDeObraProducto()){
                     return;
                 }
+
                 if(this.flag==1) {
                 this.tipoPago=1;
                 this.tiempo=this.tiempo;
-                this.precio=3; //este precio debo traerlo de consulta
+                this.precio=this.valor; //este precio debo traerlo de consulta
                 }
                 else if(this.flag==2) {
                     this.tiempo=1;
