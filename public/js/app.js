@@ -4445,6 +4445,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4470,7 +4476,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 0), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "datosMaterias", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "datosMaterias", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -4561,6 +4567,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.manodeobraproducto = '';
       this.tipoModal = 0;
       this.flag = 0;
+      this.seleccion = 0;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -4617,10 +4624,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.tipoModal = 2;
                   this.manodeobraproducto = '';
                   this.idPerfil = data['idPerfil'];
-                  this.tiempo = data['tiempo'];
-                  this.precio = data['precio'];
                   this.idHoja = this.identificador;
-                  this.tipoPago = this.flag;
                   this.idArea = this.identificadorArea;
                   this.tituloModal = 'Asignar nueva mano de obra';
                   this.tipoAccion = 1;
@@ -4772,6 +4776,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return;
       }
 
+      if (this.flag == 1) {
+        this.tipoPago = 1;
+        this.tiempo = this.tiempo;
+        this.precio = 3; //este precio debo traerlo de consulta
+      } else if (this.flag == 2) {
+        this.tiempo = 1;
+        this.precio = parseInt(this.preciom * this.liquidacion * 0.073 + this.preciom * this.parafiscales * 0.046 + parseInt(this.preciom));
+
+        if (this.liquidacion == 0 && this.parafiscales == 0) {
+          this.tipoPago = 2;
+        } else if (this.liquidacion == 3 && this.parafiscales == 0) {
+          this.tipoPago = 3;
+        } else if (this.liquidacion == 0 && this.parafiscales == 4) {
+          this.tipoPago = 4;
+        } else {
+          this.tipoPago = 5;
+        }
+      }
+
       var me = this;
       axios.post('/manodeobraproducto/store', {
         'idPerfil': this.idPerfil,
@@ -4795,7 +4818,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       axios.put('/manodeobraproducto/update', {
         'id': this.idManoDeObraProducto,
         'tiempo': this.tiempo,
-        'precio': this.precio
+        'precio': this.preciom
       }).then(function (response) {
         me.cerrarModal();
         me.forceRerender();
@@ -50325,8 +50348,8 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.selected,
-                                        expression: "selected"
+                                        value: _vm.seleccion,
+                                        expression: "seleccion"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -50347,7 +50370,7 @@ var render = function() {
                                                   : o.value
                                               return val
                                             })
-                                          _vm.selected = $event.target.multiple
+                                          _vm.seleccion = $event.target.multiple
                                             ? $$selectedVal
                                             : $$selectedVal[0]
                                         },
@@ -50360,7 +50383,7 @@ var render = function() {
                                   [
                                     _c(
                                       "option",
-                                      { attrs: { disabled: "", value: "" } },
+                                      { attrs: { disabled: "", value: "0" } },
                                       [_vm._v("Seleccione un tipo de pago")]
                                     ),
                                     _vm._v(" "),
@@ -50377,7 +50400,7 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group row" }, [
-                              _vm.flag > 0
+                              _vm.flag == 1
                                 ? _c(
                                     "label",
                                     {
@@ -50385,7 +50408,7 @@ var render = function() {
                                         "col-md-3 form-control-label",
                                       attrs: { for: "text-input" }
                                     },
-                                    [_vm._v("Pago")]
+                                    [_vm._v("Tiempo")]
                                   )
                                 : _vm._e(),
                               _vm._v(" "),
@@ -50426,14 +50449,26 @@ var render = function() {
                                 : _vm._e(),
                               _vm._v(" "),
                               _vm.flag == 2
+                                ? _c(
+                                    "label",
+                                    {
+                                      staticClass:
+                                        "col-md-3 form-control-label",
+                                      attrs: { for: "text-input" }
+                                    },
+                                    [_vm._v("Precio")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.flag == 2
                                 ? _c("div", { staticClass: "col-md-9" }, [
                                     _c("input", {
                                       directives: [
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.precio,
-                                          expression: "precio"
+                                          value: _vm.preciom,
+                                          expression: "preciom"
                                         }
                                       ],
                                       staticClass: "form-control",
@@ -50442,13 +50477,13 @@ var render = function() {
                                         placeholder:
                                           "Valor de mano de obra por tarea"
                                       },
-                                      domProps: { value: _vm.precio },
+                                      domProps: { value: _vm.preciom },
                                       on: {
                                         input: function($event) {
                                           if ($event.target.composing) {
                                             return
                                           }
-                                          _vm.precio = $event.target.value
+                                          _vm.preciom = $event.target.value
                                         }
                                       }
                                     }),
@@ -50463,7 +50498,7 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "form-group row" }, [
-                              _vm.flag == 4
+                              _vm.flag == 2
                                 ? _c(
                                     "label",
                                     {
@@ -50475,7 +50510,7 @@ var render = function() {
                                   )
                                 : _vm._e(),
                               _vm._v(" "),
-                              _vm.flag == 4
+                              _vm.flag == 2
                                 ? _c("div", { staticClass: "col-md-3" }, [
                                     _c("input", {
                                       directives: [
@@ -50488,22 +50523,22 @@ var render = function() {
                                       ],
                                       attrs: {
                                         type: "checkbox",
-                                        id: "liquidacion",
-                                        value: "3",
+                                        "true-value": "3",
+                                        "false-value": "0",
                                         checked: ""
                                       },
                                       domProps: {
                                         checked: Array.isArray(_vm.liquidacion)
-                                          ? _vm._i(_vm.liquidacion, "3") > -1
-                                          : _vm.liquidacion
+                                          ? _vm._i(_vm.liquidacion, null) > -1
+                                          : _vm._q(_vm.liquidacion, "3")
                                       },
                                       on: {
                                         change: function($event) {
                                           var $$a = _vm.liquidacion,
                                             $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
+                                            $$c = $$el.checked ? "3" : "0"
                                           if (Array.isArray($$a)) {
-                                            var $$v = "3",
+                                            var $$v = null,
                                               $$i = _vm._i($$a, $$v)
                                             if ($$el.checked) {
                                               $$i < 0 &&
@@ -50531,7 +50566,7 @@ var render = function() {
                                   ])
                                 : _vm._e(),
                               _vm._v(" "),
-                              _vm.flag == 4
+                              _vm.flag == 2
                                 ? _c("div", { staticClass: "col-md-3" }, [
                                     _c("input", {
                                       directives: [
@@ -50544,22 +50579,22 @@ var render = function() {
                                       ],
                                       attrs: {
                                         type: "checkbox",
-                                        id: "parafiscales",
-                                        value: "4",
+                                        "true-value": "4",
+                                        "false-value": "0",
                                         checked: ""
                                       },
                                       domProps: {
                                         checked: Array.isArray(_vm.parafiscales)
-                                          ? _vm._i(_vm.parafiscales, "4") > -1
-                                          : _vm.parafiscales
+                                          ? _vm._i(_vm.parafiscales, null) > -1
+                                          : _vm._q(_vm.parafiscales, "4")
                                       },
                                       on: {
                                         change: function($event) {
                                           var $$a = _vm.parafiscales,
                                             $$el = $event.target,
-                                            $$c = $$el.checked ? true : false
+                                            $$c = $$el.checked ? "4" : "0"
                                           if (Array.isArray($$a)) {
-                                            var $$v = "4",
+                                            var $$v = null,
                                               $$i = _vm._i($$a, $$v)
                                             if ($$el.checked) {
                                               $$i < 0 &&
@@ -50584,6 +50619,27 @@ var render = function() {
                                       { attrs: { for: "parafiscales" } },
                                       [_vm._v("Parafiscales")]
                                     )
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.flag == 2
+                                ? _c("div", { staticClass: "col-md-3" }, [
+                                    _c("label", { attrs: { for: "prueba" } }, [
+                                      _vm._v(
+                                        "Total: " +
+                                          _vm._s(
+                                            parseInt(
+                                              _vm.preciom *
+                                                _vm.liquidacion *
+                                                0.073 +
+                                                _vm.preciom *
+                                                  _vm.parafiscales *
+                                                  0.046 +
+                                                parseInt(_vm.preciom)
+                                            )
+                                          )
+                                      )
+                                    ])
                                   ])
                                 : _vm._e()
                             ])

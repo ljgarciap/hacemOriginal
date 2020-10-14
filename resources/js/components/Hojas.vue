@@ -262,8 +262,8 @@
                                             <label class="col-md-3 form-control-label" for="text-input">Tipo de Pago</label>
 
                                             <div class="col-md-9">
-                                                <select class="form-control" v-model="selected" @change='onChange($event)'>
-                                                    <option disabled value="">Seleccione un tipo de pago</option>
+                                                <select class="form-control" v-model="seleccion" @change='onChange($event)'>
+                                                    <option disabled value="0">Seleccione un tipo de pago</option>
                                                     <option value="1">Fijo</option>
                                                     <option value="2">Destajo</option>
                                                 </select>
@@ -273,15 +273,17 @@
 
                                         <div  class="form-group row">
 
-                                            <label v-if="flag>0" class="col-md-3 form-control-label" for="text-input">Pago</label>
+                                            <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Tiempo</label>
 
                                             <div v-if="flag==1" class="col-md-9">
                                                 <input type="number" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
                                                 <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra</span>
                                             </div>
 
+                                            <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Precio</label>
+
                                             <div v-if="flag==2" class="col-md-9">
-                                                <input type="number" v-model="precio" class="form-control" placeholder="Valor de mano de obra por tarea">
+                                                <input type="number" v-model="preciom" class="form-control" placeholder="Valor de mano de obra por tarea">
                                                 <span class="help-block">(*) Ingrese el valor de mano de obra por tarea</span>
                                             </div>
 
@@ -289,16 +291,20 @@
 
                                         <div  class="form-group row">
 
-                                            <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Porcentajes adicionales</label>
+                                            <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Porcentajes adicionales</label>
 
-                                            <div v-if="flag==4" class="col-md-3">
-                                                <input type="checkbox" id="liquidacion" value="3" v-model="liquidacion" checked>
+                                            <div v-if="flag==2" class="col-md-3">
+                                                <input type="checkbox" true-value="3" false-value="0" v-model="liquidacion" checked>
                                                 <label for="liquidacion">Liquidación</label>
                                             </div>
 
-                                            <div v-if="flag==4" class="col-md-3">
-                                                <input type="checkbox" id="parafiscales" value="4" v-model="parafiscales" checked>
+                                            <div v-if="flag==2" class="col-md-3">
+                                                <input type="checkbox" true-value="4" false-value="0" v-model="parafiscales" checked>
                                                 <label for="parafiscales">Parafiscales</label>
+                                            </div>
+
+                                            <div v-if="flag==2" class="col-md-3">
+                                                <label for="prueba">Total: {{parseInt((preciom*liquidacion*0.073)+(preciom*parafiscales*0.046)+parseInt(preciom))}}</label>
                                             </div>
 
                                         </div>
@@ -369,9 +375,11 @@
                 precio:0,
                 tipoDeCosto:'Directo',
                 idProceso:0,
-                tiempo:0,
+                tiempo:1,
                 valor:0,
-                precio:0,
+                preciom:0,
+                liquidacion:3,
+                parafiscales:4,
                 proceso:'',
                 relacion:'',
                 perfilrelacion:'',
@@ -385,6 +393,7 @@
                 precioBase:0,
                 arrayGestionMaterias:[],
                 modal : 0,
+                seleccion:0,
                 tipoPago : 0,
                 flag : 0,
                 tituloModal : '',
@@ -491,6 +500,7 @@
                 this.manodeobraproducto='';
                 this.tipoModal=0;
                 this.flag=0;
+                this.seleccion=0;
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
@@ -539,10 +549,7 @@
                             this.tipoModal=2;
                             this.manodeobraproducto='';
                             this.idPerfil=data['idPerfil'];
-                            this.tiempo=data['tiempo'];
-                            this.precio=data['precio'];
                             this.idHoja=this.identificador;
-                            this.tipoPago=this.flag;
                             this.idArea=this.identificadorArea;
                             this.tituloModal='Asignar nueva mano de obra';
                             this.tipoAccion= 1;
@@ -703,6 +710,28 @@
                 if(this.validarManoDeObraProducto()){
                     return;
                 }
+                if(this.flag==1) {
+                this.tipoPago=1;
+                this.tiempo=this.tiempo;
+                this.precio=3; //este precio debo traerlo de consulta
+                }
+                else if(this.flag==2) {
+                    this.tiempo=1;
+                    this.precio=parseInt((this.preciom*this.liquidacion*0.073)+(this.preciom*this.parafiscales*0.046)+parseInt(this.preciom));
+
+                    if(this.liquidacion==0 && this.parafiscales==0) {
+                        this.tipoPago=2;
+                    }
+                    else if(this.liquidacion==3 && this.parafiscales==0) {
+                        this.tipoPago=3;
+                    }
+                    else if(this.liquidacion==0 && this.parafiscales==4) {
+                        this.tipoPago=4;
+                    }
+                    else {
+                        this.tipoPago=5;
+                    }
+                }
                 let me=this;
                 axios.post('/manodeobraproducto/store',{
                     'idPerfil': this.idPerfil,
@@ -728,7 +757,7 @@
                 axios.put('/manodeobraproducto/update',{
                     'id': this.idManoDeObraProducto,
                     'tiempo': this.tiempo,
-                    'precio': this.precio
+                    'precio': this.preciom
 
                 }).then(function (response) {
                 me.cerrarModal();
