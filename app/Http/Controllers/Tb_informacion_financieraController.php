@@ -51,4 +51,12 @@ class Tb_informacion_financieraController extends Controller
         $tb_informacion_financiera->estado='1';
         $tb_informacion_financiera->save();
     }
+
+    public function actualizar(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $tb_informacion_financiera=Tb_informacion_financiera::findOrFail($request->id);
+        $tb_informacion_financiera->porcentaje=$request->porcentaje;
+        $tb_informacion_financiera->save();
+    }
 }

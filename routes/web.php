@@ -48,6 +48,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/financiera/update", "Tb_informacion_financieraController@update");
         Route::put("/financiera/deactivate", "Tb_informacion_financieraController@deactivate");
         Route::put("/financiera/activate", "Tb_informacion_financieraController@activate");
+        Route::post("/financiera/actualizar", "Tb_informacion_financieraController@actualizar");
 
         Route::get("/area", "Tb_areaController@index");
         Route::post("/area/store", "Tb_areaController@store");

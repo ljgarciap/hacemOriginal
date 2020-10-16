@@ -49,11 +49,11 @@
 
                                     <tr v-for="producto in arrayProducto" :key="producto.id">
                                         <td>
-                                            <button type="button" @click="mostrarDetalle(producto.idHojaDeCosto,producto.producto,producto.idArea)" class="btn btn-success btn-sm">
+                                            <button type="button" @click="mostrarDetalle(this.identificador)" class="btn btn-success btn-sm">
                                             <i class="icon-eye"></i>
                                             </button> &nbsp;
-                                            <button type="button" class="btn btn-warning btn-sm">
-                                            <i class="icon-magnifier"></i>
+                                            <button type="button" @click="copiarDetalle()" class="btn btn-warning btn-sm">
+                                            <i class="icon-docs" ></i>
                                             </button> &nbsp;
                                         </td>
                                         <td v-text="producto.producto"></td>
@@ -277,15 +277,15 @@
                                             <sub><i>(Valor minuto: $ {{valor}})</i></sub></label>
 
                                             <div v-if="flag==1" class="col-md-9">
-                                                <input type="number" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
+                                                <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
                                                 <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra en minutos</span>
                                             </div>
 
-                                            <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                            <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Costo</label>
 
                                             <div v-if="flag==2" class="col-md-9">
                                                 <input type="number" v-model="preciom" class="form-control" placeholder="Valor de mano de obra por tarea">
-                                                <span class="help-block">(*) Ingrese el valor de mano de obra por tarea</span>
+                                                <span class="help-block">(*) Ingrese el costo de mano de obra por tarea</span>
                                             </div>
 
                                         </div>
@@ -454,6 +454,10 @@
             onChange(event) {
             console.log(event.target.value);
             this.flag=event.target.value;
+            },
+            mostrarDetalle(identificador) {
+            console.log('Variable enviada');
+            console.log(this.identificador);
             },
             nuevoValor(event){
                 console.log(event.target.value);

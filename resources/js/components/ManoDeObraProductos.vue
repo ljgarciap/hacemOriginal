@@ -21,7 +21,7 @@
                                         <th>Perfil</th>
                                         <th>Proceso</th>
                                         <th>Tiempo</th>
-                                        <th>Precio</th>
+                                        <th>Costo</th>
                                         <th>Subtotal</th>
                                         <th>Tipo pago</th>
                                     </tr>
