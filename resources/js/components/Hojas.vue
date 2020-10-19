@@ -49,10 +49,10 @@
 
                                     <tr v-for="producto in arrayProducto" :key="producto.id">
                                         <td>
-                                            <button type="button" @click="mostrarDetalle(this.identificador)" class="btn btn-success btn-sm">
+                                            <button type="button" @click="mostrarDetalle(producto.idHojaDeCosto,producto.producto,producto.idArea)" class="btn btn-success btn-sm">
                                             <i class="icon-eye"></i>
                                             </button> &nbsp;
-                                            <button type="button" @click="copiarDetalle()" class="btn btn-warning btn-sm">
+                                            <button type="button" class="btn btn-warning btn-sm">
                                             <i class="icon-docs" ></i>
                                             </button> &nbsp;
                                         </td>
@@ -285,7 +285,7 @@
 
                                             <div v-if="flag==2" class="col-md-9">
                                                 <input type="number" v-model="preciom" class="form-control" placeholder="Valor de mano de obra por tarea">
-                                                <span class="help-block">(*) Ingrese el costo de mano de obra por tarea</span>
+                                                <span class="help-block">(*) Ingrese el costo de mano de obra por destajo</span>
                                             </div>
 
                                         </div>
@@ -296,12 +296,12 @@
 
                                             <div v-if="flag==2" class="col-md-3">
                                                 <input type="checkbox" true-value="3" false-value="0" v-model="liquidacion" checked>
-                                                <label for="liquidacion">Liquidación</label>
+                                                <label for="liquidacion">Provisión Liquidación</label>
                                             </div>
 
                                             <div v-if="flag==2" class="col-md-3">
                                                 <input type="checkbox" true-value="4" false-value="0" v-model="parafiscales" checked>
-                                                <label for="parafiscales">Parafiscales</label>
+                                                <label for="parafiscales">Seguridad Social</label>
                                             </div>
 
                                             <div v-if="flag==2" class="col-md-3">
@@ -454,10 +454,6 @@
             onChange(event) {
             console.log(event.target.value);
             this.flag=event.target.value;
-            },
-            mostrarDetalle(identificador) {
-            console.log('Variable enviada');
-            console.log(this.identificador);
             },
             nuevoValor(event){
                 console.log(event.target.value);

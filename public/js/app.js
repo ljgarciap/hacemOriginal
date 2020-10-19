@@ -4060,8 +4060,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_MateriaPrimaProductos__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/MateriaPrimaProductos */ "./resources/js/components/MateriaPrimaProductos.vue");
 /* harmony import */ var _components_ManoDeObraProductos__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/ManoDeObraProductos */ "./resources/js/components/ManoDeObraProductos.vue");
 /* harmony import */ var _components_HojaDeCostos__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/HojaDeCostos */ "./resources/js/components/HojaDeCostos.vue");
-var _methods;
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -4476,14 +4474,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return pagesArray;
     }
   },
-  methods: (_methods = {
+  methods: {
     onChange: function onChange(event) {
       console.log(event.target.value);
       this.flag = event.target.value;
-    },
-    mostrarDetalle: function mostrarDetalle(identificador) {
-      console.log('Variable enviada');
-      console.log(this.identificador);
     },
     nuevoValor: function nuevoValor(event) {
       console.log(event.target.value);
@@ -4524,295 +4518,316 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       me.pagination.current_page = page; //envia peticion para ver los valores asociados a esa pagina
 
       me.listarProducto(page, buscar, criterio);
-    }
-  }, _defineProperty(_methods, "mostrarDetalle", function mostrarDetalle(id, producto, area) {
-    this.listado = 0;
-    this.identificador = id;
-    this.identificadorArea = area;
-    this.productoNombre = producto;
-  }), _defineProperty(_methods, "ocultarDetalle", function ocultarDetalle() {
-    this.listado = 1;
-    this.identificador = 0;
-    this.identificadorArea = 0;
-    this.productoNombre = '';
-  }), _defineProperty(_methods, "cerrarModal", function cerrarModal() {
-    this.modal = 0;
-    this.tituloModal = '';
-    this.materiaprimaproducto = '';
-    this.manodeobraproducto = '';
-    this.tipoModal = 0;
-    this.flag = 0;
-    this.seleccion = 0;
-  }), _defineProperty(_methods, "abrirModal", function abrirModal(modelo, accion) {
-    var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+    },
+    mostrarDetalle: function mostrarDetalle(id, producto, area) {
+      this.listado = 0;
+      this.identificador = id;
+      this.identificadorArea = area;
+      this.productoNombre = producto;
+    },
+    ocultarDetalle: function ocultarDetalle() {
+      this.listado = 1;
+      this.identificador = 0;
+      this.identificadorArea = 0;
+      this.productoNombre = '';
+    },
+    cerrarModal: function cerrarModal() {
+      this.modal = 0;
+      this.tituloModal = '';
+      this.materiaprimaproducto = '';
+      this.manodeobraproducto = '';
+      this.tipoModal = 0;
+      this.flag = 0;
+      this.seleccion = 0;
+    },
+    abrirModal: function abrirModal(modelo, accion) {
+      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
-    //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
-    switch (modelo) {
-      case "gestionMateria":
-        {
-          switch (accion) {
-            case 'crear':
-              {
-                this.modal = 1;
-                this.tipoModal = 1; //carga tipos de campos y footers
+      //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
+      switch (modelo) {
+        case "gestionMateria":
+          {
+            switch (accion) {
+              case 'crear':
+                {
+                  this.modal = 1;
+                  this.tipoModal = 1; //carga tipos de campos y footers
 
-                this.materiaprimaproducto = '';
-                this.idMateriaPrima = data['idGestionMateria'];
-                this.cantidad = '1';
-                this.precio = '';
-                this.idHoja = this.identificador;
-                this.tituloModal = 'Asignar nueva materia';
-                this.tipoAccion = 1; //carga tipos de botón en el footer
+                  this.materiaprimaproducto = '';
+                  this.idMateriaPrima = data['idGestionMateria'];
+                  this.cantidad = '1';
+                  this.precio = '';
+                  this.idHoja = this.identificador;
+                  this.tituloModal = 'Asignar nueva materia';
+                  this.tipoAccion = 1; //carga tipos de botón en el footer
 
-                break;
-              }
+                  break;
+                }
 
-            case 'actualizar':
-              {
-                //console.log(data);
-                this.modal = 1;
-                this.tipoModal = 1;
-                this.id = data['id'];
-                this.idMateriaPrima = data['idGestionMateria'];
-                this.gestionMateria = data['gestionMateria'];
-                this.cantidad = data['cantidad'];
-                this.precio = data['precio'];
-                this.tipoDeCosto = data['tipoDeCosto'];
-                this.idHoja = this.identificador;
-                this.tituloModal = 'Editar materia prima';
-                this.tipoAccion = 2;
-                break;
-              }
+              case 'actualizar':
+                {
+                  //console.log(data);
+                  this.modal = 1;
+                  this.tipoModal = 1;
+                  this.id = data['id'];
+                  this.idMateriaPrima = data['idGestionMateria'];
+                  this.gestionMateria = data['gestionMateria'];
+                  this.cantidad = data['cantidad'];
+                  this.precio = data['precio'];
+                  this.tipoDeCosto = data['tipoDeCosto'];
+                  this.idHoja = this.identificador;
+                  this.tituloModal = 'Editar materia prima';
+                  this.tipoAccion = 2;
+                  break;
+                }
+            }
+
+            this.selectGestionMateria();
+            break;
           }
 
-          this.selectGestionMateria();
-          break;
-        }
+        case "gestionManoDeObra":
+          {
+            switch (accion) {
+              case 'crear':
+                {
+                  this.modal = 1;
+                  this.tipoModal = 2;
+                  this.manodeobraproducto = '';
+                  this.idPerfil = data['idPerfil'];
+                  this.idHoja = this.identificador;
+                  this.idArea = this.identificadorArea;
+                  this.tituloModal = 'Asignar nueva mano de obra';
+                  this.tipoAccion = 1;
+                  this.selectRelacion(this.idArea);
+                  break;
+                }
 
-      case "gestionManoDeObra":
-        {
-          switch (accion) {
-            case 'crear':
-              {
-                this.modal = 1;
-                this.tipoModal = 2;
-                this.manodeobraproducto = '';
-                this.idPerfil = data['idPerfil'];
-                this.idHoja = this.identificador;
-                this.idArea = this.identificadorArea;
-                this.tituloModal = 'Asignar nueva mano de obra';
-                this.tipoAccion = 1;
-                this.selectRelacion(this.idArea);
-                break;
-              }
+              case 'actualizar':
+                {
+                  console.log(data);
+                  this.modal = 1;
+                  this.tipoModal = 2;
+                  this.idManoDeObraProducto = data['id'];
+                  this.idPerfil = data['idPerfil'];
+                  this.idProceso = data['idProceso'];
+                  this.tiempo = data['tiempo'];
+                  this.precio = data['precio'];
+                  this.idHoja = this.identificador;
+                  this.idArea = this.identificadorArea;
+                  this.tituloModal = 'Editar mano de obra';
+                  this.tipoAccion = 2;
+                  this.selectRelacion(this.idArea);
+                  this.selectRelacionPerfil(this.idProceso);
+                  break;
+                }
+            }
 
-            case 'actualizar':
-              {
-                console.log(data);
-                this.modal = 1;
-                this.tipoModal = 2;
-                this.idManoDeObraProducto = data['id'];
-                this.idPerfil = data['idPerfil'];
-                this.idProceso = data['idProceso'];
-                this.tiempo = data['tiempo'];
-                this.precio = data['precio'];
-                this.idHoja = this.identificador;
-                this.idArea = this.identificadorArea;
-                this.tituloModal = 'Editar mano de obra';
-                this.tipoAccion = 2;
-                this.selectRelacion(this.idArea);
-                this.selectRelacionPerfil(this.idProceso);
-                break;
-              }
+            break;
           }
-
-          break;
-        }
-    }
-  }), _defineProperty(_methods, "selectGestionMateria", function selectGestionMateria() {
-    var me = this;
-    var url = '/materiaprimaproducto/selectGestionMateria/';
-    axios.get(url).then(function (response) {
-      var respuesta = response.data;
-      me.arrayGestionMaterias = respuesta.gestionmaterias;
-    })["catch"](function (error) {
-      // handle error
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "selectDatosMateria", function selectDatosMateria(idMateriaPrima) {
-    var me = this;
-    var url = '/materiaprimaproducto/selectDatosMateria/' + this.idMateriaPrima;
-    axios.get(url).then(function (response) {
-      var respuesta = response.data;
-      me.datosMaterias = respuesta.datosmaterias;
-    })["catch"](function (error) {
-      // handle error
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "selectRelacion", function selectRelacion(idArea) {
-    var me = this;
-    var url = '/perfil/selectRelacion/' + this.idArea;
-    axios.get(url).then(function (response) {
-      var respuesta = response.data;
-      me.arrayRelacion = respuesta.relaciones;
-    })["catch"](function (error) {
-      // handle error
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "selectRelacionPerfil", function selectRelacionPerfil(idProceso) {
-    var me = this;
-    var url = '/manodeobraproducto/selectRelacionPerfil/' + this.idProceso;
-    axios.get(url).then(function (response) {
-      var respuesta = response.data;
-      me.arrayPerfilRelacion = respuesta.perfilrelaciones;
-    })["catch"](function (error) {
-      // handle error
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "listarMateriaPrimaProducto", function listarMateriaPrimaProducto(page, buscar, criterio, identificador) {
-    var me = this;
-    var url = '/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
-    axios.get(url).then(function (response) {
-      var respuesta = response.data;
-      me.arrayMateriaPrimaProductos = respuesta.materiaprimaproductos.data;
-      me.pagination = respuesta.pagination;
-    })["catch"](function (error) {
-      // handle error
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "crearMateriaPrimaProducto", function crearMateriaPrimaProducto() {
-    //valido con el metodo de validacion creado
-    if (this.validarMateriaPrimaProducto()) {
-      return;
-    }
-
-    var me = this;
-    axios.post('/materiaprimaproducto/store', {
-      'idMateriaPrima': this.idMateriaPrima,
-      'cantidad': this.cantidad,
-      'precio': this.precio,
-      'tipoDeCosto': this.tipoDeCosto,
-      'idHoja': this.idHoja
-    }).then(function (response) {
-      me.cerrarModal();
-      me.forceRerender();
-      me.listarMateriaPrimaProducto(1, '', 'gestionMateria');
-    })["catch"](function (error) {
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "editarMateriaPrimaProducto", function editarMateriaPrimaProducto() {
-    if (this.validarMateriaPrimaProducto()) {
-      return;
-    }
-
-    var me = this;
-    axios.put('/materiaprimaproducto/update', {
-      'id': this.id,
-      'cantidad': this.cantidad,
-      'precio': this.precio,
-      'tipoDeCosto': this.tipoDeCosto
-    }).then(function (response) {
-      me.cerrarModal();
-      me.forceRerender();
-      me.listarMateriaPrimaProducto(1, '', 'materiaprima');
-    })["catch"](function (error) {
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "eliminarMateriaPrimaProducto", function eliminarMateriaPrimaProducto() {
-    var me = this;
-    axios.put('/materiaprimaproducto/deactivate', {
-      'id': this.id
-    }).then(function (response) {
-      me.forceRerender();
-      me.listarMateriaPrimaProducto(1, '', 'materiaprima');
-    })["catch"](function (error) {
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "validarMateriaPrimaProducto", function validarMateriaPrimaProducto() {
-    this.errorMateriaPrimaProducto = 0;
-    this.errorMensaje = [];
-    if (!this.cantidad) this.errorMensaje.push("La cantidad no puede estar vacio");
-    if (this.errorMensaje.length) this.errorMateriaPrimaProducto = 1;
-    return this.errorMateriaPrimaProducto;
-  }), _defineProperty(_methods, "crearManoDeObraProducto", function crearManoDeObraProducto() {
-    //valido con el metodo de validacion creado
-    if (this.validarManoDeObraProducto()) {
-      return;
-    }
-
-    if (this.flag == 1) {
-      this.tipoPago = 1;
-      this.tiempo = this.tiempo;
-      this.precio = this.valor; //este precio debo traerlo de consulta
-    } else if (this.flag == 2) {
-      this.tiempo = 1;
-      this.precio = parseInt(this.preciom * this.liquidacion * 0.073 + this.preciom * this.parafiscales * 0.046 + parseInt(this.preciom));
-
-      if (this.liquidacion == 0 && this.parafiscales == 0) {
-        this.tipoPago = 2;
-      } else if (this.liquidacion == 3 && this.parafiscales == 0) {
-        this.tipoPago = 3;
-      } else if (this.liquidacion == 0 && this.parafiscales == 4) {
-        this.tipoPago = 4;
-      } else {
-        this.tipoPago = 5;
       }
-    }
+    },
+    selectGestionMateria: function selectGestionMateria() {
+      var me = this;
+      var url = '/materiaprimaproducto/selectGestionMateria/';
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayGestionMaterias = respuesta.gestionmaterias;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    selectDatosMateria: function selectDatosMateria(idMateriaPrima) {
+      var me = this;
+      var url = '/materiaprimaproducto/selectDatosMateria/' + this.idMateriaPrima;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.datosMaterias = respuesta.datosmaterias;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    selectRelacion: function selectRelacion(idArea) {
+      var me = this;
+      var url = '/perfil/selectRelacion/' + this.idArea;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayRelacion = respuesta.relaciones;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    selectRelacionPerfil: function selectRelacionPerfil(idProceso) {
+      var me = this;
+      var url = '/manodeobraproducto/selectRelacionPerfil/' + this.idProceso;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayPerfilRelacion = respuesta.perfilrelaciones;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    listarMateriaPrimaProducto: function listarMateriaPrimaProducto(page, buscar, criterio, identificador) {
+      var me = this;
+      var url = '/materiaprimaproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayMateriaPrimaProductos = respuesta.materiaprimaproductos.data;
+        me.pagination = respuesta.pagination;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    crearMateriaPrimaProducto: function crearMateriaPrimaProducto() {
+      //valido con el metodo de validacion creado
+      if (this.validarMateriaPrimaProducto()) {
+        return;
+      }
 
-    var me = this;
-    axios.post('/manodeobraproducto/store', {
-      'idPerfil': this.idPerfil,
-      'tiempo': this.tiempo,
-      'precio': this.precio,
-      'tipoPago': this.tipoPago,
-      'idHoja': this.idHoja
-    }).then(function (response) {
-      me.cerrarModal();
-      me.forceRerender();
-    })["catch"](function (error) {
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "editarManoDeObraProducto", function editarManoDeObraProducto() {
-    if (this.validarManoDeObraProducto()) {
-      return;
-    }
+      var me = this;
+      axios.post('/materiaprimaproducto/store', {
+        'idMateriaPrima': this.idMateriaPrima,
+        'cantidad': this.cantidad,
+        'precio': this.precio,
+        'tipoDeCosto': this.tipoDeCosto,
+        'idHoja': this.idHoja
+      }).then(function (response) {
+        me.cerrarModal();
+        me.forceRerender();
+        me.listarMateriaPrimaProducto(1, '', 'gestionMateria');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editarMateriaPrimaProducto: function editarMateriaPrimaProducto() {
+      if (this.validarMateriaPrimaProducto()) {
+        return;
+      }
 
-    var me = this;
-    axios.put('/manodeobraproducto/update', {
-      'id': this.idManoDeObraProducto,
-      'tiempo': this.tiempo,
-      'precio': this.preciom
-    }).then(function (response) {
-      me.cerrarModal();
-      me.forceRerender();
-    })["catch"](function (error) {
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "eliminarManoDeObraProducto", function eliminarManoDeObraProducto() {
-    var me = this;
-    axios.put('/manodeobraproducto/deactivate', {
-      'id': this.id
-    }).then(function (response) {
-      me.forceRerender();
-      me.listarManoDeObraProducto(1, '', 'manodeobra');
-    })["catch"](function (error) {
-      console.log(error);
-    });
-  }), _defineProperty(_methods, "validarManoDeObraProducto", function validarManoDeObraProducto() {
-    this.errorManoDeObraProducto = 0;
-    this.errorMensaje = [];
-    if (!this.tiempo) this.errorMensaje.push("El tiempo no puede estar vacio");
-    if (this.errorMensaje.length) this.errorManoDeObraProducto = 1;
-    return this.errorManoDeObraProducto;
-  }), _defineProperty(_methods, "showLightbox", function showLightbox(fotoCarga) {
-    this.fotoCarga = fotoCarga;
-    document.getElementById('over').style.display = 'block';
-    document.getElementById('fade').style.display = 'block';
-  }), _defineProperty(_methods, "hideLightbox", function hideLightbox() {
-    this.fotoCarga = '';
-    document.getElementById('over').style.display = 'none';
-    document.getElementById('fade').style.display = 'none';
-  }), _methods),
+      var me = this;
+      axios.put('/materiaprimaproducto/update', {
+        'id': this.id,
+        'cantidad': this.cantidad,
+        'precio': this.precio,
+        'tipoDeCosto': this.tipoDeCosto
+      }).then(function (response) {
+        me.cerrarModal();
+        me.forceRerender();
+        me.listarMateriaPrimaProducto(1, '', 'materiaprima');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    eliminarMateriaPrimaProducto: function eliminarMateriaPrimaProducto() {
+      var me = this;
+      axios.put('/materiaprimaproducto/deactivate', {
+        'id': this.id
+      }).then(function (response) {
+        me.forceRerender();
+        me.listarMateriaPrimaProducto(1, '', 'materiaprima');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    validarMateriaPrimaProducto: function validarMateriaPrimaProducto() {
+      this.errorMateriaPrimaProducto = 0;
+      this.errorMensaje = [];
+      if (!this.cantidad) this.errorMensaje.push("La cantidad no puede estar vacio");
+      if (this.errorMensaje.length) this.errorMateriaPrimaProducto = 1;
+      return this.errorMateriaPrimaProducto;
+    },
+    crearManoDeObraProducto: function crearManoDeObraProducto() {
+      //valido con el metodo de validacion creado
+      if (this.validarManoDeObraProducto()) {
+        return;
+      }
+
+      if (this.flag == 1) {
+        this.tipoPago = 1;
+        this.tiempo = this.tiempo;
+        this.precio = this.valor; //este precio debo traerlo de consulta
+      } else if (this.flag == 2) {
+        this.tiempo = 1;
+        this.precio = parseInt(this.preciom * this.liquidacion * 0.073 + this.preciom * this.parafiscales * 0.046 + parseInt(this.preciom));
+
+        if (this.liquidacion == 0 && this.parafiscales == 0) {
+          this.tipoPago = 2;
+        } else if (this.liquidacion == 3 && this.parafiscales == 0) {
+          this.tipoPago = 3;
+        } else if (this.liquidacion == 0 && this.parafiscales == 4) {
+          this.tipoPago = 4;
+        } else {
+          this.tipoPago = 5;
+        }
+      }
+
+      var me = this;
+      axios.post('/manodeobraproducto/store', {
+        'idPerfil': this.idPerfil,
+        'tiempo': this.tiempo,
+        'precio': this.precio,
+        'tipoPago': this.tipoPago,
+        'idHoja': this.idHoja
+      }).then(function (response) {
+        me.cerrarModal();
+        me.forceRerender();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editarManoDeObraProducto: function editarManoDeObraProducto() {
+      if (this.validarManoDeObraProducto()) {
+        return;
+      }
+
+      var me = this;
+      axios.put('/manodeobraproducto/update', {
+        'id': this.idManoDeObraProducto,
+        'tiempo': this.tiempo,
+        'precio': this.preciom
+      }).then(function (response) {
+        me.cerrarModal();
+        me.forceRerender();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    eliminarManoDeObraProducto: function eliminarManoDeObraProducto() {
+      var me = this;
+      axios.put('/manodeobraproducto/deactivate', {
+        'id': this.id
+      }).then(function (response) {
+        me.forceRerender();
+        me.listarManoDeObraProducto(1, '', 'manodeobra');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    validarManoDeObraProducto: function validarManoDeObraProducto() {
+      this.errorManoDeObraProducto = 0;
+      this.errorMensaje = [];
+      if (!this.tiempo) this.errorMensaje.push("El tiempo no puede estar vacio");
+      if (this.errorMensaje.length) this.errorManoDeObraProducto = 1;
+      return this.errorManoDeObraProducto;
+    },
+    //funciones para uso del lightbox
+    showLightbox: function showLightbox(fotoCarga) {
+      this.fotoCarga = fotoCarga;
+      document.getElementById('over').style.display = 'block';
+      document.getElementById('fade').style.display = 'block';
+    },
+    hideLightbox: function hideLightbox() {
+      this.fotoCarga = '';
+      document.getElementById('over').style.display = 'none';
+      document.getElementById('fade').style.display = 'none';
+    } //cierre de funciones para uso del lightbox
+
+  },
   mounted: function mounted() {
     this.listarProducto(1, this.buscar, this.criterio);
   }
@@ -49300,7 +49315,9 @@ var render = function() {
                                     on: {
                                       click: function($event) {
                                         return _vm.mostrarDetalle(
-                                          this.identificador
+                                          producto.idHojaDeCosto,
+                                          producto.producto,
+                                          producto.idArea
                                         )
                                       }
                                     }
@@ -49310,19 +49327,7 @@ var render = function() {
                                 _vm._v(
                                   "  \n                                    "
                                 ),
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-warning btn-sm",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.copiarDetalle()
-                                      }
-                                    }
-                                  },
-                                  [_c("i", { staticClass: "icon-docs" })]
-                                ),
+                                _vm._m(3, true),
                                 _vm._v("  \n                                ")
                               ]),
                               _vm._v(" "),
@@ -50331,7 +50336,7 @@ var render = function() {
                                     _vm._v(" "),
                                     _c("span", { staticClass: "help-block" }, [
                                       _vm._v(
-                                        "(*) Ingrese el costo de mano de obra por tarea"
+                                        "(*) Ingrese el costo de mano de obra por destajo"
                                       )
                                     ])
                                   ])
@@ -50402,7 +50407,7 @@ var render = function() {
                                     _c(
                                       "label",
                                       { attrs: { for: "liquidacion" } },
-                                      [_vm._v("Liquidación")]
+                                      [_vm._v("Provisión Liquidación")]
                                     )
                                   ])
                                 : _vm._e(),
@@ -50458,7 +50463,7 @@ var render = function() {
                                     _c(
                                       "label",
                                       { attrs: { for: "parafiscales" } },
-                                      [_vm._v("Parafiscales")]
+                                      [_vm._v("Seguridad Social")]
                                     )
                                   ])
                                 : _vm._e(),
@@ -50670,6 +50675,16 @@ var staticRenderFns = [
         _c("th", [_vm._v("Estado")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-warning btn-sm", attrs: { type: "button" } },
+      [_c("i", { staticClass: "icon-docs" })]
+    )
   }
 ]
 render._withStripped = true
