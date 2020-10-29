@@ -11,33 +11,79 @@
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Variables &nbsp;
-                            <button type="button" @click="abrirModal('variables','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
-                            </button>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive" v-for="financiera in arrayFinancieras" :key="financiera.id">
+                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                             <table class="table table-bordered table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Conceptos</th>
-                                        <th>Porcentaje</th>
-                                    </tr>
-                                </thead>
                                 <tbody>
-                                        <tr v-for="financiera in arrayFinancieras" :key="financiera.id">
-                                            <td v-text="financiera.id"></td>
-                                            <td v-text="financiera.conceptoFinanciero"></td>
-                                            <td>
-                                                <input type="hidden" name="ids[]" :value="financiera.id">
-                                                <input type="number" name="porcentajes[]" step="0.01" :value="financiera.porcentaje">
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>
+                                            Vacaciones
+                                        </td>
+                                        <td>
+                                            <input type="number" name="vacaciones" step="0.01" :value="financiera.vacaciones">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Prima
+                                        </td>
+                                        <td>
+                                            <input type="number" name="prima" step="0.01" :value="financiera.prima">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Cesantías
+                                        </td>
+                                        <td>
+                                            <input type="number" name="cesantias" step="0.01" :value="financiera.cesantias">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Intereses a las cesantías
+                                        </td>
+                                        <td>
+                                            <input type="number" name="intereses" step="0.01" :value="financiera.intereses">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Salud
+                                        </td>
+                                        <td>
+                                            <input type="number" name="salud" step="0.01" :value="financiera.salud">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Pensión
+                                        </td>
+                                        <td>
+                                            <input type="number" name="pension" step="0.01" :value="financiera.pension">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            ARL
+                                        </td>
+                                        <td>
+                                            <input type="number" name="arl" step="0.01" :value="financiera.arl">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Caja de compensación
+                                        </td>
+                                        <td>
+                                            <input type="number" name="caja" step="0.01" :value="financiera.caja">
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
-                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                <button type="button" class="btn btn-primary" @click="actualizarDatos(this.ids,this.porcentajes)">Actualizar</button>
+                                <button type="button" class="btn btn-primary" @click="actualizarDatos(vacaciones,prima,cesantias,intereses,salud,pension,arl,caja)">Actualizar</button>
                             </form>
                             </div>
                         </div>
@@ -54,18 +100,16 @@
     export default {
         data(){
             return{
-                id:'',
-                conceptoFinanciero:'',
-                porcentaje:'',
-                estado:'',
+                id : 1,
                 arrayFinancieras : [],
-                ids : [],
-                porcentajes : [],
-                modal : 0,
-                tituloModal : '',
-                tipoAccion : 0,
-                errorVariable : 0,
-                errorMensaje : []
+                vacaciones : '',
+                prima : '',
+                cesantias : '',
+                intereses : '',
+                salud : '',
+                pension : '',
+                arl : '',
+                caja : ''
             }
         },
         methods : {
@@ -84,66 +128,24 @@
                     console.log(error);
                 })
             },
-            actualizarDatos(ids,porcentajes){
+            actualizarDatos(vacaciones,prima,cesantias,intereses,salud,pension,arl,caja){
                 let me=this;
                 axios.post('/financiera/actualizar',{
-                    'ids': this.ids,
-                    'porcentajes': this.porcentajes
-                    //'estado': this.estado,
-                    //'dato': this.dato
+                    'id': 1,
+                    'vacaciones' : this.vacaciones,
+                    'prima' : this.prima,
+                    'cesantias' : this.cesantias,
+                    'intereses' : this.intereses,
+                    'salud' : this.salud,
+                    'pension' : this.pension,
+                    'arl' : this.arl,
+                    'caja' : this.caja
                 }).then(function (response) {
                 me.listarVariables()
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-            },
-            crearArea(){
-                //valido con el metodo de validacion creado
-                if(this.validarArea()){
-                    return;
-                }
-
-                let me=this;
-                axios.post('/area/store',{
-                    'area': this.area
-                    //'estado': this.estado,
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarArea(1,'','area');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            editarArea(){
-                if(this.validarArea()){
-                    return;
-                }
-
-                let me=this;
-                axios.put('/area/update',{
-                    'area': this.area,
-                    'id': this.idArea
-                    //'estado': this.estado,
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarVariables();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            validarArea(){
-                this.errorVariable=0;
-                this.errorMensaje=[];
-
-                if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
-                if (this.errorMensaje.length) this.errorVariable=1;
-
-                return this.errorVariable;
             }
         },
         mounted() {

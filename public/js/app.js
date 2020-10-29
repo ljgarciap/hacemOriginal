@@ -3411,21 +3411,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      id: '',
-      conceptoFinanciero: '',
-      porcentaje: '',
-      estado: '',
+      id: 1,
       arrayFinancieras: [],
-      ids: [],
-      porcentajes: [],
-      modal: 0,
-      tituloModal: '',
-      tipoAccion: 0,
-      errorVariable: 0,
-      errorMensaje: []
+      vacaciones: '',
+      prima: '',
+      cesantias: '',
+      intereses: '',
+      salud: '',
+      pension: '',
+      arl: '',
+      caja: ''
     };
   },
   methods: {
@@ -3442,61 +3486,23 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    actualizarDatos: function actualizarDatos(ids, porcentajes) {
+    actualizarDatos: function actualizarDatos(vacaciones, prima, cesantias, intereses, salud, pension, arl, caja) {
       var me = this;
       axios.post('/financiera/actualizar', {
-        'ids': this.ids,
-        'porcentajes': this.porcentajes //'estado': this.estado,
-        //'dato': this.dato
-
+        'id': 1,
+        'vacaciones': this.vacaciones,
+        'prima': this.prima,
+        'cesantias': this.cesantias,
+        'intereses': this.intereses,
+        'salud': this.salud,
+        'pension': this.pension,
+        'arl': this.arl,
+        'caja': this.caja
       }).then(function (response) {
         me.listarVariables();
       })["catch"](function (error) {
         console.log(error);
       });
-    },
-    crearArea: function crearArea() {
-      //valido con el metodo de validacion creado
-      if (this.validarArea()) {
-        return;
-      }
-
-      var me = this;
-      axios.post('/area/store', {
-        'area': this.area //'estado': this.estado,
-        //'dato': this.dato
-
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarArea(1, '', 'area');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    editarArea: function editarArea() {
-      if (this.validarArea()) {
-        return;
-      }
-
-      var me = this;
-      axios.put('/area/update', {
-        'area': this.area,
-        'id': this.idArea //'estado': this.estado,
-        //'dato': this.dato
-
-      }).then(function (response) {
-        me.cerrarModal();
-        me.listarVariables();
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    validarArea: function validarArea() {
-      this.errorVariable = 0;
-      this.errorMensaje = [];
-      if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
-      if (this.errorMensaje.length) this.errorVariable = 1;
-      return this.errorVariable;
     }
   },
   mounted: function mounted() {
@@ -45911,6 +45917,21 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-currency-filter/dist/vue-currency-filter.module.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/vue-currency-filter/dist/vue-currency-filter.module.js ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var r=Array.prototype.map,t=Array.isArray,n=Object.prototype.toString;function e(r){return!!(""===r||r&&r.charCodeAt&&r.substr)}function o(r){return t?t(r):"[object Array]"===n.call(r)}function a(r){return r&&"[object Object]"===n.call(r)}function i(r,t){var n;for(n in r=r||{},t=t||{})t.hasOwnProperty(n)&&null==r[n]&&(r[n]=t[n]);return r}function s(t,n,e){if(!t)return[];if(r&&t.map===r)return t.map(n,e);var o,a=[],i=0;for(i=0,o=t.length;i<o;i++)a[i]=n.call(e,t[i],i,t);return a}var c={settings:{currency:{symbol:"$",format:"%s%v",decimal:".",thousand:",",precision:2,grouping:3},number:{precision:0,grouping:3,thousand:",",decimal:"."}}};function u(r,t){return void 0===t&&(t=0),r=Math.round(Math.abs(r)),isNaN(r)?t:r}var l=function r(t,n){if(o(t))return s(t,function(t){return r(t,n)});if("number"==typeof(t=t||0))return t;n=n||c.settings.number.decimal;var e=new RegExp("[^0-9-"+n+"]",["g"]),a=parseFloat((""+t).replace(/\((?=\d+)(.*)\)/,"-$1").replace(e,"").replace(n,"."));return isNaN(a)?0:a},p=function(r,t){t=u(t,c.settings.number.precision);var n=Number(l(r)+"e"+t),e=Math.round(n);return Number(e+"e-"+t).toFixed(t)},f={name:"currency",symbol:"",thousandsSeparator:".",fractionCount:0,fractionSeparator:",",symbolPosition:"front",symbolSpacing:!0,avoidEmptyDecimals:void 0},m={install:function(r,t){var n=function(t){null==t&&(t={});var n=i(t,f),m=n.name,y=function(r,t){if(null==r)return{};var n,e,o={},a=Object.keys(r);for(e=0;e<a.length;e++)t.indexOf(n=a[e])>=0||(o[n]=r[n]);return o}(n,["name"]),d=function(r,t,n,f,m,d,v,b){var g=i({symbol:t,thousandsSeparator:n,fractionCount:f,fractionSeparator:m,symbolPosition:d,symbolSpacing:v,avoidEmptyDecimals:b},y);"object"==typeof t&&(g=i(t,y));var h=0,S="-"===String(r).charAt(0);S&&(r=String(r).slice(1));var A,C=parseFloat(r);return isNaN(C)||(h=C),A="front"===g.symbolPosition?g.symbolSpacing?"%s %v":"%s%v":g.symbolSpacing?"%v %s":"%v%s",g.fractionCount>0&&(r=p(r,g.fractionCount)),h=function r(t,n,f,m,y,d,v){if(o(t))return s(t,function(t){return r(t,n,f,m,y,d,v)});t=l(t);var b=i(a(n)?n:{symbol:n,precision:f,thousand:m,decimal:y,format:d,avoidEmptyDecimals:v},c.settings.currency),g=function(r){var t=c.settings.currency.format;return"function"==typeof r&&(r=r()),e(r)&&r.match("%v")?{pos:r,neg:r.replace("-","").replace("%v","-%v"),zero:r}:r&&r.pos&&r.pos.match("%v")?r:e(t)?c.settings.currency.format={pos:t,neg:t.replace("%v","-%v"),zero:t}:t}(b.format);return(t>0?g.pos:t<0?g.neg:g.zero).replace("%s",b.symbol).replace("%v",function r(t,n,e,f,m){if(o(t))return s(t,function(t){return r(t,n,e,f,m)});t=l(t);var y=i(a(n)?n:{precision:n,thousand:e,decimal:f},c.settings.number),d=u(y.precision),v=t<0?"-":"",b=parseInt(p(Math.abs(t||0),d),10)+"",g=b.length>3?b.length%3:0,h="";return d&&(h=y.decimal+p(Math.abs(t),d).split(".")[1],void 0!==m&&parseInt(p(Math.abs(t||0),1),10)==t&&(h=""===m?"":y.decimal+m)),v+(g?b.substr(0,g)+y.thousand:"")+b.substr(g).replace(/(\d{3})(?=\d)/g,"$1"+y.thousand)+h}(Math.abs(t),u(b.precision),b.thousand,b.decimal,b.avoidEmptyDecimals))}(r,{format:A,symbol:g.symbol,precision:g.fractionCount,thousand:g.thousandsSeparator,decimal:g.fractionSeparator,avoidEmptyDecimals:g.avoidEmptyDecimals}),S&&(h="-"+h),h};r.filter(m,d),r.prototype["$"+m]={setConfig:function(r){y=i(r,f)},getConfig:function(){return y},format:d}};Array.isArray(t)?t.forEach(function(r){return n(r)}):n(t)}};/* harmony default export */ __webpack_exports__["default"] = (m);
+//# sourceMappingURL=vue-currency-filter.module.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin.vue?vue&type=template&id=58b78718&":
 /*!********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin.vue?vue&type=template&id=58b78718& ***!
@@ -48165,99 +48186,219 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "container-fluid" }, [
       _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Variables  \n                    "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  return _vm.abrirModal("variables", "crear")
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                    ")
-            ]
-          )
-        ]),
+        _vm._m(1),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "table-responsive" }, [
-            _c(
-              "table",
-              { staticClass: "table table-bordered table-striped table-sm" },
-              [
-                _vm._m(1),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.arrayFinancieras, function(financiera) {
-                    return _c("tr", { key: financiera.id }, [
-                      _c("td", {
-                        domProps: { textContent: _vm._s(financiera.id) }
-                      }),
-                      _vm._v(" "),
-                      _c("td", {
-                        domProps: {
-                          textContent: _vm._s(financiera.conceptoFinanciero)
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          attrs: { type: "hidden", name: "ids[]" },
-                          domProps: { value: financiera.id }
-                        }),
-                        _vm._v(" "),
-                        _c("input", {
-                          attrs: {
-                            type: "number",
-                            name: "porcentajes[]",
-                            step: "0.01"
-                          },
-                          domProps: { value: financiera.porcentaje }
-                        })
-                      ])
-                    ])
-                  }),
-                  0
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "form",
-              {
-                staticClass: "form-horizontal",
-                attrs: {
-                  action: "",
-                  method: "post",
-                  enctype: "multipart/form-data"
-                }
-              },
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          _vm._l(_vm.arrayFinancieras, function(financiera) {
+            return _c(
+              "div",
+              { key: financiera.id, staticClass: "table-responsive" },
               [
                 _c(
-                  "button",
+                  "form",
                   {
-                    staticClass: "btn btn-primary",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.actualizarDatos(this.ids, this.porcentajes)
-                      }
+                    staticClass: "form-horizontal",
+                    attrs: {
+                      action: "",
+                      method: "post",
+                      enctype: "multipart/form-data"
                     }
                   },
-                  [_vm._v("Actualizar")]
+                  [
+                    _c(
+                      "table",
+                      {
+                        staticClass:
+                          "table table-bordered table-striped table-sm"
+                      },
+                      [
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                    Vacaciones\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                attrs: {
+                                  type: "number",
+                                  name: "vacaciones",
+                                  step: "0.01"
+                                },
+                                domProps: { value: financiera.vacaciones }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                    Prima\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                attrs: {
+                                  type: "number",
+                                  name: "prima",
+                                  step: "0.01"
+                                },
+                                domProps: { value: financiera.prima }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                    Cesantías\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                attrs: {
+                                  type: "number",
+                                  name: "cesantias",
+                                  step: "0.01"
+                                },
+                                domProps: { value: financiera.cesantias }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                    Intereses a las cesantías\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                attrs: {
+                                  type: "number",
+                                  name: "intereses",
+                                  step: "0.01"
+                                },
+                                domProps: { value: financiera.intereses }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                    Salud\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                attrs: {
+                                  type: "number",
+                                  name: "salud",
+                                  step: "0.01"
+                                },
+                                domProps: { value: financiera.salud }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                    Pensión\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                attrs: {
+                                  type: "number",
+                                  name: "pension",
+                                  step: "0.01"
+                                },
+                                domProps: { value: financiera.pension }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                    ARL\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                attrs: {
+                                  type: "number",
+                                  name: "arl",
+                                  step: "0.01"
+                                },
+                                domProps: { value: financiera.arl }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                                    Caja de compensación\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                attrs: {
+                                  type: "number",
+                                  name: "caja",
+                                  step: "0.01"
+                                },
+                                domProps: { value: financiera.caja }
+                              })
+                            ])
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.actualizarDatos(
+                              _vm.vacaciones,
+                              _vm.prima,
+                              _vm.cesantias,
+                              _vm.intereses,
+                              _vm.salud,
+                              _vm.pension,
+                              _vm.arl,
+                              _vm.caja
+                            )
+                          }
+                        }
+                      },
+                      [_vm._v("Actualizar")]
+                    )
+                  ]
                 )
               ]
             )
-          ])
-        ])
+          }),
+          0
+        )
       ])
     ])
   ])
@@ -48279,14 +48420,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Id")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Conceptos")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Porcentaje")])
-      ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("i", { staticClass: "fa fa-align-justify" }),
+      _vm._v(" Variables  \n                ")
     ])
   }
 ]
@@ -49060,29 +49196,29 @@ var render = function() {
             "tbody",
             _vm._l(_vm.arrayTotales, function(total) {
               return _c("tr", { key: total.id }, [
-                _c("td", {
-                  domProps: { textContent: _vm._s(total.capacidadproducto) }
-                }),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("currency_2")(total.capacidadproducto)))
+                ]),
                 _vm._v(" "),
-                _c("td", {
-                  domProps: { textContent: _vm._s(total.acumuladomd) }
-                }),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("currency")(total.acumuladomd)))
+                ]),
                 _vm._v(" "),
-                _c("td", {
-                  domProps: { textContent: _vm._s(total.acumuladomi) }
-                }),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("currency")(total.acumuladomi)))
+                ]),
                 _vm._v(" "),
-                _c("td", {
-                  domProps: { textContent: _vm._s(total.acumuladomo) }
-                }),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("currency")(total.acumuladomo)))
+                ]),
                 _vm._v(" "),
-                _c("td", {
-                  domProps: { textContent: _vm._s(total.cifporproducto) }
-                }),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("currency")(total.cifporproducto)))
+                ]),
                 _vm._v(" "),
-                _c("td", {
-                  domProps: { textContent: _vm._s(total.acumuladototal) }
-                })
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("currency")(total.acumuladototal)))
+                ])
               ])
             }),
             0
@@ -85717,6 +85853,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuesax_dist_vuesax_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuesax_dist_vuesax_css__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var material_icons_iconfont_material_icons_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! material-icons/iconfont/material-icons.css */ "./node_modules/material-icons/iconfont/material-icons.css");
 /* harmony import */ var material_icons_iconfont_material_icons_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(material_icons_iconfont_material_icons_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_currency_filter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-currency-filter */ "./node_modules/vue-currency-filter/dist/vue-currency-filter.module.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -85733,6 +85870,25 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 window.Vue.use(vuesax__WEBPACK_IMPORTED_MODULE_0___default.a, {// options here
 });
+
+Vue.use(vue_currency_filter__WEBPACK_IMPORTED_MODULE_3__["default"], [{
+  symbol: '$',
+  thousandsSeparator: '.',
+  fractionCount: 0,
+  fractionSeparator: ',',
+  symbolPosition: 'front',
+  symbolSpacing: true
+}, {
+  // default name 'currency_2'
+  name: 'currency_2',
+  symbol: '',
+  thousandsSeparator: '.',
+  fractionCount: 0,
+  fractionSeparator: ',',
+  symbolPosition: 'front',
+  symbolSpacing: false //avoidEmptyDecimals: '--'
+
+}]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

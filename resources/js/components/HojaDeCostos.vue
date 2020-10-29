@@ -20,12 +20,12 @@
                                     <tr v-for="total in arrayTotales" :key="total.id">
                                         <!--<td v-text="total.foto"></td>-->
                                         <!--<td v-text="total.acumuladotiempomo"></td>-->
-                                        <td v-text="total.capacidadproducto"></td>
-                                        <td v-text="total.acumuladomd"></td>
-                                        <td v-text="total.acumuladomi"></td>
-                                        <td v-text="total.acumuladomo"></td>
-                                        <td v-text="total.cifporproducto"></td>
-                                        <td v-text="total.acumuladototal"></td>
+                                        <td>{{total.capacidadproducto | currency_2}}</td>
+                                        <td>{{total.acumuladomd | currency}}</td>
+                                        <td>{{total.acumuladomi | currency}}</td>
+                                        <td>{{total.acumuladomo | currency}}</td>
+                                        <td>{{total.cifporproducto | currency}}</td>
+                                        <td>{{total.acumuladototal | currency}}</td>
                                     </tr>
                                 </tbody>
                             </table>

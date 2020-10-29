@@ -15,9 +15,14 @@ class CreateTbInformacionFinancieraTable extends Migration
     {
         Schema::create('tb_informacion_financiera', function (Blueprint $table) {
             $table->id();
-            $table->string('conceptoFinanciero', 255);
-            $table->float('porcentaje')->default(0);
-            $table->boolean('estado')->default(1);
+            $table->float('vacaciones')->default(0);
+            $table->float('prima')->default(0);
+            $table->float('cesantias')->default(0);
+            $table->float('intereses')->default(0);
+            $table->float('salud')->default(0);
+            $table->float('pension')->default(0);
+            $table->float('arl')->default(0);
+            $table->float('caja')->default(0);
             //$table->timestamps();
         });
     }

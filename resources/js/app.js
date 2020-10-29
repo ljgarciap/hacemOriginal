@@ -19,6 +19,28 @@ window.Vue.use(Vuesax, {
     // options here
   });
 
+import VueCurrencyFilter from 'vue-currency-filter';
+
+Vue.use(VueCurrencyFilter,[
+    {
+      symbol : '$',
+      thousandsSeparator: '.',
+      fractionCount: 0,
+      fractionSeparator: ',',
+      symbolPosition: 'front',
+      symbolSpacing: true
+    },
+    { // default name 'currency_2'
+      name: 'currency_2',
+      symbol: '',
+      thousandsSeparator: '.',
+      fractionCount: 0,
+      fractionSeparator: ',',
+      symbolPosition: 'front',
+      symbolSpacing: false
+      //avoidEmptyDecimals: '--'
+    }
+    ])
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
