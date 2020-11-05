@@ -147,11 +147,47 @@ class Tb_materia_prima_productoController extends Controller
 
         public function selectDatosMateria($id){
             $datosmaterias = Tb_gestion_materia_prima::join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
-            ->select('tb_gestion_materia_prima.id as idGestion','tb_gestion_materia_prima.precioBase as precioBase','tb_unidad_base.unidadBase as unidadBase')
+            ->select('tb_gestion_materia_prima.id as idGestion','tb_gestion_materia_prima.gestionMateria as nombreMateria','tb_gestion_materia_prima.precioBase as precioBase','tb_unidad_base.unidadBase as unidadBase')
             ->where('tb_gestion_materia_prima.id','=',$id)
             ->get();
 
-            return ['datosmaterias' => $datosmaterias];;
+            return ['datosmaterias' => $datosmaterias];
         }
+
+        public function valorPrecioBase($id){
+            $precioB = 0;
+            $valores = Tb_gestion_materia_prima::join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
+            ->select('tb_gestion_materia_prima.precioBase as precioBase','tb_unidad_base.unidadBase as unidadBase')
+            ->where('tb_gestion_materia_prima.id','=',$id)
+            ->get();
+
+            foreach($valores as $totalg){
+                $valor = $totalg->precioBase + $precioB;
+                $unidad = $totalg->unidadBase;
+            }
+
+            $valorPrecioBase = $valor;
+            return ['valorPrecioBase' => $valorPrecioBase,
+                    'unidadBase' => $unidad
+                    ];
+        }
+/*
+        public function valorPrecioBase($id){
+            $precioB = 0;
+
+            //valorMinuto Perfil
+            $valores = tb_gestion_materia_prima::where([
+                ['id','=',$id],
+            ])
+            ->select('precioBase')->get();
+
+            foreach($valores as $totalg){
+                $valor = $totalg->precioBase + $precioB;
+            }
+
+            $valorPrecioBase = $valor;
+            return ['valorPrecioBase' => $valorPrecioBase];
+        }
+*/
 
 }

@@ -13,7 +13,7 @@
                             <i class="fa fa-align-justify"></i> Variables &nbsp;
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive" v-for="financiera in arrayFinancieras" :key="financiera.id">
+                            <div class="table-responsive">
                             <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                             <table class="table table-bordered table-striped table-sm">
                                 <tbody>
@@ -22,7 +22,7 @@
                                             Vacaciones
                                         </td>
                                         <td>
-                                            <input type="number" name="vacaciones" step="0.01" :value="financiera.vacaciones">
+                                            <input type="number" v-model="vacaciones" step="0.01">
                                         </td>
                                     </tr>
                                     <tr>
@@ -30,7 +30,7 @@
                                             Prima
                                         </td>
                                         <td>
-                                            <input type="number" name="prima" step="0.01" :value="financiera.prima">
+                                            <input type="number" v-model="prima" step="0.01">
                                         </td>
                                     </tr>
                                     <tr>
@@ -38,7 +38,7 @@
                                             Cesantías
                                         </td>
                                         <td>
-                                            <input type="number" name="cesantias" step="0.01" :value="financiera.cesantias">
+                                            <input type="number" v-model="cesantias" step="0.01">
                                         </td>
                                     </tr>
                                     <tr>
@@ -46,7 +46,7 @@
                                             Intereses a las cesantías
                                         </td>
                                         <td>
-                                            <input type="number" name="intereses" step="0.01" :value="financiera.intereses">
+                                            <input type="number" v-model="intereses" step="0.01">
                                         </td>
                                     </tr>
                                     <tr>
@@ -54,7 +54,7 @@
                                             Salud
                                         </td>
                                         <td>
-                                            <input type="number" name="salud" step="0.01" :value="financiera.salud">
+                                            <input type="number" v-model="salud" step="0.01">
                                         </td>
                                     </tr>
                                     <tr>
@@ -62,7 +62,7 @@
                                             Pensión
                                         </td>
                                         <td>
-                                            <input type="number" name="pension" step="0.01" :value="financiera.pension">
+                                            <input type="number" v-model="pension" step="0.01">
                                         </td>
                                     </tr>
                                     <tr>
@@ -70,7 +70,7 @@
                                             ARL
                                         </td>
                                         <td>
-                                            <input type="number" name="arl" step="0.01" :value="financiera.arl">
+                                            <input type="number" v-model="arl" step="0.01">
                                         </td>
                                     </tr>
                                     <tr>
@@ -78,7 +78,7 @@
                                             Caja de compensación
                                         </td>
                                         <td>
-                                            <input type="number" name="caja" step="0.01" :value="financiera.caja">
+                                            <input type="number" v-model="caja" step="0.01">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -101,7 +101,6 @@
         data(){
             return{
                 id : 1,
-                arrayFinancieras : [],
                 vacaciones : '',
                 prima : '',
                 cesantias : '',
@@ -118,10 +117,15 @@
                 var url='/financiera';
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
-                me.arrayFinancieras=respuesta.financieras;
-                    //console.log(response);
+                me.vacaciones=respuesta.vacaciones;
+                me.prima=respuesta.prima;
+                me.cesantias=respuesta.cesantias;
+                me.intereses=respuesta.intereses;
+                me.salud=respuesta.salud;
+                me.pension=respuesta.pension;
+                me.arl=respuesta.arl;
+                me.caja=respuesta.caja;
                 })
                 .catch(function (error) {
                     // handle error

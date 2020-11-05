@@ -3461,7 +3461,6 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       id: 1,
-      arrayFinancieras: [],
       vacaciones: '',
       prima: '',
       cesantias: '',
@@ -3478,9 +3477,15 @@ __webpack_require__.r(__webpack_exports__);
       var url = '/financiera'; // Make a request for a user with a given ID
 
       axios.get(url).then(function (response) {
-        // handle success
         var respuesta = response.data;
-        me.arrayFinancieras = respuesta.financieras; //console.log(response);
+        me.vacaciones = respuesta.vacaciones;
+        me.prima = respuesta.prima;
+        me.cesantias = respuesta.cesantias;
+        me.intereses = respuesta.intereses;
+        me.salud = respuesta.salud;
+        me.pension = respuesta.pension;
+        me.arl = respuesta.arl;
+        me.caja = respuesta.caja;
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -4414,6 +4419,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -4439,7 +4447,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "valorMinuto", 0), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "datosMaterias", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "valorPrecioBase", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "liqui", ''), _defineProperty(_ref, "paraf", ''), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "valorMinuto", 0), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "unidadBase", ''), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -4482,18 +4490,46 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     onChange: function onChange(event) {
-      console.log(event.target.value);
+      //console.log(event.target.value);
       this.flag = event.target.value;
     },
     nuevoValor: function nuevoValor(event) {
-      console.log(event.target.value);
+      //console.log(event.target.value);
       this.identificadorPerfil = event.target.value;
       var me = this;
       var url = '/manodeobraproducto/valorMinuto/' + this.identificadorPerfil;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.valor = respuesta.valorminutos;
-        console.log(me.valor);
+        me.valor = respuesta.valorminutos; //console.log(me.valor);
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    nuevoValorMateria: function nuevoValorMateria(event) {
+      console.log(event.target.value);
+      this.identificadorMateria = event.target.value;
+      var me = this;
+      var url = '/materiaprimaproducto/valorPrecioBase/' + this.identificadorMateria;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.valorPrecioBase = respuesta.valorPrecioBase;
+        me.precioBase = respuesta.valorPrecioBase;
+        me.unidadBase = respuesta.unidadBase;
+        console.log(me.valorPrecioBase);
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    listarVariab: function listarVariab() {
+      var me = this;
+      var url = '/financiera'; // Make a request for a user with a given ID
+
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.liqui = respuesta.liqui;
+        me.paraf = respuesta.paraf;
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -4542,6 +4578,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.tituloModal = '';
       this.materiaprimaproducto = '';
       this.manodeobraproducto = '';
+      this.precioBase = 0;
+      this.unidadBase = '';
       this.tipoModal = 0;
       this.flag = 0;
       this.seleccion = 0;
@@ -4562,7 +4600,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.materiaprimaproducto = '';
                   this.idMateriaPrima = data['idGestionMateria'];
                   this.cantidad = '1';
-                  this.precio = '';
+                  this.precio = data['precioBase'];
                   this.idHoja = this.identificador;
                   this.tituloModal = 'Asignar nueva materia';
                   this.tipoAccion = 1; //carga tipos de botón en el footer
@@ -4579,7 +4617,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.idMateriaPrima = data['idGestionMateria'];
                   this.gestionMateria = data['gestionMateria'];
                   this.cantidad = data['cantidad'];
-                  this.precio = data['precio'];
+                  this.precio = data['precioBase'];
                   this.tipoDeCosto = data['tipoDeCosto'];
                   this.idHoja = this.identificador;
                   this.tituloModal = 'Editar materia prima';
@@ -4644,17 +4682,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
-    selectDatosMateria: function selectDatosMateria(idMateriaPrima) {
-      var me = this;
-      var url = '/materiaprimaproducto/selectDatosMateria/' + this.idMateriaPrima;
-      axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        me.datosMaterias = respuesta.datosmaterias;
-      })["catch"](function (error) {
-        // handle error
-        console.log(error);
-      });
-    },
     selectRelacion: function selectRelacion(idArea) {
       var me = this;
       var url = '/perfil/selectRelacion/' + this.idArea;
@@ -4699,7 +4726,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       axios.post('/materiaprimaproducto/store', {
         'idMateriaPrima': this.idMateriaPrima,
         'cantidad': this.cantidad,
-        'precio': this.precio,
+        'precio': this.precioBase,
         'tipoDeCosto': this.tipoDeCosto,
         'idHoja': this.idHoja
       }).then(function (response) {
@@ -4835,7 +4862,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   },
   mounted: function mounted() {
-    this.listarProducto(1, this.buscar, this.criterio);
+    this.listarProducto(1, this.buscar, this.criterio), this.listarVariab();
   }
 });
 
@@ -48188,217 +48215,303 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _vm._m(1),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "card-body" },
-          _vm._l(_vm.arrayFinancieras, function(financiera) {
-            return _c(
-              "div",
-              { key: financiera.id, staticClass: "table-responsive" },
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c(
+              "form",
+              {
+                staticClass: "form-horizontal",
+                attrs: {
+                  action: "",
+                  method: "post",
+                  enctype: "multipart/form-data"
+                }
+              },
               [
                 _c(
-                  "form",
+                  "table",
                   {
-                    staticClass: "form-horizontal",
-                    attrs: {
-                      action: "",
-                      method: "post",
-                      enctype: "multipart/form-data"
-                    }
+                    staticClass: "table table-bordered table-striped table-sm"
                   },
                   [
-                    _c(
-                      "table",
-                      {
-                        staticClass:
-                          "table table-bordered table-striped table-sm"
-                      },
-                      [
-                        _c("tbody", [
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                    Vacaciones\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  name: "vacaciones",
-                                  step: "0.01"
-                                },
-                                domProps: { value: financiera.vacaciones }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                    Prima\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  name: "prima",
-                                  step: "0.01"
-                                },
-                                domProps: { value: financiera.prima }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                    Cesantías\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  name: "cesantias",
-                                  step: "0.01"
-                                },
-                                domProps: { value: financiera.cesantias }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                    Intereses a las cesantías\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  name: "intereses",
-                                  step: "0.01"
-                                },
-                                domProps: { value: financiera.intereses }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                    Salud\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  name: "salud",
-                                  step: "0.01"
-                                },
-                                domProps: { value: financiera.salud }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                    Pensión\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  name: "pension",
-                                  step: "0.01"
-                                },
-                                domProps: { value: financiera.pension }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                    ARL\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  name: "arl",
-                                  step: "0.01"
-                                },
-                                domProps: { value: financiera.arl }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                                    Caja de compensación\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                attrs: {
-                                  type: "number",
-                                  name: "caja",
-                                  step: "0.01"
-                                },
-                                domProps: { value: financiera.caja }
-                              })
-                            ])
-                          ])
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Vacaciones\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.vacaciones,
+                                expression: "vacaciones"
+                              }
+                            ],
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.vacaciones },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.vacaciones = $event.target.value
+                              }
+                            }
+                          })
                         ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.actualizarDatos(
-                              _vm.vacaciones,
-                              _vm.prima,
-                              _vm.cesantias,
-                              _vm.intereses,
-                              _vm.salud,
-                              _vm.pension,
-                              _vm.arl,
-                              _vm.caja
-                            )
-                          }
-                        }
-                      },
-                      [_vm._v("Actualizar")]
-                    )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Prima\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.prima,
+                                expression: "prima"
+                              }
+                            ],
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.prima },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.prima = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Cesantías\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.cesantias,
+                                expression: "cesantias"
+                              }
+                            ],
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.cesantias },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.cesantias = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Intereses a las cesantías\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.intereses,
+                                expression: "intereses"
+                              }
+                            ],
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.intereses },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.intereses = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Salud\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.salud,
+                                expression: "salud"
+                              }
+                            ],
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.salud },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.salud = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Pensión\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.pension,
+                                expression: "pension"
+                              }
+                            ],
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.pension },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.pension = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    ARL\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.arl,
+                                expression: "arl"
+                              }
+                            ],
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.arl },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.arl = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Caja de compensación\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.caja,
+                                expression: "caja"
+                              }
+                            ],
+                            attrs: { type: "number", step: "0.01" },
+                            domProps: { value: _vm.caja },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.caja = $event.target.value
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
                   ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.actualizarDatos(
+                          _vm.vacaciones,
+                          _vm.prima,
+                          _vm.cesantias,
+                          _vm.intereses,
+                          _vm.salud,
+                          _vm.pension,
+                          _vm.arl,
+                          _vm.caja
+                        )
+                      }
+                    }
+                  },
+                  [_vm._v("Actualizar")]
                 )
               ]
             )
-          }),
-          0
-        )
+          ])
+        ])
       ])
     ])
   ])
@@ -49946,27 +50059,33 @@ var render = function() {
                                           : $$selectedVal[0]
                                       },
                                       function($event) {
-                                        return _vm.selectDatosMateria(
-                                          _vm.gestionmateria.idGestionMateria
-                                        )
+                                        return _vm.nuevoValorMateria($event)
                                       }
                                     ]
                                   }
                                 },
-                                _vm._l(_vm.arrayGestionMaterias, function(
-                                  gestionmateria
-                                ) {
-                                  return _c("option", {
-                                    key: gestionmateria.idGestionMateria,
-                                    domProps: {
-                                      value: gestionmateria.idGestionMateria,
-                                      textContent: _vm._s(
-                                        gestionmateria.gestionMateria
-                                      )
-                                    }
+                                [
+                                  _c(
+                                    "option",
+                                    { attrs: { value: "0", disabled: "" } },
+                                    [_vm._v("Seleccione una materia")]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.arrayGestionMaterias, function(
+                                    gestionmateria
+                                  ) {
+                                    return _c("option", {
+                                      key: gestionmateria.idGestionMateria,
+                                      domProps: {
+                                        value: gestionmateria.idGestionMateria,
+                                        textContent: _vm._s(
+                                          gestionmateria.gestionMateria
+                                        )
+                                      }
+                                    })
                                   })
-                                }),
-                                0
+                                ],
+                                2
                               )
                             ])
                           ])
@@ -49980,7 +50099,20 @@ var render = function() {
                                 staticClass: "col-md-3 form-control-label",
                                 attrs: { for: "text-input" }
                               },
-                              [_vm._v("Cantidad")]
+                              [
+                                _vm._v("Cantidad "),
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("sub", [
+                                  _c("i", [
+                                    _vm._v(
+                                      "( Cantidad medida en: " +
+                                        _vm._s(_vm.unidadBase) +
+                                        " )"
+                                    )
+                                  ])
+                                ])
+                              ]
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-md-9" }, [
@@ -50010,7 +50142,10 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _c("span", { staticClass: "help-block" }, [
-                                _vm._v("(*) Ingrese la cantidad de material")
+                                _vm._v(
+                                  "(*) Ingrese la cantidad de material en: " +
+                                    _vm._s(_vm.unidadBase)
+                                )
                               ])
                             ])
                           ])
@@ -50024,7 +50159,22 @@ var render = function() {
                                 staticClass: "col-md-3 form-control-label",
                                 attrs: { for: "text-input" }
                               },
-                              [_vm._v("Precio")]
+                              [
+                                _vm._v("Precio "),
+                                _c("br"),
+                                _vm._v(" "),
+                                _c("sub", [
+                                  _c("i", [
+                                    _vm._v(
+                                      "( Precio base: $ " +
+                                        _vm._s(_vm.valorPrecioBase) +
+                                        " por " +
+                                        _vm._s(_vm.unidadBase) +
+                                        " )"
+                                    )
+                                  ])
+                                ])
+                              ]
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-md-9" }, [
@@ -50033,19 +50183,19 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.precio,
-                                    expression: "precio"
+                                    value: _vm.precioBase,
+                                    expression: "precioBase"
                                   }
                                 ],
                                 staticClass: "form-control",
                                 attrs: { type: "text" },
-                                domProps: { value: _vm.precio },
+                                domProps: { value: _vm.precioBase },
                                 on: {
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
                                     }
-                                    _vm.precio = $event.target.value
+                                    _vm.precioBase = $event.target.value
                                   }
                                 }
                               }),
@@ -50613,10 +50763,10 @@ var render = function() {
                                             parseInt(
                                               _vm.preciom *
                                                 _vm.liquidacion *
-                                                0.073 +
+                                                _vm.liqui +
                                                 _vm.preciom *
                                                   _vm.parafiscales *
-                                                  0.046 +
+                                                  _vm.paraf +
                                                 parseInt(_vm.preciom)
                                             )
                                           )

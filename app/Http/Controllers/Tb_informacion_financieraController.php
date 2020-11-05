@@ -14,7 +14,35 @@ class Tb_informacion_financieraController extends Controller
         $financieras = Tb_informacion_financiera::where('id','=','1')
         ->select('id','vacaciones','prima','cesantias','intereses','salud','pension','arl','caja')->get();
 
-        return ['financieras' => $financieras];
+        foreach($financieras as $totalg){
+            $vacaciones = $totalg->vacaciones;
+            $prima = $totalg->prima;
+            $cesantias = $totalg->cesantias;
+            $intereses = $totalg->intereses;
+            $salud = $totalg->salud;
+            $pension = $totalg->pension;
+            $arl = $totalg->arl;
+            $caja = $totalg->caja;
+        }
+
+        $liqui1=round(($vacaciones+$prima+$cesantias+$intereses), 2);
+        $liqui=round((($liqui1/3)/100), 3);
+        $paraf1=round(($salud+$pension+$arl+$caja), 2);
+        $paraf=round((($paraf1/4)/100), 3);
+
+        return ['vacaciones' => $vacaciones,
+                'prima' => $prima,
+                'cesantias' => $cesantias,
+                'intereses' => $intereses,
+                'salud' => $salud,
+                'pension' => $pension,
+                'arl' => $arl,
+                'caja' => $caja,
+                'liqui1' => $liqui1,
+                'paraf1' => $paraf1,
+                'liqui' => $liqui,
+                'paraf' => $paraf
+                ];
     }
 
     public function update(Request $request)

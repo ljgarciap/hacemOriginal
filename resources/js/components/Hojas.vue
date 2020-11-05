@@ -195,24 +195,27 @@
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Materia Prima</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idMateriaPrima"  @change='selectDatosMateria(gestionmateria.idGestionMateria)'>
+                                            <select class="form-control" v-model="idMateriaPrima" @change='nuevoValorMateria($event)'>
+                                                <option value="0" disabled>Seleccione una materia</option>
                                                 <option v-for="gestionmateria in arrayGestionMaterias" :key="gestionmateria.idGestionMateria" :value="gestionmateria.idGestionMateria" v-text="gestionmateria.gestionMateria"></option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad <br>
+                                            <sub><i>( Cantidad medida en: {{unidadBase}} )</i></sub></label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
-                                            <span class="help-block">(*) Ingrese la cantidad de material</span>
+                                            <span class="help-block">(*) Ingrese la cantidad de material en: {{unidadBase}}</span>
                                         </div>
                                     </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Precio <br>
+                                            <sub><i>( Precio base: $ {{valorPrecioBase}} por {{unidadBase}} )</i></sub></label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="precio" class="form-control">
+                                            <input type="text" v-model="precioBase" class="form-control">
                                             <span class="help-block">(*) Ingrese el precio</span>
                                         </div>
                                     </div>
@@ -248,7 +251,7 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idPerfil"  @change='nuevoValor($event)'>
+                                            <select class="form-control" v-model="idPerfil" @change='nuevoValor($event)'>
                                                 <option value="0" disabled>Seleccione un perfil</option>
                                                 <option v-for="perfilrelacion in arrayPerfilRelacion" :key="perfilrelacion.idPerfil" :value="perfilrelacion.idPerfil" v-text="perfilrelacion.perfil"></option>
                                             </select>
@@ -305,7 +308,7 @@
                                             </div>
 
                                             <div v-if="flag==2" class="col-md-3">
-                                                <label for="prueba">Total: {{parseInt((preciom*liquidacion*0.073)+(preciom*parafiscales*0.046)+parseInt(preciom))}}</label>
+                                                <label for="prueba">Total: {{parseInt((preciom*liquidacion*liqui)+(preciom*parafiscales*paraf)+parseInt(preciom))}}</label>
                                             </div>
 
                                         </div>
@@ -378,9 +381,12 @@
                 idProceso:0,
                 tiempo:1,
                 valor:0,
+                valorPrecioBase:0,
                 preciom:0,
                 liquidacion:3,
                 parafiscales:4,
+                liqui:'',
+                paraf:'',
                 proceso:'',
                 relacion:'',
                 perfilrelacion:'',
@@ -390,9 +396,9 @@
                 valorMinuto:0,
                 arrayPerfilRelacion:[],
                 idMateriaPrima:1,
-                datosMaterias:'',
                 gestionmateria:'',
                 precioBase:0,
+                unidadBase:'',
                 arrayGestionMaterias:[],
                 modal : 0,
                 seleccion:0,
@@ -452,18 +458,49 @@
         },
         methods : {
             onChange(event) {
-            console.log(event.target.value);
+            //console.log(event.target.value);
             this.flag=event.target.value;
             },
             nuevoValor(event){
-                console.log(event.target.value);
+                //console.log(event.target.value);
                 this.identificadorPerfil=event.target.value;
                 let me=this;
                 var url='/manodeobraproducto/valorMinuto/'+this.identificadorPerfil;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.valor=respuesta.valorminutos;
-                console.log(me.valor);
+                //console.log(me.valor);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            nuevoValorMateria(event){
+                console.log(event.target.value);
+                this.identificadorMateria=event.target.value;
+                let me=this;
+                var url='/materiaprimaproducto/valorPrecioBase/'+this.identificadorMateria;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.valorPrecioBase=respuesta.valorPrecioBase;
+                me.precioBase=respuesta.valorPrecioBase;
+                me.unidadBase=respuesta.unidadBase;
+                console.log(me.valorPrecioBase);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarVariab(){
+                let me=this;
+                var url='/financiera';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.liqui=respuesta.liqui;
+                me.paraf=respuesta.paraf;
                 })
                 .catch(function (error) {
                     // handle error
@@ -515,6 +552,8 @@
                 this.tituloModal='';
                 this.materiaprimaproducto='';
                 this.manodeobraproducto='';
+                this.precioBase=0;
+                this.unidadBase='';
                 this.tipoModal=0;
                 this.flag=0;
                 this.seleccion=0;
@@ -532,7 +571,7 @@
                             this.materiaprimaproducto='';
                             this.idMateriaPrima=data['idGestionMateria'];
                             this.cantidad='1';
-                            this.precio='';
+                            this.precio=data['precioBase'];
                             this.idHoja=this.identificador;
                             this.tituloModal='Asignar nueva materia';
                             this.tipoAccion= 1; //carga tipos de botón en el footer
@@ -546,7 +585,7 @@
                             this.idMateriaPrima=data['idGestionMateria'];
                             this.gestionMateria=data['gestionMateria'];
                             this.cantidad=data['cantidad'];
-                            this.precio=data['precio'];
+                            this.precio=data['precioBase'];
                             this.tipoDeCosto=data['tipoDeCosto'];
                             this.idHoja=this.identificador;
                             this.tituloModal='Editar materia prima';
@@ -609,18 +648,6 @@
                     console.log(error);
                 })
             },
-            selectDatosMateria(idMateriaPrima){
-                let me=this;
-                var url='/materiaprimaproducto/selectDatosMateria/'+this.idMateriaPrima;
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.datosMaterias=respuesta.datosmaterias;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
             selectRelacion(idArea){
                 let me=this;
                 var url='/perfil/selectRelacion/'+this.idArea;
@@ -668,7 +695,7 @@
                 axios.post('/materiaprimaproducto/store',{
                     'idMateriaPrima': this.idMateriaPrima,
                     'cantidad': this.cantidad,
-                    'precio': this.precio,
+                    'precio': this.precioBase,
                     'tipoDeCosto': this.tipoDeCosto,
                     'idHoja': this.idHoja
 
@@ -819,7 +846,8 @@
             //cierre de funciones para uso del lightbox
         },
         mounted() {
-            this.listarProducto(1,this.buscar,this.criterio)
+            this.listarProducto(1,this.buscar,this.criterio),
+            this.listarVariab()
         }
     }
 </script>
