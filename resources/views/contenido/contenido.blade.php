@@ -73,4 +73,8 @@
         <financieras></financieras>
     </template>
 
+    <template v-if="menu==18">
+        <simulador></simulador>
+    </template>
+
     @endsection

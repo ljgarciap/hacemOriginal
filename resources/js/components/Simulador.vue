@@ -12,18 +12,16 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <div class="form-group row">
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="tipocif">
-                                            <option value="1">Hora hombre</option>
-                                            <option value="2">Hora máquina</option>
-                                        </select>
-                                        <button type="submit" @click="abrirModal('simulacion','crear','tipocif')" class="btn btn-primary"><i class="fa fa-plus"></i> Nueva simulación</button>
-                                    </div>
-                                </div>
+                            <div class="row">
+                                <select class="form-control col-md-3" v-model="tipocif">
+                                    <option value="0" disabled>Elija tipo de cálculo</option>
+                                    <option value="1">Hora hombre</option>
+                                    <option value="2">Hora máquina</option>
+                                </select>
+                                <button type="submit" @click="abrirModal('simulacion','crear','tipocif')" class="btn btn-secondary"><i class="fa fa-plus"></i> Nueva simulación</button>
                             </div>
-                        </div>
+                       </div>
+
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-9">
@@ -52,14 +50,12 @@
 
                                     <tr v-for="simulacion in arraySimulaciones" :key="simulacion.id">
                                         <td>
-                                        <template v-if="simulacion.estado">
-                                            <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(simulacion.id)">
-                                                <i class="icon-magnifier"></i><span> Ver detalle</span>
-                                            </button>
-                                        </template>
-                                        <template v-else>
+                                        <template>
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(simulacion.id)">
-                                                <i class="icon-check"></i><span> Escoger productos</span>
+                                                <i class="icon-plus"></i><span> Agregar</span>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(simulacion.id)">
+                                                <i class="icon-magnifier"></i><span> Detalle</span>
                                             </button>
                                         </template>
                                         </td>
@@ -99,49 +95,20 @@
                 </template>
 
                 <template v-if="listado==1">
-                    <div class="container-fluid">
-                        <div class="card">
-                            <div class="card-body">
+                <div class="container-fluid">
+                    <!-- Ejemplo de tabla Listado -->
 
-                            <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Seleccion</th>
-                                        <th>Producto</th>
-                                        <th>Referencia</th>
-                                        <th>Descripcion</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <tr v-for="producto in arrayProducto" :key="producto.id">
-                                        <td><input type="checkbox" :value="producto.id" v-model="availability"></td>
-                                        <td v-text="producto.producto"></td>
-                                        <td v-text="producto.referencia"></td>
-                                        <td v-text="producto.descripcion"></td>
-                                        <td>
-                                            <div v-if="producto.estado">
-                                            <span class="badge badge-success">Activo</span>
-                                            </div>
-                                            <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-                            <button type="button" class="btn btn-danger btn-sm" @click="crearRelacion(availability,identificador)">
-                                <i class="icon-check"></i><span> Escoger productos</span>
-                            </button>
-
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Productos &nbsp;
+                            <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
-                            </div>
+                        <div class="card-body">
+                            <productossimulacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productossimulacion>
                         </div>
                     </div>
+                    <!-- Fin ejemplo de tabla Listado -->
+                </div>
                 </template>
 
                 <template v-if="listado==2">
@@ -155,38 +122,7 @@
                 <template v-if="listado==3">
                     <div class="container-fluid">
                         <div class="card">
-                            <div class="card-body">
-
-                            <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Producto</th>
-                                        <th>Referencia</th>
-                                        <th>Descripcion</th>
-                                        <th>Cantidad</th>
-                                        <th>Horas par</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <tr v-for="productos in arrayProductos" :key="productos.id">
-                                        <td v-text="productos.producto"></td>
-                                        <td v-text="productos.referencia"></td>
-                                        <td v-text="productos.descripcion"></td>
-                                        <td><input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad estimada de producto"></td>
-                                        <td><input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra"></td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-                            <button type="button" class="btn btn-danger btn-sm" @click="actualizarRelacion(identificador)">
-                                <i class="icon-check"></i><span> Calcular</span>
-                            </button>
-
-                            </div>
-                            </div>
+                            Detalle de simulacion <br><button type="button" class="close" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                         </div>
                     </div>
                 </template>
@@ -203,21 +139,55 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="form-group row">
+
+                                    <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Detalle</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="detalle" class="form-control" placeholder="Descripción de simulación">
                                             <span class="help-block">(*) Ingrese la Descripción de la Simulación</span>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="email-input">Fecha</label>
                                         <div class="col-md-9">
                                             <input type="date" value="date('Y-m-d')" v-model="fecha" class="form-control">
                                         </div>
                                     </div>
 
-                                    <div class="form-group row div-error" v-show="errorSimulacion">
+                                    <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorSimulacion">
+                                        <div class="text-center text-error">
+                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
+                                        </div>
+                                    </div>
+
+                                    <!--------------divs para modal tipo 2--------------------->
+
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Producto</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione un producto</option>
+                                                <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Unidades</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="unidades" class="form-control" placeholder="Unidades a producir">
+                                            <span class="help-block">(*) Ingrese la cantidad a producir</span>
+                                        </div>
+                                    </div>
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="email-input">Tiempo</label>
+                                        <div class="col-md-9">
+                                            <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
+                                            <span class="help-block">(*) Ingrese el tiempo de mano de obra en horas</span>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorSimulacion">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -225,9 +195,13 @@
 
                                 </form>
                             </div>
-                            <div class="modal-footer">
+                            <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearSimulacion()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==2" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearRelacion()">Guardar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -239,7 +213,11 @@
 </template>
 
 <script>
+    import productossimulacion from '../components/ProductosSimulacion';
     export default {
+        components: {
+            productossimulacion
+        },
         data(){
             return{
                 idSimulacion:0,
@@ -248,27 +226,22 @@
                 detalle:'',
                 estado:'',
                 arraySimulaciones : [],
-                arrayProducto : [],
-                arrayProductos : [],
                 modal : 0,
+                arrayPosibles : [],
                 listado : 0,
                 tituloModal : '',
+                variable : '',
                 fecha : '',
-                idProducto:'',
                 registro:'',
+                idProducto: 0,
+                unidades:'',
+                tiempo:'',
+                tipoModal : 0,
                 tipoAccion : 0,
-                unidades : '',
-                tiempo : '',
-                producto : '',
-                referencia : '',
-                descripcion : '',
-                tipocif : 1,
+                tipocif : 0,
                 tipoCif : '',
                 errorSimulacion : 0,
                 errorMensaje : [],
-                availability:[],
-                cantidades:[],
-                tiempos:[],
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -279,7 +252,8 @@
                 },
                 offset : 3,
                 criterio : 'descripcion',
-                buscar : ''
+                buscar : '',
+                componentKey:0
             }
         },
         computed:{
@@ -335,6 +309,40 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarArea(page,buscar,criterio);
             },
+            indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
+            listarPosibles(id){
+                let me=this;
+                var url='/rela/posibles?id=' + this.identificador;
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayPosibles=respuesta.posibles;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            eliminarProducto(){
+                let me=this;
+                axios.put('/materiaprimaproducto/deactivate',{
+                    'id': this.id
+                }).then(function (response) {
+                me.forceRerender();
+                me.listarProducto(1,'','materiaprima');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
             crearSimulacion(){
                 //valido con el metodo de validacion creado
                 let me=this;
@@ -343,8 +351,24 @@
                     'fecha': this.fecha,
                     'tipoCif': this.tipocif
                 }).then(function (response) {
-                me.cerrarModal();
-                me.listarSimulacion(1,'','area');
+                me.cerrarModal('0');
+                me.listarSimulacion(1,'','');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            crearRelacion(){
+                //valido con el metodo de validacion creado
+                let me=this;
+                axios.post('/rela/store',{
+                    'idProducto': this.idProducto,
+                    'unidades': this.unidades,
+                    'tiempo': this.tiempo,
+                    'idSimulacion': this.identificador
+                }).then(function (response) {
+                me.cerrarModal('0');
+                me.listarSimulacion(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -358,93 +382,54 @@
                 this.listado=2;
                 this.identificador=id;
             },
-            crearRelacion(availability,identificador){
-                this.identificador=this.identificador;
-                console.log(availability);
-
-                    availability.forEach(registro => {
-
-                        console.log(registro);
-                    /**/
-                        axios.post('/rela/store',{
-                            'idProducto': registro,
-                            'unidades': 0,
-                            'tiempo': 0,
-                            'idSimulacion': this.identificador
-                        }).then(function (response) {
-
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-
-                    });
-
-                    this.listado=3;
-                    let me = this;
-                    me.mostrarChequeados(this.identificador);
-
-            },
-            mostrarChequeados(identificador){
-                this.identificador=this.identificador;
-                console.log(identificador);
-                let me=this;
-                var url='/rela?id=' + this.identificador;
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayProductos=respuesta.productos.data;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
             ocultarDetalle(){
                 this.listado=0;
             },
-            cerrarModal(){
-                this.modal=0;
+            cerrarModal(variable){
+                this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
-            },
-            listarProducto(){
-                let me=this;
-                var url='/producto?page=1&buscar=&criterio=';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayProducto=respuesta.productos.data;
-                me.pagination=respuesta.pagination;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
+                this.forceRerender();
             },
             abrirModal(modelo, accion, tipocif){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "simulacion":
-                {
-                    switch (accion) {
-                        case 'crear':{
-                            this.modal=1;
-                            this.tipoCif='tipocif';
-                            this.tituloModal='Crear nueva simulación';
-                            this.tipoAccion= 1;
-                            break;
+                    case "simulacion":
+                    {
+                        switch (accion) {
+                            case 'crear':{
+                                this.modal=1;
+                                this.tipoModal=1; //carga tipos de campos y footers
+                                this.tipoCif='tipocif';
+                                this.tituloModal='Crear nueva simulación';
+                                this.tipoAccion= 1; //carga tipos de botón en el footer
+                                break;
+                            }
                         }
+                        //this.selectGestionMateria();
+                        break;
                     }
+
+                    case "rela":
+                    {
+                        switch (accion) {
+                            case 'crear':{
+                                this.modal=1;
+                                this.tipoModal=2; //carga tipos de campos y footers
+                                this.tituloModal='Agregar productos';
+                                this.tipoAccion= 1; //carga tipos de botón en el footer
+                                break;
+                            }
+                        }
+                        this.listarPosibles(this.identificador);
+                        break;
+                    }
+
                 }
-            }
             }
         },
         mounted() {
             this.listarSimulacion(1,this.buscar,this.criterio);
-            this.listarProducto();
         }
     }
 </script>

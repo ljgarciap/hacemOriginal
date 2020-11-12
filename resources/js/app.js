@@ -76,6 +76,8 @@ Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
 Vue.component('maquinaria', require('./components/Maquinaria.vue').default);
 Vue.component('cif', require('./components/Cif.vue').default);
+Vue.component('simulador', require('./components/Simulador.vue').default);
+Vue.component('productossimulacion', require('./components/ProductosSimulacion.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

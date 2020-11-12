@@ -154,6 +154,18 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/hojadecosto/total/{identificador}", "Hoja_De_CostosController@acumuladoTotal");
         Route::get("/hojadecosto/depreciacion/{identificador}", "Hoja_De_CostosController@maquinariaTotal");
 
+        Route::get("/simulacion", "Tb_simulacionController@index");
+        Route::post("/simulacion/store", "Tb_simulacionController@store");
+        Route::get("/simulacion/selectArea", "Tb_simulacionController@selectArea");
+        Route::put("/simulacion/update", "Tb_simulacionController@update");
+
+        Route::get("/rela", "Tb_rela_simulacionController@index");
+        Route::get("/rela/listar", "Tb_rela_simulacionController@listar");
+        Route::get("/rela/posibles", "Tb_rela_simulacionController@posibles");
+        Route::post("/rela/store", "Tb_rela_simulacionController@store");
+        Route::get("/rela/selectArea", "Tb_rela_simulacionController@selectArea");
+        Route::put("/rela/update", "Tb_rela_simulacionController@update");
+
     });
 
 //---------------------------------------------------------------------------//
