@@ -40,7 +40,21 @@ Vue.use(VueCurrencyFilter,[
       symbolSpacing: false
       //avoidEmptyDecimals: '--'
     }
-    ])
+    ]);
+
+    Vue.filter('redondeo', function (value) {
+        // devuelve el valor procesado
+        if (!value) return ''
+        value = value.toFixed(0)
+        return value;
+      });
+
+      Vue.filter('redondeodec', function (value) {
+        // devuelve el valor procesado
+        if (!value) return ''
+        value = value.toFixed(2)
+        return value;
+      });
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -57,13 +71,16 @@ Vue.component('admin', require('./components/Admin.vue').default);
 Vue.component('financieras', require('./components/Financieras.vue').default);
 Vue.component('areas', require('./components/Areas.vue').default);
 Vue.component('bienvenida', require('./components/Bienvenida.vue').default);
+Vue.component('cif', require('./components/Cif.vue').default);
 Vue.component('colecciones', require('./components/Colecciones.vue').default);
 Vue.component('conceptos', require('./components/Conceptos.vue').default);
 Vue.component('empresa', require('./components/Empresa.vue').default);
 Vue.component('gestionmaterias', require('./components/GestionMaterias.vue').default);
 Vue.component('hojadecostos', require('./components/HojaDeCostos.vue').default);
+Vue.component('hojadecostossimulador', require('./components/HojaDeCostosSimulador.vue').default);
 Vue.component('hojas', require('./components/Hojas.vue').default);
 Vue.component('manodeobra', require('./components/ManoDeObraProductos.vue').default);
+Vue.component('maquinaria', require('./components/Maquinaria.vue').default);
 Vue.component('maquinarias', require('./components/Maquinarias.vue').default);
 Vue.component('materiaprima', require('./components/MateriaPrimaProductos.vue').default);
 Vue.component('materias', require('./components/Materias.vue').default);
@@ -71,13 +88,11 @@ Vue.component('ninguno', require('./components/Ninguno.vue').default);
 Vue.component('perfiles', require('./components/Perfiles.vue').default);
 Vue.component('procesos', require('./components/Procesos.vue').default);
 Vue.component('productos', require('./components/Productos.vue').default);
+Vue.component('productossimulacion', require('./components/ProductosSimulacion.vue').default);
 Vue.component('roles', require('./components/Roles.vue').default);
+Vue.component('simulador', require('./components/Simulador.vue').default);
 Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
-Vue.component('maquinaria', require('./components/Maquinaria.vue').default);
-Vue.component('cif', require('./components/Cif.vue').default);
-Vue.component('simulador', require('./components/Simulador.vue').default);
-Vue.component('productossimulacion', require('./components/ProductosSimulacion.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

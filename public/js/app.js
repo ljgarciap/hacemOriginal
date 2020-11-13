@@ -4441,6 +4441,92 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    identificador: {
+      type: Number
+    }
+  },
+  data: function data() {
+    return {
+      producto: '',
+      referencia: '',
+      unidades: '',
+      tiempo: '',
+      produccion: '',
+      acumuladocift: '',
+      acumuladocalculo: '',
+      valorbase: '',
+      arrayProductos: []
+    };
+  },
+  methods: {
+    acumuladoTotal: function acumuladoTotal(identificador) {
+      var me = this;
+      var url = '/hojadecosto/ciftiempos/' + this.identificador;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayProductos = respuesta.productos;
+        me.produccion = respuesta.produccion;
+        me.acumuladocift = respuesta.acumuladocift;
+        me.acumuladocalculo = respuesta.acumuladocalculo;
+        me.valorbase = respuesta.valorbase;
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.acumuladoTotal(this.identificador);
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Hojas.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Hojas.vue?vue&type=script&lang=js& ***!
@@ -8495,8 +8581,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ProductosSimulacion__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ProductosSimulacion */ "./resources/js/components/ProductosSimulacion.vue");
-//
-//
+/* harmony import */ var _components_HojaDeCostosSimulador__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/HojaDeCostosSimulador */ "./resources/js/components/HojaDeCostosSimulador.vue");
 //
 //
 //
@@ -8710,9 +8795,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    productossimulacion: _components_ProductosSimulacion__WEBPACK_IMPORTED_MODULE_0__["default"]
+    productossimulacion: _components_ProductosSimulacion__WEBPACK_IMPORTED_MODULE_0__["default"],
+    hojadecostossimulador: _components_HojaDeCostosSimulador__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -8804,7 +8891,7 @@ __webpack_require__.r(__webpack_exports__);
 
       me.pagination.current_page = page; //envia peticion para ver los valores asociados a esa pagina
 
-      me.listarArea(page, buscar, criterio);
+      me.listarSimulacion(page, buscar, criterio);
     },
     indexChange: function indexChange(args) {
       var newIndex = args.value;
@@ -8861,6 +8948,7 @@ __webpack_require__.r(__webpack_exports__);
         'idSimulacion': this.identificador
       }).then(function (response) {
         me.cerrarModal('0');
+        me.forceRerender();
         me.listarSimulacion(1, '', '');
       })["catch"](function (error) {
         console.log(error);
@@ -51367,6 +51455,101 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "table-responsive" }, [
+      _c(
+        "table",
+        { staticClass: "table table-bordered table-striped table-sm" },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.arrayProductos, function(total) {
+              return _c("tr", { key: total.id }, [
+                _c("td", [_vm._v(_vm._s(total.producto))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(total.referencia))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(total.unidades))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm._f("redondeodec")(total.tiempo)))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(_vm._f("redondeo")(total.tiempo * total.unidades))
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(
+                      _vm._f("redondeo")(
+                        total.tiempo * total.unidades * _vm.valorbase
+                      )
+                    )
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(_vm._f("redondeo")(total.tiempo * _vm.valorbase))
+                  )
+                ])
+              ])
+            }),
+            0
+          )
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Producto")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Referencia")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Unidades")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tiempo")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tiempo total")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Valor total")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Valor unitario")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Hojas.vue?vue&type=template&id=a7c59c4c&":
 /*!********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Hojas.vue?vue&type=template&id=a7c59c4c& ***!
@@ -58662,7 +58845,23 @@ var render = function() {
                       key: _vm.componentKey,
                       attrs: { identificador: _vm.identificador },
                       on: { eliminarproducto: _vm.eliminarProducto }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("p", { attrs: { align: "right" } }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { "aria-label": "Close" },
+                          on: {
+                            click: function($event) {
+                              return _vm.ocultarDetalle()
+                            }
+                          }
+                        },
+                        [_vm._v("Cerrar")]
+                      )
+                    ])
                   ],
                   1
                 )
@@ -58674,47 +58873,34 @@ var render = function() {
       _vm.listado == 2
         ? [
             _c("div", { staticClass: "container-fluid" }, [
-              _c("div", { staticClass: "card" }, [
-                _vm._v("\n                    Detalle de simulacion "),
-                _c("br"),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
-                    on: {
-                      click: function($event) {
-                        return _vm.ocultarDetalle()
-                      }
-                    }
-                  },
-                  [_vm._v("Cerrar")]
-                )
-              ])
-            ])
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.listado == 3
-        ? [
-            _c("div", { staticClass: "container-fluid" }, [
-              _c("div", { staticClass: "card" }, [
-                _vm._v("\n                    Detalle de simulacion "),
-                _c("br"),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
-                    on: {
-                      click: function($event) {
-                        return _vm.ocultarDetalle()
-                      }
-                    }
-                  },
-                  [_vm._v("Cerrar")]
-                )
-              ])
+              _c(
+                "div",
+                { staticClass: "card" },
+                [
+                  _c("hojadecostossimulador", {
+                    key: _vm.componentKey,
+                    attrs: { identificador: _vm.identificador },
+                    on: { eliminarproducto: _vm.eliminarProducto }
+                  }),
+                  _vm._v(" "),
+                  _c("p", { attrs: { align: "right" } }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { "aria-label": "Close" },
+                        on: {
+                          click: function($event) {
+                            return _vm.ocultarDetalle()
+                          }
+                        }
+                      },
+                      [_vm._v("Cerrar")]
+                    )
+                  ])
+                ],
+                1
+              )
             ])
           ]
         : _vm._e(),
@@ -89301,6 +89487,18 @@ Vue.use(vue_currency_filter__WEBPACK_IMPORTED_MODULE_3__["default"], [{
   symbolSpacing: false //avoidEmptyDecimals: '--'
 
 }]);
+Vue.filter('redondeo', function (value) {
+  // devuelve el valor procesado
+  if (!value) return '';
+  value = value.toFixed(0);
+  return value;
+});
+Vue.filter('redondeodec', function (value) {
+  // devuelve el valor procesado
+  if (!value) return '';
+  value = value.toFixed(2);
+  return value;
+});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -89316,13 +89514,16 @@ Vue.component('admin', __webpack_require__(/*! ./components/Admin.vue */ "./reso
 Vue.component('financieras', __webpack_require__(/*! ./components/Financieras.vue */ "./resources/js/components/Financieras.vue")["default"]);
 Vue.component('areas', __webpack_require__(/*! ./components/Areas.vue */ "./resources/js/components/Areas.vue")["default"]);
 Vue.component('bienvenida', __webpack_require__(/*! ./components/Bienvenida.vue */ "./resources/js/components/Bienvenida.vue")["default"]);
+Vue.component('cif', __webpack_require__(/*! ./components/Cif.vue */ "./resources/js/components/Cif.vue")["default"]);
 Vue.component('colecciones', __webpack_require__(/*! ./components/Colecciones.vue */ "./resources/js/components/Colecciones.vue")["default"]);
 Vue.component('conceptos', __webpack_require__(/*! ./components/Conceptos.vue */ "./resources/js/components/Conceptos.vue")["default"]);
 Vue.component('empresa', __webpack_require__(/*! ./components/Empresa.vue */ "./resources/js/components/Empresa.vue")["default"]);
 Vue.component('gestionmaterias', __webpack_require__(/*! ./components/GestionMaterias.vue */ "./resources/js/components/GestionMaterias.vue")["default"]);
 Vue.component('hojadecostos', __webpack_require__(/*! ./components/HojaDeCostos.vue */ "./resources/js/components/HojaDeCostos.vue")["default"]);
+Vue.component('hojadecostossimulador', __webpack_require__(/*! ./components/HojaDeCostosSimulador.vue */ "./resources/js/components/HojaDeCostosSimulador.vue")["default"]);
 Vue.component('hojas', __webpack_require__(/*! ./components/Hojas.vue */ "./resources/js/components/Hojas.vue")["default"]);
 Vue.component('manodeobra', __webpack_require__(/*! ./components/ManoDeObraProductos.vue */ "./resources/js/components/ManoDeObraProductos.vue")["default"]);
+Vue.component('maquinaria', __webpack_require__(/*! ./components/Maquinaria.vue */ "./resources/js/components/Maquinaria.vue")["default"]);
 Vue.component('maquinarias', __webpack_require__(/*! ./components/Maquinarias.vue */ "./resources/js/components/Maquinarias.vue")["default"]);
 Vue.component('materiaprima', __webpack_require__(/*! ./components/MateriaPrimaProductos.vue */ "./resources/js/components/MateriaPrimaProductos.vue")["default"]);
 Vue.component('materias', __webpack_require__(/*! ./components/Materias.vue */ "./resources/js/components/Materias.vue")["default"]);
@@ -89330,13 +89531,11 @@ Vue.component('ninguno', __webpack_require__(/*! ./components/Ninguno.vue */ "./
 Vue.component('perfiles', __webpack_require__(/*! ./components/Perfiles.vue */ "./resources/js/components/Perfiles.vue")["default"]);
 Vue.component('procesos', __webpack_require__(/*! ./components/Procesos.vue */ "./resources/js/components/Procesos.vue")["default"]);
 Vue.component('productos', __webpack_require__(/*! ./components/Productos.vue */ "./resources/js/components/Productos.vue")["default"]);
+Vue.component('productossimulacion', __webpack_require__(/*! ./components/ProductosSimulacion.vue */ "./resources/js/components/ProductosSimulacion.vue")["default"]);
 Vue.component('roles', __webpack_require__(/*! ./components/Roles.vue */ "./resources/js/components/Roles.vue")["default"]);
+Vue.component('simulador', __webpack_require__(/*! ./components/Simulador.vue */ "./resources/js/components/Simulador.vue")["default"]);
 Vue.component('unidades', __webpack_require__(/*! ./components/Unidades.vue */ "./resources/js/components/Unidades.vue")["default"]);
 Vue.component('usuarios', __webpack_require__(/*! ./components/Usuarios.vue */ "./resources/js/components/Usuarios.vue")["default"]);
-Vue.component('maquinaria', __webpack_require__(/*! ./components/Maquinaria.vue */ "./resources/js/components/Maquinaria.vue")["default"]);
-Vue.component('cif', __webpack_require__(/*! ./components/Cif.vue */ "./resources/js/components/Cif.vue")["default"]);
-Vue.component('simulador', __webpack_require__(/*! ./components/Simulador.vue */ "./resources/js/components/Simulador.vue")["default"]);
-Vue.component('productossimulacion', __webpack_require__(/*! ./components/ProductosSimulacion.vue */ "./resources/js/components/ProductosSimulacion.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -90229,6 +90428,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostos_vue_vue_type_template_id_525b48db___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostos_vue_vue_type_template_id_525b48db___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/HojaDeCostosSimulador.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/HojaDeCostosSimulador.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee& */ "./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee&");
+/* harmony import */ var _HojaDeCostosSimulador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HojaDeCostosSimulador.vue?vue&type=script&lang=js& */ "./resources/js/components/HojaDeCostosSimulador.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _HojaDeCostosSimulador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/HojaDeCostosSimulador.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/HojaDeCostosSimulador.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/HojaDeCostosSimulador.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosSimulador.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

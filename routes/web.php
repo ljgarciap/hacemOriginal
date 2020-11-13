@@ -153,6 +153,7 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get("/hojadecosto/total/{identificador}", "Hoja_De_CostosController@acumuladoTotal");
         Route::get("/hojadecosto/depreciacion/{identificador}", "Hoja_De_CostosController@maquinariaTotal");
+        Route::get("/hojadecosto/ciftiempos/{identificador}", "Hoja_De_CostosController@cifTiempos");
 
         Route::get("/simulacion", "Tb_simulacionController@index");
         Route::post("/simulacion/store", "Tb_simulacionController@store");

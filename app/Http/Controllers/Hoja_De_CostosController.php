@@ -8,6 +8,7 @@ use App\tb_hoja_de_costo;
 use App\Tb_concepto_cif;
 use App\Tb_maquinaria;
 use App\Tb_producto;
+use App\Tb_rela_simulacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -161,6 +162,73 @@ class Hoja_De_CostosController extends Controller
 
             $maquinarias = $acumuladomaquinaria;
             return ['maquinarias' => $maquinarias];
+        }
+
+        public function cifTiempos($identificador)
+        {
+            //cif
+            $acumuladocif = 0;
+            $acumuladomaquinaria = 0;
+            $acumuladocift = 0;
+
+            $query3 = DB::raw("(CASE WHEN SUM(tb_concepto_cif.valor) IS NULL THEN 0
+            ELSE SUM(tb_concepto_cif.valor) END) as acumuladocif");
+            $ciftotales = DB::table('tb_concepto_cif')
+            ->select($query3)
+            ->get();
+            foreach($ciftotales as $ciftotal){
+                $acumuladocif = $ciftotal->acumuladocif + $acumuladocif;
+                $acumuladocift = $acumuladocift + $acumuladocif;
+            }
+
+            //maquinaria
+            $query4 = DB::raw("(CASE WHEN SUM(tb_maquinaria.depreciacionMensual) IS NULL THEN 0
+            ELSE SUM(tb_maquinaria.depreciacionMensual) END) as acumuladomaquinaria");
+            $totales = DB::table('tb_maquinaria')
+            ->select($query4)
+            ->get();
+            foreach($totales as $totalg){
+                $acumuladomaquinaria = $totalg->acumuladomaquinaria + $acumuladomaquinaria;
+                $acumuladocift = $acumuladocift + $acumuladomaquinaria;
+            }
+
+            $acumuladoproduccion=0;
+            $acumuladotiempo=0;
+            $acumuladocalculo=0;
+
+            $query = DB::raw("SUM(tb_rela_simulacion.unidades) as acumuladoprod,SUM(tb_rela_simulacion.tiempo) as acumuladotiem,
+            SUM(tb_rela_simulacion.unidades * tb_rela_simulacion.tiempo) as acumuladocalc");
+            $totalprod = DB::table('tb_rela_simulacion')->where('idSimulacion','=',$identificador)
+            ->select($query)
+            ->get();
+
+            foreach($totalprod as $totalpr){
+                $acumuladoproduccion = $totalpr->acumuladoprod + $acumuladoproduccion;
+                $acumuladotiempo = $totalpr->acumuladotiem + $acumuladotiempo;
+                $acumuladocalculo = $totalpr->acumuladocalc + $acumuladocalculo;
+            }
+
+            $produccion = $acumuladoproduccion;
+            $tiempo = round($acumuladotiempo, 2);
+
+            $valorbase=round(($acumuladocift/$acumuladocalculo),2);
+            /*
+            $totalcif=round(($valorbase*1800));//valorbase * horastotales -- 3665576
+            $unitariocif=round(($totalcif/1200));//totalcif / unidades -- 3055
+            */
+            $productos = Tb_rela_simulacion::join('tb_producto','tb_rela_simulacion.idProducto','=','tb_producto.id')
+            ->select('tb_rela_simulacion.id','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto',
+            'tb_producto.referencia','tb_producto.descripcion')
+            ->where('tb_rela_simulacion.idSimulacion', '=', $identificador)->get();
+            return [
+                'productos' => $productos,
+                'produccion' => $produccion,
+                //'tiempo' => $tiempo,
+                'acumuladocift' => $acumuladocift,
+                'acumuladocalculo' => $acumuladocalculo,
+                'valorbase' => $valorbase
+            ];
+
         }
 
 }

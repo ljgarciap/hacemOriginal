@@ -105,6 +105,9 @@
                             </div>
                         <div class="card-body">
                             <productossimulacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productossimulacion>
+                            <p align="right">
+                                <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
+                            </p>
                         </div>
                     </div>
                     <!-- Fin ejemplo de tabla Listado -->
@@ -114,15 +117,10 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            Detalle de simulacion <br><button type="button" class="close" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
-                        </div>
-                    </div>
-                </template>
-
-                <template v-if="listado==3">
-                    <div class="container-fluid">
-                        <div class="card">
-                            Detalle de simulacion <br><button type="button" class="close" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
+                            <hojadecostossimulador v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></hojadecostossimulador>
+                            <p align="right">
+                                <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
+                            </p>
                         </div>
                     </div>
                 </template>
@@ -214,9 +212,11 @@
 
 <script>
     import productossimulacion from '../components/ProductosSimulacion';
+    import hojadecostossimulador from '../components/HojaDeCostosSimulador';
     export default {
         components: {
-            productossimulacion
+            productossimulacion,
+            hojadecostossimulador
         },
         data(){
             return{
@@ -307,7 +307,7 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarArea(page,buscar,criterio);
+                me.listarSimulacion(page,buscar,criterio);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -368,6 +368,7 @@
                     'idSimulacion': this.identificador
                 }).then(function (response) {
                 me.cerrarModal('0');
+                me.forceRerender();
                 me.listarSimulacion(1,'','');
                 })
                 .catch(function (error) {
@@ -389,7 +390,6 @@
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
-                this.forceRerender();
             },
             abrirModal(modelo, accion, tipocif){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
