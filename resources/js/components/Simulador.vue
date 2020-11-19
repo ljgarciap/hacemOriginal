@@ -11,16 +11,12 @@
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <select class="form-control col-md-3" v-model="tipocif">
-                                    <option value="0" disabled>Elija tipo de cálculo</option>
-                                    <option value="1">Hora hombre</option>
-                                    <option value="2">Hora máquina</option>
-                                </select>
-                                <button type="submit" @click="abrirModal('simulacion','crear','tipocif')" class="btn btn-secondary"><i class="fa fa-plus"></i> Nueva simulación</button>
-                            </div>
-                       </div>
+                       <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Simulación
+                            <button type="button" @click="abrirModal('simulacion','crear')" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Nueva
+                            </button>
+                        </div>
 
                         <div class="card-body">
                             <div class="form-group row">
@@ -139,16 +135,21 @@
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Detalle</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Nombre simulación</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="detalle" class="form-control" placeholder="Descripción de simulación">
                                             <span class="help-block">(*) Ingrese la Descripción de la Simulación</span>
                                         </div>
                                     </div>
+
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Fecha</label>
+                                        <label class="col-md-3 form-control-label" for="email-input">Tipo de cálculo</label>
                                         <div class="col-md-9">
-                                            <input type="date" value="date('Y-m-d')" v-model="fecha" class="form-control">
+                                            <select class="form-control" v-model="tipocif">
+                                                <option value="0" disabled>Elija tipo de cálculo</option>
+                                                <option value="1">Hora hombre</option>
+                                                <option value="2">Hora máquina</option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -211,6 +212,7 @@
 </template>
 
 <script>
+    import moment from 'moment';
     import productossimulacion from '../components/ProductosSimulacion';
     import hojadecostossimulador from '../components/HojaDeCostosSimulador';
     export default {
@@ -262,7 +264,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -281,14 +283,17 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
         methods : {
+            currentDateTime() {
+                return moment().format('YYYY-MM-DD')
+            },
             listarSimulacion(page,buscar,criterio){
                 let me=this;
                 var url='/simulacion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                //console.log(url);
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -391,7 +396,7 @@
                 this.tituloModal='';
                 this.detalle='';
             },
-            abrirModal(modelo, accion, tipocif){
+            abrirModal(modelo, accion){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
                     case "simulacion":
@@ -400,9 +405,9 @@
                             case 'crear':{
                                 this.modal=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
-                                this.tipoCif='tipocif';
                                 this.tituloModal='Crear nueva simulación';
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
+                                this.fecha= moment().format('YYYY-MM-DD');
                                 break;
                             }
                         }
