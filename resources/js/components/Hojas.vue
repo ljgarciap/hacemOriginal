@@ -206,7 +206,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Cantidad <br>
                                             <sub><i>( Cantidad medida en: {{unidadBase}} )</i></sub></label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
+                                            <input type="number" step="0.01" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
                                             <span class="help-block">(*) Ingrese la cantidad de material en: {{unidadBase}}</span>
                                         </div>
                                     </div>
@@ -395,7 +395,7 @@
                 perfil:'',
                 valorMinuto:0,
                 arrayPerfilRelacion:[],
-                idMateriaPrima:1,
+                idMateriaPrima:'',
                 gestionmateria:'',
                 precioBase:0,
                 unidadBase:'',
@@ -687,6 +687,7 @@
             },
             crearMateriaPrimaProducto(){
                 //valido con el metodo de validacion creado
+
                 if(this.validarMateriaPrimaProducto()){
                     return;
                 }

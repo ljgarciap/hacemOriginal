@@ -5105,7 +5105,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "valorPrecioBase", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "liqui", ''), _defineProperty(_ref, "paraf", ''), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "valorMinuto", 0), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 1), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "unidadBase", ''), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "valorPrecioBase", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "liqui", ''), _defineProperty(_ref, "paraf", ''), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "valorMinuto", 0), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "unidadBase", ''), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -73514,7 +73514,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "table-responsive col-md-4" }, [
+              _c("div", { staticClass: "table-responsive col-md-3" }, [
                 _c("h2", [_vm._v("MANO DE OBRA")]),
                 _vm._v(" "),
                 _c(
@@ -73544,7 +73544,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "table-responsive col-md-4" }, [
+              _c("div", { staticClass: "table-responsive col-md-5" }, [
                 _c("h2", [_vm._v("COSTOS INDIRECTOS")]),
                 _vm._v(" "),
                 _c(
@@ -74454,7 +74454,8 @@ var render = function() {
                                 ],
                                 staticClass: "form-control",
                                 attrs: {
-                                  type: "text",
+                                  type: "number",
+                                  step: "0.01",
                                   placeholder: "Cantidad de material"
                                 },
                                 domProps: { value: _vm.cantidad },

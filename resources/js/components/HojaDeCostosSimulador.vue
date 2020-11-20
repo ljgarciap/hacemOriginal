@@ -112,7 +112,7 @@
                     </table>
                 </div>
 
-                <div class="table-responsive col-md-4">
+                <div class="table-responsive col-md-3">
                     <h2>MANO DE OBRA</h2>
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
@@ -130,7 +130,7 @@
                     </table>
                 </div>
 
-                <div class="table-responsive col-md-4">
+                <div class="table-responsive col-md-5">
                     <h2>COSTOS INDIRECTOS</h2>
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
