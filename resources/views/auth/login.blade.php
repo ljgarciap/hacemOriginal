@@ -9,8 +9,8 @@
         <form class="form-horizontal was-validated" method="POST" action="{{ route('login') }}">
           {{csrf_field()}}
             <div class="card-body">
-            <h1>Acceder</h1>
-            <p class="text-muted">Control de acceso al sistema</p>
+            <div><img src="img/HACEM.png" alt="" style="width:100%"></div><br>
+            <!--<p class="text-muted">Control de acceso al sistema</p>-->
 
             <div class="form-group mb-3{{$errors->has('email' ? 'is-invalid' : '')}}">
               <span class="input-group-addon"><i class="icon-user"></i></span>
@@ -32,13 +32,16 @@
           </div>
         </form>
         </div>
+        <!--<div class="card portada">-->
         <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
           <div class="card-body text-center">
+        <!-- -->
             <div>
               <h2>H.A.C.E.M - SENA CIDM</h2>
               <p>Herramienta de apoyo para el costeo en las empresas manufactureras.</p>
               <p><img src="img/logo-symbol.png" alt=""></p>
             </div>
+
           </div>
         </div>
       </div>
@@ -46,3 +49,12 @@
   </div>
 
 @endsection
+
+<style>
+.portada{
+    background: url(img/portada.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+ }
+</style>

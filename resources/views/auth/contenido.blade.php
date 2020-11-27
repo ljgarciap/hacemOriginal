@@ -16,7 +16,7 @@
 
 </head>
 
-<body class="app flex-row align-items-center">
+<body class="app flex-row align-items-center bg">
   <div class="container">
 
     @yield('login')
@@ -28,3 +28,22 @@
 
 </body>
 </html>
+
+<style>
+body, html {
+  height: 100%;
+}
+
+.bg {
+  /* The image used */
+  background-image: url(img/bg.jpg);
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
