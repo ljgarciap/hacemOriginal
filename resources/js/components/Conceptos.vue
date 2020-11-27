@@ -338,6 +338,7 @@
                 this.errorMensaje=[];
 
                 if (!this.concepto) this.errorMensaje.push("El nombre del concepto no puede estar vacio");
+                if (!this.valor) this.errorMensaje.push("El valor no puede estar vacio");
                 if (this.errorMensaje.length) this.errorConcepto=1;
 
                 return this.errorConcepto;
@@ -346,6 +347,7 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.concepto='';
+                this.valor=0;
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

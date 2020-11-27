@@ -36,8 +36,8 @@
                                         <th>Maquinaria</th>
                                         <th>Valor</th>
                                         <th>Tiempo de vida util</th>
-                                        <th>depreciacion anual</th>
-                                        <th>Depreciacion mensual</th>
+                                        <th>Depreciación anual</th>
+                                        <th>Depreciación mensual</th>
                                         <th>Fecha</th>
                                         <th>Estado</th>
                                     </tr>
@@ -135,7 +135,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Fecha</label>
                                         <div class="col-md-9">
                                             <input type="date" v-model="fecha" class="form-control" placeholder="Fecha">
-                                            <span class="help-block">(*) Ingrese la fecha</span>
+                                            <span class="help-block">(*) Ingrese la fecha de compra</span>
                                         </div>
                                     </div>
                                     <div class="form-group row div-error" v-show="errorMaquinaria">
@@ -367,6 +367,9 @@
                 this.errorMensaje=[];
 
                 if (!this.maquinaria) this.errorMensaje.push("El nombre de la maquinaria no puede estar vacio");
+                if (!this.valor) this.errorMensaje.push("El valor de la maquinaria no puede estar vacio");
+                if (!this.tiempoDeVidaUtil) this.errorMensaje.push("El tiempo de vida útil no puede estar vacio");
+                if (!this.fecha) this.errorMensaje.push("La fecha de compra no puede estar vacia");
                 if (this.errorMensaje.length) this.errorMaquinaria=1;
 
                 return this.errorMaquinaria;

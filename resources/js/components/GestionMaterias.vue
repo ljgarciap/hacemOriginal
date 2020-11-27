@@ -174,7 +174,7 @@
                 id:'',
                 gestionMateria:'',
                 idPrecioBase: 0,
-                precioBase:'',
+                precioBase:0,
                 estado:'',
                 arrayGestionMateria : [],
                 idUnidadBase: 0,
@@ -390,6 +390,9 @@
                 this.errorGestionMateria=0;
                 this.errorMensaje=[];
                 if (!this.gestionMateria) this.errorMensaje.push("El nombre de la gestión no puede estar vacio");
+                if (this.idUnidadBase==0) this.errorMensaje.push("Debe elegir una unidad base");
+                if (this.idTipoMateria==0) this.errorMensaje.push("Debe elegir un tipo de materia");
+                if (!this.precioBase) this.errorMensaje.push("El precio base no puede estar vacio");
                 if (this.errorMensaje.length) this.errorGestionMateria=1;
 
                 return this.errorGestionMateria;
@@ -410,9 +413,9 @@
                             this.tituloModal='Crear nueva gestión';
                             this.tipoAccion= 1;
                             this.gestionmateria='';
-                            this.idUnidadBase=data['idUnidadBase'];
+                            this.idUnidadBase=this.idUnidadBase;
                             this.precioBase=0;
-                            this.idTipoMateria=data['idTipoMateria'];
+                            this.idTipoMateria=this.idTipoMateria;
                             break;
                         }
                         case 'actualizar':{

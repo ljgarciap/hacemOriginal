@@ -395,7 +395,7 @@
                 perfil:'',
                 valorMinuto:0,
                 arrayPerfilRelacion:[],
-                idMateriaPrima:'',
+                idMateriaPrima:0,
                 gestionmateria:'',
                 precioBase:0,
                 unidadBase:'',
@@ -569,7 +569,7 @@
                             this.modal=1;
                             this.tipoModal=1; //carga tipos de campos y footers
                             this.materiaprimaproducto='';
-                            this.idMateriaPrima=data['idGestionMateria'];
+                            this.idMateriaPrima=this.idMateriaPrima;
                             this.cantidad='1';
                             this.precio=data['precioBase'];
                             this.idHoja=this.identificador;
@@ -687,7 +687,6 @@
             },
             crearMateriaPrimaProducto(){
                 //valido con el metodo de validacion creado
-
                 if(this.validarMateriaPrimaProducto()){
                     return;
                 }
@@ -745,7 +744,7 @@
             validarMateriaPrimaProducto(){
                 this.errorMateriaPrimaProducto=0;
                 this.errorMensaje=[];
-                if (!this.cantidad) this.errorMensaje.push("La cantidad no puede estar vacio");
+                if (!this.cantidad) this.errorMensaje.push("La cantidad no puede estar vacia");
                 if (this.errorMensaje.length) this.errorMateriaPrimaProducto=1;
 
                 return this.errorMateriaPrimaProducto;

@@ -353,6 +353,7 @@
                 this.errorMensaje=[];
 
                 if (!this.coleccion) this.errorMensaje.push("El nombre de la colección no puede estar vacio");
+                if (!this.referencia) this.errorMensaje.push("La referencia no puede estar vacia");
                 if (this.errorMensaje.length) this.errorColeccion=1;
 
                 return this.errorColeccion;

@@ -2838,6 +2838,7 @@ __webpack_require__.r(__webpack_exports__);
       this.errorColeccion = 0;
       this.errorMensaje = [];
       if (!this.coleccion) this.errorMensaje.push("El nombre de la colección no puede estar vacio");
+      if (!this.referencia) this.errorMensaje.push("La referencia no puede estar vacia");
       if (this.errorMensaje.length) this.errorColeccion = 1;
       return this.errorColeccion;
     },
@@ -3231,6 +3232,7 @@ __webpack_require__.r(__webpack_exports__);
       this.errorConcepto = 0;
       this.errorMensaje = [];
       if (!this.concepto) this.errorMensaje.push("El nombre del concepto no puede estar vacio");
+      if (!this.valor) this.errorMensaje.push("El valor no puede estar vacio");
       if (this.errorMensaje.length) this.errorConcepto = 1;
       return this.errorConcepto;
     },
@@ -3238,6 +3240,7 @@ __webpack_require__.r(__webpack_exports__);
       this.modal = 0;
       this.tituloModal = '';
       this.concepto = '';
+      this.valor = 0;
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -4083,7 +4086,7 @@ __webpack_require__.r(__webpack_exports__);
       id: '',
       gestionMateria: '',
       idPrecioBase: 0,
-      precioBase: '',
+      precioBase: 0,
       estado: '',
       arrayGestionMateria: [],
       idUnidadBase: 0,
@@ -4300,6 +4303,9 @@ __webpack_require__.r(__webpack_exports__);
       this.errorGestionMateria = 0;
       this.errorMensaje = [];
       if (!this.gestionMateria) this.errorMensaje.push("El nombre de la gestión no puede estar vacio");
+      if (this.idUnidadBase == 0) this.errorMensaje.push("Debe elegir una unidad base");
+      if (this.idTipoMateria == 0) this.errorMensaje.push("Debe elegir un tipo de materia");
+      if (!this.precioBase) this.errorMensaje.push("El precio base no puede estar vacio");
       if (this.errorMensaje.length) this.errorGestionMateria = 1;
       return this.errorGestionMateria;
     },
@@ -4322,9 +4328,9 @@ __webpack_require__.r(__webpack_exports__);
                   this.tituloModal = 'Crear nueva gestión';
                   this.tipoAccion = 1;
                   this.gestionmateria = '';
-                  this.idUnidadBase = data['idUnidadBase'];
+                  this.idUnidadBase = this.idUnidadBase;
                   this.precioBase = 0;
-                  this.idTipoMateria = data['idTipoMateria'];
+                  this.idTipoMateria = this.idTipoMateria;
                   break;
                 }
 
@@ -5105,7 +5111,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       estado: '',
       idColeccion: 0,
       coleccion: ''
-    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "valorPrecioBase", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "liqui", ''), _defineProperty(_ref, "paraf", ''), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "valorMinuto", 0), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", ''), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "unidadBase", ''), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
+    }, _defineProperty(_ref, "referencia", ''), _defineProperty(_ref, "idArea", 0), _defineProperty(_ref, "area", ''), _defineProperty(_ref, "arrayProducto", []), _defineProperty(_ref, "cantidad", 0), _defineProperty(_ref, "precio", 0), _defineProperty(_ref, "tipoDeCosto", 'Directo'), _defineProperty(_ref, "idProceso", 0), _defineProperty(_ref, "tiempo", 1), _defineProperty(_ref, "valor", 0), _defineProperty(_ref, "valorPrecioBase", 0), _defineProperty(_ref, "preciom", 0), _defineProperty(_ref, "liquidacion", 3), _defineProperty(_ref, "parafiscales", 4), _defineProperty(_ref, "liqui", ''), _defineProperty(_ref, "paraf", ''), _defineProperty(_ref, "proceso", ''), _defineProperty(_ref, "relacion", ''), _defineProperty(_ref, "perfilrelacion", ''), _defineProperty(_ref, "arrayRelacion", []), _defineProperty(_ref, "idPerfil", 0), _defineProperty(_ref, "perfil", ''), _defineProperty(_ref, "valorMinuto", 0), _defineProperty(_ref, "arrayPerfilRelacion", []), _defineProperty(_ref, "idMateriaPrima", 0), _defineProperty(_ref, "gestionmateria", ''), _defineProperty(_ref, "precioBase", 0), _defineProperty(_ref, "unidadBase", ''), _defineProperty(_ref, "arrayGestionMaterias", []), _defineProperty(_ref, "modal", 0), _defineProperty(_ref, "seleccion", 0), _defineProperty(_ref, "tipoPago", 0), _defineProperty(_ref, "flag", 0), _defineProperty(_ref, "tituloModal", ''), _defineProperty(_ref, "tipoModal", 0), _defineProperty(_ref, "tipoAccion", 0), _defineProperty(_ref, "fotoCarga", ''), _defineProperty(_ref, "materiaprimaproducto", ''), _defineProperty(_ref, "errorMateriaPrimaProducto", 0), _defineProperty(_ref, "errorMensaje", []), _defineProperty(_ref, "pagination", {
       'total': 0,
       'current_page': 0,
       'per_page': 0,
@@ -5256,7 +5262,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.tipoModal = 1; //carga tipos de campos y footers
 
                   this.materiaprimaproducto = '';
-                  this.idMateriaPrima = data['idGestionMateria'];
+                  this.idMateriaPrima = this.idMateriaPrima;
                   this.cantidad = '1';
                   this.precio = data['precioBase'];
                   this.idHoja = this.identificador;
@@ -5428,7 +5434,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     validarMateriaPrimaProducto: function validarMateriaPrimaProducto() {
       this.errorMateriaPrimaProducto = 0;
       this.errorMensaje = [];
-      if (!this.cantidad) this.errorMensaje.push("La cantidad no puede estar vacio");
+      if (!this.cantidad) this.errorMensaje.push("La cantidad no puede estar vacia");
       if (this.errorMensaje.length) this.errorMateriaPrimaProducto = 1;
       return this.errorMateriaPrimaProducto;
     },
@@ -6229,6 +6235,9 @@ __webpack_require__.r(__webpack_exports__);
       this.errorMaquinaria = 0;
       this.errorMensaje = [];
       if (!this.maquinaria) this.errorMensaje.push("El nombre de la maquinaria no puede estar vacio");
+      if (!this.valor) this.errorMensaje.push("El valor de la maquinaria no puede estar vacio");
+      if (!this.tiempoDeVidaUtil) this.errorMensaje.push("El tiempo de vida útil no puede estar vacio");
+      if (!this.fecha) this.errorMensaje.push("La fecha de compra no puede estar vacia");
       if (this.errorMensaje.length) this.errorMaquinaria = 1;
       return this.errorMaquinaria;
     },
@@ -8132,6 +8141,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.errorProducto = 0;
       this.errorMensaje = [];
       if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
+      if (this.idColeccion == 0) this.errorMensaje.push("Debe elegir una colección existente");
+      if (!this.idArea == 0) this.errorMensaje.push("Debe elegir un área existente");
+      if (!this.referencia) this.errorMensaje.push("La referencia no puede estar vacia");
       if (this.errorMensaje.length) this.errorProducto = 1;
       return this.errorProducto;
     },
@@ -76456,7 +76468,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("span", { staticClass: "help-block" }, [
-                          _vm._v("(*) Ingrese la fecha")
+                          _vm._v("(*) Ingrese la fecha de compra")
                         ])
                       ])
                     ]),
@@ -76575,9 +76587,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Tiempo de vida util")]),
         _vm._v(" "),
-        _c("th", [_vm._v("depreciacion anual")]),
+        _c("th", [_vm._v("Depreciación anual")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Depreciacion mensual")]),
+        _c("th", [_vm._v("Depreciación mensual")]),
         _vm._v(" "),
         _c("th", [_vm._v("Fecha")]),
         _vm._v(" "),
