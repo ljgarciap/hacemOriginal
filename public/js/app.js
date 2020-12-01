@@ -8142,7 +8142,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.errorMensaje = [];
       if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
       if (this.idColeccion == 0) this.errorMensaje.push("Debe elegir una colección existente");
-      if (!this.idArea == 0) this.errorMensaje.push("Debe elegir un área existente");
+      if (this.idArea == 0) this.errorMensaje.push("Debe elegir un área existente");
       if (!this.referencia) this.errorMensaje.push("La referencia no puede estar vacia");
       if (this.errorMensaje.length) this.errorProducto = 1;
       return this.errorProducto;
