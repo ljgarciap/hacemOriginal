@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main class="minimo">
         <template v-if="listado==0">
         <!-- Ejemplo de tabla Listado -->
         <div>
@@ -54,22 +54,17 @@
                                             <table class="table table-bordered table-striped table-sm">
                                                 <thead>
                                                     <tr>
-                                                        <!--<th>Foto</th>-->
-                                                        <!--<th>Minutos</th>-->
                                                         <th>Unidades</th>
                                                         <th>Materia directa</th>
                                                         <th>Materia indirecta</th>
                                                         <th>Mano de obra</th>
                                                         <th>Cif unitarios</th>
-                                                        <!--<th>Total Maquinaria</th>-->
                                                         <th><b>COSTO TOTAL</b></th>
                                                         <th>Acción</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="totalc in arrayTotales" :key="totalc.id">
-                                                        <!--<td v-text="total.foto"></td>-->
-                                                        <!--<td v-text="total.acumuladotiempomo"></td>-->
                                                         <td>{{totalc.estimadoproduccion}}</td>
                                                         <td>{{totalc.acumuladomd | currency}}</td>
                                                         <td>{{totalc.acumuladomi | currency}}</td>
@@ -92,10 +87,103 @@
         </template>
 
         <template v-if="listado==1">
+
+            <div class="row">
+                <div class="table-responsive col-md-5">
+                    <h4>Hoja de Costos</h4>
+                    <table class="table table-bordered table-striped table-sm">
+                        <tbody>
+                            <tr>
+                                <td>Orden de producción : </td>
+                                <td>{{this.simuladet}}</td>
+                            </tr>
+                            <tr>
+                                <td>Referencia del producto : </td>
+                                <td>{{this.referenciap}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre del producto : </td>
+                                <td>{{this.nombrep}}</td>
+                            </tr>
+                            <tr>
+                                <td>Numero de unidades : </td>
+                                <td>{{this.capacidadtotales}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-responsive col-md-4">
+                    <h4>Costos de producción totales</h4>
+                    <table class="table table-bordered table-striped table-sm">
+                        <tbody>
+                            <tr>
+                                <td>Materia Prima</td>
+                                <td>{{this.materiatotales | currency}}</td>
+                            </tr>
+                            <tr>
+                                <td>Mano de Obra</td>
+                                <td>{{this.manodeobratotales | currency}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cif Totales</td>
+                                <td>{{this.ciftotales | currency}}</td>
+                            </tr>
+                             <tr>
+                                <td>Costo par</td>
+                                <td>{{this.costopar | currency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-responsive col-md-3">
+                    <center>
+                        <img :src="this.fotop" alt="" style="max-width:200px; max-height:200px;">
+                    </center>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="table-responsive col-md-4">
+                    <h4>Materia prima</h4>
+                    <table class="table table-bordered table-striped table-sm">
+                        <tbody>
+                            <tr>
+                                <td>Total por par</td>
+                                <td>{{this.acumuladomp | currency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive col-md-3">
+                    <h4>Mano de obra</h4>
+                    <table class="table table-bordered table-striped table-sm">
+                        <tbody>
+                            <tr>
+                                <td>Total por par</td>
+                                <td>{{this.acumuladomo | currency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive col-md-5">
+                    <h4>Costos indirectos</h4>
+                    <table class="table table-bordered table-striped table-sm">
+                        <tbody>
+                            <tr>
+                                <td>Total por par</td>
+                                <td>{{this.cifunidad | currency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="row">
 
                 <div class="table-responsive col-md-4">
-                    <h2>MATERIA PRIMA</h2>
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
                             <tr>
@@ -113,7 +201,6 @@
                 </div>
 
                 <div class="table-responsive col-md-3">
-                    <h2>MANO DE OBRA</h2>
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
                             <tr>
@@ -131,7 +218,6 @@
                 </div>
 
                 <div class="table-responsive col-md-5">
-                    <h2>COSTOS INDIRECTOS</h2>
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
                             <tr>
@@ -152,6 +238,7 @@
                     </table>
                 </div>
             </div>
+
             <p align="right">
                 <button class="btn btn-secondary" @click="ocultarDetalle()" aria-label="Close">Regresar</button>
             </p>
@@ -193,7 +280,20 @@
                 arrayConceptos:[],
                 depreciacion:0,
                 modal : 0,
-                tipoModal : 0
+                tipoModal : 0,
+                acumuladomp : 0,
+                acumuladomo : 0,
+                cifunidad : 0,
+                capacidadtotales : 0,
+                ciftotales : 0,
+                materiatotales : 0,
+                manodeobratotales : 0,
+                consolidadototales : 0,
+                nombrep : '',
+                referenciap : '',
+                fotop : '',
+                simuladet : '',
+                costopar : ''
             }
         },
         methods : {
@@ -218,7 +318,19 @@
                 var url='/hojadecosto/unitario?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayTotales=respuesta.totales;
+                me.acumuladomp=respuesta.acumuladomp;
+                me.acumuladomo=respuesta.acumuladomo;
+                me.cifunidad=respuesta.cifunitario;
+                me.capacidadtotales=respuesta.capacidadproducto;
+                me.ciftotales=respuesta.acumuladocift;
+                me.nombrep=respuesta.nombrep;
+                me.referenciap=respuesta.referenciap;
+                me.fotop=respuesta.fotop;
+                me.simuladet=respuesta.simuladet;
+                me.costopar=respuesta.costopar;
+                me.materiatotales=(me.acumuladomp*me.capacidadtotales);
+                me.manodeobratotales=(me.acumuladomo*me.capacidadtotales);
+                me.consolidadototales=(me.materiatotales+me.manodeobratotales+me.ciftotales);
                 //console.log(url);
                 })
                 .catch(function (error) {
@@ -258,7 +370,11 @@
                 this.identificador=this.identificador;
                 this.idProducto=data['idProducto'];
                 this.costeoDetalle(this.idProducto,this.identificador);
-                //console.log(this.identificador);
+                this.costeoUnidad(this.idProducto,this.identificador);
+                //
+                console.log(this.idProducto);
+                //
+                console.log(this.identificador);
             },
             ocultarDetalle(){
                 this.listado=0;
@@ -269,4 +385,10 @@
         }
     }
 </script>
+
+<style>
+    .minimo {
+	min-height: 150px;
+    }
+</style>
 

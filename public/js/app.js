@@ -4456,6 +4456,95 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4624,7 +4713,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       listado: 0,
       producto: '',
       referencia: '',
@@ -4650,8 +4741,9 @@ __webpack_require__.r(__webpack_exports__);
       arrayConceptos: [],
       depreciacion: 0,
       modal: 0,
-      tipoModal: 0
-    };
+      tipoModal: 0,
+      acumuladomp: 0
+    }, _defineProperty(_ref, "acumuladomo", 0), _defineProperty(_ref, "cifunidad", 0), _defineProperty(_ref, "capacidadtotales", 0), _defineProperty(_ref, "ciftotales", 0), _defineProperty(_ref, "materiatotales", 0), _defineProperty(_ref, "manodeobratotales", 0), _defineProperty(_ref, "consolidadototales", 0), _defineProperty(_ref, "nombrep", ''), _defineProperty(_ref, "referenciap", ''), _defineProperty(_ref, "fotop", ''), _defineProperty(_ref, "simuladet", ''), _defineProperty(_ref, "costopar", ''), _ref;
   },
   methods: {
     acumuladoTotal: function acumuladoTotal(identificador) {
@@ -4674,7 +4766,19 @@ __webpack_require__.r(__webpack_exports__);
       var url = '/hojadecosto/unitario?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayTotales = respuesta.totales; //console.log(url);
+        me.acumuladomp = respuesta.acumuladomp;
+        me.acumuladomo = respuesta.acumuladomo;
+        me.cifunidad = respuesta.cifunitario;
+        me.capacidadtotales = respuesta.capacidadproducto;
+        me.ciftotales = respuesta.acumuladocift;
+        me.nombrep = respuesta.nombrep;
+        me.referenciap = respuesta.referenciap;
+        me.fotop = respuesta.fotop;
+        me.simuladet = respuesta.simuladet;
+        me.costopar = respuesta.costopar;
+        me.materiatotales = me.acumuladomp * me.capacidadtotales;
+        me.manodeobratotales = me.acumuladomo * me.capacidadtotales;
+        me.consolidadototales = me.materiatotales + me.manodeobratotales + me.ciftotales; //console.log(url);
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -4710,7 +4814,12 @@ __webpack_require__.r(__webpack_exports__);
       this.listado = 1;
       this.identificador = this.identificador;
       this.idProducto = data['idProducto'];
-      this.costeoDetalle(this.idProducto, this.identificador); //console.log(this.identificador);
+      this.costeoDetalle(this.idProducto, this.identificador);
+      this.costeoUnidad(this.idProducto, this.identificador); //
+
+      console.log(this.idProducto); //
+
+      console.log(this.identificador);
     },
     ocultarDetalle: function ocultarDetalle() {
       this.listado = 0;
@@ -14637,6 +14746,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.minimo {\n\tmin-height: 150px;\n}\n", ""]);
 
 // exports
 
@@ -67950,6 +68078,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Hojas.vue?vue&type=style&index=0&lang=css&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Hojas.vue?vue&type=style&index=0&lang=css& ***!
@@ -73253,6 +73411,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "main",
+    { staticClass: "minimo" },
     [
       _vm.listado == 0
         ? [
@@ -73494,9 +73653,182 @@ var render = function() {
       _vm.listado == 1
         ? [
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "table-responsive col-md-4" }, [
-                _c("h2", [_vm._v("MATERIA PRIMA")]),
+              _c("div", { staticClass: "table-responsive col-md-5" }, [
+                _c("h4", [_vm._v("Hoja de Costos")]),
                 _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-bordered table-striped table-sm"
+                  },
+                  [
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", [_vm._v("Orden de producción : ")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(this.simuladet))])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Referencia del producto : ")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(this.referenciap))])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Nombre del producto : ")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(this.nombrep))])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Numero de unidades : ")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(this.capacidadtotales))])
+                      ])
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "table-responsive col-md-4" }, [
+                _c("h4", [_vm._v("Costos de producción totales")]),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-bordered table-striped table-sm"
+                  },
+                  [
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", [_vm._v("Materia Prima")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(_vm._f("currency")(this.materiatotales))
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Mano de Obra")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(_vm._f("currency")(this.manodeobratotales))
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Cif Totales")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("currency")(this.ciftotales)))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Costo par")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("currency")(this.costopar)))
+                        ])
+                      ])
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "table-responsive col-md-3" },
+                [
+                  _c("center", [
+                    _c("img", {
+                      staticStyle: {
+                        "max-width": "200px",
+                        "max-height": "200px"
+                      },
+                      attrs: { src: this.fotop, alt: "" }
+                    })
+                  ])
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "table-responsive col-md-4" }, [
+                _c("h4", [_vm._v("Materia prima")]),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-bordered table-striped table-sm"
+                  },
+                  [
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", [_vm._v("Total por par")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("currency")(this.acumuladomp)))
+                        ])
+                      ])
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "table-responsive col-md-3" }, [
+                _c("h4", [_vm._v("Mano de obra")]),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-bordered table-striped table-sm"
+                  },
+                  [
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", [_vm._v("Total por par")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("currency")(this.acumuladomo)))
+                        ])
+                      ])
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "table-responsive col-md-5" }, [
+                _c("h4", [_vm._v("Costos indirectos")]),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-bordered table-striped table-sm"
+                  },
+                  [
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", [_vm._v("Total por par")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("currency")(this.cifunidad)))
+                        ])
+                      ])
+                    ])
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "table-responsive col-md-4" }, [
                 _c(
                   "table",
                   {
@@ -73527,8 +73859,6 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "table-responsive col-md-3" }, [
-                _c("h2", [_vm._v("MANO DE OBRA")]),
-                _vm._v(" "),
                 _c(
                   "table",
                   {
@@ -73557,8 +73887,6 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "table-responsive col-md-5" }, [
-                _c("h2", [_vm._v("COSTOS INDIRECTOS")]),
-                _vm._v(" "),
                 _c(
                   "table",
                   {
@@ -112582,7 +112910,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee& */ "./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee&");
 /* harmony import */ var _HojaDeCostosSimulador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HojaDeCostosSimulador.vue?vue&type=script&lang=js& */ "./resources/js/components/HojaDeCostosSimulador.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _HojaDeCostosSimulador_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -112590,7 +112920,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _HojaDeCostosSimulador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__["render"],
   _HojaDeCostosSimulador_vue_vue_type_template_id_6026d4ee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -112619,6 +112949,22 @@ component.options.__file = "resources/js/components/HojaDeCostosSimulador.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosSimulador.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosSimulador_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

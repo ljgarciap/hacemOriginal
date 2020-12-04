@@ -6,6 +6,7 @@ use App\Tb_materia_prima_producto;
 use App\Tb_mano_de_obra_producto;
 use App\Tb_gestion_materia_prima;
 use App\Tb_proceso;
+use App\Tb_simulacion;
 use App\tb_hoja_de_costo;
 use App\Tb_concepto_cif;
 use App\Tb_maquinaria;
@@ -249,6 +250,20 @@ class Hoja_De_CostosController extends Controller
             $acumuladocift = 0;
             $capacidadproducto = 0;
 
+            $productos = Tb_producto::where('id','=',$identificador)
+            ->select('producto','referencia','foto')->get();
+            foreach($productos as $producto){
+                $nombrep = $producto->producto;
+                $referenciap = $producto->referencia;
+                $fotop = $producto->foto;
+                }
+
+            $simulate = Tb_simulacion::where('id','=',$simulacion)
+            ->select('descripcion')->get();
+            foreach($simulate as $simula){
+                $simuladet = $simula->descripcion;
+                }
+
             //directa
             $query = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
             ELSE ROUND(SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) END) as acumuladomd");
@@ -354,10 +369,10 @@ class Hoja_De_CostosController extends Controller
             $cifunitariored=round($cifunitario,0);
 
             $total = $acumuladomd + $acumuladomi + $acumuladomo + $cifunitariored;
+            $acumuladomp= $acumuladomd + $acumuladomi;
 
             $totales = ([
                 [
-                'acumuladomd'         => $acumuladomd,
                 'acumuladomd'         => $acumuladomd,
                 'acumuladomi'         => $acumuladomi,
                 'acumuladomo'         => $acumuladomo,
@@ -371,7 +386,19 @@ class Hoja_De_CostosController extends Controller
                 ]
             ]);
 
-            return ['totales' => $totales];
+            return [
+                'totales' => $totales,
+                'acumuladomp' => $acumuladomp,
+                'acumuladomo' => $acumuladomo,
+                'cifunitario' => $cifunitariored,
+                'capacidadproducto' => $unidadesprod,
+                'acumuladocift' => $acumuladocift,
+                'nombrep' => $nombrep,
+                'referenciap' => $referenciap,
+                'fotop' => $fotop,
+                'simuladet' => $simuladet,
+                'costopar' => $total
+            ];
 
         }
 //------------------------------------------------------------------------------------------------------//
