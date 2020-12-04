@@ -371,33 +371,22 @@ class Hoja_De_CostosController extends Controller
             $total = $acumuladomd + $acumuladomi + $acumuladomo + $cifunitariored;
             $acumuladomp= $acumuladomd + $acumuladomi;
 
-            $totales = ([
-                [
+            return [
                 'acumuladomd'         => $acumuladomd,
                 'acumuladomi'         => $acumuladomi,
+                'acumuladomp'         => $acumuladomp,
                 'acumuladomo'         => $acumuladomo,
+                'cifunitario'         => $cifunitariored,
+                'capacidadproducto'   => $unidadesprod,
                 'acumuladocift'       => $acumuladocift,
+                'nombrep'             => $nombrep,
+                'referenciap'         => $referenciap,
+                'fotop'               => $fotop,
+                'simuladet'           => $simuladet,
+                'costopar'            => $total,
                 'totalvariable'       => $acumuladocalculo,
                 'cifproduccion'       => $cifproducto,
-                'cifunitario'         => $cifunitariored,
-                'acumuladototal'      => $total,
-                'capacidadproducto'   => $unidadesprod,
                 'estimadoproduccion'  => $unidadprod
-                ]
-            ]);
-
-            return [
-                'totales' => $totales,
-                'acumuladomp' => $acumuladomp,
-                'acumuladomo' => $acumuladomo,
-                'cifunitario' => $cifunitariored,
-                'capacidadproducto' => $unidadesprod,
-                'acumuladocift' => $acumuladocift,
-                'nombrep' => $nombrep,
-                'referenciap' => $referenciap,
-                'fotop' => $fotop,
-                'simuladet' => $simuladet,
-                'costopar' => $total
             ];
 
         }

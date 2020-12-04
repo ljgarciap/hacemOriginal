@@ -64,13 +64,13 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="totalc in arrayTotales" :key="totalc.id">
-                                                        <td>{{totalc.estimadoproduccion}}</td>
-                                                        <td>{{totalc.acumuladomd | currency}}</td>
-                                                        <td>{{totalc.acumuladomi | currency}}</td>
-                                                        <td>{{totalc.acumuladomo | currency}}</td>
-                                                        <td>{{totalc.cifunitario | currency}}</td>
-                                                        <td>{{totalc.acumuladototal | currency}}</td>
+                                                    <tr>
+                                                        <td>{{this.capacidadtotales}}</td>
+                                                        <td>{{this.acumuladomd | currency}}</td>
+                                                        <td>{{this.acumuladomi | currency}}</td>
+                                                        <td>{{this.acumuladomo | currency}}</td>
+                                                        <td>{{this.cifunidad | currency}}</td>
+                                                        <td>{{this.costopar | currency}}</td>
                                                         <td><button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button></td>
                                                     </tr>
                                                 </tbody>
@@ -321,13 +321,15 @@
                 me.acumuladomp=respuesta.acumuladomp;
                 me.acumuladomo=respuesta.acumuladomo;
                 me.cifunidad=respuesta.cifunitario;
-                me.capacidadtotales=respuesta.capacidadproducto;
+                me.capacidadtotales=respuesta.estimadoproduccion;//estimadoproduccion es simulado, capacidadproducto es real
                 me.ciftotales=respuesta.acumuladocift;
                 me.nombrep=respuesta.nombrep;
                 me.referenciap=respuesta.referenciap;
                 me.fotop=respuesta.fotop;
                 me.simuladet=respuesta.simuladet;
                 me.costopar=respuesta.costopar;
+                me.acumuladomd=respuesta.acumuladomd;
+                me.acumuladomi=respuesta.acumuladomi;
                 me.materiatotales=(me.acumuladomp*me.capacidadtotales);
                 me.manodeobratotales=(me.acumuladomo*me.capacidadtotales);
                 me.consolidadototales=(me.materiatotales+me.manodeobratotales+me.ciftotales);

@@ -4769,13 +4769,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         me.acumuladomp = respuesta.acumuladomp;
         me.acumuladomo = respuesta.acumuladomo;
         me.cifunidad = respuesta.cifunitario;
-        me.capacidadtotales = respuesta.capacidadproducto;
+        me.capacidadtotales = respuesta.estimadoproduccion; //estimadoproduccion es simulado, capacidadproducto es real
+
         me.ciftotales = respuesta.acumuladocift;
         me.nombrep = respuesta.nombrep;
         me.referenciap = respuesta.referenciap;
         me.fotop = respuesta.fotop;
         me.simuladet = respuesta.simuladet;
         me.costopar = respuesta.costopar;
+        me.acumuladomd = respuesta.acumuladomd;
+        me.acumuladomi = respuesta.acumuladomi;
         me.materiatotales = me.acumuladomp * me.capacidadtotales;
         me.manodeobratotales = me.acumuladomo * me.capacidadtotales;
         me.consolidadototales = me.materiatotales + me.manodeobratotales + me.ciftotales; //console.log(url);
@@ -73551,90 +73554,82 @@ var render = function() {
                                     [
                                       _vm._m(1),
                                       _vm._v(" "),
-                                      _c(
-                                        "tbody",
-                                        _vm._l(_vm.arrayTotales, function(
-                                          totalc
-                                        ) {
-                                          return _c("tr", { key: totalc.id }, [
-                                            _c("td", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  totalc.estimadoproduccion
+                                      _c("tbody", [
+                                        _c("tr", [
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(this.capacidadtotales)
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("currency")(
+                                                  this.acumuladomd
                                                 )
                                               )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("td", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm._f("currency")(
-                                                    totalc.acumuladomd
-                                                  )
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("currency")(
+                                                  this.acumuladomi
                                                 )
                                               )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("td", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm._f("currency")(
-                                                    totalc.acumuladomi
-                                                  )
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("currency")(
+                                                  this.acumuladomo
                                                 )
                                               )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("td", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm._f("currency")(
-                                                    totalc.acumuladomo
-                                                  )
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("currency")(
+                                                  this.cifunidad
                                                 )
                                               )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("td", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm._f("currency")(
-                                                    totalc.cifunitario
-                                                  )
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("currency")(
+                                                  this.costopar
                                                 )
                                               )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("td", [
-                                              _vm._v(
-                                                _vm._s(
-                                                  _vm._f("currency")(
-                                                    totalc.acumuladototal
-                                                  )
-                                                )
-                                              )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("td", [
-                                              _c(
-                                                "button",
-                                                {
-                                                  staticClass:
-                                                    "btn btn-secondary",
-                                                  attrs: { type: "button" },
-                                                  on: {
-                                                    click: function($event) {
-                                                      return _vm.cerrarModal()
-                                                    }
+                                            )
+                                          ]),
+                                          _vm._v(" "),
+                                          _c("td", [
+                                            _c(
+                                              "button",
+                                              {
+                                                staticClass:
+                                                  "btn btn-secondary",
+                                                attrs: { type: "button" },
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.cerrarModal()
                                                   }
-                                                },
-                                                [_vm._v("Cerrar")]
-                                              )
-                                            ])
+                                                }
+                                              },
+                                              [_vm._v("Cerrar")]
+                                            )
                                           ])
-                                        }),
-                                        0
-                                      )
+                                        ])
+                                      ])
                                     ]
                                   )
                                 ]
