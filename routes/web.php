@@ -156,6 +156,8 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/hojadecosto/ciftiempos/{identificador}", "Hoja_De_CostosController@cifTiempos");
         Route::get("/hojadecosto/unitario/", "Hoja_De_CostosController@unitarioTotal");
         Route::get("/hojadecosto/detalle/", "Hoja_De_CostosController@hojaDetalle");
+        Route::get("/hojadecosto/unitariogen/", "Hoja_De_CostosController@unitarioTotalGen");
+        Route::get("/hojadecosto/detallegen/", "Hoja_De_CostosController@hojaDetalleGen");
 
         Route::get("/simulacion", "Tb_simulacionController@index");
         Route::post("/simulacion/store", "Tb_simulacionController@store");
@@ -269,5 +271,3 @@ Route::group(['middleware' => ['guest']], function () {
     });
 
 });
-
-

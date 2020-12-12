@@ -4403,11 +4403,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     identificador: {
@@ -4442,6 +4437,261 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.acumuladoTotal(this.identificador);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    identificador: {
+      type: Number
+    }
+  },
+  data: function data() {
+    var _ref;
+
+    return _ref = {
+      listado: 0,
+      producto: '',
+      referencia: '',
+      unidades: '',
+      tiempo: '',
+      produccion: '',
+      acumuladocifto: '',
+      acumuladocalculo: '',
+      valorbase: '',
+      arrayProductos: [],
+      idProducto: '',
+      total: '',
+      acumuladomd: 0,
+      acumuladomi: 0,
+      acumuladomo: 0,
+      acumuladocif: 0,
+      acumuladomaquinaria: 0,
+      acumuladocift: 0,
+      acumuladototal: 0,
+      arrayTotales: [],
+      arrayMateriaPrima: [],
+      arrayManoDeObra: [],
+      arrayConceptos: [],
+      depreciacion: 0,
+      modal: 0,
+      tipoModal: 0,
+      acumuladomp: 0
+    }, _defineProperty(_ref, "acumuladomo", 0), _defineProperty(_ref, "cifunidad", 0), _defineProperty(_ref, "capacidadtotales", 0), _defineProperty(_ref, "ciftotales", 0), _defineProperty(_ref, "materiatotales", 0), _defineProperty(_ref, "manodeobratotales", 0), _defineProperty(_ref, "consolidadototales", 0), _defineProperty(_ref, "nombrep", ''), _defineProperty(_ref, "referenciap", ''), _defineProperty(_ref, "fotop", ''), _defineProperty(_ref, "costopar", ''), _ref;
+  },
+  methods: {
+    costeoUnidad: function costeoUnidad(identificador) {
+      var me = this;
+      var url = '/hojadecosto/unitariogen?identificador=' + this.identificador;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.acumuladomp = respuesta.acumuladomp;
+        me.acumuladomo = respuesta.acumuladomo;
+        me.cifunidad = respuesta.cifunitario;
+        me.capacidadtotales = respuesta.capacidadproducto; //estimadoproduccion es simulado, capacidadproducto es real
+
+        me.ciftotales = respuesta.acumuladocift;
+        me.nombrep = respuesta.nombrep;
+        me.referenciap = respuesta.referenciap;
+        me.fotop = respuesta.fotop;
+        me.costopar = respuesta.costopar;
+        me.acumuladomd = respuesta.acumuladomd;
+        me.acumuladomi = respuesta.acumuladomi;
+        me.materiatotales = me.acumuladomp * me.capacidadtotales;
+        me.manodeobratotales = me.acumuladomo * me.capacidadtotales;
+        me.consolidadototales = me.materiatotales + me.manodeobratotales + me.ciftotales; //console.log(url);
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    costeoDetalle: function costeoDetalle(identificador) {
+      var me = this;
+      var url = '/hojadecosto/detallegen?identificador=' + this.identificador;
+      axios.get(url).then(function (response) {
+        var respuesta = response.data;
+        me.arrayMateriaPrima = respuesta.materiaprimaproductos;
+        me.arrayManoDeObra = respuesta.manodeobraproductos;
+        me.arrayConceptos = respuesta.conceptos;
+        me.depreciacion = respuesta.acumuladomaquinaria; //console.log(url);
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.costeoUnidad(this.identificador), this.costeoDetalle(this.identificador);
   }
 });
 
@@ -4849,6 +5099,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_HojaDeCostos__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/HojaDeCostos */ "./resources/js/components/HojaDeCostos.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -14749,6 +15010,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.minimo {\n\tmin-height: 150px;\n}\n", ""]);
 
 // exports
 
@@ -68081,6 +68361,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css&":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=style&index=0&lang=css& ***!
@@ -73397,6 +73707,305 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=template&id=01952ccc&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=template&id=01952ccc& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("main", { staticClass: "minimo" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "table-responsive col-md-5" }, [
+        _c("h4", [_vm._v("Hoja de Costos")]),
+        _vm._v(" "),
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _c("tbody", [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Referencia del producto : ")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(this.referenciap))])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Nombre del producto : ")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(this.nombrep))])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Numero de unidades : ")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(this.capacidadtotales))])
+              ])
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-responsive col-md-4" }, [
+        _c("h4", [_vm._v("Costos de producción totales")]),
+        _vm._v(" "),
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("Materia Prima")]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("currency")(this.materiatotales)))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Mano de Obra")]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("currency")(this.manodeobratotales)))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Cif Totales")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm._f("currency")(this.ciftotales)))])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Costo par")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm._f("currency")(this.costopar)))])
+              ])
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "table-responsive col-md-3" },
+        [
+          _c("center", [
+            _c("img", {
+              staticStyle: { "max-width": "200px", "max-height": "200px" },
+              attrs: { src: this.fotop, alt: "" }
+            })
+          ])
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "table-responsive col-md-4" }, [
+        _c("h4", [_vm._v("Materia prima")]),
+        _vm._v(" "),
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("Total por par")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm._f("currency")(this.acumuladomp)))])
+              ])
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-responsive col-md-3" }, [
+        _c("h4", [_vm._v("Mano de obra")]),
+        _vm._v(" "),
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("Total por par")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm._f("currency")(this.acumuladomo)))])
+              ])
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-responsive col-md-5" }, [
+        _c("h4", [_vm._v("Costos indirectos")]),
+        _vm._v(" "),
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("Total por par")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm._f("currency")(this.cifunidad)))])
+              ])
+            ])
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "table-responsive col-md-4" }, [
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.arrayMateriaPrima, function(materiaprima) {
+                return _c("tr", { key: materiaprima.id }, [
+                  _c("td", [_vm._v(_vm._s(materiaprima.gestionMateria))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(_vm._f("currency")(materiaprima.subtotal)))
+                  ])
+                ])
+              }),
+              0
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-responsive col-md-3" }, [
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.arrayManoDeObra, function(manodeobra) {
+                return _c("tr", { key: manodeobra.id }, [
+                  _c("td", [_vm._v(_vm._s(manodeobra.proceso))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(_vm._f("currency")(manodeobra.subtotal)))
+                  ])
+                ])
+              }),
+              0
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-responsive col-md-5" }, [
+        _c(
+          "table",
+          { staticClass: "table table-bordered table-striped table-sm" },
+          [
+            _vm._m(3),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _c("tr", [
+                  _c("td", [_vm._v("Depreciación")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(_vm._f("currency")(_vm.depreciacion)))
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.arrayConceptos, function(concepto) {
+                  return _c("tr", { key: concepto.id }, [
+                    _c("td", [_vm._v(_vm._s(concepto.concepto))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(_vm._f("currency")(concepto.valor)))
+                    ])
+                  ])
+                })
+              ],
+              2
+            )
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("td", [_vm._v("Orden de producción : ")]),
+      _vm._v(" "),
+      _c("td", [_vm._v("Costeo por capacidad")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Detalle")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Monto")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Detalle")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Monto")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Detalle")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Monto")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HojaDeCostosSimulador.vue?vue&type=template&id=6026d4ee& ***!
@@ -74589,6 +75198,43 @@ var render = function() {
                             { staticClass: "card-body" },
                             [
                               _c("hojadecostos", {
+                                key: _vm.componentKey,
+                                attrs: { identificador: _vm.identificador }
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "vs-tab",
+                        {
+                          attrs: {
+                            label: "Detallado",
+                            icon: "format_list_numbered"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.colorx = "#9B59B6"
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "card-header" }, [
+                            _c("i", { staticClass: "fa fa-align-justify" }),
+                            _vm._v(
+                              " Producto: " +
+                                _vm._s(this.productoNombre) +
+                                "  \n                            "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "card-body" },
+                            [
+                              _c("hojadecostosdetalle", {
                                 key: _vm.componentKey,
                                 attrs: { identificador: _vm.identificador }
                               })
@@ -111981,6 +112627,7 @@ Vue.component('conceptos', __webpack_require__(/*! ./components/Conceptos.vue */
 Vue.component('empresa', __webpack_require__(/*! ./components/Empresa.vue */ "./resources/js/components/Empresa.vue")["default"]);
 Vue.component('gestionmaterias', __webpack_require__(/*! ./components/GestionMaterias.vue */ "./resources/js/components/GestionMaterias.vue")["default"]);
 Vue.component('hojadecostos', __webpack_require__(/*! ./components/HojaDeCostos.vue */ "./resources/js/components/HojaDeCostos.vue")["default"]);
+Vue.component('hojadecostosdetalle', __webpack_require__(/*! ./components/HojaDeCostosDetalle.vue */ "./resources/js/components/HojaDeCostosDetalle.vue")["default"]);
 Vue.component('hojadecostossimulador', __webpack_require__(/*! ./components/HojaDeCostosSimulador.vue */ "./resources/js/components/HojaDeCostosSimulador.vue")["default"]);
 Vue.component('hojas', __webpack_require__(/*! ./components/Hojas.vue */ "./resources/js/components/Hojas.vue")["default"]);
 Vue.component('manodeobra', __webpack_require__(/*! ./components/ManoDeObraProductos.vue */ "./resources/js/components/ManoDeObraProductos.vue")["default"]);
@@ -112889,6 +113536,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostos_vue_vue_type_template_id_525b48db___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostos_vue_vue_type_template_id_525b48db___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/HojaDeCostosDetalle.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/HojaDeCostosDetalle.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HojaDeCostosDetalle_vue_vue_type_template_id_01952ccc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HojaDeCostosDetalle.vue?vue&type=template&id=01952ccc& */ "./resources/js/components/HojaDeCostosDetalle.vue?vue&type=template&id=01952ccc&");
+/* harmony import */ var _HojaDeCostosDetalle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HojaDeCostosDetalle.vue?vue&type=script&lang=js& */ "./resources/js/components/HojaDeCostosDetalle.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _HojaDeCostosDetalle_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _HojaDeCostosDetalle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HojaDeCostosDetalle_vue_vue_type_template_id_01952ccc___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HojaDeCostosDetalle_vue_vue_type_template_id_01952ccc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/HojaDeCostosDetalle.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/HojaDeCostosDetalle.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/HojaDeCostosDetalle.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosDetalle.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/HojaDeCostosDetalle.vue?vue&type=template&id=01952ccc&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/HojaDeCostosDetalle.vue?vue&type=template&id=01952ccc& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_template_id_01952ccc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./HojaDeCostosDetalle.vue?vue&type=template&id=01952ccc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HojaDeCostosDetalle.vue?vue&type=template&id=01952ccc&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_template_id_01952ccc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HojaDeCostosDetalle_vue_vue_type_template_id_01952ccc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

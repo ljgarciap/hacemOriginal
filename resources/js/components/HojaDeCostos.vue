@@ -5,21 +5,16 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
-                                        <!--<th>Foto</th>-->
-                                        <!--<th>Minutos</th>-->
                                         <th>Unidades proyección</th>
                                         <th>Total Materia directa</th>
                                         <th>Total Materia indirecta</th>
                                         <th>Total Mano de obra</th>
                                         <th>Total Cif aterrizados</th>
-                                        <!--<th>Total Maquinaria</th>-->
                                         <th><b>COSTO TOTAL</b></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="total in arrayTotales" :key="total.id">
-                                        <!--<td v-text="total.foto"></td>-->
-                                        <!--<td v-text="total.acumuladotiempomo"></td>-->
                                         <td>{{total.capacidadproducto | currency_2}}</td>
                                         <td>{{total.acumuladomd | currency}}</td>
                                         <td>{{total.acumuladomi | currency}}</td>
@@ -73,4 +68,3 @@
         }
     }
 </script>
-

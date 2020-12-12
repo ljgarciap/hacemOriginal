@@ -77,6 +77,7 @@ Vue.component('conceptos', require('./components/Conceptos.vue').default);
 Vue.component('empresa', require('./components/Empresa.vue').default);
 Vue.component('gestionmaterias', require('./components/GestionMaterias.vue').default);
 Vue.component('hojadecostos', require('./components/HojaDeCostos.vue').default);
+Vue.component('hojadecostosdetalle', require('./components/HojaDeCostosDetalle.vue').default);
 Vue.component('hojadecostossimulador', require('./components/HojaDeCostosSimulador.vue').default);
 Vue.component('hojas', require('./components/Hojas.vue').default);
 Vue.component('manodeobra', require('./components/ManoDeObraProductos.vue').default);

@@ -170,6 +170,18 @@
 
                                 </vs-tab>
 
+                                <vs-tab label="Detallado" icon="format_list_numbered" @click="colorx = '#9B59B6'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                    </div>
+
+                                    <div class="card-body">
+                                        <hojadecostosdetalle v-bind:identificador="identificador" :key="componentKey"></hojadecostosdetalle>
+                                    </div>
+
+                                </vs-tab>
+
                                 <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
                                 </vs-tab>
 
@@ -178,7 +190,8 @@
                         </div>
                     </template>
                     <!-- Fin Detalle -->
-                                    <!--Inicio del modal agregar/actualizar-->
+
+                    <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
 
@@ -235,8 +248,6 @@
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
                                     </div>
-
-                                        <!--------------divs para modal tipo 2--------------------->
 
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
@@ -324,7 +335,7 @@
                                 </form>
                             </div>
 
-                                <!--------------------------divs para footer tipo 1 y 2--------------------------------->
+                                <!-- divs para footer tipo 1 y 2 -->
 
                             <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
