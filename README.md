@@ -17,3 +17,4 @@ Se crearon seeders y modelos se llenaron con sus campos correspondiente;se creo 
 ## 11-12-20
 
 Se clona el repositorio y se modifican las funciones de vista detallada hoja de costos.
+Actualización listado de colaboradores.
