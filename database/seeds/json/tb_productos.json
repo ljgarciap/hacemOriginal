@@ -1,0 +1,8 @@
+[
+{"Id":"1","Producto":"Bota para caballero en cuero","Referencia":"279","Foto":"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRm3fMlHuqldNjiZgbh0byuc1xcb3woZMzB5pItF1j5s4XCR7MXn_N7fRo59sEmw4Jau4zPzyKVhjR0&usqp=CAc","Descripcion":"Bota en cuero","IdColeccion":"1","IdArea":"1","Estado":"1"},
+{"Id":"2","Producto":"Zapato bolichero","Referencia":"BBrown","Foto":"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRxEoLjz-Gsi6D9LT5tHnl4V_ZU4uOeQxGUnJ4yDFPzLJRJUTyhMBdVlqI2YckLOsVRMMg5QBmDiIJc&usqp=CAc","Descripcion":"Bolichero brown","IdColeccion":"1","IdArea":"1","Estado":"1"},
+{"Id":"3","Producto":"Stiletto","Referencia":"S001","Foto":"https://www.tacones-altos.net/images/product_images/popup_images/Rojo-Charol-13-cm-AMUSE-20-Stiletto-zapatos-tacon-de-aguja-5771_0.jpg","Descripcion":"Stiletto","IdColeccion":"1","IdArea":"1","Estado":"1"},
+{"Id":"4","Producto":"Bota media de seguridad","Referencia":"01BI16","Foto":"https://dafitistaticco-a.akamaihd.net/p/brahma-2982-859187-1-product.jpg","Descripcion":"Botas de prueba para coste","IdColeccion":"3","IdArea":"1","Estado":"1"},
+{"Id":"5","Producto":"Bolso dama","Referencia":"BL003","Foto":"https://http2.mlstatic.com/D_NQ_NP_827794-MCO43021330162_082020-W.jpg","Descripcion":"Bolso dama","IdColeccion":"1","IdArea":"2","Estado":"1"},
+{"Id":"6","Producto":"Monedero","Referencia":"M005","Foto":"https://i.pinimg.com/originals/15/8d/24/158d2400508438515c0fc056f218f54a.jpg","Descripcion":"Monedero","IdColeccion":"1","IdArea":"2","Estado":"1"}
+]

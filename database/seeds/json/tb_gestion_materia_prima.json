@@ -14,5 +14,25 @@
     {"id":"13","gestionMateria":"Halogenante x 1000 ml","idUnidadBase":"6","precioBase":"18","idTipoMateria":"4","estado":"1"},
     {"id":"14","gestionMateria":"Cambrion acerado","idUnidadBase":"5","precioBase":"800","idTipoMateria":"4","estado":"1"},
     {"id":"15","gestionMateria":"Cordones","idUnidadBase":"5","precioBase":"500","idTipoMateria":"4","estado":"1"},
-    {"id":"16","gestionMateria":"Plantilla","idUnidadBase":"5","precioBase":"500","idTipoMateria":"4","estado":"1"}
-    ]
+    {"id":"16","gestionMateria":"Plantilla","idUnidadBase":"5","precioBase":"500","idTipoMateria":"4","estado":"1"},
+    {"id":"17","gestionMateria":"Forro textil","idUnidadBase":"2","precioBase":"8800","idTipoMateria":"1","estado":"1"},
+    {"id":"18","gestionMateria":"Cordonera doble","idUnidadBase":"4","precioBase":"40","idTipoMateria":"3","estado":"1"},
+    {"id":"19","gestionMateria":"Reata","idUnidadBase":"2","precioBase":"150","idTipoMateria":"1","estado":"1"},
+    {"id":"20","gestionMateria":"Malla Alicante","idUnidadBase":"2","precioBase":"14000","idTipoMateria":"1","estado":"1"},
+    {"id":"21","gestionMateria":"Pegante amarillo","idUnidadBase":"6","precioBase":"125000","idTipoMateria":"2","estado":"1"},
+    {"id":"22","gestionMateria":"Pimpon","idUnidadBase":"3","precioBase":"4800","idTipoMateria":"1","estado":"1"},
+    {"id":"23","gestionMateria":"Produeva","idUnidadBase":"2","precioBase":"7200","idTipoMateria":"1","estado":"1"},
+    {"id":"24","gestionMateria":"Aplique sintético","idUnidadBase":"2","precioBase":"16000","idTipoMateria":"1","estado":"1"},
+    {"id":"25","gestionMateria":"Registro","idUnidadBase":"5","precioBase":"50","idTipoMateria":"1","estado":"1"},
+    {"id":"26","gestionMateria":"Caja taco","idUnidadBase":"4","precioBase":"1000","idTipoMateria":"1","estado":"1"},
+    {"id":"27","gestionMateria":"Corte sintético","idUnidadBase":"5","precioBase":"1670","idTipoMateria":"1","estado":"1"},
+    {"id":"28","gestionMateria":"Forro sintético","idUnidadBase":"5","precioBase":"650","idTipoMateria":"1","estado":"1"},
+    {"id":"29","gestionMateria":"Puntera","idUnidadBase":"5","precioBase":"60","idTipoMateria":"2","estado":"1"},
+    {"id":"30","gestionMateria":"Contrafuerte","idUnidadBase":"5","precioBase":"70","idTipoMateria":"2","estado":"1"},
+    {"id":"31","gestionMateria":"Suela en expanso","idUnidadBase":"5","precioBase":"4850","idTipoMateria":"1","estado":"1"},
+    {"id":"32","gestionMateria":"Hiladillo","idUnidadBase":"5","precioBase":"50","idTipoMateria":"2","estado":"1"},
+    {"id":"33","gestionMateria":"Puntera de emplantillado","idUnidadBase":"5","precioBase":"150","idTipoMateria":"2","estado":"1"},
+    {"id":"34","gestionMateria":"Pegante blanco","idUnidadBase":"5","precioBase":"270","idTipoMateria":"1","estado":"1"},
+    {"id":"35","gestionMateria":"Solución de caucho","idUnidadBase":"5","precioBase":"180","idTipoMateria":"1","estado":"1"},
+    {"id":"36","gestionMateria":"Bolsa","idUnidadBase":"4","precioBase":"25","idTipoMateria":"2","estado":"1"}
+]

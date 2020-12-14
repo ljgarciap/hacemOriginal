@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+//-------------------------------------------------------------------//
         //primero vacia la tabla y luego la llena ojo
         $this->truncateTables([
             'tb_area'
@@ -85,14 +86,62 @@ class DatabaseSeeder extends Seeder
         //funcion principal que llama cada seeder
         $this->call(Tb_tipo_materiaSeeder::class);
 //-------------------------------------------------------------------//
-        //primero vacia la tabla y luego la llena ojo
+
+//----------------------------------------------------------------------------------------------//
+
+//--Seeders de base de muestra, se puede comentar si se requiere la base con lo inicial solamente--//
         $this->truncateTables([
             'tb_gestion_materia_prima'
         ]);
-
-        //funcion principal que llama cada seeder
         $this->call(Tb_gestion_materia_primaSeeder::class);
-//-------------------------------------------------------------------//
+
+        $this->truncateTables([
+            'tb_concepto_cif'
+        ]);
+        $this->call(Tb_concepto_cifSeeder::class);
+
+        $this->truncateTables([
+            'tb_maquinaria'
+        ]);
+        $this->call(Tb_maquinariaSeeder::class);
+
+        $this->truncateTables([
+            'tb_coleccion'
+        ]);
+        $this->call(Tb_coleccionSeeder::class);
+
+        $this->truncateTables([
+            'tb_producto'
+        ]);
+        $this->call(Tb_productoSeeder::class);
+
+        $this->truncateTables([
+            'tb_hoja_de_costo'
+        ]);
+        $this->call(Tb_hoja_de_costoSeeder::class);
+
+        $this->truncateTables([
+            'tb_mano_de_obra_producto'
+        ]);
+        $this->call(Tb_mano_de_obra_productoSeeder::class);
+
+        $this->truncateTables([
+            'tb_materia_prima_producto'
+        ]);
+        $this->call(Tb_materia_prima_productoSeeder::class);
+
+        $this->truncateTables([
+            'tb_simulacion'
+        ]);
+        $this->call(Tb_simulacionSeeder::class);
+
+        $this->truncateTables([
+            'tb_rela_simulacion'
+        ]);
+        $this->call(Tb_rela_simulacionSeeder::class);
+//--Hasta aca se comentan los seeders de base de muestra para iniciar con lo básico--//
+
+//----------------------------------------------------------------------------------------------//
 
 //--Tener cuidado con este cierre--//
     }
