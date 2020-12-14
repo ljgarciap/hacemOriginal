@@ -46,10 +46,15 @@
 
                                     <tr v-for="simulacion in arraySimulaciones" :key="simulacion.id">
                                         <td>
-                                        <template>
+                                        <template v-if="simulacion.estado==1">
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(simulacion.id)">
                                                 <i class="icon-plus"></i><span> Agregar</span>
                                             </button>
+                                            <button type="button" class="btn btn-warning btn-sm" @click="generarDetalle(simulacion.id)">
+                                                <i class="icon-cloud-upload"></i><span> Generar</span>
+                                            </button>
+                                        </template>
+                                        <template v-if="simulacion.estado==2">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(simulacion.id)">
                                                 <i class="icon-magnifier"></i><span> Detalle</span>
                                             </button>
@@ -110,6 +115,7 @@
                 </div>
                 </template>
 
+                    <!-- Template para mostrar el detalle luego de generar -->
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
@@ -159,7 +165,7 @@
                                         </div>
                                     </div>
 
-                                    <!--------------divs para modal tipo 2--------------------->
+                                    <!-- divs para modal tipo 2 -->
 
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Producto</label>
@@ -337,6 +343,7 @@
                 })
             },
             eliminarProducto(){
+                /*
                 let me=this;
                 axios.put('/materiaprimaproducto/deactivate',{
                     'id': this.id
@@ -347,6 +354,7 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+                */
             },
             crearSimulacion(){
                 //valido con el metodo de validacion creado
@@ -387,6 +395,20 @@
             mostrarDetalle(id){
                 this.listado=2;
                 this.identificador=id;
+            },
+            generarDetalle(id){
+                this.identificador=id;
+                let me=this;
+                axios.post('/simulacion/estado',{
+                    'id': this.identificador,
+                    'estado': 2
+                }).then(function (response) {
+                me.forceRerender();
+                me.listarSimulacion(1,'','');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             ocultarDetalle(){
                 this.listado=0;

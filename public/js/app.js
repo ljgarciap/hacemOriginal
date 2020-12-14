@@ -4998,7 +4998,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     acumuladoTotal: function acumuladoTotal(identificador) {
       var me = this;
-      var url = '/hojadecosto/ciftiempos/' + this.identificador;
+      var url = '/simulacion/ciftiempos/' + this.identificador;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayProductos = respuesta.productos;
@@ -5013,7 +5013,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     costeoUnidad: function costeoUnidad(idProducto, identificador) {
       var me = this;
-      var url = '/hojadecosto/unitario?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
+      var url = '/simulacion/unitario?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.acumuladomp = respuesta.acumuladomp;
@@ -5039,7 +5039,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     costeoDetalle: function costeoDetalle(idProducto, identificador) {
       var me = this;
-      var url = '/hojadecosto/detalle?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
+      var url = '/simulacion/detalle?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
       axios.get(url).then(function (response) {
         var respuesta = response.data;
         me.arrayMateriaPrima = respuesta.materiaprimaproductos;
@@ -9372,6 +9372,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -9497,15 +9503,18 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     eliminarProducto: function eliminarProducto() {
-      var me = this;
-      axios.put('/materiaprimaproducto/deactivate', {
-        'id': this.id
+      /*
+      let me=this;
+      axios.put('/materiaprimaproducto/deactivate',{
+          'id': this.id
       }).then(function (response) {
-        me.forceRerender();
-        me.listarProducto(1, '', 'materiaprima');
-      })["catch"](function (error) {
-        console.log(error);
+      me.forceRerender();
+      me.listarProducto(1,'','materiaprima');
+      })
+      .catch(function (error) {
+          console.log(error);
       });
+      */
     },
     crearSimulacion: function crearSimulacion() {
       //valido con el metodo de validacion creado
@@ -9544,6 +9553,19 @@ __webpack_require__.r(__webpack_exports__);
     mostrarDetalle: function mostrarDetalle(id) {
       this.listado = 2;
       this.identificador = id;
+    },
+    generarDetalle: function generarDetalle(id) {
+      this.identificador = id;
+      var me = this;
+      axios.post('/simulacion/estado', {
+        'id': this.identificador,
+        'estado': 2
+      }).then(function (response) {
+        me.forceRerender();
+        me.listarSimulacion(1, '', '');
+      })["catch"](function (error) {
+        console.log(error);
+      });
     },
     ocultarDetalle: function ocultarDetalle() {
       this.listado = 0;
@@ -81711,47 +81733,79 @@ var render = function() {
                               _c(
                                 "td",
                                 [
-                                  [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-danger btn-sm",
-                                        attrs: { type: "button" },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.mostrarProductos(
-                                              simulacion.id
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", { staticClass: "icon-plus" }),
-                                        _c("span", [_vm._v(" Agregar")])
+                                  simulacion.estado == 1
+                                    ? [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-danger btn-sm",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.mostrarProductos(
+                                                  simulacion.id
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "icon-plus"
+                                            }),
+                                            _c("span", [_vm._v(" Agregar")])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-warning btn-sm",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.generarDetalle(
+                                                  simulacion.id
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "icon-cloud-upload"
+                                            }),
+                                            _c("span", [_vm._v(" Generar")])
+                                          ]
+                                        )
                                       ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-success btn-sm",
-                                        attrs: { type: "button" },
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.mostrarDetalle(
-                                              simulacion.id
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
-                                          staticClass: "icon-magnifier"
-                                        }),
-                                        _c("span", [_vm._v(" Detalle")])
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  simulacion.estado == 2
+                                    ? [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn btn-success btn-sm",
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.mostrarDetalle(
+                                                  simulacion.id
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "icon-magnifier"
+                                            }),
+                                            _c("span", [_vm._v(" Detalle")])
+                                          ]
+                                        )
                                       ]
-                                    )
-                                  ]
+                                    : _vm._e()
                                 ],
                                 2
                               ),

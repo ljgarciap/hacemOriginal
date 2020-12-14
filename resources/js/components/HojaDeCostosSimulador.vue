@@ -299,7 +299,7 @@
         methods : {
             acumuladoTotal(identificador){
                 let me=this;
-                var url='/hojadecosto/ciftiempos/'+this.identificador;
+                var url='/simulacion/ciftiempos/'+this.identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductos=respuesta.productos;
@@ -315,7 +315,7 @@
             },
             costeoUnidad(idProducto,identificador){
                 let me=this;
-                var url='/hojadecosto/unitario?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
+                var url='/simulacion/unitario?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.acumuladomp=respuesta.acumuladomp;
@@ -342,7 +342,7 @@
             },
             costeoDetalle(idProducto,identificador){
                 let me=this;
-                var url='/hojadecosto/detalle?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
+                var url='/simulacion/detalle?identificador=' + this.idProducto + '&simulacion=' + this.identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayMateriaPrima=respuesta.materiaprimaproductos;
