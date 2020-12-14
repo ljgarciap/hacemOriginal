@@ -29,6 +29,6 @@ class CreateTbConceptoCifTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_concepto_cif');
+        Schema::dropIfExists('tb_concepto_cifs');
     }
 }
