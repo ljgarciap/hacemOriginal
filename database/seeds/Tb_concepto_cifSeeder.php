@@ -21,15 +21,5 @@ class Tb_concepto_cifSeeder extends Seeder
                 'estado' => $item->estado
             ));
             }
-        /*
-        DB::table('tb_rol')->insert([
-            'rol' => 'SuperAdministrador',
-        ]);
-
-        DB::table('tb_rol')->insert([
-            'rol' => 'Empresario',
-        ]
-        );
-        */
     }
 }
