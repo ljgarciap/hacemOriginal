@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class tb_concepto_cif_simula extends Model
+class Tb_concepto_cif_simula extends Model
 {
     protected $table = 'tb_concepto_cif_simula';
 
