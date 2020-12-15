@@ -4952,10 +4952,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     identificador: {
@@ -5044,8 +5040,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var respuesta = response.data;
         me.arrayMateriaPrima = respuesta.materiaprimaproductos;
         me.arrayManoDeObra = respuesta.manodeobraproductos;
-        me.arrayConceptos = respuesta.conceptos;
-        me.depreciacion = respuesta.acumuladomaquinaria; //console.log(url);
+        me.arrayConceptos = respuesta.conceptos; //console.log(url);
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -9378,6 +9373,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -9558,9 +9558,9 @@ __webpack_require__.r(__webpack_exports__);
       this.identificador = id;
       var me = this;
       axios.post('/simulacion/estado', {
-        'id': this.identificador,
-        'estado': 2
+        'id': this.identificador
       }).then(function (response) {
+        me.cerrarModal('0');
         me.forceRerender();
         me.listarSimulacion(1, '', '');
       })["catch"](function (error) {
@@ -9575,7 +9575,7 @@ __webpack_require__.r(__webpack_exports__);
       this.tituloModal = '';
       this.detalle = '';
     },
-    abrirModal: function abrirModal(modelo, accion) {
+    abrirModal: function abrirModal(modelo, accion, identificador) {
       //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
       switch (modelo) {
         case "simulacion":
@@ -9614,6 +9614,24 @@ __webpack_require__.r(__webpack_exports__);
             }
 
             this.listarPosibles(this.identificador);
+            break;
+          }
+
+        case "detalle":
+          {
+            switch (accion) {
+              case 'crear':
+                {
+                  this.modal = 1;
+                  this.tipoModal = 3; //carga tipos de campos y footers
+
+                  this.tituloModal = 'Generando, por favor espere...';
+                  this.identificador = identificador;
+                  break;
+                }
+            }
+
+            this.generarDetalle(this.identificador);
             break;
           }
       }
@@ -15297,7 +15315,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #3c29297a !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\n.carga{\n    background-color: #3c29297a !important;\n    width: 100% !important;\n    height: 100% !important;\n    text-align: center;\n    color: #ffffffff;\n}\n", ""]);
 
 // exports
 
@@ -74523,26 +74541,16 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "tbody",
-                      [
-                        _c("tr", [
-                          _c("td", [_vm._v("Depreciación")]),
+                      _vm._l(_vm.arrayConceptos, function(concepto) {
+                        return _c("tr", { key: concepto.id }, [
+                          _c("td", [_vm._v(_vm._s(concepto.concepto))]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(_vm._f("currency")(_vm.depreciacion)))
+                            _vm._v(_vm._s(_vm._f("currency")(concepto.valor)))
                           ])
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(_vm.arrayConceptos, function(concepto) {
-                          return _c("tr", { key: concepto.id }, [
-                            _c("td", [_vm._v(_vm._s(concepto.concepto))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _vm._v(_vm._s(_vm._f("currency")(concepto.valor)))
-                            ])
-                          ])
-                        })
-                      ],
-                      2
+                        ])
+                      }),
+                      0
                     )
                   ]
                 )
@@ -81765,7 +81773,9 @@ var render = function() {
                                             attrs: { type: "button" },
                                             on: {
                                               click: function($event) {
-                                                return _vm.generarDetalle(
+                                                return _vm.abrirModal(
+                                                  "detalle",
+                                                  "crear",
                                                   simulacion.id
                                                 )
                                               }
@@ -82062,30 +82072,32 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _c("div", { staticClass: "modal-header" }, [
-                  _c("h4", {
-                    staticClass: "modal-title",
-                    domProps: { textContent: _vm._s(_vm.tituloModal) }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close",
-                      attrs: { type: "button", "aria-label": "Close" },
-                      on: {
-                        click: function($event) {
-                          return _vm.cerrarModal()
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("×")
-                      ])
-                    ]
-                  )
-                ]),
+                _vm.tipoModal != 3
+                  ? _c("div", { staticClass: "modal-header" }, [
+                      _c("h4", {
+                        staticClass: "modal-title",
+                        domProps: { textContent: _vm._s(_vm.tituloModal) }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "close",
+                          attrs: { type: "button", "aria-label": "Close" },
+                          on: {
+                            click: function($event) {
+                              return _vm.cerrarModal()
+                            }
+                          }
+                        },
+                        [
+                          _c("span", { attrs: { "aria-hidden": "true" } }, [
+                            _vm._v("×")
+                          ])
+                        ]
+                      )
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c(
@@ -82423,6 +82435,18 @@ var render = function() {
                               )
                             ]
                           )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.tipoModal == 3
+                        ? _c("div", { staticClass: "carga" }, [
+                            _c("p"),
+                            _c("hr"),
+                            _c("h1", [
+                              _vm._v("Generando, por favor espere...")
+                            ]),
+                            _c("hr"),
+                            _c("p")
+                          ])
                         : _vm._e()
                     ]
                   )

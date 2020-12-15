@@ -226,10 +226,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Depreciación</td>
-                                <td>{{depreciacion | currency}}</td>
-                            </tr>
                             <tr v-for="concepto in arrayConceptos" :key="concepto.id">
                                 <td>{{concepto.concepto}}</td>
                                 <td>{{concepto.valor | currency}}</td>
@@ -348,7 +344,6 @@
                 me.arrayMateriaPrima=respuesta.materiaprimaproductos;
                 me.arrayManoDeObra=respuesta.manodeobraproductos;
                 me.arrayConceptos=respuesta.conceptos;
-                me.depreciacion=respuesta.acumuladomaquinaria;
                 //console.log(url);
                 })
                 .catch(function (error) {

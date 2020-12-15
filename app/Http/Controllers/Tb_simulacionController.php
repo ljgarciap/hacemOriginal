@@ -12,6 +12,9 @@ use App\Tb_concepto_cif;
 use App\Tb_maquinaria;
 use App\Tb_producto;
 use App\Tb_rela_simulacion;
+use App\Tb_mano_de_obra_producto_simula;
+use App\Tb_materia_prima_producto_simula;
+use App\Tb_concepto_cif_simula;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -55,14 +58,6 @@ class Tb_simulacionController extends Controller
         $tb_simulacion->save();
     }
 
-    public function estado(Request $request)
-    {
-        //if(!$request->ajax()) return redirect('/');
-        $tb_simulacion=Tb_simulacion::findOrFail($request->id);
-        $tb_simulacion->estado=2;
-        $tb_simulacion->save();
-    }
-
     public function update(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
@@ -71,34 +66,100 @@ class Tb_simulacionController extends Controller
         $tb_simulacion->save();
     }
 
+//---------------------Funcion para generar las relaciones en las tablas que quedan con los datos-----------------------------------//
+
+    public function estado(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $idSimulacion= $request->id;
+        $acumuladomaquinariasimula=0;
+        $tb_simulacion=Tb_simulacion::findOrFail($request->id);
+        $tb_simulacion->estado=2;
+        $tb_simulacion->save();
+
+        //maquinaria y cif al ser globales los calculo desde aca
+        $querymaq = DB::raw("(CASE WHEN SUM(tb_maquinaria.depreciacionMensual) IS NULL THEN 0
+        ELSE SUM(tb_maquinaria.depreciacionMensual) END) as acumuladomaquinaria");
+        $totales = DB::table('tb_maquinaria')
+        ->select($querymaq)
+        ->get();
+        foreach($totales as $totalg){
+            $acumuladomaquinariasimula = $totalg->acumuladomaquinaria + $acumuladomaquinariasimula;
+        }
+
+        $tb_concepto_cif_simula0=new Tb_concepto_cif_simula();
+        $tb_concepto_cif_simula0->concepto='Depreciación';
+        $tb_concepto_cif_simula0->valor=$acumuladomaquinariasimula;
+        $tb_concepto_cif_simula0->idSimulacion=$idSimulacion;
+        $tb_concepto_cif_simula0->save();
+
+        $conceptoscif = DB::table('tb_concepto_cif')->where('tb_concepto_cif.estado', '=', '1')->get();
+        foreach ($conceptoscif as $conceptocif) {
+            $concepto=$conceptocif->concepto;
+            $valor=$conceptocif->valor;
+            $tb_concepto_cif_simula=new Tb_concepto_cif_simula();
+            $tb_concepto_cif_simula->concepto=$concepto;
+            $tb_concepto_cif_simula->valor=$valor;
+            $tb_concepto_cif_simula->idSimulacion=$idSimulacion;
+            $tb_concepto_cif_simula->save();
+        }
+
+        $productos = DB::table('tb_rela_simulacion')->where('tb_rela_simulacion.idSimulacion', '=', $idSimulacion)->get();
+        foreach ($productos as $producto) {
+            $idProducto=$producto->idProducto;
+
+            $manodeobras = DB::table('tb_mano_de_obra_producto')->where('tb_mano_de_obra_producto.idHoja', '=', $idProducto)->get();
+            foreach ($manodeobras as $manodeobra) {
+                $idPerfil=$manodeobra->idPerfil;
+                $tiempo=$manodeobra->tiempo;
+                $precio=$manodeobra->precio;
+                $tipoPago=$manodeobra->tipoPago;
+
+                $tb_mano_de_obra_producto_simula=new Tb_mano_de_obra_producto_simula();
+                $tb_mano_de_obra_producto_simula->idPerfil=$idPerfil;
+                $tb_mano_de_obra_producto_simula->tiempo=$tiempo;
+                $tb_mano_de_obra_producto_simula->precio=$precio;
+                $tb_mano_de_obra_producto_simula->tipoPago=$tipoPago;
+                $tb_mano_de_obra_producto_simula->idProducto=$idProducto;
+                $tb_mano_de_obra_producto_simula->idSimulacion=$idSimulacion;
+                $tb_mano_de_obra_producto_simula->save();
+            }
+
+            $materiasprimas = DB::table('tb_materia_prima_producto')->where('tb_materia_prima_producto.idHoja', '=', $idProducto)->get();
+            foreach ($materiasprimas as $materiaprima) {
+                $idMateriaPrima=$materiaprima->idMateriaPrima;
+                $cantidad=$materiaprima->cantidad;
+                $precio=$materiaprima->precio;
+                $tipoDeCosto=$materiaprima->tipoDeCosto;
+
+                $tb_materia_prima_producto_simula=new Tb_materia_prima_producto_simula();
+                $tb_materia_prima_producto_simula->idMateriaPrima=$idMateriaPrima;
+                $tb_materia_prima_producto_simula->cantidad=$cantidad;
+                $tb_materia_prima_producto_simula->precio=$precio;
+                $tb_materia_prima_producto_simula->tipoDeCosto=$tipoDeCosto;
+                $tb_materia_prima_producto_simula->idProducto=$idProducto;
+                $tb_materia_prima_producto_simula->idSimulacion=$idSimulacion;
+                $tb_materia_prima_producto_simula->save();
+            }
+
+        }
+    }
+
 //---------------------------------------------------------------------------------------------------------------------------------//
 public function cifTiempos($identificador)
 {
     //el identificador que paso a esta función es el idSimulacion
-    $acumuladocif = 0;
-    $acumuladomaquinaria = 0;
     $acumuladocift = 0;
 
     //cif
-    $query3 = DB::raw("(CASE WHEN SUM(tb_concepto_cif.valor) IS NULL THEN 0
-    ELSE SUM(tb_concepto_cif.valor) END) as acumuladocif");
-    $ciftotales = DB::table('tb_concepto_cif')
+    $query3 = DB::raw("(CASE WHEN SUM(tb_concepto_cif_simula.valor) IS NULL THEN 0
+    ELSE SUM(tb_concepto_cif_simula.valor) END) as acumuladocif");
+    $ciftotales = DB::table('tb_concepto_cif_simula')
+    ->where('tb_concepto_cif_simula.idSimulacion', '=', $identificador)
     ->select($query3)
     ->get();
     foreach($ciftotales as $ciftotal){
-        $acumuladocif = $ciftotal->acumuladocif + $acumuladocif;
-        $acumuladocift = $acumuladocift + $acumuladocif;
-    }
-
-    //maquinaria
-    $query4 = DB::raw("(CASE WHEN SUM(tb_maquinaria.depreciacionMensual) IS NULL THEN 0
-    ELSE SUM(tb_maquinaria.depreciacionMensual) END) as acumuladomaquinaria");
-    $totales = DB::table('tb_maquinaria')
-    ->select($query4)
-    ->get();
-    foreach($totales as $totalg){
-        $acumuladomaquinaria = $totalg->acumuladomaquinaria + $acumuladomaquinaria;
-        $acumuladocift = $acumuladocift + $acumuladomaquinaria;
+        $acumuladocift = $ciftotal->acumuladocif + $acumuladocift;
     }
 
     $acumuladoproduccion=0;
@@ -107,7 +168,8 @@ public function cifTiempos($identificador)
 
     $querys = DB::raw("SUM(tb_rela_simulacion.unidades) as acumuladoprod,SUM(tb_rela_simulacion.tiempo) as acumuladotiem,
     SUM(tb_rela_simulacion.unidades * tb_rela_simulacion.tiempo) as acumuladocalc");
-    $totalprod = DB::table('tb_rela_simulacion')->where('idSimulacion','=',$identificador)
+    $totalprod = DB::table('tb_rela_simulacion')
+    ->where('idSimulacion','=',$identificador)
     ->select($querys)
     ->get();
 
@@ -128,7 +190,8 @@ public function cifTiempos($identificador)
     $productos = Tb_rela_simulacion::join('tb_producto','tb_rela_simulacion.idProducto','=','tb_producto.id')
     ->select('tb_rela_simulacion.id','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto',
     'tb_producto.referencia','tb_producto.descripcion','tb_producto.id as idProducto')
-    ->where('tb_rela_simulacion.idSimulacion', '=', $identificador)->get();
+    ->where('tb_rela_simulacion.idSimulacion', '=', $identificador)
+    ->get();
 
     return [
         'productos' => $productos,
@@ -150,10 +213,6 @@ public function unitarioTotal(Request $request)
     $acumuladomd = 0;
     $acumuladomi = 0;
     $acumuladomo = 0;
-    $acumuladocif = 0;
-    $acumuladomaquinaria = 0;
-    $acumuladocift = 0;
-    $capacidadproducto = 0;
 
     $productos = Tb_producto::where('id','=',$identificador)
     ->select('producto','referencia','foto')->get();
@@ -164,73 +223,66 @@ public function unitarioTotal(Request $request)
         }
 
     $simulate = Tb_simulacion::where('id','=',$simulacion)
-    ->select('descripcion')->get();
+    ->select('descripcion')
+    ->get();
     foreach($simulate as $simula){
         $simuladet = $simula->descripcion;
         }
 
     //directa
-    $query = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
-    ELSE ROUND(SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) END) as acumuladomd");
-    $materiadirecta = DB::table('tb_materia_prima_producto')
+    $query = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto_simula.cantidad*tb_materia_prima_producto_simula.precio) IS NULL THEN 0
+    ELSE ROUND(SUM(tb_materia_prima_producto_simula.cantidad*tb_materia_prima_producto_simula.precio),0) END) as acumuladomd");
+    $materiadirecta = DB::table('tb_materia_prima_producto_simula')
     ->select($query)
     ->where([
-        ['tb_materia_prima_producto.idHoja','=',$identificador],
-        ['tb_materia_prima_producto.tipoDeCosto', '=', 'Directo'],
+        ['tb_materia_prima_producto_simula.idProducto','=',$identificador],
+        ['tb_materia_prima_producto_simula.idSimulacion','=',$simulacion],
+        ['tb_materia_prima_producto_simula.tipoDeCosto', '=', 'Directo'],
     ])->get();
     foreach($materiadirecta as $materiad){
     $acumuladomd = $materiad->acumuladomd + $acumuladomd;
     }
 
     //indirecta
-    $query1 = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
-    ELSE ROUND(SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) END) as acumuladomi");
-    $materiaindirecta = DB::table('tb_materia_prima_producto')
+    $query1 = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto_simula.cantidad*tb_materia_prima_producto_simula.precio) IS NULL THEN 0
+    ELSE ROUND(SUM(tb_materia_prima_producto_simula.cantidad*tb_materia_prima_producto_simula.precio),0) END) as acumuladomi");
+    $materiaindirecta = DB::table('tb_materia_prima_producto_simula')
     ->select($query1)
     ->where([
-        ['tb_materia_prima_producto.idHoja','=',$identificador],
-        ['tb_materia_prima_producto.tipoDeCosto', '=', 'Indirecto'],
+        ['tb_materia_prima_producto_simula.idProducto','=',$identificador],
+        ['tb_materia_prima_producto_simula.idSimulacion','=',$simulacion],
+        ['tb_materia_prima_producto_simula.tipoDeCosto', '=', 'Indirecto'],
     ])->get();
     foreach($materiaindirecta as $materiaind){
         $acumuladomi = $materiaind->acumuladomi + $acumuladomi;
     }
 
     //manodeobra
-    $query2 = DB::raw("(CASE WHEN SUM(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) IS NULL THEN 0
-    ELSE ROUND(SUM(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) END) as acumuladomo");
-    $manodeobra = DB::table('tb_mano_de_obra_producto')
+    $query2 = DB::raw("(CASE WHEN SUM(tb_mano_de_obra_producto_simula.tiempo*tb_mano_de_obra_producto_simula.precio) IS NULL THEN 0
+    ELSE ROUND(SUM(tb_mano_de_obra_producto_simula.tiempo*tb_mano_de_obra_producto_simula.precio),0) END) as acumuladomo");
+    $manodeobra = DB::table('tb_mano_de_obra_producto_simula')
     ->select($query2)
-    ->where('tb_mano_de_obra_producto.idHoja','=',$identificador)
-    ->get();
+    ->where([
+        ['tb_mano_de_obra_producto_simula.idProducto','=',$identificador],
+        ['tb_mano_de_obra_producto_simula.idSimulacion','=',$simulacion],
+    ])->get();
+
     foreach($manodeobra as $manodeo){
         $acumuladomo = $manodeo->acumuladomo + $acumuladomo;
     }
 
     //cif
-    $acumuladocif = 0;
-    $acumuladomaquinaria = 0;
     $acumuladocift = 0;
 
     //cif
-    $query3 = DB::raw("(CASE WHEN SUM(tb_concepto_cif.valor) IS NULL THEN 0
-    ELSE SUM(tb_concepto_cif.valor) END) as acumuladocif");
-    $ciftotales = DB::table('tb_concepto_cif')
+    $query3 = DB::raw("(CASE WHEN SUM(tb_concepto_cif_simula.valor) IS NULL THEN 0
+    ELSE SUM(tb_concepto_cif_simula.valor) END) as acumuladocif");
+    $ciftotales = DB::table('tb_concepto_cif_simula')
+    ->where('tb_concepto_cif_simula.idSimulacion', '=', $simulacion)
     ->select($query3)
     ->get();
     foreach($ciftotales as $ciftotal){
-        $acumuladocif = $ciftotal->acumuladocif + $acumuladocif;
-        $acumuladocift = $acumuladocift + $acumuladocif;
-    }
-
-    //maquinaria
-    $query4 = DB::raw("(CASE WHEN SUM(tb_maquinaria.depreciacionMensual) IS NULL THEN 0
-    ELSE SUM(tb_maquinaria.depreciacionMensual) END) as acumuladomaquinaria");
-    $totales = DB::table('tb_maquinaria')
-    ->select($query4)
-    ->get();
-    foreach($totales as $totalg){
-        $acumuladomaquinaria = $totalg->acumuladomaquinaria + $acumuladomaquinaria;
-        $acumuladocift = $acumuladocift + $acumuladomaquinaria;
+        $acumuladocift = $ciftotal->acumuladocif + $acumuladocift;
     }
 
     //capacidadproduccion producto
@@ -238,7 +290,8 @@ public function unitarioTotal(Request $request)
     $tiempoprod=0;
 
     $queryu = DB::raw("tb_rela_simulacion.unidades,tb_rela_simulacion.tiempo");
-    $totalprodu = DB::table('tb_rela_simulacion')->where([
+    $totalprodu = DB::table('tb_rela_simulacion')
+    ->where([
         ['idSimulacion','=',$simulacion],
         ['idProducto','=',$identificador],
     ])
@@ -301,46 +354,43 @@ public function hojaDetalle(Request $request)
     $identificador= $request->identificador;
     $simulacion= $request->simulacion;
 
-    $materiaprimaproductos = Tb_materia_prima_producto::join("tb_gestion_materia_prima","tb_materia_prima_producto.idMateriaPrima","=","tb_gestion_materia_prima.id")
+    $materiaprimaproductos = Tb_materia_prima_producto_simula::join("tb_gestion_materia_prima","tb_materia_prima_producto_simula.idMateriaPrima","=","tb_gestion_materia_prima.id")
     ->leftJoin('tb_unidad_base',function($join){
         $join->on('tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id');
     })
-    ->select('tb_gestion_materia_prima.gestionMateria','tb_materia_prima_producto.tipoDeCosto',
-    DB::raw('ROUND((tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) as subtotal'))
-    ->where('tb_materia_prima_producto.idHoja', '=', $identificador)
+    ->select('tb_gestion_materia_prima.gestionMateria','tb_materia_prima_producto_simula.tipoDeCosto',
+    DB::raw('ROUND((tb_materia_prima_producto_simula.cantidad*tb_materia_prima_producto_simula.precio),0) as subtotal'))
+    ->where([
+        ['tb_materia_prima_producto_simula.idProducto','=',$identificador],
+        ['tb_materia_prima_producto_simula.idSimulacion','=',$simulacion],
+    ])
     ->orderBy('tb_gestion_materia_prima.id','desc')
     ->get();
 
     # Modelo::join('tablaqueseune',basicamente un on)
-    $manodeobraproductos = Tb_mano_de_obra_producto::join("tb_perfil","tb_mano_de_obra_producto.idPerfil","=","tb_perfil.id")
+    $manodeobraproductos = Tb_mano_de_obra_producto_simula::join("tb_perfil","tb_mano_de_obra_producto_simula.idPerfil","=","tb_perfil.id")
     ->join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
     ->leftJoin('tb_area',function($join){
         $join->on('tb_proceso.idArea','=','tb_area.id');
     })
-    ->select('tb_perfil.perfil','tb_proceso.proceso',DB::raw('ROUND((tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) as subtotal'))
-    ->where('tb_mano_de_obra_producto.idHoja', '=', $identificador)
-    ->orderBy('tb_mano_de_obra_producto.id','desc')
+    ->select('tb_perfil.perfil','tb_proceso.proceso',DB::raw('ROUND((tb_mano_de_obra_producto_simula.tiempo*tb_mano_de_obra_producto_simula.precio),0) as subtotal'))
+    ->where([
+        ['tb_mano_de_obra_producto_simula.idProducto','=',$identificador],
+        ['tb_mano_de_obra_producto_simula.idSimulacion','=',$simulacion],
+    ])
+    ->orderBy('tb_mano_de_obra_producto_simula.id','desc')
     ->get();
 
-    $conceptos = Tb_concepto_cif::orderBy('id','desc')->get();
-
-    //maquinaria
-    $acumuladomaquinaria=0;
-
-    $querydep = DB::raw("(CASE WHEN SUM(tb_maquinaria.depreciacionMensual) IS NULL THEN 0
-    ELSE SUM(tb_maquinaria.depreciacionMensual) END) as acumuladomaquinaria");
-    $totales = DB::table('tb_maquinaria')
-    ->select($querydep)
-    ->get();
-    foreach($totales as $totalg){
-        $acumuladomaquinaria = $totalg->acumuladomaquinaria + $acumuladomaquinaria;
-    }
+    $conceptos = Tb_concepto_cif_simula::where([
+        ['tb_concepto_cif_simula.idSimulacion', '=', $simulacion],
+        ['tb_concepto_cif_simula.valor','>','0'],
+    ])
+    ->orderBy('id','asc')->get();
 
     return [
         'materiaprimaproductos' => $materiaprimaproductos,
         'manodeobraproductos' => $manodeobraproductos,
-        'conceptos' => $conceptos,
-        'acumuladomaquinaria' => $acumuladomaquinaria
+        'conceptos' => $conceptos
     ];
 }
 //------------------------------------------------------------------------------------------------------//

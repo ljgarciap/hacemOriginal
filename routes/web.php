@@ -164,7 +164,6 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/simulacion/estado", "Tb_simulacionController@estado");
         Route::get("/simulacion/selectArea", "Tb_simulacionController@selectArea");
         Route::put("/simulacion/update", "Tb_simulacionController@update");
-
         Route::get("/simulacion/ciftiempos/{identificador}", "Tb_simulacionController@cifTiempos");
         Route::get("/simulacion/unitario/", "Tb_simulacionController@unitarioTotal");
         Route::get("/simulacion/detalle/", "Tb_simulacionController@hojaDetalle");

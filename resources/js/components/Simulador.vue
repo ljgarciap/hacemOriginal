@@ -50,7 +50,7 @@
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(simulacion.id)">
                                                 <i class="icon-plus"></i><span> Agregar</span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm" @click="generarDetalle(simulacion.id)">
+                                            <button type="button" class="btn btn-warning btn-sm" @click="abrirModal('detalle','crear',simulacion.id)">
                                                 <i class="icon-cloud-upload"></i><span> Generar</span>
                                             </button>
                                         </template>
@@ -131,7 +131,7 @@
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header" v-if="tipoModal!=3">
                                 <h4 class="modal-title" v-text="tituloModal"></h4>
                                 <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
                                 <span aria-hidden="true">×</span>
@@ -198,6 +198,11 @@
                                         </div>
                                     </div>
 
+                                    <!-- Si el tipo es 3 solo es modal para mostrar carga -->
+
+                                    <div v-if="tipoModal==3" class="carga">
+                                        <p><hr><h1>Generando, por favor espere...</h1><hr></p>
+                                    </div>
                                 </form>
                             </div>
                             <div v-if="tipoModal==1" class="modal-footer">
@@ -400,9 +405,9 @@
                 this.identificador=id;
                 let me=this;
                 axios.post('/simulacion/estado',{
-                    'id': this.identificador,
-                    'estado': 2
+                    'id': this.identificador
                 }).then(function (response) {
+                me.cerrarModal('0');
                 me.forceRerender();
                 me.listarSimulacion(1,'','');
                 })
@@ -418,7 +423,7 @@
                 this.tituloModal='';
                 this.detalle='';
             },
-            abrirModal(modelo, accion){
+            abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
                     case "simulacion":
@@ -452,6 +457,21 @@
                         break;
                     }
 
+                    case "detalle":
+                    {
+                        switch (accion) {
+                            case 'crear':{
+                                this.modal=1;
+                                this.tipoModal=3; //carga tipos de campos y footers
+                                this.tituloModal='Generando, por favor espere...';
+                                this.identificador=identificador;
+                                break;
+                            }
+                        }
+                        this.generarDetalle(this.identificador);
+                        break;
+                    }
+
                 }
             }
         },
@@ -478,5 +498,12 @@
     .text-error{
         color: red !important;
         font-weight: bold;
+    }
+    .carga{
+        background-color: #3c29297a !important;
+        width: 100% !important;
+        height: 100% !important;
+        text-align: center;
+        color: #ffffffff;
     }
 </style>
