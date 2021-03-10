@@ -15,4 +15,8 @@ class Tb_perfil extends Model
     public function procesos(){
         return $this->belongsTo('App\Tb_proceso', 'idProceso');
     }
+
+    public function empleado(){
+        return $this->belongsTo('App\Tb_empleado', 'id');
+    }
 }
