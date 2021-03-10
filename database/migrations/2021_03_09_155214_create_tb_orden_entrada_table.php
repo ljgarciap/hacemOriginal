@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTbProveedoresTable extends Migration
+class CreateTbOrdenEntradaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateTbProveedoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_proveedores', function (Blueprint $table) {
+        Schema::create('tb_orden_entrada', function (Blueprint $table) {
             $table->id();
-            $table->integer('nit');
-            $table->integer('telefono');
-            $table->string('direccion',255);
-            $table->string('correo',255);
+            $table->integer('numeroOrden');
+            $table->date('fecha')->format('Y.m.d');
+            $table->float('cantidad');
+            $table->foreignId('idProduccion')->constrained('tb_orden_produccion');
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });
@@ -31,6 +31,6 @@ class CreateTbProveedoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_proveedores');
+        Schema::dropIfExists('tb_orden_entrada');
     }
 }

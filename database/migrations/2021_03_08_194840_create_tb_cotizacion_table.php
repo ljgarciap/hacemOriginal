@@ -15,11 +15,10 @@ class CreateTbCotizacionTable extends Migration
     {
         Schema::create('tb_cotizacion', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('idCliente')->constrained('tb_clientes');
-            //$table->foreignId('idProveedor')->constrained('tb_proveedores');
-            $table->foreignId('idProducto')->constrained('tb_producto');
+            $table->integer('consecutivo');
             $table->date('fecha')->format('Y.m.d');
-            $table->float('precioVenta')->default(0);
+            $table->string('condicionEntrega',255);
+            $table->foreignId('idCliente')->constrained('tb_clientes');
             $table->boolean('estado')->default(1);
            //$table->timestamps();
         });

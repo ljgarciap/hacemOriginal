@@ -9,15 +9,12 @@ class Tb_proveedor extends Model
     //
     protected $table = 'tb_proveedores';
 
-    protected $fillable = ['nit','telefono','direccion','correo','estado'];
+    protected $fillable = ['nit','razonSocial','contacto','telefono','direccion','correo','estado'];
 
     public $timestamps = false;
 
-    public function cotizaciones(){
-        return $this->hasMany('App\Tb_cotizacion');
-    }
-
-    public function ordenProveedor(){
+    public function ordenPedidoProveedores(){
         return $this->hasMany('App\Tb_orden_pedido_proveedor');
     }
+
 }

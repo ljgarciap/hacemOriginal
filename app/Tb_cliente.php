@@ -17,7 +17,7 @@ class Tb_cliente extends Model
         return $this->hasMany('App\Tb_cotizacion');
     }
    
-    public function ordenCliente(){
+    public function ordenClientes(){
         return $this->hasMany('App\Tb_orden_pedido_cliente');
     }
 }

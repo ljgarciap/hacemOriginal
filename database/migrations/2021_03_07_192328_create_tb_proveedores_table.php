@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTbOrdenPedidoClienteTable extends Migration
+class CreateTbProveedoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateTbOrdenPedidoClienteTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_orden_pedido_cliente', function (Blueprint $table) {
+        Schema::create('tb_proveedores', function (Blueprint $table) {
             $table->id();
-            $table->integer('consecutivo');
-            $table->date('fecha')->format('Y.m.d');
-            $table->foreignId('idCliente')->constrained('tb_clientes');
-            $table->string('observacion',255);
+            $table->integer('nit');
+            $table->string('razonSocial',255);
+            $table->string('contacto',255);
+            $table->integer('telefono');
+            $table->string('direccion',255);
+            $table->string('correo',255);
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });
@@ -31,6 +33,6 @@ class CreateTbOrdenPedidoClienteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_orden_pedido_cliente');
+        Schema::dropIfExists('tb_proveedores');
     }
 }

@@ -15,11 +15,10 @@ class CreateTbOrdenPedidoProveedorTable extends Migration
     {
         Schema::create('tb_orden_pedido_proveedor', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre',255);
+            $table->integer('consecutivo');
             $table->date('fecha')->format('Y.m.d');
-            $table->float('precio')->default(0);
             $table->foreignId('idProveedor')->constrained('tb_proveedores');
-            $table->foreignId('idProducto')->constrained('tb_producto');
+            $table->string('observacion',255);
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });

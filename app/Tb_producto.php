@@ -16,4 +16,8 @@ class Tb_producto extends Model
     public function coleccion(){
         return $this->belongsTo('App\Tb_coleccion', 'idColeccion');
     }
+
+    public function ordenProducciones(){
+        return $this->hasMany('App\Tb_orden_produccion');
+    }
 }
