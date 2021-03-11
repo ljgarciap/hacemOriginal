@@ -17,13 +17,11 @@ class CreateTbOrdenProduccionTable extends Migration
             $table->id();
             $table->date('fecha')->format('Y.m.d');
             $table->string('detalle',255);
-            $table->string('responsable',255);
-            $table->string('bodega',255);
-            $table->string('medida',255);
+            $table->foreignId('idProducto')->constrained('tb_producto');
             $table->float('cantidad');
             $table->integer('precioUnitario');
             $table->integer('precioTotal');
-            $table->foreignId('idProducto')->constrained('tb_producto');
+            $table->foreignId('idResponsable')->constrained('tb_empleado');
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });
