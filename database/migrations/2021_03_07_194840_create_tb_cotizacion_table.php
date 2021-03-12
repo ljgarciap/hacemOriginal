@@ -18,6 +18,7 @@ class CreateTbCotizacionTable extends Migration
             $table->integer('consecutivo');
             $table->date('fecha')->format('Y.m.d');
             $table->string('condicionEntrega',255);
+            $table->integer('vigencia');
             $table->foreignId('idCliente')->constrained('tb_clientes');
             $table->boolean('estado')->default(1);
            //$table->timestamps();

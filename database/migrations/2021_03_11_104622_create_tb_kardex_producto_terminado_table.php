@@ -17,17 +17,13 @@ class CreateTbKardexProductoTerminadoTable extends Migration
             $table->id();
             $table->date('fecha');
             $table->string('detalle', 255);
-            $table->float('cantidadEntrada');
-            $table->integer('precioEntrada');
-            $table->integer('valorEntrada');
-            $table->float('cantidadSalida');
-            $table->integer('precioSalida');
-            $table->integer('valorSalida');
+            $table->float('cantidad');
+            $table->integer('precio');
             $table->float('cantidadSaldos');
             $table->integer('precioSaldos');
-            $table->integer('valorSaldos');
             $table->foreignId('idProducto')->constrained('tb_producto');
-            $table->boolean('estado')->default(1);
+            $table->boolean('tipologia')->default(1);
+            // tipo 1 entrada tipo 0 salida
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTbDetalleCotizacionTable extends Migration
+class CreateTbOrdenPedidoClienteDetalle extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateTbDetalleCotizacionTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_detalle_cotizacion', function (Blueprint $table) {
+        Schema::create('tb_orden_pedido_cliente_detalle', function (Blueprint $table) {
             $table->id();
-            $table->float('cantidad');
-            $table->integer('valor');
-            $table->integer('precioVenta');
             $table->foreignId('idProducto')->constrained('tb_producto');
-            $table->foreignId('idCotizacion')->constrained('tb_cotizacion');
+            $table->float('cantidad');
+            $table->integer('precioCosto');
+            $table->integer('precioVenta');
+            $table->foreignId('idOrdenPedido')->constrained('tb_orden_pedido_cliente');
             $table->boolean('estado')->default(1);
-            //$table->timestamps();
+           //$table->timestamps();
         });
     }
 
@@ -32,6 +32,6 @@ class CreateTbDetalleCotizacionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_detalle_cotizacion');
+        Schema::dropIfExists('tb_orden_pedido_cliente_detalle');
     }
 }
