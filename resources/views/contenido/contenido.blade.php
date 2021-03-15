@@ -77,4 +77,24 @@
         <simulador></simulador>
     </template>
 
+    <template v-if="menu==19">
+        <proveedores></proveedores>
+    </template>
+
+    <template v-if="menu==20">
+        <clientes></clientes>
+    </template>
+
+    <template v-if="menu==21">
+        <empleados></empleados>
+    </template>
+
+    <template v-if="menu==22">
+        <cotizacion></cotizacion>
+    </template>
+
+    <template v-if="menu==23">
+        <ordendepedido></ordendepedido>
+    </template>
+
     @endsection

@@ -67,13 +67,33 @@
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> <b>Usuarios</b></a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-docs"></i> <b>Producción</b></a>
+                <ul class="nav-dropdown-items">
+                    <li @click="menu=22" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-doc"></i> Cotización</a>
+                    </li>
+                    <li @click="menu=23" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-doc"></i> Orden de pedido</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> <b>Personas</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=12" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-pencil"></i> Roles</a>
                     </li>
                     <li @click="menu=13" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-pencil"></i> Usuarios</a>
+                    </li>
+                    <li @click="menu=19" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-pencil"></i> Proveedores</a>
+                    </li>
+                    <li @click="menu=20" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-pencil"></i> Clientes</a>
+                    </li>
+                    <li @click="menu=21" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-pencil"></i> Empleados</a>
                     </li>
                 </ul>
             </li>
