@@ -7438,21 +7438,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -7467,14 +7452,17 @@ __webpack_require__.r(__webpack_exports__);
       id: '',
       identificador: '',
       observacion: '',
+      fecha: '',
       estado: '',
-      arrayOrdenes: [],
-      modal: 0,
+      idCliente: 0,
+      nombreCliente: '',
       arrayClientes: [],
+      arrayOrdenes: [],
+      arrayProductos: [],
+      modal: 0,
       listado: 0,
       tituloModal: '',
       variable: '',
-      fecha: '',
       registro: '',
       idProducto: 0,
       unidades: '',
@@ -7602,13 +7590,14 @@ __webpack_require__.r(__webpack_exports__);
       });
       */
     },
-    crearSimulacion: function crearSimulacion() {
+    crearOrden: function crearOrden() {
       //valido con el metodo de validacion creado
       var me = this;
-      axios.post('/simulacion/store', {
-        'detalle': this.detalle,
+      this.fecha = moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD');
+      axios.post('/ordenpedido/store', {
+        'observacion': this.observacion,
         'fecha': this.fecha,
-        'tipoCif': this.tipocif
+        'idCliente': this.idCliente
       }).then(function (response) {
         me.cerrarModal('0');
         me.listarOrdenPedido(1, '', '');
@@ -79325,12 +79314,12 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "tbody",
-                          _vm._l(_vm.arrayOrdenes, function(simulacion) {
-                            return _c("tr", { key: simulacion.id }, [
+                          _vm._l(_vm.arrayOrdenes, function(orden) {
+                            return _c("tr", { key: orden.id }, [
                               _c(
                                 "td",
                                 [
-                                  simulacion.estado == 1
+                                  orden.estado == 1
                                     ? [
                                         _c(
                                           "button",
@@ -79341,7 +79330,7 @@ var render = function() {
                                             on: {
                                               click: function($event) {
                                                 return _vm.mostrarProductos(
-                                                  simulacion.id
+                                                  orden.id
                                                 )
                                               }
                                             }
@@ -79365,7 +79354,7 @@ var render = function() {
                                                 return _vm.abrirModal(
                                                   "detalle",
                                                   "crear",
-                                                  simulacion.id
+                                                  orden.id
                                                 )
                                               }
                                             }
@@ -79380,7 +79369,7 @@ var render = function() {
                                       ]
                                     : _vm._e(),
                                   _vm._v(" "),
-                                  simulacion.estado == 2
+                                  orden.estado == 2
                                     ? [
                                         _c(
                                           "button",
@@ -79391,7 +79380,7 @@ var render = function() {
                                             on: {
                                               click: function($event) {
                                                 return _vm.mostrarDetalle(
-                                                  simulacion.id
+                                                  orden.id
                                                 )
                                               }
                                             }
@@ -79410,42 +79399,26 @@ var render = function() {
                               ),
                               _vm._v(" "),
                               _c("td", {
-                                domProps: { textContent: _vm._s(simulacion.id) }
+                                domProps: { textContent: _vm._s(orden.fecha) }
                               }),
                               _vm._v(" "),
                               _c("td", {
                                 domProps: {
-                                  textContent: _vm._s(simulacion.fecha)
+                                  textContent: _vm._s(orden.consecutivo)
                                 }
                               }),
                               _vm._v(" "),
                               _c("td", {
                                 domProps: {
-                                  textContent: _vm._s(simulacion.descripcion)
+                                  textContent: _vm._s(orden.nombreCliente)
                                 }
                               }),
                               _vm._v(" "),
-                              _c("td", [
-                                simulacion.tipoCif == 1
-                                  ? _c("div", [
-                                      _c(
-                                        "span",
-                                        { staticClass: "badge badge-warning" },
-                                        [
-                                          _vm._v(
-                                            "Cálculo por horas mano de obra"
-                                          )
-                                        ]
-                                      )
-                                    ])
-                                  : _c("div", [
-                                      _c(
-                                        "span",
-                                        { staticClass: "badge badge-info" },
-                                        [_vm._v("Cálculo por horas máquina")]
-                                      )
-                                    ])
-                              ])
+                              _c("td", {
+                                domProps: {
+                                  textContent: _vm._s(orden.observacion)
+                                }
+                              })
                             ])
                           }),
                           0
@@ -79708,7 +79681,7 @@ var render = function() {
                                 staticClass: "col-md-3 form-control-label",
                                 attrs: { for: "text-input" }
                               },
-                              [_vm._v("Nombre simulación")]
+                              [_vm._v("Observaciones de la orden")]
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-md-9" }, [
@@ -79717,30 +79690,28 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.detalle,
-                                    expression: "detalle"
+                                    value: _vm.observacion,
+                                    expression: "observacion"
                                   }
                                 ],
                                 staticClass: "form-control",
                                 attrs: {
                                   type: "text",
-                                  placeholder: "Descripción de simulación"
+                                  placeholder: "Observaciones"
                                 },
-                                domProps: { value: _vm.detalle },
+                                domProps: { value: _vm.observacion },
                                 on: {
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
                                     }
-                                    _vm.detalle = $event.target.value
+                                    _vm.observacion = $event.target.value
                                   }
                                 }
                               }),
                               _vm._v(" "),
                               _c("span", { staticClass: "help-block" }, [
-                                _vm._v(
-                                  "(*) Ingrese la Descripción de la Simulación"
-                                )
+                                _vm._v("(*) Ingrese las Observaciones")
                               ])
                             ])
                           ])
@@ -79754,7 +79725,7 @@ var render = function() {
                                 staticClass: "col-md-3 form-control-label",
                                 attrs: { for: "email-input" }
                               },
-                              [_vm._v("Tipo de cálculo")]
+                              [_vm._v("Cliente")]
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-md-9" }, [
@@ -79765,8 +79736,8 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.tipocif,
-                                      expression: "tipocif"
+                                      value: _vm.idCliente,
+                                      expression: "idCliente"
                                     }
                                   ],
                                   staticClass: "form-control",
@@ -79783,7 +79754,7 @@ var render = function() {
                                             "_value" in o ? o._value : o.value
                                           return val
                                         })
-                                      _vm.tipocif = $event.target.multiple
+                                      _vm.idCliente = $event.target.multiple
                                         ? $$selectedVal
                                         : $$selectedVal[0]
                                     }
@@ -79793,17 +79764,22 @@ var render = function() {
                                   _c(
                                     "option",
                                     { attrs: { value: "0", disabled: "" } },
-                                    [_vm._v("Elija tipo de cálculo")]
+                                    [_vm._v("Seleccione un cliente")]
                                   ),
                                   _vm._v(" "),
-                                  _c("option", { attrs: { value: "1" } }, [
-                                    _vm._v("Hora hombre")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("option", { attrs: { value: "2" } }, [
-                                    _vm._v("Hora máquina")
-                                  ])
-                                ]
+                                  _vm._l(_vm.arrayClientes, function(cliente) {
+                                    return _c("option", {
+                                      key: cliente.id,
+                                      domProps: {
+                                        value: cliente.id,
+                                        textContent: _vm._s(
+                                          cliente.nombreCliente
+                                        )
+                                      }
+                                    })
+                                  })
+                                ],
+                                2
                               )
                             ])
                           ])
@@ -79950,53 +79926,6 @@ var render = function() {
                         : _vm._e(),
                       _vm._v(" "),
                       _vm.tipoModal == 2
-                        ? _c("div", { staticClass: "form-group row" }, [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "col-md-3 form-control-label",
-                                attrs: { for: "email-input" }
-                              },
-                              [_vm._v("Tiempo")]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-md-9" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.tiempo,
-                                    expression: "tiempo"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "number",
-                                  step: "0.01",
-                                  placeholder: "Tiempo estandar de mano de obra"
-                                },
-                                domProps: { value: _vm.tiempo },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.tiempo = $event.target.value
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "help-block" }, [
-                                _vm._v(
-                                  "(*) Ingrese el tiempo de mano de obra en horas"
-                                )
-                              ])
-                            ])
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.tipoModal == 2
                         ? _c(
                             "div",
                             {
@@ -80065,7 +79994,7 @@ var render = function() {
                               attrs: { type: "button" },
                               on: {
                                 click: function($event) {
-                                  return _vm.crearSimulacion()
+                                  return _vm.crearOrden()
                                 }
                               }
                             },
@@ -80138,13 +80067,13 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Acciones")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Id")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Fecha")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Detalle")]),
+        _c("th", [_vm._v("Consecutivo")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Tipo cálculo")])
+        _c("th", [_vm._v("Cliente")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Observaciones")])
       ])
     ])
   }

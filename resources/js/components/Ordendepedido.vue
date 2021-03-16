@@ -36,41 +36,34 @@
                                 <thead>
                                     <tr>
                                         <th>Acciones</th>
-                                        <th>Id</th>
                                         <th>Fecha</th>
-                                        <th>Detalle</th>
-                                        <th>Tipo cálculo</th>
+                                        <th>Consecutivo</th>
+                                        <th>Cliente</th>
+                                        <th>Observaciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="simulacion in arrayOrdenes" :key="simulacion.id">
+                                    <tr v-for="orden in arrayOrdenes" :key="orden.id">
                                         <td>
-                                        <template v-if="simulacion.estado==1">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(simulacion.id)">
+                                        <template v-if="orden.estado==1">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(orden.id)">
                                                 <i class="icon-plus"></i><span> Agregar</span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm" @click="abrirModal('detalle','crear',simulacion.id)">
+                                            <button type="button" class="btn btn-warning btn-sm" @click="abrirModal('detalle','crear',orden.id)">
                                                 <i class="icon-cloud-upload"></i><span> Generar</span>
                                             </button>
                                         </template>
-                                        <template v-if="simulacion.estado==2">
-                                            <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(simulacion.id)">
+                                        <template v-if="orden.estado==2">
+                                            <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(orden.id)">
                                                 <i class="icon-magnifier"></i><span> Detalle</span>
                                             </button>
                                         </template>
                                         </td>
-                                        <td v-text="simulacion.id"></td>
-                                        <td v-text="simulacion.fecha"></td>
-                                        <td v-text="simulacion.descripcion"></td>
-                                        <td>
-                                            <div v-if="simulacion.tipoCif==1">
-                                            <span class="badge badge-warning">Cálculo por horas mano de obra</span>
-                                            </div>
-                                            <div v-else>
-                                            <span class="badge badge-info">Cálculo por horas máquina</span>
-                                            </div>
-                                        </td>
+                                        <td v-text="orden.fecha"></td>
+                                        <td v-text="orden.consecutivo"></td>
+                                        <td v-text="orden.nombreCliente"></td>
+                                        <td v-text="orden.observacion"></td>
                                     </tr>
 
                                 </tbody>
@@ -152,13 +145,8 @@
                                         <label class="col-md-3 form-control-label" for="email-input">Cliente</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idCliente">
-                                                <option value="0" disabled>Elija el cliente</option>
-                                                <option value="1">Hora hombre</option>
-                                                <option value="2">Hora máquina</option>
-                                            </select>
-                                            <select class="form-control" v-model="idCliente">
                                                 <option value="0" disabled>Seleccione un cliente</option>
-                                                <option v-for="cliente in arrayClientes" :key="cliente.idCliente" :value="cliente.NombreCompleto" v-text="cliente.NombreCompleto"></option>
+                                                <option v-for="cliente in arrayClientes" :key="cliente.id" :value="cliente.id" v-text="cliente.nombreCliente"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -188,13 +176,6 @@
                                             <span class="help-block">(*) Ingrese la cantidad a producir</span>
                                         </div>
                                     </div>
-                                    <div v-if="tipoModal==2" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Tiempo</label>
-                                        <div class="col-md-9">
-                                            <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
-                                            <span class="help-block">(*) Ingrese el tiempo de mano de obra en horas</span>
-                                        </div>
-                                    </div>
 
                                     <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorOrden">
                                         <div class="text-center text-error">
@@ -211,7 +192,7 @@
                             </div>
                             <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearSimulacion()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearOrden()">Guardar</button>
                             </div>
                             <div v-if="tipoModal==2" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
@@ -241,14 +222,17 @@
                 id:'',
                 identificador:'',
                 observacion:'',
+                fecha : '',
                 estado:'',
-                arrayOrdenes : [],
-                modal : 0,
+                idCliente: 0,
+                nombreCliente: '',
                 arrayClientes : [],
+                arrayOrdenes : [],
+                arrayProductos : [],
+                modal : 0,
                 listado : 0,
                 tituloModal : '',
                 variable : '',
-                fecha : '',
                 registro:'',
                 idProducto: 0,
                 unidades:'',
@@ -378,13 +362,14 @@
                 });
                 */
             },
-            crearSimulacion(){
+            crearOrden(){
                 //valido con el metodo de validacion creado
                 let me=this;
-                axios.post('/simulacion/store',{
-                    'detalle': this.detalle,
+                this.fecha= moment().format('YYYY-MM-DD');
+                axios.post('/ordenpedido/store',{
+                    'observacion': this.observacion,
                     'fecha': this.fecha,
-                    'tipoCif': this.tipocif
+                    'idCliente': this.idCliente
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.listarOrdenPedido(1,'','');

@@ -21,10 +21,20 @@ class Tb_orden_pedido_clienteController extends Controller
         $criterio= $request->criterio;
 
         if ($buscar=='') {
-            $ordenes = Tb_orden_pedido_cliente::orderBy('id','desc')->paginate(5);
+            # Modelo::join('tablaqueseune',basicamente un on)
+            $ordenes = Tb_orden_pedido_cliente::join('tb_clientes','tb_orden_pedido_cliente.idCliente','=','tb_clientes.id')
+            ->select('tb_orden_pedido_cliente.id','tb_orden_pedido_cliente.consecutivo','tb_orden_pedido_cliente.fecha',
+            'tb_orden_pedido_cliente.idCliente','tb_orden_pedido_cliente.observacion','tb_orden_pedido_cliente.estado',
+            DB::raw('CONCAT(tb_clientes.nombre," ",tb_clientes.apellido," - ",tb_clientes.documento) as nombreCliente'))
+            ->orderBy('tb_orden_pedido_cliente.consecutivo','asc')->paginate(5);
         }
         else {
-            $ordenes = Tb_orden_pedido_cliente::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+            $ordenes = Tb_orden_pedido_cliente::join('tb_clientes','tb_orden_pedido_cliente.idCliente','=','tb_clientes.id')
+            ->select('tb_orden_pedido_cliente.id','tb_orden_pedido_cliente.consecutivo','tb_orden_pedido_cliente.fecha',
+            'tb_orden_pedido_cliente.idCliente','tb_orden_pedido_cliente.observacion','tb_orden_pedido_cliente.estado',
+            DB::raw('CONCAT(tb_clientes.nombre," ",tb_clientes.apellido," - ",tb_clientes.documento) as nombreCliente'))
+            ->orderBy('tb_orden_pedido_cliente.consecutivo','asc')
+            ->where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
         }
 
         return [
@@ -42,8 +52,23 @@ class Tb_orden_pedido_clienteController extends Controller
 
     public function store(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
+
+        $maximos = Tb_orden_pedido_cliente::select(DB::raw('MAX(tb_orden_pedido_cliente.consecutivo) as maximo'))
+        ->get();
+
+        $maximo=0;
+
+        foreach($maximos as $maximo1){
+            $maximosuma = $maximo1->consecutivo;
+            $maximo=$maximo+$maximosuma;
+            }
+
+        if($maximo>1){$consecutivo=$maximo;}
+        else {$consecutivo=1;}
+
         $tb_orden_pedido_cliente=new Tb_orden_pedido_cliente();
+        $tb_orden_pedido_cliente->consecutivo=$consecutivo;
         $tb_orden_pedido_cliente->fecha=$request->fecha;
         $tb_orden_pedido_cliente->idCliente=$request->idCliente;
         $tb_orden_pedido_cliente->observacion=$request->observacion;
@@ -60,8 +85,12 @@ class Tb_orden_pedido_clienteController extends Controller
 
     public function clientes()
     {
-        //
-       $clientes = Tb_cliente::all();
+        // $clientes = Tb_cliente::all();
+        $clientes = Tb_cliente::select('tb_clientes.id','tb_clientes.nombre','tb_clientes.apellido',
+        'tb_clientes.documento','tb_clientes.direccion','tb_clientes.telefono','tb_clientes.correo',
+        DB::raw('CONCAT(tb_clientes.nombre," ",tb_clientes.apellido," - ",tb_clientes.documento) as nombreCliente'))
+        ->get();
+
         return ['clientes' => $clientes];
     }
 }
