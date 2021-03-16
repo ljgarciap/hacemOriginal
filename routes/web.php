@@ -182,7 +182,13 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/rela/store", "Tb_rela_simulacionController@store");
         Route::get("/rela/selectArea", "Tb_rela_simulacionController@selectArea");
         Route::put("/rela/update", "Tb_rela_simulacionController@update");
-
+        
+        Route::get("/empleado", "Tb_empleadoController@index");
+        Route::post("/empleado/store", "Tb_empleadoController@store");
+        Route::put("/empleado/update", "Tb_empleadoController@update");
+        Route::put("/empleado/deactivate", "Tb_empleadoController@deactivate");
+        Route::put("/empleado/activate", "Tb_empleadoController@activate");
+        Route::get("/empleado/selectEmpleado", "Tb_empleadoController@selectEmpleado");
     });
 
 //---------------------------------------------------------------------------//

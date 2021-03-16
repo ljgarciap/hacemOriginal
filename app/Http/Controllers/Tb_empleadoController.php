@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Tb_empleado;
+
 use App\Tb_perfil;
+use App\Tb_empleado;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class Tb_empleadoController extends Controller
 {
     /**
@@ -12,112 +15,86 @@ class Tb_empleadoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-         $tb_perfil = Tb_perfil::all();
-         $tb_empleado = Tb_empleado::all();
-         return view('empleado.index',['tb_empleado'=>$tb_empleado], ['tb_perfil'=>$tb_perfil]);
-    }
+        if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        $tb_perfil = Tb_perfil::all();
-        $tb_empleado = Tb_empleado::all();
-        return view('empleado.add',['tb_empleado'=>$tb_empleado], ['tb_perfil'=>$tb_perfil]);
-    }
+        if ($buscar=='') {
+            # Modelo::join('tablaqueseune',basicamente un on)
+            $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empledo.estado','tb_perfil.id as idPerfil','tb_perfil.perfil','tb_perfil.estado as estado_perfil')
+            ->orderBy('tb_empleado.id','desc')->paginate(5);
+        }
+        else if($criterio=='perfil'){
+            $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empledo.estado','tb_perfil.id as idPerfil','tb_perfil.perfil','tb_perfil.estado as estado_perfil')
+            ->where('tb_perfil.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('tb_empleado.id','desc')->paginate(5);
+        }
+        else {
+            # code...
+            $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empledo.estado','tb_perfil.id as idPerfil','tb_perfil.perfil','tb_perfil.estado as estado_perfil')
+            ->where('tb_empleado.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('tb_empleado.id','desc')->paginate(5);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$empleados->total(),
+                'current_page'  =>$empleados->currentPage(),
+                'per_page'      =>$empleados->perPage(),
+                'last_page'     =>$empleados->lastPage(),
+                'from'          =>$empleados->firstItem(),
+                'to'            =>$empleados->lastItem(),
+            ],
+                'empleados' => $empleados
+        ];
+    }
+    public function selectEmpleado(){
+        $empleados = Tb_empleado::where('estado','=','1')
+        ->select('id as idEmpleado','empleado')->orderBy('empleado','asc')->get();
+
+        return ['empleados' => $empleados];
+    }
     public function store(Request $request)
     {
         //
-        $tb_perfil = Tb_perfil::all();
+        if(!$request->ajax()) return redirect('/');
         $tb_empleado = new Tb_empleado();
         $tb_empleado->documento=$request->documento;
+        $tb_empleado->idPerfil=$request->idPerfil;
         $tb_empleado->nombre=$request->nombre;
         $tb_empleado->apellido=$request->apellido;
         $tb_empleado->direccion=$request->direccion;
         $tb_empleado->telefono=$request->telefono;
-        $tb_empleado->idPerfil=$request->idPerfil;
         $tb_empleado->correo=$request->correo;
-        //$tb_empleado->estado=$request->estado;
         $tb_empleado->save();
-        return redirect()->action('Tb_empleadoController@index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-        $tb_perfil = Tb_perfil::all();
-        $tb_empleado = Tb_empleado::find($id);
-        return view('empleado.edit',['tb_empleado'=>$tb_empleado],['tb_perfil'=>$tb_perfil]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-        $tb_empleado =Tb_empleado::find($id);
+        if(!$request->ajax()) return redirect('/');
+        $tb_empleado =Tb_empleado::findOrFail($request->id);
         $tb_empleado->documento=$request->documento;
+        $tb_empleado->idPerfil=$request->idPerfil;
         $tb_empleado->nombre=$request->nombre;
         $tb_empleado->apellido=$request->apellido;
         $tb_empleado->direccion=$request->direccion;
         $tb_empleado->telefono=$request->telefono;
-        $tb_empleado->idPerfil=$request->idPerfil;
         $tb_empleado->correo=$request->correo;
-        //$tb_empleado->estado=$request->estado;
+        $tb_empleado->estado='1';
         $tb_empleado->save();
-        return redirect()->action('Tb_empleadoController@index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-       /* $tb_empleado = Tb_empleado::destroy($id);
-        return redirect()->action('Tb_empleadoController@index');*/
-    }
     public function deactivate(Request $request)
     {
+        if(!$request->ajax()) return redirect('/');
         $tb_empleado=Tb_empleado::findOrFail($request->id);
         $tb_empleado->estado='0';
         $tb_empleado->save();
@@ -125,6 +102,7 @@ class Tb_empleadoController extends Controller
 
     public function activate(Request $request)
     {
+        if(!$request->ajax()) return redirect('/');
         $tb_empleado=Tb_empleado::findOrFail($request->id);
         $tb_empleado->estado='1';
         $tb_empleado->save();
