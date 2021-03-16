@@ -6,7 +6,7 @@
                     <li class="breadcrumb-item active">Empleados</li>
                 </ol>
                 <div class="container-fluid">
-                   
+
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Empleados &nbsp;
@@ -129,7 +129,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idPerfil">
-                                                <option v-for="perfil in arrayPerfil" :key="perfil.idPerfil" :value="perfil.idPerfil" v-text="perfil.perfil"></option>
+                                                <option v-for="perfil in arrayPerfil" :key="perfil.id" :value="perfil.id" v-text="perfil.perfil"></option>
                                             </select>
                                         </div>
                                     </div>

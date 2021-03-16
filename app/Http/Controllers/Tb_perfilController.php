@@ -80,6 +80,11 @@ class Tb_perfilController extends Controller
                 return ['relaciones' => $relaciones];
         }
 
+    public function selectPerfil(){
+        $perfiles = tb_perfil::all();
+        return ['perfiles' => $perfiles];
+        }
+
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');

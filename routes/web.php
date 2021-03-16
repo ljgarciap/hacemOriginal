@@ -69,6 +69,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/perfil/update", "Tb_perfilController@update");
         Route::put("/perfil/deactivate", "Tb_perfilController@deactivate");
         Route::put("/perfil/activate", "Tb_perfilController@activate");
+        Route::get("/perfil/selectPerfil", "Tb_perfilController@selectPerfil");
         Route::get("/perfil/selectRelacion/{id}", "Tb_perfilController@selectRelacion");
 
         Route::get("/unidad", "Tb_unidad_baseController@index");
@@ -182,7 +183,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/rela/store", "Tb_rela_simulacionController@store");
         Route::get("/rela/selectArea", "Tb_rela_simulacionController@selectArea");
         Route::put("/rela/update", "Tb_rela_simulacionController@update");
-        
+
         Route::get("/empleado", "Tb_empleadoController@index");
         Route::post("/empleado/store", "Tb_empleadoController@store");
         Route::put("/empleado/update", "Tb_empleadoController@update");
