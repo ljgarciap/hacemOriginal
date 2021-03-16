@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Tb_proveedor;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class Tb_proveedorController extends Controller
 {
     /**
@@ -11,106 +13,72 @@ class Tb_proveedorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $proveedor = Tb_proveedor::all();
-        return view('proveedor.index',['tb_proveedor' =>$proveedor]);
+        if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
+
+        if ($buscar=='') {
+            $proveedores = Tb_proveedor::orderBy('id','desc')->paginate(5);
+        }
+        else {
+            $proveedores = Tb_proveedor::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$proveedores->total(),
+                'current_page'  =>$proveedores->currentPage(),
+                'per_page'      =>$proveedores->perPage(),
+                'last_page'     =>$proveedores->lastPage(),
+                'from'          =>$proveedores->firstItem(),
+                'to'            =>$proveedores->lastItem(),
+            ],
+                'proveedores' => $proveedores
+        ];
+    }
+     
+    public function selectProveedor(){
+        $proveedores = Tb_proveedor::where('estado','=','1')
+        ->select('id as idProveedor','proveedor')->orderBy('proveedor','asc')->get();
+
+        return ['proveedores' => $proveedores];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-         return view('proveedor.add');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
-        $proveedor = new Tb_proveedor();
-        $proveedor->nit=$request->nit;
-        $proveedor->razonSocial=$request->razonSocial;
-        $proveedor->contacto=$request->contacto;
-        $proveedor->telefono=$request->telefono;
-        $proveedor->direccion=$request->direccion;
-        $proveedor->correo=$request->correo;
-        //$tb_proveedor->estado=$request->estado;
-        $proveedor->save();
-        return redirect()->action('Tb_proveedorController@index');
+        if(!$request->ajax()) return redirect('/');
+        $tb_proveedor = new Tb_proveedor();
+        $tb_proveedor->nit=$request->nit;
+        $tb_proveedor->razonSocial=$request->razonSocial;
+        $tb_proveedor->contacto=$request->contacto;
+        $tb_proveedor->telefono=$request->telefono;
+        $tb_proveedor->direccion=$request->direccion;
+        $tb_proveedor->correo=$request->correo;
+        $tb_proveedor->save();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request)
     {
         //
+        if(!$request->ajax()) return redirect('/');
+        $tb_proveedor = Tb_proveedor::findOrFail($request->id);
+        $tb_proveedor->nit=$request->nit;
+        $tb_proveedor->razonSocial=$request->razonSocial;
+        $tb_proveedor->contacto=$request->contacto;
+        $tb_proveedor->telefono=$request->telefono;
+        $tb_proveedor->direccion=$request->direccion;
+        $tb_proveedor->correo=$request->correo;
+        $tb_proveedor->estado='1';
+        $tb_proveedor->save();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-        $proveedor = Tb_proveedor::find($id);
-        return view('proveedor.edit',['tb_proveedor'=>$proveedor]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-        $proveedor = Tb_proveedor::find($id);
-        $proveedor->nit=$request->nit;
-        $proveedor->razonSocial=$request->razonSocial;
-        $proveedor->contacto=$request->contacto;
-        $proveedor->telefono=$request->telefono;
-        $proveedor->direccion=$request->direccion;
-        $proveedor->correo=$request->correo;
-        //$proveedor->estado=$request->estado;
-        $proveedor->save();
-        return redirect()->action('Tb_proveedorController@index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-          /* $proveedor= Tb_proveedor::find($id);
-           $proveedor->delete();
-          return redirect()->action('Tb_proveedorController@index');*/
-    }
     public function deactivate(Request $request)
     {
+        if(!$request->ajax()) return redirect('/');
         $tb_proveedor=Tb_proveedor::findOrFail($request->id);
         $tb_proveedor->estado='0';
         $tb_proveedor->save();
@@ -118,6 +86,7 @@ class Tb_proveedorController extends Controller
 
     public function activate(Request $request)
     {
+        if(!$request->ajax()) return redirect('/');
         $tb_proveedor=Tb_proveedor::findOrFail($request->id);
         $tb_proveedor->estado='1';
         $tb_proveedor->save();
