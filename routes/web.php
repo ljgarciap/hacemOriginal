@@ -170,6 +170,12 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/simulacion/unitariogen/", "Tb_simulacionController@unitarioTotalGen");
         Route::get("/simulacion/detallegen/", "Tb_simulacionController@hojaDetalleGen");
 
+        Route::get("/ordenpedido", "Tb_ordenpedidoController@index");
+        Route::post("/ordenpedido/store", "Tb_ordenpedidoController@store");
+        Route::get("/ordenpedido/clientes", "Tb_ordenpedidoController@clientes");
+        Route::put("/ordenpedido/update", "Tb_ordenpedidoController@update");
+        Route::get("/ordenpedido/ciftiempos/{identificador}", "Tb_ordenpedidoController@cifTiempos");
+
         Route::get("/rela", "Tb_rela_simulacionController@index");
         Route::get("/rela/listar", "Tb_rela_simulacionController@listar");
         Route::get("/rela/posibles", "Tb_rela_simulacionController@posibles");

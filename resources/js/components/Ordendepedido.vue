@@ -3,7 +3,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Simulador</li>
+                    <li class="breadcrumb-item active">Orden de pedido</li>
                 </ol>
 
                 <template v-if="listado==0">
@@ -12,8 +12,8 @@
 
                     <div class="card">
                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Simulación
-                            <button type="button" @click="abrirModal('simulacion','crear')" class="btn btn-secondary">
+                            <i class="fa fa-align-justify"></i> Orden de pedido
+                            <button type="button" @click="abrirModal('ordendepedido','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nueva
                             </button>
                         </div>
@@ -26,8 +26,8 @@
                                         <option value="descripcion">Descripción</option>
                                         <option value="id">Id</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarSimulacion(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarSimulacion(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarOrdenPedido(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarOrdenPedido(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="simulacion in arraySimulaciones" :key="simulacion.id">
+                                    <tr v-for="simulacion in arrayOrdenes" :key="simulacion.id">
                                         <td>
                                         <template v-if="simulacion.estado==1">
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(simulacion.id)">
@@ -141,25 +141,29 @@
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Nombre simulación</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Observaciones de la orden</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="detalle" class="form-control" placeholder="Descripción de simulación">
-                                            <span class="help-block">(*) Ingrese la Descripción de la Simulación</span>
+                                            <input type="text" v-model="observacion" class="form-control" placeholder="Observaciones">
+                                            <span class="help-block">(*) Ingrese las Observaciones</span>
                                         </div>
                                     </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Tipo de cálculo</label>
+                                        <label class="col-md-3 form-control-label" for="email-input">Cliente</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="tipocif">
-                                                <option value="0" disabled>Elija tipo de cálculo</option>
+                                            <select class="form-control" v-model="idCliente">
+                                                <option value="0" disabled>Elija el cliente</option>
                                                 <option value="1">Hora hombre</option>
                                                 <option value="2">Hora máquina</option>
+                                            </select>
+                                            <select class="form-control" v-model="idCliente">
+                                                <option value="0" disabled>Seleccione un cliente</option>
+                                                <option v-for="cliente in arrayClientes" :key="cliente.idCliente" :value="cliente.NombreCompleto" v-text="cliente.NombreCompleto"></option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorSimulacion">
+                                    <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorOrden">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -192,7 +196,7 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorSimulacion">
+                                    <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorOrden">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -233,14 +237,14 @@
         },
         data(){
             return{
-                idSimulacion:0,
+                idOrden:0,
                 id:'',
                 identificador:'',
-                detalle:'',
+                observacion:'',
                 estado:'',
-                arraySimulaciones : [],
+                arrayOrdenes : [],
                 modal : 0,
-                arrayPosibles : [],
+                arrayClientes : [],
                 listado : 0,
                 tituloModal : '',
                 variable : '',
@@ -251,9 +255,7 @@
                 tiempo:'',
                 tipoModal : 0,
                 tipoAccion : 0,
-                tipocif : 0,
-                tipoCif : '',
-                errorSimulacion : 0,
+                errorOrden : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -301,15 +303,15 @@
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
             },
-            listarSimulacion(page,buscar,criterio){
+            listarOrdenPedido(page,buscar,criterio){
                 let me=this;
-                var url='/simulacion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/ordenpedido?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 //console.log(url);
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
                 var respuesta=response.data;
-                me.arraySimulaciones=respuesta.simulaciones.data;
+                me.arrayOrdenes=respuesta.ordenes.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
                 })
@@ -323,7 +325,7 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarSimulacion(page,buscar,criterio);
+                me.listarOrdenPedido(page,buscar,criterio);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -340,6 +342,21 @@
                     // handle success
                 var respuesta=response.data;
                 me.arrayPosibles=respuesta.posibles;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarClientes(){
+                let me=this;
+                var url='/ordenpedido/clientes';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayClientes=respuesta.clientes;
                     //console.log(response);
                 })
                 .catch(function (error) {
@@ -370,7 +387,7 @@
                     'tipoCif': this.tipocif
                 }).then(function (response) {
                 me.cerrarModal('0');
-                me.listarSimulacion(1,'','');
+                me.listarOrdenPedido(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -387,7 +404,7 @@
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.forceRerender();
-                me.listarSimulacion(1,'','');
+                me.listarOrdenPedido(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -409,7 +426,7 @@
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.forceRerender();
-                me.listarSimulacion(1,'','');
+                me.listarOrdenPedido(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -426,13 +443,13 @@
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                    case "simulacion":
+                    case "ordendepedido":
                     {
                         switch (accion) {
                             case 'crear':{
                                 this.modal=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Crear nueva simulación';
+                                this.tituloModal='Crear nueva orden de pedido';
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
                                 break;
@@ -476,7 +493,8 @@
             }
         },
         mounted() {
-            this.listarSimulacion(1,this.buscar,this.criterio);
+            this.listarOrdenPedido(1,this.buscar,this.criterio);
+            this.listarClientes();
         }
     }
 </script>
