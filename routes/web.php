@@ -189,6 +189,20 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/empleado/deactivate", "Tb_empleadoController@deactivate");
         Route::put("/empleado/activate", "Tb_empleadoController@activate");
         Route::get("/empleado/selectEmpleado", "Tb_empleadoController@selectEmpleado");
+        
+        Route::get("/cliente", "Tb_clienteController@index");
+        Route::post("/cliente/store", "Tb_clienteController@store");
+        Route::put("/cliente/update", "Tb_clienteController@update");
+        Route::put("/cliente/deactivate", "Tb_clienteController@deactivate");
+        Route::put("/cliente/activate", "Tb_clienteController@activate");
+        Route::get("/cliente/selectCliente", "Tb_clienteController@selectCliente");
+
+        Route::get("/proveedor", "Tb_proveedorController@index");
+        Route::post("/proveedor/store", "Tb_proveedorController@store");
+        Route::put("/proveedor/update", "Tb_proveedorController@update");
+        Route::put("/proveedor/deactivate", "Tb_proveedorController@deactivate");
+        Route::put("/proveedor/activate", "Tb_proveedorController@activate");
+        Route::get("/proveedor/selectProveedor", "Tb_proveedorController@selectProveedor");
     });
 
 //---------------------------------------------------------------------------//
