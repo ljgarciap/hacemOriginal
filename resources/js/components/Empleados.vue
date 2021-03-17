@@ -216,7 +216,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'empleado',
+                criterio : 'id',
                 buscar : ''
             }
         },

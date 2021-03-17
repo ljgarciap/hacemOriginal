@@ -71,16 +71,12 @@
          },
         data(){
             return{
-                idMateriaPrimaProducto:0,
-                idMateriaPrima:'',
                 unidades:0,
                 tiempo:0,
                 arrayProductos : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorMateriaPrimaProducto : 0,
-                errorMensaje : [],
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,

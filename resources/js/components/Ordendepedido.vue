@@ -172,8 +172,16 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Unidades</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="unidades" class="form-control" placeholder="Unidades a producir">
+                                            <input type="text" v-model="cantidad" class="form-control" placeholder="Unidades a producir">
                                             <span class="help-block">(*) Ingrese la cantidad solicitada</span>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Precio Venta</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="precioVenta" class="form-control" placeholder="Precio venta unidad">
+                                            <span class="help-block">(*) Ingrese el precio acordado</span>
                                         </div>
                                     </div>
 
@@ -235,8 +243,8 @@
                 variable : '',
                 registro:'',
                 idProducto: 0,
-                unidades:'',
-                tiempo:'',
+                cantidad:'',
+                precioVenta:'',
                 tipoModal : 0,
                 tipoAccion : 0,
                 errorOrden : 0,
@@ -320,7 +328,7 @@
                },
             listarPosibles(id){
                 let me=this;
-                var url='/rela/posibles?id=' + this.identificador;
+                var url='/ordenpedidocliente/posibles?id=' + this.identificador;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -381,11 +389,11 @@
             crearRelacion(){
                 //valido con el metodo de validacion creado
                 let me=this;
-                axios.post('/rela/store',{
+                axios.post('/ordenpedidocliente/store',{
                     'idProducto': this.idProducto,
-                    'unidades': this.unidades,
-                    'tiempo': this.tiempo,
-                    'idSimulacion': this.identificador
+                    'cantidad': this.cantidad,
+                    'precioVenta': this.precioVenta,
+                    'idOrdenPedido': this.identificador
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.forceRerender();

@@ -101,11 +101,11 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
 
     public function store(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         $tb_rela_simulacion=new Tb_orden_pedido_cliente_detalle();
         $tb_rela_simulacion->idProducto=$request->idProducto;
         $tb_rela_simulacion->cantidad=$request->cantidad;
-        $tb_rela_simulacion->precioCosto=$request->precioCosto;
+        //$tb_rela_simulacion->precioCosto=$request->precioCosto;
         $tb_rela_simulacion->precioVenta=$request->precioVenta;
         $tb_rela_simulacion->idOrdenPedido=$request->idOrdenPedido;
         $tb_rela_simulacion->save();

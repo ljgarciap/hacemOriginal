@@ -17,8 +17,7 @@ class Tb_empleadoController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
 
@@ -26,7 +25,7 @@ class Tb_empleadoController extends Controller
             # Modelo::join('tablaqueseune',basicamente un on)
             $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
             ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-            'tb_empleado.telefono','tb_empleado.correo','tb_empledo.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
+            'tb_empleado.telefono','tb_empleado.correo','tb_empleado.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
             'tb_perfil.estado as estado_perfil')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
