@@ -177,6 +177,11 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/ordenpedido/update", "Tb_orden_pedido_clienteController@update");
         Route::get("/ordenpedido/ciftiempos/{identificador}", "Tb_orden_pedido_clienteController@cifTiempos");
 
+        Route::get("/ordenpedidocliente", "Tb_orden_pedido_cliente_detalleController@index");
+        Route::get("/ordenpedidocliente/listar", "Tb_orden_pedido_cliente_detalleController@listar");
+        Route::get("/ordenpedidocliente/posibles", "Tb_orden_pedido_cliente_detalleController@posibles");
+        Route::post("/ordenpedidocliente/store", "Tb_orden_pedido_cliente_detalleController@store");
+
         Route::get("/rela", "Tb_rela_simulacionController@index");
         Route::get("/rela/listar", "Tb_rela_simulacionController@listar");
         Route::get("/rela/posibles", "Tb_rela_simulacionController@posibles");
@@ -190,7 +195,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/empleado/deactivate", "Tb_empleadoController@deactivate");
         Route::put("/empleado/activate", "Tb_empleadoController@activate");
         Route::get("/empleado/selectEmpleado", "Tb_empleadoController@selectEmpleado");
-        
+
         Route::get("/cliente", "Tb_clienteController@index");
         Route::post("/cliente/store", "Tb_clienteController@store");
         Route::put("/cliente/update", "Tb_clienteController@update");

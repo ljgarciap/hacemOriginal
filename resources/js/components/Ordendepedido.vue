@@ -98,7 +98,7 @@
                             <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
-                            <productossimulacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productossimulacion>
+                            <productosordenpedido v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productosordenpedido>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -173,7 +173,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Unidades</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="unidades" class="form-control" placeholder="Unidades a producir">
-                                            <span class="help-block">(*) Ingrese la cantidad a producir</span>
+                                            <span class="help-block">(*) Ingrese la cantidad solicitada</span>
                                         </div>
                                     </div>
 
@@ -209,11 +209,11 @@
 
 <script>
     import moment from 'moment';
-    import productossimulacion from '../components/ProductosSimulacion';
+    import productosordenpedido from '../components/productosOrdenPedido';
     import hojadecostossimulador from '../components/HojaDeCostosSimulador';
     export default {
         components: {
-            productossimulacion,
+            productosordenpedido,
             hojadecostossimulador
         },
         data(){
