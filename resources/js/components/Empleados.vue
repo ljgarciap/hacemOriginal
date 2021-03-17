@@ -129,6 +129,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idPerfil">
+                                                <option value="0" disabled>Seleccione un perfil</option>
                                                 <option v-for="perfil in arrayPerfil" :key="perfil.id" :value="perfil.id" v-text="perfil.perfil"></option>
                                             </select>
                                         </div>
