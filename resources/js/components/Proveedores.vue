@@ -120,7 +120,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Nit</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="nit" class="form-control" placeholder="Nit">
+                                            <input type="number" v-model="nit" max="10" class="form-control" placeholder="Nit">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -138,7 +138,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Telefono</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="telefono" class="form-control" placeholder="Telefono">
+                                            <input type="number" v-model="telefono" max="10" class="form-control" placeholder="Telefono">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -204,7 +204,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'proveedor',
+                criterio : 'id',
                 buscar : ''
             }
         },
