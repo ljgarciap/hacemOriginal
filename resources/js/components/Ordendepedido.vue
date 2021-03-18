@@ -217,7 +217,7 @@
 
 <script>
     import moment from 'moment';
-    import productosordenpedido from '../components/productosOrdenPedido';
+    import productosordenpedido from '../components/ProductosOrdenPedido';
     import hojadecostossimulador from '../components/HojaDeCostosSimulador';
     export default {
         components: {
@@ -393,11 +393,12 @@
                     'idProducto': this.idProducto,
                     'cantidad': this.cantidad,
                     'precioVenta': this.precioVenta,
-                    'idOrdenPedido': this.identificador
+                    'idOrdenPedido': this.identificador,
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.forceRerender();
                 me.listarOrdenPedido(1,'','');
+                me.listarPosibles(this.identificador);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -406,6 +407,7 @@
             mostrarProductos(id){
                 this.listado=1;
                 this.identificador=id;
+                this.listarPosibles(this.identificador);
             },
             mostrarDetalle(id){
                 this.listado=2;
@@ -463,7 +465,6 @@
                                 break;
                             }
                         }
-                        this.listarPosibles(this.identificador);
                         break;
                     }
 
