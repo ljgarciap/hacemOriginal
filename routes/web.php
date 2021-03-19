@@ -195,6 +195,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/empleado/deactivate", "Tb_empleadoController@deactivate");
         Route::put("/empleado/activate", "Tb_empleadoController@activate");
         Route::get("/empleado/selectEmpleado", "Tb_empleadoController@selectEmpleado");
+        Route::get("/empleado/selectRelacion/{id}", "Tb_empleadoController@selectRelacion");
 
         Route::get("/cliente", "Tb_clienteController@index");
         Route::post("/cliente/store", "Tb_clienteController@store");
@@ -209,6 +210,11 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/proveedor/deactivate", "Tb_proveedorController@deactivate");
         Route::put("/proveedor/activate", "Tb_proveedorController@activate");
         Route::get("/proveedor/selectProveedor", "Tb_proveedorController@selectProveedor");
+
+        Route::get("/cotizacion", "Tb_cotizacionController@index");
+        Route::post("/cotizacion/store", "Tb_cotizacionController@store");
+        Route::get("/cotizacion/clientes", "Tb_cotizacionController@clientes");
+        Route::put("/cotizacion/update", "Tb_cotizacionController@update");
     });
 
 //---------------------------------------------------------------------------//

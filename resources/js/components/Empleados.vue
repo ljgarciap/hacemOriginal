@@ -6,6 +6,7 @@
                     <li class="breadcrumb-item active">Empleados</li>
                 </ol>
                 <div class="container-fluid">
+                    <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
                         <div class="card-header">
@@ -19,14 +20,16 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option selected value="id">Id</option>
-                                         <option value="documento">Documento</option>
-                                         <option value="perfil">Perfil</option>
-                                         <option value="nombre">Nombre</option>
-                                         <option value="apellido">Apellido</option>
-                                         <option value="direccion">Dirección</option>
-                                         <option value="telefono">Telefono</option>
-                                         <option value="correo">Correo</option>
+                                        <option value="id">Id</option>
+                                        <option value="documento">Documento</option>
+                                        <option value="area">Area</option>
+                                        <option value="proceso">Proceso</option>
+                                        <option value="perfil">Perfil</option>
+                                        <option value="nombre">Nombre</option>
+                                        <option value="apellido">Apellido</option>
+                                        <option value="direccion">Dirección</option>
+                                        <option value="telefono">Telefono</option>
+                                        <option value="correo">Correo</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarEmpleado(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarEmpleado(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -40,6 +43,8 @@
                                         <th>Opciones</th>
                                         <th>Id</th>
                                         <th>Documento</th>
+                                        <th>Area</th>
+                                        <th>Proceso</th>
                                         <th>Perfil</th>
                                         <th>Nombre</th>
                                         <th>Apellido</th>
@@ -71,6 +76,8 @@
                                         </td>
                                         <td v-text="empleado.id"></td>
                                         <td v-text="empleado.documento"></td>
+                                        <td v-text="empleado.area"></td>
+                                        <td v-text="empleado.proceso"></td>
                                         <td v-text="empleado.perfil"></td>
                                         <td v-text="empleado.nombre"></td>
                                         <td v-text="empleado.apellido"></td>
@@ -119,10 +126,28 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="form-group row">
+                                <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Documento</label>
                                         <div class="col-md-9">
                                             <input type="number" v-model="documento" class="form-control" placeholder="Documento de Identificación">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Area</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idArea" @change='selectRelacion(area.idArea)'>
+                                                <option value="0" disabled>Seleccione un área</option>
+                                                <option v-for="area in arrayArea" :key="area.idArea" :value="area.idArea" v-text="area.area"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idProceso">
+                                                <option value="0" disabled>Seleccione un proceso</option>
+                                                <option v-for="relacion in arrayRelacion" :key="relacion.idProceso" :value="relacion.idProceso" v-text="relacion.proceso"></option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -186,6 +211,7 @@
                 <!--Fin del modal-->
         </main>
 </template>
+
 <script>
     export default {
         data(){
@@ -203,6 +229,12 @@
                 idPerfil: 0,
                 perfil : '',
                 arrayPerfil: [],
+                idArea: 0,
+                area : '',
+                arrayArea: [],
+                idProceso: 0,
+                proceso : '',
+                arrayRelacion: [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -227,7 +259,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -246,7 +278,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -263,7 +294,7 @@
                     console.log(error);
                 })
             },
-            selectPerfil(){
+             selectPerfil(){
                 let me=this;
                 var url='/perfil/selectPerfil';
                 axios.get(url).then(function (response) {
@@ -271,6 +302,30 @@
                 me.arrayPerfil=respuesta.perfiles;
                 })
                 .catch(function (error) {
+                    console.log(error);
+                })
+            },
+            selectArea(){
+                let me=this;
+                var url='/area/selectArea';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayArea=respuesta.areas;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            selectRelacion(idArea){
+                let me=this;
+                var url='/empleado/selectRelacion/'+this.idArea;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayRelacion=respuesta.relaciones;
+                })
+                .catch(function (error) {
+                    // handle error
                     console.log(error);
                 })
             },
@@ -308,7 +363,6 @@
                 if(this.validarEmpleado()){
                     return;
                 }
-
                 let me=this;
                 axios.put('/empleado/update',{
                     'id': this.idEmpleado,
@@ -401,7 +455,10 @@
                 }
                 })
             },
-             validarEmpleado(){
+            validarEmpleado(){
+                this.errorArea=0;
+                this.errorProceso=0;
+                this.errorPerfil=0;
                 this.errorEmpleado=0;
                 this.errorMensaje=[];
 
@@ -436,13 +493,15 @@
                             this.tipoAccion= 1;
                             break;
                         }
-                        case 'actualizar':{
+                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
                             this.tituloModal='Editar empleado';
                             this.tipoAccion= 2;
                             this.idEmpleado=data['id'];
                             this.documento=data['documento'];
+                            this.idArea=data['idArea'];
+                            this.proceso=data['proceso']; //añadido para alimentar el select
                             this.idPerfil=data['idPerfil'];
                             this.nombre=data['nombre'];
                             this.apellido=data['apellido'];
@@ -452,13 +511,16 @@
                             break;
                         }
                     }
-                }
+              }
+
             }
-            this.selectPerfil();
+            this.selectRelacion(this.idArea);
             }
         },
         mounted() {
             this.listarEmpleado(1,this.buscar,this.criterio);
+            this.selectArea();
+            this.selectPerfil();
         }
     }
 </script>
@@ -482,4 +544,3 @@
         font-weight: bold;
     }
 </style>
-
