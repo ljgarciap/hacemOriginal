@@ -15,10 +15,10 @@ class CreateTbProveedoresTable extends Migration
     {
         Schema::create('tb_proveedores', function (Blueprint $table) {
             $table->id();
-            $table->integer('nit');
+            $table->bigInteger('nit');
             $table->string('razonSocial',255);
             $table->string('contacto',255);
-            $table->integer('telefono');
+            $table->bigInteger('telefono');
             $table->string('direccion',255);
             $table->string('correo',255);
             $table->boolean('estado')->default(1);

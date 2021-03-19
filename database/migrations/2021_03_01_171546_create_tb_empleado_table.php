@@ -15,12 +15,12 @@ class CreateTbEmpleadoTable extends Migration
     {
         Schema::create('tb_empleado', function (Blueprint $table) {
             $table->id();
-            $table->integer('documento');
+            $table->bigInteger('documento');
             $table->foreignId('idPerfil')->constrained('tb_perfil');
             $table->string('nombre',255);
             $table->string('apellido',255);
             $table->string('direccion',255);
-            $table->integer('telefono');
+            $table->bigInteger('telefono');
             $table->string('correo',255);
             $table->boolean('estado')->default(1);
            // $table->timestamps();

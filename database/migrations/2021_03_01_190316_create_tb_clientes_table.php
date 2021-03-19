@@ -15,11 +15,11 @@ class CreateTbClientesTable extends Migration
     {
         Schema::create('tb_clientes', function (Blueprint $table) {
             $table->id();
-            $table->integer('documento');
+            $table->bigInteger('documento');
             $table->string('nombre',255);
             $table->string('apellido',255);
             $table->string('direccion',255);
-            $table->integer('telefono');
+            $table->bigInteger('telefono');
             $table->string('correo',255);
             $table->boolean('estado')->default(1);
            // $table->timestamps();
