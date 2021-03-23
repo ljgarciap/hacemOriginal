@@ -416,7 +416,7 @@
             generarDetalle(id){
                 this.identificador=id;
                 let me=this;
-                axios.post('/simulacion/estado',{
+                axios.post('/ordenpedido/estado',{
                     'id': this.identificador
                 }).then(function (response) {
                 me.cerrarModal('0');

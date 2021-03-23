@@ -173,6 +173,7 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get("/ordenpedido", "Tb_orden_pedido_clienteController@index");
         Route::post("/ordenpedido/store", "Tb_orden_pedido_clienteController@store");
+        Route::post("/ordenpedido/estado", "Tb_orden_pedido_clienteController@estado");
         Route::get("/ordenpedido/clientes", "Tb_orden_pedido_clienteController@clientes");
         Route::put("/ordenpedido/update", "Tb_orden_pedido_clienteController@update");
         Route::get("/ordenpedido/ciftiempos/{identificador}", "Tb_orden_pedido_clienteController@cifTiempos");
