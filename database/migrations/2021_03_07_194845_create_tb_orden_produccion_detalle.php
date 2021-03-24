@@ -15,10 +15,9 @@ class CreateTbOrdenProduccionDetalle extends Migration
     {
         Schema::create('tb_orden_produccion_detalle', function (Blueprint $table) {
             $table->id();
-            $table->string('detalle',255);
             $table->foreignId('idGestionMateria')->constrained('tb_gestion_materia_prima');
             $table->float('cantidadRequerida');
-            $table->float('cantidadEntregada');
+            $table->float('cantidadEntregada')->default(0);
             $table->foreignId('idOrdenProduccion')->constrained('tb_orden_produccion');
             $table->boolean('estado')->default(1);
             //1 incompleta 0 completa

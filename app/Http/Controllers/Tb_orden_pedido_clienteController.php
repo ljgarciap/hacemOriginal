@@ -59,12 +59,10 @@ class Tb_orden_pedido_clienteController extends Controller
         $maximos = Tb_orden_pedido_cliente::select(DB::raw('MAX(tb_orden_pedido_cliente.consecutivo) as maximo'))
         ->get();
 
-        $maximo=0;
-
         foreach($maximos as $maximo1){
-            $maximosuma = $maximo1->consecutivo;
-            if($maximosuma = null){$consecutivo=1;}
-             else {$maximo=$maximo+$maximosuma;}
+            $maximosuma = $maximo1->maximo;
+            if($maximosuma > 0){$maximo=$maximosuma+1;}
+             else {$maximo=1;}
             }
         $consecutivo=$maximo;
 
@@ -108,11 +106,27 @@ class Tb_orden_pedido_clienteController extends Controller
             $tb_orden_pedido_cliente->estado=2;
             $tb_orden_pedido_cliente->save();
 
+            $tb_orden_pedido_cliente2=Tb_orden_pedido_cliente::findOrFail($request->id);
+            $fecha=$tb_orden_pedido_cliente->fecha;
+
             $ordenes = DB::table('tb_orden_pedido_cliente_detalle')->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $idOrdenPedido)->get();
             foreach ($ordenes as $orden) {
                 $idProducto=$orden->idProducto;
                 $cantidad=$orden->cantidad;
+
+                $maximos = Tb_orden_produccion::select(DB::raw('MAX(tb_orden_produccion.consecutivo) as maximo'))
+                ->get();
+
+                foreach($maximos as $maximo1){
+                    $maximosuma = $maximo1->maximo;
+                    if($maximosuma > 0){$maximo=$maximosuma+1;}
+                     else {$maximo=1;}
+                    }
+                $consecutivo=$maximo;
+
                 $tb_orden_produccion=new Tb_orden_produccion();
+                $tb_orden_produccion->consecutivo=$consecutivo;
+                $tb_orden_produccion->fecha=$fecha;
                 $tb_orden_produccion->idProducto=$idProducto;
                 $tb_orden_produccion->cantidad=$cantidad;
                 $tb_orden_produccion->idOrdenPedido=$idOrdenPedido;
@@ -126,7 +140,7 @@ class Tb_orden_pedido_clienteController extends Controller
                     foreach ($productos as $producto) {
                         $cantidadRequerida=0;
                         $idMateriaPrima=$producto->idMateriaPrima;
-                        $cantidadMateria=$producto->cantidadMateria;
+                        $cantidadMateria=$producto->cantidad;
                         $cantidadRequerida=$cantidad*$cantidadMateria;
 
                             $tb_orden_produccion_detalle=new Tb_orden_produccion_detalle();
@@ -136,8 +150,6 @@ class Tb_orden_pedido_clienteController extends Controller
                             $tb_orden_produccion_detalle->estado=1;
                             $tb_orden_produccion_detalle->save();
                         }
-
-
                   }
         }
 
