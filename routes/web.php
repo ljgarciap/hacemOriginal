@@ -214,8 +214,14 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get("/cotizacion", "Tb_cotizacionController@index");
         Route::post("/cotizacion/store", "Tb_cotizacionController@store");
-        Route::get("/cotizacion/clientes", "Tb_cotizacionController@clientes");
+        Route::post("/cotizacion/estado", "Tb_cotizacionController@estado");
         Route::put("/cotizacion/update", "Tb_cotizacionController@update");
+        Route::get("/cotizacion/clientes", "Tb_cotizacionController@clientes");
+
+        Route::get("/cotizacioncliente", "Tb_detalle_cotizacionController@index");
+        Route::get("/cotizacioncliente/listar", "Tb_detalle_cotizacionController@listar");
+        Route::get("/cotizacioncliente/posibles", "Tb_detalle_cotizacionController@posibles");
+        Route::post("/cotizacioncliente/store", "Tb_detalle_cotizacionController@store");
     });
 
 //---------------------------------------------------------------------------//
