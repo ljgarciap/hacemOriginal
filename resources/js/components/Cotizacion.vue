@@ -189,13 +189,6 @@
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==2" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Valor</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
-                                            <span class="help-block">(*) Ingrese el Valor</span>
-                                        </div>
-                                    </div>
-                                    <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Precio Venta</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="precioVenta" class="form-control" placeholder="Precio venta unidad">
@@ -412,7 +405,6 @@
                 let me=this;
                 axios.post('/cotizacioncliente/store',{
                     'cantidad': this.cantidad,
-                    'valor':this.valor,
                     'precioVenta': this.precioVenta,
                     'idProducto': this.idProducto,
                     'idCotizacion': this.identificador,

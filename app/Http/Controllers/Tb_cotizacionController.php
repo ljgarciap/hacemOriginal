@@ -116,14 +116,11 @@ class Tb_cotizacionController extends Controller
             $tb_cotizacion->save();
 
             $tb_cotizacion2=Tb_cotizacion::findOrFail($request->id);
-            $fecha=$tb_cotizacion->fecha;
+            $fecha=$tb_cotizacion2->fecha;
+            $observacion=$tb_cotizacion2->condicionEntrega;
+            $idCliente=$tb_cotizacion2->idCliente;
 
-            $cotizaciones = DB::table('tb_detalle_cotizacion')->where('tb_detalle_cotizacion.idCotizacion', '=', $idCotizacion)->get();
-            foreach ($cotizaciones as $cotizacion) {
-                $idProducto=$cotizacion->idProducto;
-                $cantidad=$cotizacion->cantidad;
-
-                $maximos = Tb_orden_pedido_cliente::select(DB::raw('MAX(tb_orden_pedido_cliente.consecutivo) as maximo'))
+            $maximos = Tb_orden_pedido_cliente::select(DB::raw('MAX(tb_orden_pedido_cliente.consecutivo) as maximo'))
                 ->get();
 
                 foreach($maximos as $maximo1){
@@ -140,24 +137,23 @@ class Tb_cotizacionController extends Controller
                 $tb_orden_pedido_cliente->observacion=$observacion;
                 $tb_orden_pedido_cliente->save();
 
-
                 $idOrdenPedido= $tb_orden_pedido_cliente->id;
 
+            $cotizaciones = DB::table('tb_detalle_cotizacion')->where('tb_detalle_cotizacion.idCotizacion', '=', $idCotizacion)->get();
+            foreach ($cotizaciones as $cotizacion) {
+                $idProducto=$cotizacion->idProducto;
+                $cantidad=$cotizacion->cantidad;
+                $valor=$cotizacion->valor;
+                $precioVenta=$cotizacion->precioVenta;
 
-                    $productos = DB::table('tb_materia_prima_producto')->where('tb_materia_prima_producto.idHoja', '=', $idProducto)->get();
-                    foreach ($productos as $producto) {
-                        $cantidadRequerida=0;
-                        $idMateriaPrima=$producto->idMateriaPrima;
-                        $cantidadMateria=$producto->cantidad;
-                        $cantidadRequerida=$cantidad*$cantidadMateria;
-
-                            $tb_orden_pedido_cliente_detalle=new Tb_orden_pedido_cliente_detalle();
-                            $tb_orden_pedido_cliente_detalle->idProducto=$idMateriaPrima;
-                            $tb_orden_pedido_cliente_detalle->cantidad=$cantidadRequerida;
-                            $tb_orden_pedido_cliente_detalle->idCotizacion=$idCotizacion;
-                            $tb_orden_pedido_cliente_detalle->estado=1;
-                            $tb_orden_pedido_cliente_detalle->save();
-                        }
+                $tb_orden_pedido_cliente_detalle=new Tb_orden_pedido_cliente_detalle();
+                $tb_orden_pedido_cliente_detalle->idProducto=$idProducto;
+                $tb_orden_pedido_cliente_detalle->cantidad=$cantidad;
+                $tb_orden_pedido_cliente_detalle->precioCosto=$valor;
+                $tb_orden_pedido_cliente_detalle->precioVenta=$precioVenta;
+                $tb_orden_pedido_cliente_detalle->idOrdenPedido=$idOrdenPedido;
+                $tb_orden_pedido_cliente_detalle->estado=1;
+                $tb_orden_pedido_cliente_detalle->save();
                   }
         }
 

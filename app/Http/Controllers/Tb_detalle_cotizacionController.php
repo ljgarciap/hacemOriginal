@@ -199,7 +199,7 @@ class Tb_detalle_cotizacionController extends Controller
         //if(!$request->ajax()) return redirect('/');
         $tb_detalle_cotizacion=new Tb_detalle_cotizacion();
         $tb_detalle_cotizacion->cantidad=$request->cantidad;
-        $tb_detalle_cotizacion->valor=$request->valor;
+        $tb_detalle_cotizacion->valor=$total;
         $tb_detalle_cotizacion->precioVenta=$request->precioVenta;
         $tb_detalle_cotizacion->idProducto=$request->idProducto;
         $tb_detalle_cotizacion->idCotizacion=$request->idCotizacion;
