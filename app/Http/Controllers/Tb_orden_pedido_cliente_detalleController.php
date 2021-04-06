@@ -200,4 +200,99 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
         $tb_orden_pedido_cliente_detalle->idOrdenPedido=$request->idOrdenPedido;
         $tb_orden_pedido_cliente_detalle->save();
     }
+
+    public function costo(Request $request)
+        {
+        $identificador=$request->idProducto;
+
+        $total = 0;
+        $acumuladomd = 0;
+        $acumuladomi = 0;
+        $acumuladomo = 0;
+        $acumuladocif = 0;
+        $acumuladomaquinaria = 0;
+        $acumuladocift = 0;
+
+        # Modelo::join('tablaqueseune',basicamente un on)
+        $productos = Tb_producto::join('tb_hoja_de_costo','tb_producto.id','=','tb_hoja_de_costo.idProducto')
+        ->select('tb_producto.producto as producto','tb_producto.referencia as referencia','tb_producto.foto as foto','tb_hoja_de_costo.capacidadMensual as capacidadMensual')
+        ->where('tb_producto.id','=',$identificador)
+        ->get();
+
+        foreach($productos as $producto){
+            $unidadesprod = $producto->capacidadMensual;
+            }
+
+        //directa
+        $query = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
+        ELSE ROUND(SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) END) as acumuladomd");
+        $materiadirecta = DB::table('tb_materia_prima_producto')
+        ->select($query)
+        ->where([
+            ['tb_materia_prima_producto.idHoja','=',$identificador],
+            ['tb_materia_prima_producto.tipoDeCosto', '=', 'Directo'],
+        ])->get();
+        foreach($materiadirecta as $materiad){
+        $acumuladomd = $materiad->acumuladomd + $acumuladomd;
+        }
+
+        //indirecta
+        $query1 = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio) IS NULL THEN 0
+        ELSE ROUND(SUM(tb_materia_prima_producto.cantidad*tb_materia_prima_producto.precio),0) END) as acumuladomi");
+        $materiaindirecta = DB::table('tb_materia_prima_producto')
+        ->select($query1)
+        ->where([
+            ['tb_materia_prima_producto.idHoja','=',$identificador],
+            ['tb_materia_prima_producto.tipoDeCosto', '=', 'Indirecto'],
+        ])->get();
+        foreach($materiaindirecta as $materiaind){
+            $acumuladomi = $materiaind->acumuladomi + $acumuladomi;
+        }
+
+        //manodeobra
+        $query2 = DB::raw("(CASE WHEN SUM(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio) IS NULL THEN 0
+        ELSE ROUND(SUM(tb_mano_de_obra_producto.tiempo*tb_mano_de_obra_producto.precio),0) END) as acumuladomo");
+        $manodeobra = DB::table('tb_mano_de_obra_producto')
+        ->select($query2)
+        ->where('tb_mano_de_obra_producto.idHoja','=',$identificador)
+        ->get();
+        foreach($manodeobra as $manodeo){
+            $acumuladomo = $manodeo->acumuladomo + $acumuladomo;
+        }
+
+        //cif
+        $acumuladocif = 0;
+        $acumuladomaquinaria = 0;
+        $acumuladocift = 0;
+
+        //cif
+        $query3 = DB::raw("(CASE WHEN SUM(tb_concepto_cif.valor) IS NULL THEN 0
+        ELSE SUM(tb_concepto_cif.valor) END) as acumuladocif");
+        $ciftotales = DB::table('tb_concepto_cif')
+        ->select($query3)
+        ->get();
+        foreach($ciftotales as $ciftotal){
+            $acumuladocif = $ciftotal->acumuladocif + $acumuladocif;
+            $acumuladocift = $acumuladocift + $acumuladocif;
+        }
+
+        //maquinaria
+        $query4 = DB::raw("(CASE WHEN SUM(tb_maquinaria.depreciacionMensual) IS NULL THEN 0
+        ELSE SUM(tb_maquinaria.depreciacionMensual) END) as acumuladomaquinaria");
+        $totales = DB::table('tb_maquinaria')
+        ->select($query4)
+        ->get();
+        foreach($totales as $totalg){
+            $acumuladomaquinaria = $totalg->acumuladomaquinaria + $acumuladomaquinaria;
+            $acumuladocift = $acumuladocift + $acumuladomaquinaria;
+        }
+
+        //capacidadproduccion total
+        $cifunitario=($acumuladocift/$unidadesprod);
+        $cifunitariored=round($cifunitario,0);
+
+        $total = $acumuladomd + $acumuladomi + $acumuladomo + $cifunitariored;
+
+        return ['total' => $total];
+    }
 }

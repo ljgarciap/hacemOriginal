@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Freddy',
             'email' => 'freddy.mendez@misena.edu.co',
-            'password' => bcrypt('Freddy'),
+            'password' => bcrypt('Instructor'),
         ]);
 
         DB::table('users')->insert([
@@ -42,5 +42,19 @@ class UserSeeder extends Seeder
             'email' => 'empresario@gmail.com',
             'password' => bcrypt('Empresario'),
         ]);
+
+
+        DB::table('users')->insert([
+            'name' => 'Alba',
+            'email' => 'aluciba@misena.edu.co',
+            'password' => bcrypt('Alba'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Sergio',
+            'email' => 'savargas108@misena.edu.co',
+            'password' => bcrypt('Sergio'),
+        ]);
+
     }
 }

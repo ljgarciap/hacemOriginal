@@ -162,7 +162,7 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Producto</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='costeo()'>
                                                 <option value="0" disabled>Seleccione un producto</option>
                                                 <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
                                             </select>
@@ -174,6 +174,14 @@
                                         <div class="col-md-9">
                                             <input type="text" v-model="cantidad" class="form-control" placeholder="Unidades a producir">
                                             <span class="help-block">(*) Ingrese la cantidad solicitada</span>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Costo producción</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="costo" class="form-control" readonly>
+                                            <span class="help-block">(*) Costo estimado de produccion</span>
                                         </div>
                                     </div>
 
@@ -237,12 +245,15 @@
                 arrayClientes : [],
                 arrayOrdenes : [],
                 arrayProductos : [],
+                arrayPosibles : [],
+                arrayTotales:[],
                 modal : 0,
                 listado : 0,
                 tituloModal : '',
                 variable : '',
                 registro:'',
                 idProducto: 0,
+                costo: 0,
                 cantidad:'',
                 precioVenta:'',
                 tipoModal : 0,
@@ -429,6 +440,20 @@
             },
             ocultarDetalle(){
                 this.listado=0;
+            },
+            costeo(){
+                var url='/ordenpedidocliente/costo/?idProducto=' + this.idProducto;
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayTotales=respuesta.totales;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             cerrarModal(variable){
                 this.modal=this.variable;
