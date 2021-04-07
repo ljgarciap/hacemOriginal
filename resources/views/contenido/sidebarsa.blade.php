@@ -42,10 +42,10 @@
                         <a class="nav-link" href="#"><i class="icon-notebook"></i> Unidades</a>
                     </li>
                     <li @click="menu=5" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-notebook"></i> Materias</a>
+                        <a class="nav-link" href="#"><i class="icon-notebook"></i> Clasificación</a>
                     </li>
                     <li @click="menu=6" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-notebook"></i> Gestión</a>
+                        <a class="nav-link" href="#"><i class="icon-notebook"></i> Materias primas</a>
                     </li>
                 </ul>
             </li>
@@ -74,6 +74,20 @@
                     </li>
                     <li @click="menu=23" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-doc"></i> Orden de pedido</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-folder-alt"></i> <b>Kárdex</b></a>
+                <ul class="nav-dropdown-items">
+                    <li @click="menu=24" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-note"></i> Kárdex almacén</a>
+                    </li>
+                    <li @click="menu=25" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-note"></i>  Kárdex producción</a>
+                    </li>
+                    <li @click="menu=26" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-note"></i>  Kárdex producto terminado</a>
                     </li>
                 </ul>
             </li>
