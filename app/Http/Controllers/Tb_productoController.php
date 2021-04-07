@@ -86,11 +86,20 @@ class Tb_productoController extends Controller
 
     public function store(Request $request)
     {
+        if($request->foto){
+
+            $name = time().'.' . explode('/', explode(':', substr($request->foto, 0, strpos($request->foto, ';')))[1])[1];
+            \Image::make($request->foto)->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(public_path('img/descargas/').$name);
+            $request->merge(['foto' => $name]);
+           
+        }
         if(!$request->ajax()) return redirect('/');
         $tb_producto=new Tb_producto();
         $tb_producto->producto=$request->producto;
         $tb_producto->referencia=$request->referencia;
-        $tb_producto->foto=$request->foto;
+        $tb_producto->foto=$name;
         $tb_producto->descripcion=$request->descripcion;
         $tb_producto->idColeccion=$request->idColeccion;
         $tb_producto->idArea=$request->idArea;
@@ -106,11 +115,29 @@ class Tb_productoController extends Controller
 
     public function update(Request $request)
     {
+        $actualFoto = $tb_producto->foto;
+        
+        if($request->foto != $actualFoto){
+            $name = time().'.' . explode('/', explode(':', substr($request->foto, 0, strpos($request->foto, ';')))[1])[1];
+            \Image::make($request->foto)->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(public_path('img/descargas/').$name); 
+            $request->merge(['foto' => $name]);
+ 
+           $userFoto = public_path('img/descargas/').$actualFoto;
+ 
+           if(file_exists($userFoto)){  
+ 
+               @unlink($userFoto);
+               
+           }
+          
+       }
         if(!$request->ajax()) return redirect('/');
         $tb_producto=Tb_producto::findOrFail($request->id);
         $tb_producto->producto=$request->producto;
         $tb_producto->referencia=$request->referencia;
-        $tb_producto->foto=$request->foto;
+        $tb_producto->foto=$name;
         $tb_producto->descripcion=$request->descripcion;
         $tb_producto->idColeccion=$request->idColeccion;
         $tb_producto->idArea=$request->idArea;

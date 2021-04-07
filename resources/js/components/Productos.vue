@@ -164,14 +164,15 @@
                                             <span class="help-block">(*) Ingrese la capacidad de producción mensual</span>
                                         </div>
                                     </div>
-
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Foto</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="foto" class="form-control" placeholder="Nombre de foto">
-                                            <span class="help-block">(*) Ingrese la url de la foto</span>
-                                        </div>
+                                            <input type="file" @change="upload_foto"  class="form-control" placeholder="Nombre de foto">
+                                        </div>   
                                     </div>
+                                    <div v-if="fotoCarga" class="text-center">
+                                    <img :src="fotoCarga"  class="rounded" alt="..." style="max-height:100px; max-width:100px; ">
+                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Descripcion</label>
                                         <div class="col-md-9">
@@ -210,6 +211,7 @@
                 producto:'',
                 referencia:'',
                 foto:'',
+                image:'',
                 descripcion:'',
                 estado:'',
                 capacidadMensual:'',
@@ -313,6 +315,28 @@
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarProducto(page,buscar,criterio);
+            },
+             upload_foto(e){ // subir un nuevo archivo o imagen
+              let file = e.target.files[0];
+                let reader = new FileReader();  
+
+                if(file['size'] < 2111775)
+                {
+                    reader.onloadend = (file) => {
+                     this.foto = reader.result;
+                    }              
+                     reader.readAsDataURL(file);
+                      reader.onload = e => {
+                     this.fotoCarga = e.target.result;
+                };
+                }
+                else{
+                    alert('El tamaño del archivo no puede ser superior a 2 MB')
+                }
+            },
+            get_foto(){
+               let foto = (this.foto.length > 100) ? this.foto : "img/descargas/"+ this.foto;
+               return foto;
             },
             crearProducto(){
                 //valido con el metodo de validacion creado
@@ -493,6 +517,7 @@
             },
             //funciones para uso del lightbox
             showLightbox(fotoCarga) {
+
                 this.fotoCarga=fotoCarga;
                 document.getElementById('over').style.display='block';
                 document.getElementById('fade').style.display='block';
