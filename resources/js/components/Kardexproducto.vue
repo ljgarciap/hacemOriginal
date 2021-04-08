@@ -30,6 +30,7 @@
                                         <option value="precio">Precio</option>
                                         <option value="cantidadSaldos">Cantidad en Saldos</option>
                                         <option value="precioSaldos">Precio en Saldos</option>
+                                        <option value="idProducto">Producto</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarKardex(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarKardex(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -48,6 +49,7 @@
                                         <th>Precio</th>
                                         <th>Cantidad en Saldos</th>
                                         <th>Precio en Saldos</th>
+                                        <th>Producto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -74,6 +76,7 @@
                                         <td v-text="kardex.precio"></td>
                                         <td v-text="kardex.cantidadSaldos"></td>
                                         <td v-text="kardex.precioSaldos"></td>
+                                        <td v-text="kardex.idProducto"></td>
                                     </tr>
 
                                 </tbody>
@@ -178,46 +181,21 @@
                                            <span class="help-block">(*) Ingrese el precio en saldos </span>
                                         </div>
                                     </div>
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="email-input">Producto</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione un producto</option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                     <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorKardex">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
                                     </div>
-
-                                    <!-- divs para modal tipo 2 -->
-
-                                    <div v-if="tipoModal==2" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Producto</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
-                                                <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div v-if="tipoModal==2" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Unidades</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="cantidad" class="form-control" placeholder="Unidades a producir">
-                                            <span class="help-block">(*) Ingrese la cantidad solicitada</span>
-                                        </div>
-                                    </div>
-                                    <div v-if="tipoModal==2" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Precio Venta</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="precioVenta" class="form-control" placeholder="Precio venta unidad">
-                                            <span class="help-block">(*) Ingrese el precio acordado</span>
-                                        </div>
-                                    </div>
-
-                                    <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorKardex">
-                                        <div class="text-center text-error">
-                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
-                                        </div>
-                                    </div>
-
                                     <!-- Si el tipo es 3 solo es modal para mostrar carga -->
 
                                     <div v-if="tipoModal==3" class="carga">
@@ -229,10 +207,6 @@
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearKardex()">Guardar</button>
                             </div>
-                            <div v-if="tipoModal==2" class="modal-footer">
-                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearRelacion()">Guardar</button>
-                            </div>
                         </div>
                         <!-- /.modal-content -->
                     </div>
@@ -243,14 +217,7 @@
 </template>
 
 <script>
-    import moment from 'moment';
-    import productoscotizacion from '../components/ProductosCotizacion';
-    import detallecotizacion from '../components/DetalleCotizacion';
     export default {
-        components: {
-            productoscotizacion,
-            detallecotizacion
-        },
         data(){
             return{
                 idkardex:0,
@@ -264,16 +231,13 @@
                 precioSaldos:'',
                 tipologia:'',
                 arrayKardexes : [],
+                idProducto:'',
+                producto:'',
                 arrayProductos : [],
                 modal : 0,
                 listado : 0,
                 tituloModal : '',
                 variable : '',
-                registro:'',
-                idProducto: 0,
-                cantidad:'',
-                valor:'',
-                precioVenta:'',
                 tipoModal : 0,
                 tipoAccion : 0,
                 errorKardex : 0,
@@ -327,17 +291,23 @@
             listarKardex(page,buscar,criterio){
                 let me=this;
                 var url='/kardex?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                //console.log(url);
-                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
-                me.arrayKardexes=respuesta.kardex.data;
+                me.arrayKardexes=respuesta.kardexes.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
                 })
                 .catch(function (error) {
-                    // handle error
+                    console.log(error);
+                })
+            },
+             selectProducto(){
+                let me=this;
+                var url='/producto/selectProducto';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayProductos=respuesta.productos;
+                })
+                .catch(function (error) {
                     console.log(error);
                 })
             },
@@ -355,22 +325,11 @@
             forceRerender() {
                 this.componentKey += 1;
                },
-            eliminarProducto(){
-                /*
-                let me=this;
-                axios.put('/materiaprimaproducto/deactivate',{
-                    'id': this.id
-                }).then(function (response) {
-                me.forceRerender();
-                me.listarProducto(1,'','materiaprima');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-                */
-            },
             crearKardex(){
                 //valido con el metodo de validacion creado
+                if(this.validarKardex()){
+                    return;
+                }
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 axios.post('/kardex/store',{
@@ -379,7 +338,8 @@
                     'cantidad':this.cantidad,
                     'precio':this.precio,
                     'cantidadSaldos': this.cantidadSaldos,
-                    'precioSaldos':this.precioSaldos
+                    'precioSaldos':this.precioSaldos,
+                    'idProducto':this.idProducto
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.listarKardex(1,'','');
@@ -387,29 +347,6 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-            },
-            /*crearRelacion(){
-                //valido con el metodo de validacion creado
-                let me=this;
-                axios.post('/kardexproducto/store',{
-                    'cantidad': this.cantidad,
-                    'precioVenta': this.precioVenta,
-                    'idProducto': this.idProducto,
-                    'idCotizacion': this.identificador,
-                }).then(function (response) {
-                me.cerrarModal('0');
-                me.forceRerender();
-                me.listarKardex(1,'','');
-                me.listarPosibles(this.identificador);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            mostrarProductos(id){
-                this.listado=1;
-                this.identificador=id;
-                this.listarPosibles(this.identificador);
             },
             mostrarDetalle(id){
                 this.listado=2;
@@ -418,7 +355,7 @@
             generarDetalle(id){
                 this.identificador=id;
                 let me=this;
-                axios.post('/kardex/estado',{
+                axios.post('/kardex/tipologia',{
                     'id': this.identificador
                 }).then(function (response) {
                 me.cerrarModal('0');
@@ -431,7 +368,20 @@
             },
             ocultarDetalle(){
                 this.listado=0;
-            },*/
+            },
+            validarKardex(){
+                this.errorProducto=0;
+                this.errorKardex=0;
+                this.errorMensaje=[];
+
+                if (!this.detalle) this.errorMensaje.push("El Detalle no puede estar vacio");
+                if (!this.cantidad) this.errorMensaje.push("La Cantidad no puede estar vacia");
+                if (!this.precio) this.errorMensaje.push("El Precio no puede estar vacio");
+                if (!this.idProducto) this.errorMensaje.push("El producto no puede estar vacio");
+                if (this.errorMensaje.length) this.errorKardex=1;
+
+                return this.errorKardex;
+            },
             cerrarModal(variable){
                 this.modal=this.variable;
                 this.tituloModal='';
@@ -452,24 +402,8 @@
                                 break;
                             }
                         }
-                        //this.selectGestionMateria();
                         break;
                     }
-
-                    case "rela":
-                    {
-                        switch (accion) {
-                            case 'crear':{
-                                this.modal=1;
-                                this.tipoModal=2; //carga tipos de campos y footers
-                                this.tituloModal='Agregar productos';
-                                this.tipoAccion= 1; //carga tipos de botón en el footer
-                                break;
-                            }
-                        }
-                        break;
-                    }
-
                     case "detalle":
                     {
                         switch (accion) {
@@ -490,6 +424,7 @@
         },
         mounted() {
             this.listarKardex(1,this.buscar,this.criterio);
+            this.selectProducto();
         }
     }
 </script>

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Tb_producto; 
-use App\Tb_materia_prima_producto;
-use App\Tb_gestion_materia_prima;
 use App\Tb_kardex_producto_terminado;
 use Illuminate\Http\Request;
 
@@ -26,7 +24,7 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
             $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
             ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha',
             'tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad','tb_kardex_producto_terminado.precio',
-            'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos',
+            'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
             'tb_kardex_producto_terminado.tipologia','tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto',
             'tb_producto.descripcion','tb_producto.estado')
             ->orderBy('tb_kardex_producto_terminado.id','desc')->paginate(5);
@@ -35,13 +33,12 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
             $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
             ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha',
             'tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad','tb_kardex_producto_terminado.precio',
-            'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos',
+            'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
             'tb_kardex_producto_terminado.tipologia','tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto',
             'tb_producto.descripcion','tb_producto.estado')
             ->where('tb_kardex_producto_terminado.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_kardex_producto_terminado.id','desc')->paginate(5);
         }
-
         return [
             'pagination' => [
                 'total'         =>$kardex->total(),
@@ -53,10 +50,21 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
             ],
             'kardex' =>  $kardex
         ];
+        
     }
 
     public function store(Request $request)
     {
+        foreach($kardex as $k){
+            $catidad=$k->cantidad;
+            $precio=$k->precio;
+            $cantidadSaldos= $k->cantidadSaldos;
+            $precioSaldos=$k->precioSaldos;
+        }
+
+        $cantidadS=($cantidad-$cantidadSaldos);
+        $precioS=($cantidad*$precio);   
+
         //if(!$request->ajax()) return redirect('/');
         $tb_kardex_producto_terminado=new Tb_kardex_producto_terminado();
         $tb_kardex_producto_terminado->fecha=$request->fecha;
@@ -65,6 +73,7 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
         $tb_kardex_producto_terminado->precio=$request->precio;
         $tb_kardex_producto_terminado->cantidadSaldos=$request->cantidadSaldos;
         $tb_kardex_producto_terminado->precioSaldos=$request->precioSaldos;
+        $tb_kardex_producto_terminado->idProducto=$request->idProducto;
         $tb_kardex_producto_terminado->save();
     }
 
