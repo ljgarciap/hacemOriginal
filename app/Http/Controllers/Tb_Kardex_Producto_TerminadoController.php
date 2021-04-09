@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Tb_producto; 
+use App\Tb_producto;
 use App\Tb_kardex_producto_terminado;
 use Illuminate\Http\Request;
 
@@ -50,20 +50,21 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
             ],
             'kardex' =>  $kardex
         ];
-        
+
     }
 
     public function store(Request $request)
     {
-        foreach($kardex as $k){
-            $catidad=$k->cantidad;
+        $kw=$request;
+        foreach($kw as $k){
+            $cantidad=$k->cantidad;
             $precio=$k->precio;
             $cantidadSaldos= $k->cantidadSaldos;
             $precioSaldos=$k->precioSaldos;
         }
 
         $cantidadS=($cantidad-$cantidadSaldos);
-        $precioS=($cantidad*$precio);   
+        $precioS=($cantidad*$precio);
 
         //if(!$request->ajax()) return redirect('/');
         $tb_kardex_producto_terminado=new Tb_kardex_producto_terminado();
@@ -98,7 +99,7 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
 
             $tb_kardex_producto_terminado2=Tb_kardex_producto_terminado::findOrFail($request->id);
             $fecha=$tb_kardex_producto_terminado->fecha;
-        
+
         }
 
 //---------------------------------------------------------------------------------------------------------------------------------//
