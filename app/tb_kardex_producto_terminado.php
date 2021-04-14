@@ -7,4 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Tb_kardex_producto_terminado extends Model
 {
     //
+    protected $table = 'tb_kardex_producto_terminado';
+
+    protected $fillable = ['fecha','detalle','cantidad','precio','cantidadSaldos','precioSaldos',
+     'idGestionMateria','tipologia'];
+
+    public $timestamps = false;
 }

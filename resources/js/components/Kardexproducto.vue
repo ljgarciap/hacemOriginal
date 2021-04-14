@@ -3,34 +3,29 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Kardex de Producto Terminado</li>
+                    <li class="breadcrumb-item active">Kardex Producto Terminado</li>
                 </ol>
-
-                <template v-if="listado==0">
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
-                       <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Kardex de Producto Terminado
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Kardex Producto Terminado &nbsp;
                             <button type="button" @click="abrirModal('kardex','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
-
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-9">
                                     <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="id">Id</option>
+                                       <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="detalle">Acciones</option>
                                         <option value="fecha">Fecha</option>
-                                        <option value="detalle">Detalle</option>
-                                        <option value="cantidad">Cantidad</option>
-                                        <option value="precio">Precio</option>
-                                        <option value="cantidadSaldos">Cantidad en Saldos</option>
-                                        <option value="precioSaldos">Precio en Saldos</option>
                                         <option value="idProducto">Producto</option>
+                                        <option value="cantidad">Cantidad Existente</option>
+                                        <option value="precio">Precio promedio</option>
+                                        <option value="precioSaldos">Saldos</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarKardex(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarKardex(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -42,41 +37,25 @@
                                 <thead>
                                     <tr>
                                         <th>Acciones</th>
-                                        <th>Id</th>
                                         <th>Fecha</th>
-                                        <th>Detalle</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio</th>
-                                        <th>Cantidad en Saldos</th>
-                                        <th>Precio en Saldos</th>
                                         <th>Producto</th>
+                                        <th>Cantidad existente</th>
+                                        <th>Precio promedio</th>
+                                        <th>Saldos</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    <tr v-for="kardex in arrayKardexes" :key="kardex.id">
+                                       <tr v-for="kardex in arrayKardexes" :key="kardex.id">
                                         <td>
-                                        <template v-if="kardex.tipologia==1">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(kardex.id)">
-                                                <i class="icon-plus"></i><span> Agregar</span>
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarKardex(kardex.id)">
+                                                <i class="icon-eye"></i><span> Ver kárdex</span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm" @click="abrirModal('detalle','crear',kardex.id)">
-                                                <i class="icon-cloud-upload"></i><span> Generar</span>
-                                            </button>
-                                        </template>
-                                        <template v-if="kardex.tipologia==2">
-                                            <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(kardex.id)">
-                                                <i class="icon-magnifier"></i><span> Detalle</span>
-                                            </button>
-                                        </template>
                                         </td>
                                         <td v-text="kardex.fecha"></td>
-                                        <td v-text="kardex.detalle"></td>
-                                        <td v-text="kardex.cantidad"></td>
-                                        <td v-text="kardex.precio"></td>
+                                        <td v-text="kardex.producto"></td>
                                         <td v-text="kardex.cantidadSaldos"></td>
                                         <td v-text="kardex.precioSaldos"></td>
-                                        <td v-text="kardex.idProducto"></td>
+                                        <td v-text="kardex.saldos"></td>
                                     </tr>
 
                                 </tbody>
@@ -99,52 +78,18 @@
                     </div>
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
-                </template>
-
-                <template v-if="listado==1">
-                <div class="container-fluid">
-                    <!-- Ejemplo de tabla Listado -->
-
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Productos &nbsp;
-                            <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
-                            </div>
-                        <div class="card-body">
-                            <productoscotizacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productoscotizacion>
-                            <p align="right">
-                                <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Fin ejemplo de tabla Listado -->
-                </div>
-                </template>
-
-                    <!-- Template para mostrar el detalle luego de generar -->
-                <template v-if="listado==2">
-                    <div class="container-fluid">
-                        <div class="card">
-                            <detallecotizacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></detallecotizacion>
-                            <p align="right">
-                                <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
-                            </p>
-                        </div>
-                    </div>
-                </template>
-
                 <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
                         <div class="modal-content">
-                            <div class="modal-header" v-if="tipoModal!=3">
+                            <div class="modal-header">
                                 <h4 class="modal-title" v-text="tituloModal"></h4>
                                 <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                               <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Detalle</label>
@@ -186,7 +131,7 @@
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idProducto">
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
+                                                <option v-for="producto in arrayProductos" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -196,14 +141,9 @@
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
                                     </div>
-                                    <!-- Si el tipo es 3 solo es modal para mostrar carga -->
-
-                                    <div v-if="tipoModal==3" class="carga">
-                                        <p><hr><h1>Generando, por favor espere...</h1><hr></p>
-                                    </div>
                                 </form>
                             </div>
-                            <div v-if="tipoModal==1" class="modal-footer">
+                            <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearKardex()">Guardar</button>
                             </div>
@@ -220,20 +160,19 @@
     export default {
         data(){
             return{
-                idkardex:0,
+                idKardex:0,
                 id:'',
-                identificador:'',
-                fecha : '',
+                fecha: 0,
                 detalle:'',
                 cantidad:'',
                 precio:'',
+                precioSaldos: 0,
                 cantidadSaldos:'',
-                precioSaldos:'',
-                tipologia:'',
+                estado:'',
                 arrayKardexes : [],
-                idProducto:'',
-                producto:'',
-                arrayProductos : [],
+                idProducto: 0,
+                producto : '',
+                arrayProductos: [],
                 modal : 0,
                 listado : 0,
                 tituloModal : '',
@@ -251,9 +190,8 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'id',
-                buscar : '',
-                componentKey:0
+                criterio : 'fecha',
+                buscar : ''
             }
         },
         computed:{
@@ -285,12 +223,9 @@
             }
         },
         methods : {
-            currentDateTime() {
-                return moment().format('YYYY-MM-DD')
-            },
             listarKardex(page,buscar,criterio){
                 let me=this;
-                var url='/kardex?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/kardexproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayKardexes=respuesta.kardexes.data;
@@ -316,23 +251,16 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarkardex(page,buscar,criterio);
+                me.listarKardex(page,buscar,criterio);
             },
-            indexChange: function(args) {
-                let newIndex = args.value
-                console.log('Current tab index: ' + newIndex)
-                },
-            forceRerender() {
-                this.componentKey += 1;
-               },
             crearKardex(){
                 //valido con el metodo de validacion creado
                 if(this.validarKardex()){
                     return;
                 }
-                let me=this;
+               let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
-                axios.post('/kardex/store',{
+                axios.post('/kardexproducto/store',{
                     'detalle':this.detalle,
                     'fecha': this.fecha,
                     'cantidad':this.cantidad,
@@ -341,30 +269,16 @@
                     'precioSaldos':this.precioSaldos,
                     'idProducto':this.idProducto
                 }).then(function (response) {
-                me.cerrarModal('0');
-                me.listarKardex(1,'','');
+                me.cerrarModal();
+                me.listarKardex(1,'','kardex');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            mostrarDetalle(id){
+             mostrarDetalle(id){
                 this.listado=2;
                 this.identificador=id;
-            },
-            generarDetalle(id){
-                this.identificador=id;
-                let me=this;
-                axios.post('/kardex/tipologia',{
-                    'id': this.identificador
-                }).then(function (response) {
-                me.cerrarModal('0');
-                me.forceRerender();
-                me.listarKardex(1,'','');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
             },
             ocultarDetalle(){
                 this.listado=0;
@@ -373,7 +287,6 @@
                 this.errorProducto=0;
                 this.errorKardex=0;
                 this.errorMensaje=[];
-
                 if (!this.detalle) this.errorMensaje.push("El Detalle no puede estar vacio");
                 if (!this.cantidad) this.errorMensaje.push("La Cantidad no puede estar vacia");
                 if (!this.precio) this.errorMensaje.push("El Precio no puede estar vacio");
@@ -382,29 +295,30 @@
 
                 return this.errorKardex;
             },
-            cerrarModal(variable){
-                this.modal=this.variable;
+            cerrarModal(){
+                this.modal=0;
                 this.tituloModal='';
-                this.detalle='';
+                this.kardex='';
             },
-            abrirModal(modelo, accion, identificador){
+            abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                    case "kardex":
-                    {
-                        switch (accion) {
-                            case 'crear':{
-                                this.modal=1;
-                                this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Crear nuevo kardex de producto terminado';
-                                this.tipoAccion= 1; //carga tipos de botón en el footer
-                                this.fecha= moment().format('YYYY-MM-DD');
-                                break;
-                            }
+                case "kardex":
+                {
+                    switch (accion) {
+                        case 'crear':{
+                            this.modal=1;
+                            this.tipoModal=1; //carga tipos de campos y footers
+                            this.tituloModal='Crear nuevo kardex de producto terminado';
+                            this.tipoAccion= 1; //carga tipos de botón en el footer
+                            this.fecha= moment().format('YYYY-MM-DD');
+                            break;
                         }
-                        break;
-                    }
-                    case "detalle":
+              }
+              break;
+
+            }
+            case "detalle":
                     {
                         switch (accion) {
                             case 'crear':{
@@ -418,8 +332,7 @@
                         this.generarDetalle(this.identificador);
                         break;
                     }
-
-                }
+              } 
             }
         },
         mounted() {
@@ -446,12 +359,5 @@
     .text-error{
         color: red !important;
         font-weight: bold;
-    }
-    .carga{
-        background-color: #3c29297a !important;
-        width: 100% !important;
-        height: 100% !important;
-        text-align: center;
-        color: #ffffffff;
     }
 </style>

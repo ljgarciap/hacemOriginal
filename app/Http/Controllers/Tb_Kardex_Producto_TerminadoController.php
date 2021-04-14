@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Tb_producto;
 use App\Tb_kardex_producto_terminado;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class Tb_Kardex_Producto_TerminadoController extends Controller
@@ -13,48 +13,74 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+     public function index(Request $request)
+     {
+         //if(!$request->ajax()) return redirect('/');
+         $buscar= $request->buscar;
+         $criterio= $request->criterio;
+ 
+         if ($buscar=='') {
+             # Modelo::join('tablaqueseune',basicamente un on)
+             $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_kardex_producto_terminado.id')
+             ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha','tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad',
+             'tb_kardex_producto_terminado.precio','tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
+             'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto','tb_producto.referencia',
+             'tb_producto.foto','tb_producto.descripcion','tb_producto.estado',DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as saldos'))
+             ->paginate(5);
+         }
+         else {
+             $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
+             ->select(Tb_kardex_producto_terminado::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as saldos,
+             tb_kardex_producto_terminado.id,tb_kardex_producto_terminado.fecha,tb_kardex_producto_terminado.detalle,tb_kardex_producto_terminado.cantidad,
+             tb_kardex_producto_terminado.precio,tb_kardex_producto_terminado.cantidadSaldos,tb_kardex_producto_terminado.precioSaldos,tb_kardex_producto_terminado.idProducto,
+             tb_kardex_producto_terminado.tipologia,tb_producto.id,tb_producto.producto as producto,
+             tb_producto.referencia,tb_producto.foto,tb_producto.descripcion,tb_producto.estado'))
+             ->where('tb_kardex_producto_terminado.'.$criterio, 'like', '%'. $buscar . '%')
+             ->orderBy('tb_kardex_producto_terminado.id','desc')->paginate(5);
+         }
+         return [
+             'pagination' => [
+                 'total'         =>$kardex->total(),
+                 'current_page'  =>$kardex->currentPage(),
+                 'per_page'      =>$kardex->perPage(),
+                 'last_page'     =>$kardex->lastPage(),
+                 'from'          =>$kardex->firstItem(),
+                 'to'            =>$kardex->lastItem(),
+             ],
+             'kardex' =>  $kardex
+         ];
+ 
+     }
+    public function prueba(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
-        $buscar= $request->buscar;
-        $criterio= $request->criterio;
+            $kardex1 = DB::table('tb_kardex_producto_terminado')
+            ->get()
+            ->paginate(5);
+            $kardex = $kardex1->groupBy('idProducto');
 
-        if ($buscar=='') {
-            # Modelo::join('tablaqueseune',basicamente un on)
-            $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
-            ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha',
-            'tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad','tb_kardex_producto_terminado.precio',
-            'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
-            'tb_kardex_producto_terminado.tipologia','tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto',
-            'tb_producto.descripcion','tb_producto.estado')
-            ->orderBy('tb_kardex_producto_terminado.id','desc')->paginate(5);
-        }
-        else {
-            $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
-            ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha',
-            'tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad','tb_kardex_producto_terminado.precio',
-            'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
-            'tb_kardex_producto_terminado.tipologia','tb_producto.id','tb_producto.producto','tb_producto.referencia','tb_producto.foto',
-            'tb_producto.descripcion','tb_producto.estado')
-            ->where('tb_kardex_producto_terminado.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('tb_kardex_producto_terminado.id','desc')->paginate(5);
-        }
-        return [
-            'pagination' => [
-                'total'         =>$kardex->total(),
-                'current_page'  =>$kardex->currentPage(),
-                'per_page'      =>$kardex->perPage(),
-                'last_page'     =>$kardex->lastPage(),
-                'from'          =>$kardex->firstItem(),
-                'to'            =>$kardex->lastItem(),
-            ],
-            'kardex' =>  $kardex
+            return [
+                'pagination' => [
+                    'total'         =>$kardex->total(),
+                    'current_page'  =>$kardex->currentPage(),
+                    'per_page'      =>$kardex->perPage(),
+                    'last_page'     =>$kardex->lastPage(),
+                    'from'          =>$kardex->firstItem(),
+                    'to'            =>$kardex->lastItem(),
+                ],
+                'kardex' =>  $kardex
         ];
 
     }
-
     public function store(Request $request)
     {
+        //capturo cantidad precio y producto; internamente busco el registro mas reciente de dicho producto y tomo el valor cantidad de ese registro,
+        //ahora, miro los datos del ingreso nuevo, si es un 1 es un ingreso y sumo la nueva cantidad a la de cantidadSaldos del registro anterior,
+        //si es 2 es una salida y lo que hago es restar la nueva cantidad de la de cantidadSaldos del registro anterior; el resultado va en el
+        //registro nuevo en el campo cantidadSaldos; ahora para llenar el campo de precioSaldos (que es el precio promedio) lo que hago es del registro
+        //anterior multiplico cantidadSaldos*precioSaldos y a ese valor le sumo o resto segun el caso el valor del registro nuevo que resulta de
+        //cantidad*precio; el resultado lo divido entre el valor que calcule de cantidadSaldos y lo ingreso en precioSaldos; hay que tener muy en
+        //cuenta que en el primer registro las cantidad y cantidadSaldos asi como las precio y precioSaldos son identicas.        
+        
         $kw=$request;
         foreach($kw as $k){
             $cantidad=$k->cantidad;
@@ -63,10 +89,7 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
             $precioSaldos=$k->precioSaldos;
         }
 
-        $cantidadS=($cantidad-$cantidadSaldos);
-        $precioS=($cantidad*$precio);
-
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $tb_kardex_producto_terminado=new Tb_kardex_producto_terminado();
         $tb_kardex_producto_terminado->fecha=$request->fecha;
         $tb_kardex_producto_terminado->detalle=$request->detalle;
@@ -80,27 +103,15 @@ class Tb_Kardex_Producto_TerminadoController extends Controller
 
     public function update(Request $request)
     {
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $tb_kardex_producto_terminado=Tb_kardex_producto_terminado::findOrFail($request->id);
-        $tb_kardex_producto_terminado->tipologia=1;
+        $tb_kardex_producto_terminado->fecha=$request->fecha;
+        $tb_kardex_producto_terminado->detalle=$request->detalle;
+        $tb_kardex_producto_terminado->cantidad=$request->cantidad;
+        $tb_kardex_producto_terminado->precio=$request->precio;
+        $tb_kardex_producto_terminado->cantidadSaldos=$request->cantidadSaldos;
+        $tb_kardex_producto_terminado->precioSaldos=$request->precioSaldos;
+        $tb_kardex_producto_terminado->idProducto=$request->idProducto;
         $tb_kardex_producto_terminado->save();
     }
-
-//---------------------Funcion para generar las relaciones en las tablas que quedan con los datos-----------------------------------//
-
-    public function tipologia(Request $request)
-        {
-            //if(!$request->ajax()) return redirect('/');
-
-            $idKardex_producto_terminado= $request->id;
-            $tb_kardex_producto_terminado=Tb_kardex_producto_terminado::findOrFail($request->id);
-            $tb_kardex_producto_terminado->tipologia=2;
-            $tb_kardex_producto_terminado->save();
-
-            $tb_kardex_producto_terminado2=Tb_kardex_producto_terminado::findOrFail($request->id);
-            $fecha=$tb_kardex_producto_terminado->fecha;
-
-        }
-
-//---------------------------------------------------------------------------------------------------------------------------------//
 }
