@@ -150,20 +150,6 @@
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad en Saldos</label>
-                                        <div class="col-md-9">
-                                           <input type="number" v-model="cantidadSaldos" class="form-control" placeholder="Cantidad en saldos">
-                                           <span class="help-block">(*) Ingrese la cantidad en saldos</span>
-                                        </div>
-                                    </div>
-                                    <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Precio en Saldos</label>
-                                        <div class="col-md-9">
-                                           <input type="number" v-model="precioSaldos" class="form-control" placeholder="Precio en saldos">
-                                           <span class="help-block">(*) Ingrese el precio en saldos </span>
-                                        </div>
-                                    </div>
-                                    <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="email-input">Producto</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idProducto">
