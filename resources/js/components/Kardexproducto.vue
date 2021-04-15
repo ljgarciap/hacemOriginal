@@ -22,7 +22,7 @@
                                        <select class="form-control col-md-3" v-model="criterio">
                                         <option value="detalle">Acciones</option>
                                         <option value="fecha">Fecha</option>
-                                        <option value="idProducto">Producto</option>
+                                        <option value="producto">Producto</option>
                                         <option value="cantidad">Cantidad Existente</option>
                                         <option value="precio">Precio promedio</option>
                                         <option value="precioSaldos">Saldos</option>
@@ -42,6 +42,7 @@
                                         <th>Cantidad existente</th>
                                         <th>Precio promedio</th>
                                         <th>Saldos</th>
+                                        <th>Tipologia</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,6 +57,14 @@
                                         <td v-text="kardex.cantidadSaldos"></td>
                                         <td v-text="kardex.precioSaldos"></td>
                                         <td v-text="kardex.saldos"></td>
+                                       <td>
+                                            <div v-if="kardex.tipologia=='1'">
+                                            <span class="badge badge-success">Ingreso</span>
+                                            </div>
+                                            <div v-else>
+                                            <span class="badge badge-danger">Salida</span>
+                                            </div>
+                                        </td>
                                     </tr>
 
                                 </tbody>
@@ -113,29 +122,24 @@
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad en Saldos</label>
-                                        <div class="col-md-9">
-                                           <input type="number" v-model="cantidadSaldos" class="form-control" placeholder="Cantidad en saldos">
-                                           <span class="help-block">(*) Ingrese la cantidad en saldos</span>
-                                        </div>
-                                    </div>
-                                    <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Precio en Saldos</label>
-                                        <div class="col-md-9">
-                                           <input type="number" v-model="precioSaldos" class="form-control" placeholder="Precio en saldos">
-                                           <span class="help-block">(*) Ingrese el precio en saldos </span>
-                                        </div>
-                                    </div>
-                                    <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="email-input">Producto</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idProducto">
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductos" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
                                             </select>
                                         </div>
                                     </div>
-
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="email-input">Tipologia</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="tipologia">
+                                                <option value="0" disabled>Seleccione una Tipologia</option>
+                                                <option>Ingreso</option>
+                                                <option>Salida</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorKardex">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
@@ -168,7 +172,7 @@
                 precio:'',
                 precioSaldos: 0,
                 cantidadSaldos:'',
-                estado:'',
+                tipologia:'1',
                 arrayKardexes : [],
                 idProducto: 0,
                 producto : '',
@@ -228,7 +232,7 @@
                 var url='/kardexproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayKardexes=respuesta.kardexes.data;
+                me.arrayKardexes=respuesta.kardex.data;
                 me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {
@@ -265,9 +269,8 @@
                     'fecha': this.fecha,
                     'cantidad':this.cantidad,
                     'precio':this.precio,
-                    'cantidadSaldos': this.cantidadSaldos,
-                    'precioSaldos':this.precioSaldos,
-                    'idProducto':this.idProducto
+                    'idProducto':this.idProducto,
+                    'tipologia':this.tipologia
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarKardex(1,'','kardex');
@@ -290,7 +293,6 @@
                 if (!this.detalle) this.errorMensaje.push("El Detalle no puede estar vacio");
                 if (!this.cantidad) this.errorMensaje.push("La Cantidad no puede estar vacia");
                 if (!this.precio) this.errorMensaje.push("El Precio no puede estar vacio");
-                if (!this.idProducto) this.errorMensaje.push("El producto no puede estar vacio");
                 if (this.errorMensaje.length) this.errorKardex=1;
 
                 return this.errorKardex;
@@ -309,6 +311,8 @@
                         case 'crear':{
                             this.modal=1;
                             this.tipoModal=1; //carga tipos de campos y footers
+                            this.kardex='';
+                            this.idProducto=data['idProducto'];
                             this.tituloModal='Crear nuevo kardex de producto terminado';
                             this.tipoAccion= 1; //carga tipos de botón en el footer
                             this.fecha= moment().format('YYYY-MM-DD');
