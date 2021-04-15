@@ -21,15 +21,16 @@ class Tb_kardex_almacenController extends Controller
             'tb_kardex_almacen.precio','tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
             'tb_kardex_almacen.tipologia','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
             'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos'))
+            ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
             ->paginate(5);
         }
         else {
             $productos = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
-            ->select(Tb_kardex_almacen::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos,
-            tb_kardex_almacen.id,tb_kardex_almacen.fecha,tb_kardex_almacen.detalle,tb_kardex_almacen.cantidad,
-            tb_kardex_almacen.precio,tb_kardex_almacen.cantidadSaldos,tb_kardex_almacen.precioSaldos,tb_kardex_almacen.idGestionMateria,
-            tb_kardex_almacen.tipologia,tb_gestion_materia_prima.id,tb_gestion_materia_prima.gestionMateria as producto,
-            tb_gestion_materia_prima.idUnidadBase,tb_gestion_materia_prima.estado'))
+            ->select('tb_kardex_almacen.id','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
+            'tb_kardex_almacen.precio','tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
+            'tb_kardex_almacen.tipologia','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
+            'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos'))
+            ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
             ->where('tb_kardex_almacen.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_kardex_almacen.id','desc')->paginate(5);
         }
@@ -72,9 +73,28 @@ class Tb_kardex_almacenController extends Controller
         ];
 
     }
+    public function general()
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $materias = Tb_gestion_materia_prima::where('estado','=','1')
+            ->select('tb_gestion_materia_prima.id as idMateria','tb_gestion_materia_prima.gestionMateria as materia')
+            ->get();
 
+        return ['materias' =>  $materias];
+
+    }
     public function store(Request $request)
     {
+        if(!$request->ajax()) return redirect('/');
+
+        $fecha=$request->fecha;
+        $detalle=$request->detalle;
+        $cantidad=$request->cantidad;
+        $precio=$request->precio;
+        $idProducto=$request->idProducto;
+        $tipologia=$request->tipologia;
+        $valorE=($precio*$cantidad);
+
         //capturo cantidad precio y producto; internamente busco el registro mas reciente de dicho producto y tomo el valor cantidad de ese registro,
         //ahora, miro los datos del ingreso nuevo, si es un 1 es un ingreso y sumo la nueva cantidad a la de cantidadSaldos del registro anterior,
         //si es 2 es una salida y lo que hago es restar la nueva cantidad de la de cantidadSaldos del registro anterior; el resultado va en el
@@ -82,6 +102,50 @@ class Tb_kardex_almacenController extends Controller
         //anterior multiplico cantidadSaldos*precioSaldos y a ese valor le sumo o resto segun el caso el valor del registro nuevo que resulta de
         //cantidad*precio; el resultado lo divido entre el valor que calcule de cantidadSaldos y lo ingreso en precioSaldos; hay que tener muy en
         //cuenta que en el primer registro las cantidad y cantidadSaldos asi como las precio y precioSaldos son identicas.
-    }
 
+        $precioSaldos = DB::table('tb_kardex_almacen')
+        ->select('id','cantidad as cantidadA','cantidadSaldos as cantidadS','precioSaldos as precioS')
+        ->where('tb_kardex_almacen.idGestionMateria','=', $idProducto)
+        ->orderByDesc('id')
+        ->limit(1)
+        ->get();
+
+        $precioSaldoscant= DB::table('tb_kardex_almacen')
+        ->where('tb_kardex_almacen.idGestionMateria','=', $idProducto)
+        ->count();
+
+        if (!$precioSaldoscant) {
+            $suma1=$cantidad;
+            $suma2=$precio;
+        }
+        else{
+            foreach($precioSaldos as $precioS){
+                $cantidadA = $precioS->cantidadA;
+                $cantidadS = $precioS->cantidadS;
+                $precioSA = $precioS->precioS;
+                $valorP=($cantidadS*$precioSA);
+            }
+            if($tipologia == 1){
+            $suma1=$cantidadS+$cantidad;
+            $suma0=$valorP+$valorE;
+            $suma2=($suma0/$suma1);
+            }
+            else{
+                $suma1=$cantidadS-$cantidad;
+                $suma0=$valorP-$valorE;
+                $suma2=($suma0/$suma1);
+            }
+        }
+
+        $tb_kardex_almacen=new Tb_kardex_almacen();
+        $tb_kardex_almacen->detalle=$detalle;
+        $tb_kardex_almacen->cantidad=$cantidad;
+        $tb_kardex_almacen->precio=$precio;
+        $tb_kardex_almacen->idGestionMateria=$idProducto;
+        $tb_kardex_almacen->tipologia=$tipologia;
+        $tb_kardex_almacen->fecha=$fecha;
+        $tb_kardex_almacen->cantidadSaldos=$suma1;
+        $tb_kardex_almacen->precioSaldos=$suma2;
+        $tb_kardex_almacen->save();
+    }
 }

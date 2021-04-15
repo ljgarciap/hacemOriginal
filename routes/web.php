@@ -223,13 +223,14 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/cotizacioncliente/listar", "Tb_detalle_cotizacionController@listar");
         Route::get("/cotizacioncliente/posibles", "Tb_detalle_cotizacionController@posibles");
         Route::post("/cotizacioncliente/store", "Tb_detalle_cotizacionController@store");
-        
+
         Route::get("/kardexproductoprueba", "Tb_kardex_producto_terminadoController@prueba");
         Route::get("/kardexproducto", "Tb_kardex_producto_terminadoController@index");
         Route::post("/kardexproducto/store", "Tb_kardex_producto_terminadoController@store");
 
 
         Route::get("/kardexprueba", "Tb_kardex_almacenController@prueba");
+        Route::get("/kardexalmacengeneral", "Tb_kardex_almacenController@general");
         Route::get("/kardexalmacen", "Tb_kardex_almacenController@index");
         Route::post("/kardexalmacen/store", "Tb_kardex_almacenController@store");;
     });
