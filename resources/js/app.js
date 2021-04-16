@@ -76,6 +76,7 @@ Vue.component('colecciones', require('./components/Colecciones.vue').default);
 Vue.component('conceptos', require('./components/Conceptos.vue').default);
 Vue.component('cotizacion', require('./components/Cotizacion.vue').default);
 Vue.component('detallecotizacion', require('./components/DetalleCotizacion.vue').default);
+Vue.component('detallekardexalmacen', require('./components/DetalleKardexAlmacen.vue').default);
 Vue.component('empleados', require('./components/Empleados.vue').default);
 Vue.component('empresa', require('./components/Empresa.vue').default);
 Vue.component('financieras', require('./components/Financieras.vue').default);

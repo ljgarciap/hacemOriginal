@@ -18,9 +18,9 @@ class CreateTbKardexAlmacenTable extends Migration
             $table->date('fecha');
             $table->string('detalle', 255);
             $table->float('cantidad');
-            $table->integer('precio');
+            $table->float('precio');
             $table->float('cantidadSaldos');
-            $table->integer('precioSaldos');
+            $table->float('precioSaldos');
             $table->foreignId('idGestionMateria')->constrained('tb_gestion_materia_prima');
             $table->boolean('tipologia')->default(1);
             // tipo 1 entrada tipo 0 salida

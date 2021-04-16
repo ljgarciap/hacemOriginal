@@ -46,7 +46,7 @@
 
                                     <tr v-for="producto in arrayProductos" :key="producto.id">
                                         <td>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarKardex(producto.id)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(producto.idGestionMateria)">
                                                 <i class="icon-eye"></i><span> Ver kárdex</span>
                                             </button>
                                         </td>
@@ -88,7 +88,7 @@
                             <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
-                            <productoscotizacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productoscotizacion>
+                            <productoscotizacion v-bind:identificador="identificador" :key="componentKey"></productoscotizacion>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -102,7 +102,7 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <detallecotizacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></detallecotizacion>
+                            <detallekardexalmacen v-bind:identificador="identificador" :key="componentKey"></detallekardexalmacen>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
