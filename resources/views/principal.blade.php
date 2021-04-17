@@ -102,7 +102,7 @@
     </div><!-- /Cierre div app que permite usar vue -->
 
     <footer class="app-footer">
-        <span><a href="#">SENA CIDM</a> &copy; 2020</span>
+        <span><a href="#">SENA CIDM</a> &copy; 2020 - 2021</span>
         <span class="ml-auto">Desarrollado por <a href="#">GRUPO SENNOVA</a></span>
     </footer>
 
