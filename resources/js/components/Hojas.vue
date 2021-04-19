@@ -13,7 +13,7 @@
                     <li class="breadcrumb-item active">Hojas de costos</li>
                 </ol>
                       <!-- Listado -->
-                      <template v-if="listado">
+                <template v-if="listado">
                     <!-- Ejemplo de tabla Listado -->
                     <div class="container-fluid">
                         <div class="card">
@@ -91,7 +91,7 @@
                             </div>
                         </div>
                     </div>
-                      </template>
+                    </template>
                     <!-- Fin Listado -->
 
                     <!-- Detalle -->

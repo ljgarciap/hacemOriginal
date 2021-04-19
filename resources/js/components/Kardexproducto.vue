@@ -46,7 +46,7 @@
 
                                      <tr v-for="kardex in arrayKardexes" :key="kardex.id">
                                         <td>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(kardex.idProductoTerminado)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(kardex.idProducto)">
                                                 <i class="icon-eye"></i><span> Ver kárdex</span>
                                             </button>
                                         </td>

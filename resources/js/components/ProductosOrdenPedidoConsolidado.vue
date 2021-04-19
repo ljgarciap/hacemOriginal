@@ -9,8 +9,8 @@
                                         <option value="referencia">Referencia</option>
                                         <option value="id">Id</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarProductoSimulacion(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarProductoSimulacion(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarProductosOrden(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarProductosOrden(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -18,29 +18,20 @@
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>Opciones</th>
                         <th>Producto</th>
                         <th>Referencia</th>
-                        <th>Descripción</th>
                         <th>Unidades</th>
-                        <th>Tiempo par</th>
+                        <th>Costo</th>
+                        <th>Precio Venta</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="producto in arrayProductos" :key="producto.id">
-                        <td>
-                            <button type="button" @click="$emit('abrirmodal','gestionMateria','actualizar',producto)" class="btn btn-warning btn-sm">
-                            <i class="icon-pencil"></i>
-                            </button> &nbsp;
-                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',producto.id)">
-                                <i class="icon-trash"></i>
-                            </button>
-                        </td>
                         <td v-text="producto.producto"></td>
                         <td v-text="producto.referencia"></td>
-                        <td v-text="producto.descripcion"></td>
-                        <td v-text="producto.unidades"></td>
-                        <td v-text="producto.tiempo"></td>
+                        <td v-text="producto.cantidad"></td>
+                        <td v-text="producto.precioCosto"></td>
+                        <td v-text="producto.precioVenta"></td>
                     </tr>
                 </tbody>
             </table>
@@ -71,16 +62,12 @@
          },
         data(){
             return{
-                idMateriaPrimaProducto:0,
-                idMateriaPrima:'',
                 unidades:0,
                 tiempo:0,
                 arrayProductos : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorMateriaPrimaProducto : 0,
-                errorMensaje : [],
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -123,9 +110,9 @@
             }
         },
         methods : {
-                listarProductoSimulacion(page,buscar,criterio,identificador){
+                listarProductosOrden(page,buscar,criterio,identificador){
                 let me=this;
-                var url='/rela/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                var url='/ordenpedidocliente/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductos=respuesta.productos.data;
@@ -141,11 +128,11 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarProductoSimulacion(page,buscar,criterio,this.identificador);
+                me.listarProductosOrden(page,buscar,criterio,this.identificador);
             }
         },
         mounted() {
-            this.listarProductoSimulacion(1,'','',this.identificador)
+            this.listarProductosOrden(1,'','',this.identificador)
         }
     }
 </script>

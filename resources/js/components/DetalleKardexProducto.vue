@@ -76,7 +76,7 @@
                 var url='/kardexproducto/listar/?identificador='+this.identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayProductos=respuesta.productos.data;
+                me.arrayProductos=respuesta.kardex.data;
                 })
                 .catch(function (error) {
                     // handle error

@@ -107,17 +107,23 @@
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
                 </template>
-
-                    <!-- Template para mostrar el detalle luego de generar -->
                 <template v-if="listado==2">
-                    <div class="container-fluid">
-                        <div class="card">
+                <div class="container-fluid">
+                    <!-- Ejemplo de tabla Listado -->
+
+                    <div class="card">
+                        <div class="card-header">
+
+                        </div>
+                        <div class="card-body">
                             <productosordenpedidoconsolidado v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productosordenpedidoconsolidado>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
                         </div>
                     </div>
+                    <!-- Fin ejemplo de tabla Listado -->
+                </div>
                 </template>
 
                 <!--Inicio del modal agregar/actualizar-->
