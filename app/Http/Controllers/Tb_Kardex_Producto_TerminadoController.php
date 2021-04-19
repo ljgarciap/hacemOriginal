@@ -48,19 +48,24 @@ class Tb_kardex_producto_terminadoController extends Controller
 
     }
 
-    public function prueba(Request $request)
+    public function listar(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
- /**/
-            $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
-            ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha','tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad',
-            'tb_kardex_producto_terminado.precio','tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
-            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto',
-            'tb_producto.estado',DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as saldos'))
-            ->whereIn('tb_kardex_producto_terminado.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_producto_terminado')->groupBy('idProducto');})
-            ->paginate(5);
+        $identificador= $request->identificador;
 
-         return [
+ /**/
+            $kardex= Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
+            ->select('tb_kardex_producto_terminado.id as idKardex','tb_kardex_producto_terminado.fecha','tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad',
+            'tb_kardex_producto_terminado.precio',DB::raw('tb_kardex_producto_terminado.cantidad * tb_kardex_producto_terminado.precio as preciototal'),
+            'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
+            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto', 'tb_producto.estado',
+            DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as totalsaldos'))
+            ->where('tb_kardex_producto_terminado.idProducto', '=', $identificador)
+            ->orderBy('tb_kardex_producto_terminado.id','asc')->paginate(5);
+
+
+
+        return [
             'pagination' => [
                 'total'         =>$kardex->total(),
                 'current_page'  =>$kardex->currentPage(),

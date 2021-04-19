@@ -224,15 +224,20 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/cotizacioncliente/posibles", "Tb_detalle_cotizacionController@posibles");
         Route::post("/cotizacioncliente/store", "Tb_detalle_cotizacionController@store");
 
-        Route::get("/kardexproductoprueba", "Tb_kardex_producto_terminadoController@prueba");
         Route::get("/kardexproductogeneral", "Tb_kardex_producto_terminadoController@general");
         Route::get("/kardexproducto", "Tb_kardex_producto_terminadoController@index");
+        Route::get("/kardexproducto/listar", "Tb_kardex_producto_terminadoController@listar");
         Route::post("/kardexproducto/store", "Tb_kardex_producto_terminadoController@store");;
 
         Route::get("/kardexalmacengeneral", "Tb_kardex_almacenController@general");
         Route::get("/kardexalmacen", "Tb_kardex_almacenController@index");
         Route::get("/kardexalmacen/listar", "Tb_kardex_almacenController@listar");
         Route::post("/kardexalmacen/store", "Tb_kardex_almacenController@store");
+
+        Route::get("/kardexproducciongeneral", "Tb_kardex_produccionController@general");
+        Route::get("/kardexproduccion", "Tb_kardex_produccionController@index");
+        Route::get("/kardexproduccion/listar", "Tb_kardex_produccionController@listar");
+        Route::post("/kardexproduccion/store", "Tb_kardex_produccionController@store");
     });
 
 //---------------------------------------------------------------------------//

@@ -44,9 +44,9 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="kardex in arrayKardexes" :key="kardex.id">
+                                     <tr v-for="kardex in arrayKardexes" :key="kardex.id">
                                         <td>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarKardex(kardex.id)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(kardex.idProductoTerminado)">
                                                 <i class="icon-eye"></i><span> Ver kárdex</span>
                                             </button>
                                         </td>
@@ -88,7 +88,7 @@
                             <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
-                            <productoscotizacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productoscotizacion>
+                            <productoscotizacion v-bind:identificador="identificador" :key="componentKey"></productoscotizacion>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -102,7 +102,7 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <detallecotizacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></detallecotizacion>
+                            <detallekardexproducto v-bind:identificador="identificador" :key="componentKey"></detallekardexproducto>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -134,9 +134,9 @@
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Detalle</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Consecutivo</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="detalle" class="form-control" placeholder="Detalle">
+                                            <input type="text" v-model="detalle" class="form-control" placeholder="Consecutivo">
                                             <span class="help-block">(*) Ingrese el número del Movimiento</span>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idProducto">
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idKardex" :value="producto.idKardex" v-text="producto.producto"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -186,6 +186,7 @@
 
 <script>
 import moment from 'moment';
+import detallekardexproducto from '../components/DetalleKardexProducto';
 
     export default {
         data(){
