@@ -1,470 +1,103 @@
 <template>
-        <main class="main">
-                <!-- Breadcrumb -->
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Simulador</li>
-                </ol>
-
-                <template v-if="listado==0">
-                <div class="container-fluid">
-                    <!-- Ejemplo de tabla Listado -->
-
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="form-group row">
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="tipocif">
-                                            <option value="1">Hora hombre</option>
-                                            <option value="2">Hora máquina</option>
-                                        </select>
-                                        <button type="submit" @click="abrirModal('simulacion','crear','tipocif')" class="btn btn-primary"><i class="fa fa-plus"></i> Nueva simulación</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="descripcion">Descripción</option>
-                                        <option value="id">Id</option>
-                                        </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarSimulacion(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarSimulacion(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                                    </div>
-                                </div>
-                            </div>
+    <main class="minimo">
+        <template v-if="listado==0">
+        <!-- Ejemplo de tabla Listado -->
+        <div>
                             <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Acciones</th>
-                                        <th>Id</th>
                                         <th>Fecha</th>
                                         <th>Detalle</th>
-                                        <th>Tipo cálculo</th>
+                                        <th>Entradas<br>Cantidad</th>
+                                        <th>Entradas<br>Precio Unitario</th>
+                                        <th>Entradas<br>Precio total</th>
+                                        <th>Salidas<br>Cantidad</th>
+                                        <th>Salidas<br>Precio Unitario</th>
+                                        <th>Salidas<br>Precio total</th>
+                                        <th>Saldos<br>Cantidad</th>
+                                        <th>Saldos<br>Precio Unitario</th>
+                                        <th>Saldos<br>Precio total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    <tr v-for="simulacion in arraySimulaciones" :key="simulacion.id">
-                                        <td>
-                                        <template v-if="simulacion.estado">
-                                            <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(simulacion.id)">
-                                                <i class="icon-magnifier"></i><span> Ver detalle</span>
-                                            </button>
+                                    <tr v-for="total in arrayProductos" :key="total.id">
+                                        <td>{{total.fecha}}</td>
+                                        <td>{{total.detalle}}</td>
+                                        <!--
+                                        <template v-if="total.tipologia==1">
+                                            <td>{{total.cantidad}}</td>
+                                            <td>{{total.precio}}</td>
+                                            <td>{{total.preciototal}}</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
                                         </template>
-                                        <template v-else>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(simulacion.id)">
-                                                <i class="icon-check"></i><span> Escoger productos</span>
-                                            </button>
+                                        <template v-if="total.tipologia==2">
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>{{total.cantidad}}</td>
+                                            <td>{{total.precio}}</td>
+                                            <td>{{total.preciototal}}</td>
                                         </template>
-                                        </td>
-                                        <td v-text="simulacion.id"></td>
-                                        <td v-text="simulacion.fecha"></td>
-                                        <td v-text="simulacion.descripcion"></td>
+                                        -->
+                                        <td>{{total.cantidadSaldos}}</td>
+                                        <td>{{total.precioSaldos}}</td>
+                                        <td>{{total.totalsaldos}}</td>
                                         <td>
-                                            <div v-if="simulacion.tipoCif==1">
-                                            <span class="badge badge-warning">Cálculo por horas mano de obra</span>
-                                            </div>
-                                            <div v-else>
-                                            <span class="badge badge-info">Cálculo por horas máquina</span>
-                                            </div>
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(total)">
+                                                <i class="icon-plus"></i><span> Mostrar</span>
+                                            </button>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                             </div>
-                            <nav>
-                                <ul class="pagination">
-                                    <li class="page-item" v-if="pagination.current_page > 1">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
-                                    </li>
-                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
-                                    </li>
-                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
                     <!-- Fin ejemplo de tabla Listado -->
-                </div>
-                </template>
+        </div>
 
-                <template v-if="listado==1">
-                    <div class="container-fluid">
-                        <div class="card">
-                            <div class="card-body">
-
-                            <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Seleccion</th>
-                                        <th>Producto</th>
-                                        <th>Referencia</th>
-                                        <th>Descripcion</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <tr v-for="producto in arrayProducto" :key="producto.id">
-                                        <td><input type="checkbox" :value="producto.id" v-model="availability"></td>
-                                        <td v-text="producto.producto"></td>
-                                        <td v-text="producto.referencia"></td>
-                                        <td v-text="producto.descripcion"></td>
-                                        <td>
-                                            <div v-if="producto.estado">
-                                            <span class="badge badge-success">Activo</span>
-                                            </div>
-                                            <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-                            <button type="button" class="btn btn-danger btn-sm" @click="crearRelacion(availability,identificador)">
-                                <i class="icon-check"></i><span> Escoger productos</span>
-                            </button>
-
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </template>
-
-                <template v-if="listado==2">
-                    <div class="container-fluid">
-                        <div class="card">
-                            Detalle de simulacion <br><button type="button" class="close" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
-                        </div>
-                    </div>
-                </template>
-
-                <template v-if="listado==3">
-                    <div class="container-fluid">
-                        <div class="card">
-                            <div class="card-body">
-
-                            <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Producto</th>
-                                        <th>Referencia</th>
-                                        <th>Descripcion</th>
-                                        <th>Cantidad</th>
-                                        <th>Horas par</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <tr v-for="productos in arrayProductos" :key="productos.id">
-                                        <td v-text="productos.producto"></td>
-                                        <td v-text="productos.referencia"></td>
-                                        <td v-text="productos.descripcion"></td>
-                                        <td><input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad estimada de producto"></td>
-                                        <td><input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra"></td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-                            <button type="button" class="btn btn-danger btn-sm" @click="actualizarRelacion(identificador)">
-                                <i class="icon-check"></i><span> Calcular</span>
-                            </button>
-
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </template>
-
-                <!--Inicio del modal agregar/actualizar-->
-                <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-                    <div class="modal-dialog modal-primary modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" v-text="tituloModal"></h4>
-                                <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Detalle</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="detalle" class="form-control" placeholder="Descripción de simulación">
-                                            <span class="help-block">(*) Ingrese la Descripción de la Simulación</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Fecha</label>
-                                        <div class="col-md-9">
-                                            <input type="date" value="date('Y-m-d')" v-model="fecha" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row div-error" v-show="errorSimulacion">
-                                        <div class="text-center text-error">
-                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearSimulacion()">Guardar</button>
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                </div>
-                <!--Fin del modal-->
-        </main>
+        </template>
+    </main>
 </template>
 
 <script>
     export default {
+        props: {
+            identificador: {
+            type: Number
+            }
+         },
         data(){
             return{
-                idSimulacion:0,
-                id:'',
-                identificador:'',
-                detalle:'',
-                estado:'',
-                arraySimulaciones : [],
-                arrayProducto : [],
-                arrayProductos : [],
-                modal : 0,
                 listado : 0,
-                tituloModal : '',
-                fecha : '',
-                idProducto:'',
-                registro:'',
-                tipoAccion : 0,
-                unidades : '',
-                tiempo : '',
-                producto : '',
-                referencia : '',
-                descripcion : '',
-                tipocif : 1,
-                tipoCif : '',
-                errorSimulacion : 0,
-                errorMensaje : [],
-                availability:[],
-                cantidades:[],
-                tiempos:[],
-                pagination : {
-                    'total' : 0,
-                    'current_page' : 0,
-                    'per_page' : 0,
-                    'last_page' : 0,
-                    'from' : 0,
-                    'to' : 0,
-                },
-                offset : 3,
-                criterio : 'descripcion',
-                buscar : ''
-            }
-        },
-        computed:{
-            isActived: function(){
-                return this.pagination.current_page;
-            },
-            //Calcula los elementos de la paginacion
-            pagesNumber: function(){
-                if (this.pagination.to) {
-                    return[];
-                }
-
-                var from=this.pagination.current_page - this.offset;
-                if (from < 1) {
-                    from = 1;
-                }
-
-                var to = from + (this.offset * 2);
-                if (to >= this.pagination.last_page) {
-                    to = this.pagination.last_page;
-                }
-
-                var pagesArray = [];
-                while (from <= to) {
-                    pagesArray.push(from);
-                    from++;
-                }
-
-                return pagesArray;
+                arrayProductos:[],
+                modal : 0,
+                tipoModal : 0,
             }
         },
         methods : {
-            listarSimulacion(page,buscar,criterio){
+            acumuladoTotal(identificador){
                 let me=this;
-                var url='/simulacion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
+                var url='/kardexalmacen/listar/?identificador='+this.identificador;
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
-                me.arraySimulaciones=respuesta.simulaciones.data;
-                me.pagination=respuesta.pagination;
-                    //console.log(response);
+                me.arrayProductos=respuesta.productos;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
-            cambiarPagina(page,buscar,criterio){
-                let me = this;
-                //Actualiza la pagina actual
-                me.pagination.current_page = page;
-                //envia peticion para ver los valores asociados a esa pagina
-                me.listarArea(page,buscar,criterio);
-            },
-            crearSimulacion(){
-                //valido con el metodo de validacion creado
-                let me=this;
-                axios.post('/simulacion/store',{
-                    'detalle': this.detalle,
-                    'fecha': this.fecha,
-                    'tipoCif': this.tipocif
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarSimulacion(1,'','area');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            mostrarProductos(id){
-                this.listado=1;
-                this.identificador=id;
-            },
-            mostrarDetalle(id){
-                this.listado=2;
-                this.identificador=id;
-            },
-            crearRelacion(availability,identificador){
-                this.identificador=this.identificador;
-                console.log(availability);
-
-                    availability.forEach(registro => {
-
-                        console.log(registro);
-                    /**/
-                        axios.post('/rela/store',{
-                            'idProducto': registro,
-                            'unidades': 0,
-                            'tiempo': 0,
-                            'idSimulacion': this.identificador
-                        }).then(function (response) {
-
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-
-                    });
-
-                    this.listado=3;
-                    let me = this;
-                    me.mostrarChequeados(this.identificador);
-
-            },
-            mostrarChequeados(identificador){
-                this.identificador=this.identificador;
-                console.log(identificador);
-                let me=this;
-                var url='/rela?id=' + this.identificador;
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayProductos=respuesta.productos.data;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            ocultarDetalle(){
-                this.listado=0;
-            },
-            cerrarModal(){
-                this.modal=0;
-                this.tituloModal='';
-                this.detalle='';
-            },
-            listarProducto(){
-                let me=this;
-                var url='/producto?page=1&buscar=&criterio=';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayProducto=respuesta.productos.data;
-                me.pagination=respuesta.pagination;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            abrirModal(modelo, accion, tipocif){
-            //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
-            switch(modelo){
-                case "simulacion":
-                {
-                    switch (accion) {
-                        case 'crear':{
-                            this.modal=1;
-                            this.tipoCif='tipocif';
-                            this.tituloModal='Crear nueva simulación';
-                            this.tipoAccion= 1;
-                            break;
-                        }
-                    }
-                }
-            }
-            }
         },
         mounted() {
-            this.listarSimulacion(1,this.buscar,this.criterio);
-            this.listarProducto();
+            this.acumuladoTotal(this.identificador)
         }
     }
 </script>
+
 <style>
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-    }
-    .mostrar{
-        display: list-item !important;
-        opacity: 1 !important;
-        position: absolute !important;
-        background-color: #3c29297a !important;
-    }
-    .div-error{
-        display: flex;
-        justify-content: center;
-    }
-    .text-error{
-        color: red !important;
-        font-weight: bold;
+    .minimo {
+	min-height: 150px;
     }
 </style>

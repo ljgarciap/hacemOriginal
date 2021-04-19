@@ -9,47 +9,41 @@
                                     <tr>
                                         <th>Fecha</th>
                                         <th>Detalle</th>
+
                                         <th>Entradas<br>Cantidad</th>
                                         <th>Entradas<br>Precio Unitario</th>
                                         <th>Entradas<br>Precio total</th>
                                         <th>Salidas<br>Cantidad</th>
                                         <th>Salidas<br>Precio Unitario</th>
                                         <th>Salidas<br>Precio total</th>
+
                                         <th>Saldos<br>Cantidad</th>
                                         <th>Saldos<br>Precio Unitario</th>
                                         <th>Saldos<br>Precio total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="total in arrayProductos" :key="total.id">
+                                    <tr v-for="total in arrayProductos" :key="total.idMateria">
                                         <td>{{total.fecha}}</td>
                                         <td>{{total.detalle}}</td>
-                                        <!--
-                                        <template v-if="total.tipologia==1">
-                                            <td>{{total.cantidad}}</td>
-                                            <td>{{total.precio}}</td>
-                                            <td>{{total.preciototal}}</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </template>
-                                        <template v-if="total.tipologia==2">
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>{{total.cantidad}}</td>
-                                            <td>{{total.precio}}</td>
-                                            <td>{{total.preciototal}}</td>
-                                        </template>
-                                        -->
+
+                                            <td v-if="total.tipologia==1">{{total.cantidad}}</td>
+                                            <td v-if="total.tipologia==1">{{total.precio}}</td>
+                                            <td v-if="total.tipologia==1">{{total.preciototal}}</td>
+                                            <td v-if="total.tipologia==1">0</td>
+                                            <td v-if="total.tipologia==1">0</td>
+                                            <td v-if="total.tipologia==1">0</td>
+
+                                            <td v-if="total.tipologia==2">0</td>
+                                            <td v-if="total.tipologia==2">0</td>
+                                            <td v-if="total.tipologia==2">0</td>
+                                            <td v-if="total.tipologia==2">{{total.cantidad}}</td>
+                                            <td v-if="total.tipologia==2">{{total.precio}}</td>
+                                            <td v-if="total.tipologia==2">{{total.preciototal}}</td>
+
                                         <td>{{total.cantidadSaldos}}</td>
                                         <td>{{total.precioSaldos}}</td>
                                         <td>{{total.totalsaldos}}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(total)">
-                                                <i class="icon-plus"></i><span> Mostrar</span>
-                                            </button>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -82,7 +76,7 @@
                 var url='/kardexalmacen/listar/?identificador='+this.identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayProductos=respuesta.productos;
+                me.arrayProductos=respuesta.productos.data;
                 })
                 .catch(function (error) {
                     // handle error

@@ -112,7 +112,7 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <hojadecostossimulador v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></hojadecostossimulador>
+                            <productosordenpedidoconsolidado v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productosordenpedidoconsolidado>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -226,11 +226,11 @@
 <script>
     import moment from 'moment';
     import productosordenpedido from '../components/ProductosOrdenPedido';
-    import hojadecostossimulador from '../components/HojaDeCostosSimulador';
+    import productosordenpedidoconsolidado from '../components/ProductosOrdenPedidoConsolidado';
     export default {
         components: {
             productosordenpedido,
-            hojadecostossimulador
+            productosordenpedidoconsolidado
         },
         data(){
             return{

@@ -21,6 +21,7 @@ class Tb_kardex_almacenController extends Controller
             'tb_kardex_almacen.precio','tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
             'tb_kardex_almacen.tipologia','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
             'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos'))
+            ->orderBy('tb_kardex_almacen.idGestionMateria','asc')
             ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
             ->paginate(5);
         }
@@ -32,7 +33,7 @@ class Tb_kardex_almacenController extends Controller
             'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos'))
             ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
             ->where('tb_kardex_almacen.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('tb_kardex_almacen.id','desc')->paginate(5);
+            ->orderBy('tb_kardex_almacen.idGestionMateria','asc')->paginate(5);
         }
         return [
             'pagination' => [
@@ -55,13 +56,13 @@ class Tb_kardex_almacenController extends Controller
 
  /**/
             $productos = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
-            ->select('tb_kardex_almacen.id','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
+            ->select('tb_kardex_almacen.id as idMateria','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
             'tb_kardex_almacen.precio',DB::raw('tb_kardex_almacen.cantidad * tb_kardex_almacen.precio as preciototal'),
             'tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
             'tb_kardex_almacen.tipologia','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
             'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as totalsaldos'))
             ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
-            ->orderBy('tb_kardex_almacen.id','desc')->paginate(5);
+            ->orderBy('tb_kardex_almacen.id','asc')->paginate(5);
 
 
 

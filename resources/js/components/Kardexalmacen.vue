@@ -134,9 +134,9 @@
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Detalle</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Consecutivo</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="detalle" class="form-control" placeholder="Detalle">
+                                            <input type="text" v-model="detalle" class="form-control" placeholder="Consecutivo">
                                             <span class="help-block">(*) Ingrese el número del Movimiento</span>
                                         </div>
                                     </div>
@@ -186,6 +186,7 @@
 
 <script>
 import moment from 'moment';
+import detallekardexalmacen from '../components/DetalleKardexAlmacen';
 
     export default {
         data(){
@@ -221,7 +222,7 @@ import moment from 'moment';
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'id',
+                criterio : 'producto',
                 buscar : '',
                 componentKey:0
             }
@@ -362,7 +363,7 @@ import moment from 'moment';
                             case 'crear':{
                                 this.modal=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Crear nuevo kardex de producto terminado';
+                                this.tituloModal='Crear nuevo kardex de almacén';
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
                                 this.listarMaterias();

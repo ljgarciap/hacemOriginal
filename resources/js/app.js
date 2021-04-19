@@ -101,6 +101,7 @@ Vue.component('procesos', require('./components/Procesos.vue').default);
 Vue.component('productos', require('./components/Productos.vue').default);
 Vue.component('productossimulacion', require('./components/ProductosSimulacion.vue').default);
 Vue.component('productosordenpedido', require('./components/ProductosOrdenPedido.vue').default);
+Vue.component('productosordenpedidoconsolidado', require('./components/ProductosOrdenPedidoConsolidado.vue').default);
 Vue.component('productoscotizacion', require('./components/ProductosCotizacion.vue').default);
 Vue.component('roles', require('./components/Roles.vue').default);
 Vue.component('simulador', require('./components/Simulador.vue').default);
