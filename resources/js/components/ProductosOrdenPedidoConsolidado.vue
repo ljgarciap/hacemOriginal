@@ -1,4 +1,7 @@
 <template>
+        <vs-tabs :color="colorx">
+
+        <vs-tab label="Productos" icon="open_with" @click="colorx = '#8B0000'">
         <!-- Ejemplo de tabla Listado -->
         <div>
             <div class="form-group row">
@@ -51,6 +54,20 @@
             </nav>
                     <!-- Fin ejemplo de tabla Listado -->
         </div>
+        </vs-tab>
+
+        <vs-tab label="Materia pendiente" icon="format_list_numbered" @click="colorx = '#FFA500'">
+        </vs-tab>
+
+        <vs-tab label="Materia por devolver" icon="format_list_numbered" @click="colorx = '#CB3234'">
+        </vs-tab>
+
+        <vs-tab label="Materia completa" icon="format_list_numbered" @click="colorx = '#9B59B6'">
+        </vs-tab>
+
+        </vs-tabs>
+
+
 </template>
 
 <script>
@@ -62,6 +79,7 @@
          },
         data(){
             return{
+                colorx: '#8B0000',
                 unidades:0,
                 tiempo:0,
                 arrayProductos : [],
@@ -123,6 +141,13 @@
                     console.log(error);
                 })
             },
+            indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
