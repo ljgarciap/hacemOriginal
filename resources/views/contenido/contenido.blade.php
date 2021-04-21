@@ -102,10 +102,6 @@
     </template>
 
     <template v-if="menu==25">
-        <kardexproduccion></kardexproduccion>
-    </template>
-
-    <template v-if="menu==26">
         <kardexproducto></kardexproducto>
     </template>
 

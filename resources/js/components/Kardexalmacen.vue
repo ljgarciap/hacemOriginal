@@ -129,7 +129,7 @@
                                     <div v-if="tipoModal==1" class="form-group row"> <!-- Si es una entrada -->
                                         <label class="col-md-3 form-control-label" for="email-input">Movimiento</label>
                                         <div v-if="desplegable==1" class="col-md-9">
-                                            <select class="form-control" v-model="idDocumentos">
+                                            <select class="form-control" v-model="idDocumentos" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
                                                 <option value="1">Compra de material</option>
                                                 <option value="2">Devolución de producción</option>
@@ -137,7 +137,7 @@
                                             </select>
                                         </div>
                                         <div v-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
-                                            <select class="form-control" v-model="idDocumentos">
+                                            <select class="form-control" v-model="idDocumentos" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
                                                 <option value="4">Devolución a proveedor</option>
                                                 <option value="5">Entrega de material</option>
@@ -147,10 +147,35 @@
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Consecutivo</label>
-                                        <div class="col-md-9">
+                                        <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Factura</label>
+                                        <div v-if="flag==1" class="col-md-9">
+                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de factura">
+                                            <span class="help-block">(*) Ingrese el número de factura a ingresar</span>
+                                        </div>
+                                        <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+                                        <div v-if="flag==2" class="col-md-9">
+                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de orden de producción">
+                                            <span class="help-block">(*) Ingrese el número de orden de producción</span>
+                                        </div>
+                                        <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Número de factura</label>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de factura">
+                                            <span class="help-block">(*) Ingrese el número de factura al cual va a devolver</span>
+                                        </div>
+                                        <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+                                        <div v-if="flag==5" class="col-md-9">
+                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de orden de producción">
+                                            <span class="help-block">(*) Ingrese el número de orden de producción del que recibe</span>
+                                        </div>
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Consecutivo</label>
+                                        <div v-if="flag==6" class="col-md-9">
                                             <input type="text" v-model="detalle" class="form-control" placeholder="Consecutivo">
                                             <span class="help-block">(*) Ingrese el número del Movimiento</span>
+                                        </div>
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Observaciones</label>
+                                        <div v-if="flag==6" class="col-md-9">
+                                            <input type="text" v-model="observaciones" class="form-control" placeholder="observaciones">
+                                            <span class="help-block">(*) Ingrese los motivos de la baja</span>
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==1" class="form-group row">
@@ -213,6 +238,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 cantidad:'',
                 detalle:'',
                 observaciones:'Ninguna',
+                flag : 0,
                 precio:'',
                 saldos:'',
                 arrayProductos : [],
@@ -271,6 +297,10 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
             }
         },
         methods : {
+            onChange(event) {
+            //console.log(event.target.value);
+            this.flag=event.target.value;
+            },
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
             },
@@ -366,6 +396,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 this.observaciones='Ninguna';
                 this.precio='';
                 this.tipologia='';
+                this.flag=0;
                 this.tituloModal='';
                 this.idProducto='';
 

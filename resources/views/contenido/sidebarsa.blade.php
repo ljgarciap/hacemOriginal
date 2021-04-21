@@ -84,9 +84,6 @@
                         <a class="nav-link" href="#"><i class="icon-note"></i> Kárdex almacén</a>
                     </li>
                     <li @click="menu=25" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-note"></i>  Kárdex producción</a>
-                    </li>
-                    <li @click="menu=26" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-note"></i>  Kárdex producto terminado</a>
                     </li>
                 </ul>

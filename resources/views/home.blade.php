@@ -1,5 +1,6 @@
 @section('contenido')
     <template>
-        <example></example>
+        <!-- <example></example> -->
+        <kardexproduccion></kardexproduccion>
     </template>
 @endsection
