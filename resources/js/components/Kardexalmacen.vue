@@ -14,7 +14,10 @@
                        <div class="card-header">
                             <i class="fa fa-align-justify"></i> Kardex de Almacen
                             <button type="button" @click="abrirModal('kardex','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo Movimiento
+                                <i class="icon-plus"></i>&nbsp;Entrada
+                            </button>
+                            <button type="button" @click="abrirModal('kardex','crears')" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Salida
                             </button>
                         </div>
 
@@ -123,13 +126,23 @@
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
-                                    <div v-if="tipoModal==1" class="form-group row">
+                                    <div v-if="tipoModal==1" class="form-group row"> <!-- Si es una entrada -->
                                         <label class="col-md-3 form-control-label" for="email-input">Movimiento</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="tipologia">
+                                        <div v-if="desplegable==1" class="col-md-9">
+                                            <select class="form-control" v-model="idDocumentos">
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
-                                                <option value="1">Entrada de material</option>
-                                                <option value="2">Salida de material</option>
+                                                <option value="1">Compra de material</option>
+                                                <option value="2">Devolución de producción</option>
+                                                <!-- <option value="3">Inventario inicial</option> -->
+                                            </select>
+                                        </div>
+                                        <div v-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
+                                            <select class="form-control" v-model="idDocumentos">
+                                                <option value="0" disabled>Seleccione tipo de documento</option>
+                                                <option value="4">Devolución a proveedor</option>
+                                                <option value="5">Entrega de material</option>
+                                                <option value="6">Bajas</option>
+                                                <!-- <option value="7">Ajuste de inventario</option> -->
                                             </select>
                                         </div>
                                     </div>
@@ -199,12 +212,14 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 precioSaldos:'',
                 cantidad:'',
                 detalle:'',
+                observaciones:'Ninguna',
                 precio:'',
                 saldos:'',
                 arrayProductos : [],
                 arrayMateriaPrima : [],
                 producto:'',
                 modal : 0,
+                desplegable : 0,
                 listado : 0,
                 tituloModal : '',
                 variable : '',
@@ -311,6 +326,8 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                     'cantidad':this.cantidad,
                     'precio':this.precio,
                     'tipologia':this.tipologia,
+                    'observaciones':this.observaciones,
+                    'idDocumentos':this.idDocumentos,
                     'idProducto':this.idProducto
                 }).then(function (response) {
                 me.cerrarModal('0');
@@ -344,9 +361,9 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
-
-                this.detalle='';
+                this.idDocumentos='';
                 this.cantidad='';
+                this.observaciones='Ninguna';
                 this.precio='';
                 this.tipologia='';
                 this.tituloModal='';
@@ -362,8 +379,21 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                         switch (accion) {
                             case 'crear':{
                                 this.modal=1;
+                                this.tipologia=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Crear nuevo kardex de almacén';
+                                this.tituloModal='Kardex de almacén entrada';
+                                this.desplegable= 1; //carga tipos de botón en el footer
+                                this.tipoAccion= 1; //carga tipos de botón en el footer
+                                this.fecha= moment().format('YYYY-MM-DD');
+                                this.listarMaterias();
+                                break;
+                            }
+                            case 'crears':{
+                                this.modal=1;
+                                this.tipologia=2;
+                                this.tipoModal=1; //carga tipos de campos y footers
+                                this.tituloModal='Kardex de almacén salida';
+                                this.desplegable= 2; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
                                 this.listarMaterias();

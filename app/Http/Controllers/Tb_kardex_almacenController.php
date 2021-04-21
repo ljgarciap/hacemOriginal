@@ -98,6 +98,8 @@ class Tb_kardex_almacenController extends Controller
         $cantidad=$request->cantidad;
         $precio=$request->precio;
         $idProducto=$request->idProducto;
+        $observaciones=$request->observaciones;
+        $idDocumentos=$request->idDocumentos;
         $tipologia=$request->tipologia;
         $valorE=($precio*$cantidad);
 
@@ -148,6 +150,8 @@ class Tb_kardex_almacenController extends Controller
         $tb_kardex_almacen->cantidad=$cantidad;
         $tb_kardex_almacen->precio=$precio;
         $tb_kardex_almacen->idGestionMateria=$idProducto;
+        $tb_kardex_almacen->observaciones=$observaciones;
+        $tb_kardex_almacen->idDocumentos=$idDocumentos;
         $tb_kardex_almacen->tipologia=$tipologia;
         $tb_kardex_almacen->fecha=$fecha;
         $tb_kardex_almacen->cantidadSaldos=$suma1;
