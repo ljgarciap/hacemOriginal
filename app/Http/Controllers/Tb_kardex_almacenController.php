@@ -64,8 +64,6 @@ class Tb_kardex_almacenController extends Controller
             ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
             ->orderBy('tb_kardex_almacen.id','asc')->paginate(5);
 
-
-
         return [
             'pagination' => [
                 'total'         =>$productos->total(),
@@ -110,6 +108,7 @@ class Tb_kardex_almacenController extends Controller
         //anterior multiplico cantidadSaldos*precioSaldos y a ese valor le sumo o resto segun el caso el valor del registro nuevo que resulta de
         //cantidad*precio; el resultado lo divido entre el valor que calcule de cantidadSaldos y lo ingreso en precioSaldos; hay que tener muy en
         //cuenta que en el primer registro las cantidad y cantidadSaldos asi como las precio y precioSaldos son identicas.
+        //Proceso para calculo de kardex
 
         $precioSaldos = DB::table('tb_kardex_almacen')
         ->select('id','cantidad as cantidadA','cantidadSaldos as cantidadS','precioSaldos as precioS')
