@@ -1,0 +1,9 @@
+[
+{"IdDocumento":"1","NombreDocumento":"Compra de material"},
+{"IdDocumento":"2","NombreDocumento":"Devolución de producción"},
+{"IdDocumento":"3","NombreDocumento":"Inventario inicial"},
+{"IdDocumento":"4","NombreDocumento":"Devolución a proveedor"},
+{"IdDocumento":"5","NombreDocumento":"Entrega de material"},
+{"IdDocumento":"6","NombreDocumento":"Bajas"},
+{"IdDocumento":"7","NombreDocumento":"Ajuste de inventario"}
+]

@@ -1,4 +1,4 @@
 [
-{"IdRol":"1","Rol":"SuperAdministrador"},
-{"IdRol":"2","Rol":"Empresario"}
+    {"IdRol":"1","Rol":"SuperAdministrador"},
+    {"IdRol":"2","Rol":"Empresario"}
 ]
