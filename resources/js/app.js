@@ -107,6 +107,7 @@ Vue.component('productosordenpedidoconsolidado', require('./components/Productos
 Vue.component('productoscotizacion', require('./components/ProductosCotizacion.vue').default);
 Vue.component('roles', require('./components/Roles.vue').default);
 Vue.component('simulador', require('./components/Simulador.vue').default);
+Vue.component('tomainventarios', require('./components/TomaInventarios.vue').default);
 Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
 

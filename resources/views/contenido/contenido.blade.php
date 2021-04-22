@@ -105,4 +105,8 @@
         <kardexproducto></kardexproducto>
     </template>
 
+    <template v-if="menu==26">
+        <tomainventarios></tomainventarios>
+    </template>
+
     @endsection
