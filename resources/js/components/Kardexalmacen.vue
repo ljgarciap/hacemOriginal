@@ -301,6 +301,21 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
             //console.log(event.target.value);
             this.flag=event.target.value;
             },
+            nuevoValor(event){
+                //console.log(event.target.value);
+                this.identificadorHoja=event.target.value;
+                let me=this;
+                var url='/kardexalmacengeneral/puntual/'+this.identificadorHoja;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayMateriaHoja=respuesta.materiales;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
             },

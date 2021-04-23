@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Tb_kardex_almacen;
 use App\Tb_gestion_materia_prima;
+use App\Tb_orden_produccion;
+use App\Tb_orden_produccion_detalle;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -85,6 +87,27 @@ class Tb_kardex_almacenController extends Controller
             ->get();
 
         return ['materias' =>  $materias];
+    }
+    public function ordenes() //PARA TRAER DATOS ACORDE
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $ordenes = DB::table('tb_orden_produccion')
+        ->whereIn('tb_orden_produccion.id', function($sub){$sub->selectRaw('max(id)')->from('tb_orden_produccion')->groupBy('consecutivo');})
+        ->select('tb_orden_produccion.id','tb_orden_produccion.consecutivo','tb_orden_produccion.fecha')
+        ->orderBy('tb_orden_produccion.id','asc')->paginate(5);
+
+        return ['ordenes' =>  $ordenes];
+
+    }
+    public function puntual($identificador) //PARA TRAER DATOS ACORDE
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $materiales = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
+            ->select('tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
+            ->where('tb_orden_produccion_detalle.idOrdenProduccion', '=', $identificador)
+            ->orderBy('tb_gestion_materia_prima.id','asc')->paginate(5);
+
+        return ['materiales' =>  $materiales];
 
     }
     public function store(Request $request)

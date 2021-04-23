@@ -232,6 +232,8 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/kardexalmacengeneral", "Tb_kardex_almacenController@general");
         Route::get("/kardexalmacen", "Tb_kardex_almacenController@index");
         Route::get("/kardexalmacen/listar", "Tb_kardex_almacenController@listar");
+        Route::get("/kardexalmacen/ordenes", "Tb_kardex_almacenController@ordenes");
+        Route::get("/kardexalmacen/puntual/{identificador}", "Tb_kardex_almacenController@puntual");
         Route::post("/kardexalmacen/store", "Tb_kardex_almacenController@store");
 
         Route::get("/kardexproducciongeneral", "Tb_kardex_produccionController@general");
