@@ -147,58 +147,98 @@
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==1" class="form-group row">
+                                    <!--Inicio de sección número documento-->
                                         <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Factura</label>
+                                        <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+                                        <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Número de factura</label>
+                                        <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Consecutivo</label>
+
                                         <div v-if="flag==1" class="col-md-9">
                                             <input type="text" v-model="detalle" class="form-control" placeholder="Número de factura">
                                             <span class="help-block">(*) Ingrese el número de factura a ingresar</span>
                                         </div>
-                                        <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+
                                         <div v-if="flag==2" class="col-md-9">
-                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de orden de producción">
-                                            <span class="help-block">(*) Ingrese el número de orden de producción</span>
+                                            <select class="form-control" v-model="idOrden" @change='materiaOrden($event)'>
+                                                <option value="0" disabled>Seleccione orden de producción</option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione el número de orden de producción</span>
                                         </div>
-                                        <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Número de factura</label>
+
                                         <div v-if="flag==4" class="col-md-9">
                                             <input type="text" v-model="detalle" class="form-control" placeholder="Número de factura">
                                             <span class="help-block">(*) Ingrese el número de factura al cual va a devolver</span>
                                         </div>
-                                        <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+
                                         <div v-if="flag==5" class="col-md-9">
-                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de orden de producción">
-                                            <span class="help-block">(*) Ingrese el número de orden de producción del que recibe</span>
+                                            <select class="form-control" v-model="idOrden" @change='materiaOrden($event)'>
+                                                <option value="0" disabled>Seleccione orden de producción</option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione el número de orden de producción que devuelve</span>
                                         </div>
-                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Consecutivo</label>
+
                                         <div v-if="flag==6" class="col-md-9">
                                             <input type="text" v-model="detalle" class="form-control" placeholder="Consecutivo">
                                             <span class="help-block">(*) Ingrese el número del Movimiento</span>
                                         </div>
-                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Observaciones</label>
-                                        <div v-if="flag==6" class="col-md-9">
-                                            <input type="text" v-model="observaciones" class="form-control" placeholder="observaciones">
-                                            <span class="help-block">(*) Ingrese los motivos de la baja</span>
-                                        </div>
+
                                     </div>
+                                        <!--Cierre sección número documento-->
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Producto</label>
-                                        <div class="col-md-9">
+                                        <!--Inicio sección datos-->
+                                        <label v-if="flag!=0" class="col-md-3 form-control-label" for="email-input">Material</label>
+
+                                        <div v-if="flag==1" class="col-md-9">
                                             <select class="form-control" v-model="idProducto">
                                                 <option value="0" disabled>Seleccione una materia</option>
                                                 <option v-for="materia in arrayMateriaPrima" :key="materia.idMateria" :value="materia.idMateria" v-text="materia.materia"></option>
                                             </select>
+                                            <span class="help-block">(*) Seleccione la materia prima</span>
                                         </div>
+
+                                        <div v-if="flag==2" class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione una materia</option>
+                                                <option v-for="materia in arrayMateriaOrden" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
+                                            </select>
+                                             <span class="help-block">(*) Seleccione la materia prima</span>
+                                        </div>
+
+                                        <div v-if="flag==5" class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione una materia</option>
+                                                <option v-for="materia in arrayMateriaOrden" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
+                                            </select>
+                                             <span class="help-block">(*) Seleccione la materia prima</span>
+                                        </div>
+
                                     </div>
+
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
-                                        <div class="col-md-9">
+                                        <label v-if="flag!=0"  class="col-md-3 form-control-label" for="text-input">Cantidad</label>
+                                        <div v-if="flag!=0"  class="col-md-9">
                                             <input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad">
                                             <span class="help-block">(*) Ingrese la Cantidad</span>
                                         </div>
                                     </div>
+
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Precio</label>
-                                        <div class="col-md-9">
-                                           <input type="number" v-model="precio" class="form-control" placeholder="Precio">
-                                           <span class="help-block">(*) Ingrese el Precio</span>
+                                        <!--Revisar-->
+                                        <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==1" class="col-md-9">
+                                            <input type="number" v-model="precio" class="form-control" placeholder="Precio">
+                                            <span class="help-block">(*) Ingrese el Precio</span>
+                                        </div>
+                                    </div>
+                                        <!--Cierre sección datos-->
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Observaciones</label>
+                                        <div v-if="flag==6" class="col-md-9">
+                                            <input type="text" v-model="observaciones" class="form-control" placeholder="observaciones">
+                                            <span class="help-block">(*) Ingrese los motivos de la baja</span>
                                         </div>
                                     </div>
 
@@ -230,6 +270,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
         data(){
             return{
                 idProducto:0,
+                idDocumentos:0,
                 id:'',
                 identificador:'',
                 fecha : '',
@@ -243,12 +284,15 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 saldos:'',
                 arrayProductos : [],
                 arrayMateriaPrima : [],
+                arrayMateriaOrden : [],
+                arrayOrdenes : [],
                 producto:'',
                 modal : 0,
                 desplegable : 0,
                 listado : 0,
                 tituloModal : '',
                 variable : '',
+                idOrden : 0,
                 tipologia : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
@@ -301,18 +345,29 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
             //console.log(event.target.value);
             this.flag=event.target.value;
             },
-            nuevoValor(event){
+            materiaOrden(event){
                 //console.log(event.target.value);
                 this.identificadorHoja=event.target.value;
                 let me=this;
-                var url='/kardexalmacengeneral/puntual/'+this.identificadorHoja;
+                var url='/kardexalmacen/puntual/'+this.identificadorHoja;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayMateriaHoja=respuesta.materiales;
+                me.arrayMateriaOrden=respuesta.materiales;
                 console.log(url);
                 })
                 .catch(function (error) {
                     // handle error
+                    console.log(error);
+                })
+            },
+            listarOrdenes(){
+                let me=this;
+                var url='/kardexalmacenordenes';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayOrdenes=respuesta.ordenes;
+                })
+                .catch(function (error) {
                     console.log(error);
                 })
             },
@@ -469,6 +524,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
         mounted() {
             this.listarProductos(1,this.buscar,this.criterio);
             this.listarMaterias();
+            this.listarOrdenes();
         }
     }
 </script>

@@ -92,9 +92,10 @@ class Tb_kardex_almacenController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $ordenes = DB::table('tb_orden_produccion')
-        ->whereIn('tb_orden_produccion.id', function($sub){$sub->selectRaw('max(id)')->from('tb_orden_produccion')->groupBy('consecutivo');})
         ->select('tb_orden_produccion.id','tb_orden_produccion.consecutivo','tb_orden_produccion.fecha')
-        ->orderBy('tb_orden_produccion.id','asc')->paginate(5);
+        ->whereIn('tb_orden_produccion.id', function($sub){$sub->selectRaw('max(id)')->from('tb_orden_produccion')->groupBy('consecutivo');})
+        ->orderBy('tb_orden_produccion.id','desc')
+        ->get();
 
         return ['ordenes' =>  $ordenes];
 
@@ -105,7 +106,8 @@ class Tb_kardex_almacenController extends Controller
         $materiales = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
             ->select('tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
             ->where('tb_orden_produccion_detalle.idOrdenProduccion', '=', $identificador)
-            ->orderBy('tb_gestion_materia_prima.id','asc')->paginate(5);
+            ->orderBy('tb_gestion_materia_prima.id','asc')
+            ->get();
 
         return ['materiales' =>  $materiales];
 
