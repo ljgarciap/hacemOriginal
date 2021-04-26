@@ -110,10 +110,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Valor</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor mensual</label>
                                         <div class="col-md-9">
                                             <input type="number" v-model="valor" class="form-control" placeholder="Valor de el concepto">
-                                            <span class="help-block">(*) Ingrese el valor del concepto</span>
+                                            <span class="help-block">(*) Ingrese el valor mensual del concepto</span>
                                         </div>
                                     </div>
                                     <div class="form-group row div-error" v-show="errorConcepto">

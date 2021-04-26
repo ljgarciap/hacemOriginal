@@ -125,17 +125,17 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Tiempo de vida util</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Vida útil en años</label>
                                         <div class="col-md-9">
                                             <input type="number" v-model="tiempoDeVidaUtil" class="form-control" placeholder="Tiempo de vida util">
-                                            <span class="help-block">(*) Ingrese el tiempo de vida util</span>
+                                            <span class="help-block">(*) Ingrese el tiempo de vida útil en años</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Fecha</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha apróximada compra</label>
                                         <div class="col-md-9">
                                             <input type="date" v-model="fecha" class="form-control" placeholder="Fecha">
-                                            <span class="help-block">(*) Ingrese la fecha de compra</span>
+                                            <span class="help-block">(*) Ingrese la fecha apróximada de compra</span>
                                         </div>
                                     </div>
                                     <div class="form-group row div-error" v-show="errorMaquinaria">
@@ -393,7 +393,7 @@
                             this.depreciacionAnual='';
                             this.depreciacionMensual='';
                             this.fecha='';
-                            this.tituloModal='Crear nueva maquinaria';
+                            this.tituloModal='Registrar nueva maquinaria';
                             this.tipoAccion= 1;
                             break;
                         }
