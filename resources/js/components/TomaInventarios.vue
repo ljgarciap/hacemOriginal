@@ -20,21 +20,21 @@
                                         <th>Producto</th>
                                         <th>Cantidad</th>
                                         <th>Unidad Base</th>
-                                        <th>Actualizar Cantidad</th>
+                                        <th>Cantidad Actual</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="total in arrayProductos" :key="total.id">
-                                        <td>{{total.producto}}</td>
+                                        <td>{{total.gestionMateria}}</td>
                                         <td>{{total.cantidad}}</td>
-                                        <td>{{total.idUnidadBase}}</td>
+                                        <td>{{total.unidadBase}}</td>
                                         <td>
-                                            <input type="number" v-model="cantidad" step="0.01">
+                                            <input type="number" v-model="$validar" step="0.01">
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-primary" @click="actualizarDatos(cantidad)">Actualizar</button>
+                            <button type="button" class="btn btn-primary" @click="ValidarInventario($validar)">Validar Inventario</button>
                             </div>
                         </div>
                     </div>
@@ -72,9 +72,9 @@
                     console.log(error);
                 })
             },
-                actualizarDatos(identificador){
+                ValidarInventario(identificador){
                 let me=this;
-                axios.post('/inventario/actualizar',{
+                axios.post('/inventario/validar',{
                     'id': this.identificador,
                     'cantidad' : this.cantidad
                 }).then(function (response) {

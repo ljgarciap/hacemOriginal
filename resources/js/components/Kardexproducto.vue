@@ -14,7 +14,10 @@
                        <div class="card-header">
                             <i class="fa fa-align-justify"></i> Kardex de Producto Terminado
                             <button type="button" @click="abrirModal('kardex','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo Movimiento
+                                <i class="icon-plus"></i>&nbsp;Entrada
+                            </button>
+                            <button type="button" @click="abrirModal('kardex','crears')" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Salida
                             </button>
                         </div>
 
@@ -44,7 +47,7 @@
                                 </thead>
                                 <tbody>
 
-                                     <tr v-for="kardex in arrayKardexes" :key="kardex.id">
+                                    <tr v-for="kardex in arrayKardexes" :key="kardex.id">
                                         <td>
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(kardex.idProducto)">
                                                 <i class="icon-eye"></i><span> Ver kárdex</span>
@@ -123,44 +126,134 @@
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
-                                    <div v-if="tipoModal==1" class="form-group row">
+                                    <div v-if="tipoModal==1" class="form-group row"> <!-- Si es una entrada -->
                                         <label class="col-md-3 form-control-label" for="email-input">Movimiento</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="tipologia">
+                                        <div v-if="desplegable==1" class="col-md-9">
+                                            <select class="form-control" v-model="idDocumentos" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
-                                                <option value="1">Entrada de material</option>
-                                                <option value="2">Salida de material</option>
+                                                <option value="1">Compra de material</option>
+                                                <option value="2">Devolución de producción</option>
+                                                <!-- <option value="3">Inventario inicial</option> -->
+                                            </select>
+                                        </div>
+                                        <div v-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
+                                            <select class="form-control" v-model="idDocumentos" @change='onChange($event)'>
+                                                <option value="0" disabled>Seleccione tipo de documento</option>
+                                                <option value="4">Devolución a proveedor</option>
+                                                <option value="5">Entrega de material</option>
+                                                <option value="6">Bajas</option>
+                                                <!-- <option value="7">Ajuste de inventario</option> -->
                                             </select>
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Consecutivo</label>
-                                        <div class="col-md-9">
+                                    <!--Inicio de sección número documento-->
+                                        <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Factura</label>
+                                        <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+                                        <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Número de factura</label>
+                                        <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Consecutivo</label>
+
+                                        <div v-if="flag==1" class="col-md-9">
+                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de factura">
+                                            <span class="help-block">(*) Ingrese el número de factura a ingresar</span>
+                                        </div>
+
+                                        <div v-if="flag==2" class="col-md-9">
+                                            <select class="form-control" v-model="idOrden" @change='materiaOrden($event)'>
+                                                <option value="0" disabled>Seleccione orden de producción</option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione el número de orden de producción</span>
+                                        </div>
+
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de factura">
+                                            <span class="help-block">(*) Ingrese el número de factura al cual va a devolver</span>
+                                        </div>
+
+                                        <div v-if="flag==5" class="col-md-9">
+                                            <select class="form-control" v-model="idOrden" @change='materiaOrden($event)'>
+                                                <option value="0" disabled>Seleccione orden de producción</option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione el número de orden de producción que devuelve</span>
+                                        </div>
+
+                                        <div v-if="flag==6" class="col-md-9">
                                             <input type="text" v-model="detalle" class="form-control" placeholder="Consecutivo">
                                             <span class="help-block">(*) Ingrese el número del Movimiento</span>
                                         </div>
+
                                     </div>
+                                        <!--Cierre sección número documento-->
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Producto</label>
-                                        <div class="col-md-9">
+                                        <!--Inicio sección datos-->
+                                        <label v-if="flag!=0" class="col-md-3 form-control-label" for="email-input">Productos</label>
+
+                                        <div v-if="flag==1" class="col-md-9">
                                             <select class="form-control" v-model="idProducto">
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductos" :key="producto.idKardex" :value="producto.idKardex" v-text="producto.producto"></option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
                                             </select>
+                                            <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
+
+                                        <div v-if="flag==2" class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione un producto</option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
+                                            </select>
+                                             <span class="help-block">(*) Seleccione el producto</span>
+                                        </div>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione un producto</option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
+                                            </select>
+                                             <span class="help-block">(*) Seleccione el producto</span>
+                                        </div>
+
+                                        <div v-if="flag==5" class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione un producto</option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
+                                            </select>
+                                             <span class="help-block">(*) Seleccione el producto</span>
+                                        </div>
+
+                                        <div v-if="flag==6" class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione un producto</option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
+                                            </select>
+                                             <span class="help-block">(*) Seleccione el producto</span>
+                                        </div>
+
                                     </div>
+
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad</label>
-                                        <div class="col-md-9">
+                                        <label v-if="flag!=0"  class="col-md-3 form-control-label" for="text-input">Cantidad</label>
+                                        <div v-if="flag!=0"  class="col-md-9">
                                             <input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad">
                                             <span class="help-block">(*) Ingrese la Cantidad</span>
                                         </div>
                                     </div>
+
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Precio</label>
-                                        <div class="col-md-9">
-                                           <input type="number" v-model="precio" class="form-control" placeholder="Precio">
-                                           <span class="help-block">(*) Ingrese el Precio</span>
+                                        <!--Revisar-->
+                                        <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==1" class="col-md-9">
+                                            <input type="number" v-model="precio" class="form-control" placeholder="Precio">
+                                            <span class="help-block">(*) Ingrese el Precio</span>
+                                        </div>
+                                    </div>
+                                        <!--Cierre sección datos-->
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Observaciones</label>
+                                        <div v-if="flag==6" class="col-md-9">
+                                            <textarea type="text" v-model="observaciones" class="form-control" placeholder="observaciones"></textarea>
+                                            <span class="help-block">(*) Ingrese los motivos de la baja</span>
                                         </div>
                                     </div>
 
@@ -192,6 +285,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
         data(){
             return{
                 idProducto:0,
+                idDocumentos:0,
                 id:'',
                 identificador:'',
                 fecha : '',
@@ -199,15 +293,21 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 precioSaldos:'',
                 cantidad:'',
                 detalle:'',
+                observaciones:'Ninguna',
+                flag : 0,
                 precio:'',
                 saldos:'',
                 arrayProductos : [],
                 arrayKardexes : [],
-                kardex:'',
+                arrayMateriaOrden : [],
+                arrayOrdenes : [],
+                producto:'',
                 modal : 0,
+                desplegable : 0,
                 listado : 0,
                 tituloModal : '',
                 variable : '',
+                idOrden : 0,
                 tipologia : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
@@ -256,10 +356,40 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             }
         },
         methods : {
+            onChange(event) {
+            //console.log(event.target.value);
+            this.flag=event.target.value;
+            },
+            materiaOrden(event){
+                //console.log(event.target.value);
+                this.identificadorHoja=event.target.value;
+                let me=this;
+                var url='/kardexproducto/puntual/'+this.identificadorHoja;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayMateriaOrden=respuesta.materiales;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarOrdenes(){
+                let me=this;
+                var url='/kardexproductoordenes';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayOrdenes=respuesta.ordenes;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            },
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
             },
-            listarKardexP(page,buscar,criterio){
+            listarProductos(page,buscar,criterio){
                 let me=this;
                 var url='/kardexproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 axios.get(url).then(function (response) {
@@ -285,7 +415,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             forceRerender() {
                 this.componentKey += 1;
                },
-            listarProductos(){
+            listarMaterias(){
                 let me=this;
                 var url='/kardexproductogeneral';
                 axios.get(url).then(function (response) {
@@ -311,6 +441,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     'cantidad':this.cantidad,
                     'precio':this.precio,
                     'tipologia':this.tipologia,
+                    'observaciones':this.observaciones,
+                    'idDocumentos':this.idDocumentos,
                     'idProducto':this.idProducto
                 }).then(function (response) {
                 me.cerrarModal('0');
@@ -344,15 +476,16 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
-
-                this.detalle='';
+                this.idDocumentos='';
                 this.cantidad='';
+                this.observaciones='Ninguna';
                 this.precio='';
                 this.tipologia='';
+                this.flag=0;
                 this.tituloModal='';
                 this.idProducto='';
 
-                this.listarKardexP(1,this.buscar,this.criterio);
+                this.listarProductos(1,this.buscar,this.criterio);
             },
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
@@ -362,11 +495,24 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                         switch (accion) {
                             case 'crear':{
                                 this.modal=1;
+                                this.tipologia=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Crear nuevo kardex de producto terminado';
+                                this.tituloModal='Kardex de producto terminado entrada';
+                                this.desplegable= 1; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
-                                this.listarProductos();
+                                this.listarMaterias();
+                                break;
+                            }
+                            case 'crears':{
+                                this.modal=1;
+                                this.tipologia=2;
+                                this.tipoModal=1; //carga tipos de campos y footers
+                                this.tituloModal='Kardex de producto terminado salida';
+                                this.desplegable= 2; //carga tipos de botón en el footer
+                                this.tipoAccion= 1; //carga tipos de botón en el footer
+                                this.fecha= moment().format('YYYY-MM-DD');
+                                this.listarMaterias();
                                 break;
                             }
                         }
@@ -391,8 +537,9 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             }
         },
         mounted() {
-            this.listarKardexP(1,this.buscar,this.criterio);
-            this.listarProductos();
+            this.listarProductos(1,this.buscar,this.criterio);
+            this.listarMaterias();
+            this.listarOrdenes();
         }
     }
 </script>

@@ -9,6 +9,7 @@
                                     <tr>
                                         <th>Fecha</th>
                                         <th>Detalle</th>
+                                        <th>Producto</th>
 
                                         <th>Entradas<br>Cantidad</th>
                                         <th>Entradas<br>Precio Unitario</th>
@@ -26,7 +27,7 @@
                                     <tr v-for="total in arrayProductos" :key="total.idProducto">
                                         <td>{{total.fecha}}</td>
                                         <td>{{total.detalle}}</td>
-
+                                        <td>{{total.producto}}</td>
                                             <td v-if="total.tipologia==1">{{total.cantidad}}</td>
                                             <td v-if="total.tipologia==1">{{total.precio}}</td>
                                             <td v-if="total.tipologia==1">{{total.preciototal}}</td>

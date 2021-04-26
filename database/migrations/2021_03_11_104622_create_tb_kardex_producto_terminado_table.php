@@ -21,6 +21,8 @@ class CreateTbKardexProductoTerminadoTable extends Migration
             $table->integer('precio');
             $table->float('cantidadSaldos');
             $table->integer('precioSaldos');
+            $table->string('observaciones', 255);
+            $table->foreignId('idDocumentos')->constrained('tb_documentos');
             $table->foreignId('idProducto')->constrained('tb_producto');
             $table->boolean('tipologia')->default(1);
             // tipo 1 entrada tipo 0 salida

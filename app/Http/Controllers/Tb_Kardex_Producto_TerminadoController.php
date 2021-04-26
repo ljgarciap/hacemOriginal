@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Tb_kardex_producto_terminado;
 use App\Tb_producto;
+use App\Tb_orden_produccion;
+use App\Tb_orden_produccion_detalle;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -19,8 +21,8 @@ class Tb_kardex_producto_terminadoController extends Controller
             $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
             ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha','tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad',
             'tb_kardex_producto_terminado.precio','tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
-            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto',
-            'tb_producto.estado',DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as saldos'))
+            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto','tb_producto.estado',DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as saldos'))
+            ->orderBy('tb_kardex_producto_terminado.idProducto','asc')
             ->whereIn('tb_kardex_producto_terminado.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_producto_terminado')->groupBy('idProducto');})
             ->paginate(5);
         }
@@ -28,11 +30,10 @@ class Tb_kardex_producto_terminadoController extends Controller
             $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
             ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha','tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad',
             'tb_kardex_producto_terminado.precio','tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
-            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto',
-            'tb_producto.estado',DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as saldos'))
+            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto','tb_producto.estado',DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as saldos'))
             ->whereIn('tb_kardex_producto_terminado.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_producto_terminado')->groupBy('idProducto');})
             ->where('tb_kardex_producto_terminado.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('tb_kardex_producto_terminado.id','desc')->paginate(5);
+            ->orderBy('tb_kardex_producto_terminado.idProducto','asc')->paginate(5);
         }
         return [
             'pagination' => [
@@ -54,16 +55,13 @@ class Tb_kardex_producto_terminadoController extends Controller
         $identificador= $request->identificador;
 
  /**/
-            $kardex= Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
+            $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
             ->select('tb_kardex_producto_terminado.id as idKardex','tb_kardex_producto_terminado.fecha','tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad',
             'tb_kardex_producto_terminado.precio',DB::raw('tb_kardex_producto_terminado.cantidad * tb_kardex_producto_terminado.precio as preciototal'),
             'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
-            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto', 'tb_producto.estado',
-            DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as totalsaldos'))
+            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto','tb_producto.estado',DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as totalsaldos'))
             ->where('tb_kardex_producto_terminado.idProducto', '=', $identificador)
             ->orderBy('tb_kardex_producto_terminado.id','asc')->paginate(5);
-
-
 
         return [
             'pagination' => [
@@ -86,6 +84,29 @@ class Tb_kardex_producto_terminadoController extends Controller
             ->get();
 
         return ['productos' =>  $productos];
+    }
+    public function ordenes() //PARA TRAER DATOS ACORDE
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $ordenes = DB::table('tb_orden_produccion')
+        ->select('tb_orden_produccion.id','tb_orden_produccion.consecutivo','tb_orden_produccion.fecha')
+        ->whereIn('tb_orden_produccion.id', function($sub){$sub->selectRaw('max(id)')->from('tb_orden_produccion')->groupBy('consecutivo');})
+        ->orderBy('tb_orden_produccion.id','desc')
+        ->get();
+
+        return ['ordenes' =>  $ordenes];
+
+    }
+    public function puntual($identificador) //PARA TRAER DATOS ACORDE
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $materiales = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
+            ->select('tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
+            ->where('tb_orden_produccion_detalle.idOrdenProduccion', '=', $identificador)
+            ->orderBy('tb_gestion_materia_prima.id','asc')
+            ->get();
+
+        return ['materiales' =>  $materiales];
 
     }
     public function store(Request $request)
@@ -97,6 +118,8 @@ class Tb_kardex_producto_terminadoController extends Controller
         $cantidad=$request->cantidad;
         $precio=$request->precio;
         $idProducto=$request->idProducto;
+        $observaciones=$request->observaciones;
+        $idDocumentos=$request->idDocumentos;
         $tipologia=$request->tipologia;
         $valorE=($precio*$cantidad);
 
@@ -107,6 +130,7 @@ class Tb_kardex_producto_terminadoController extends Controller
         //anterior multiplico cantidadSaldos*precioSaldos y a ese valor le sumo o resto segun el caso el valor del registro nuevo que resulta de
         //cantidad*precio; el resultado lo divido entre el valor que calcule de cantidadSaldos y lo ingreso en precioSaldos; hay que tener muy en
         //cuenta que en el primer registro las cantidad y cantidadSaldos asi como las precio y precioSaldos son identicas.
+        //Proceso para calculo de kardex
 
         $precioSaldos = DB::table('tb_kardex_producto_terminado')
         ->select('id','cantidad as cantidadA','cantidadSaldos as cantidadS','precioSaldos as precioS')
@@ -147,6 +171,8 @@ class Tb_kardex_producto_terminadoController extends Controller
         $tb_kardex_producto_terminado->cantidad=$cantidad;
         $tb_kardex_producto_terminado->precio=$precio;
         $tb_kardex_producto_terminado->idProducto=$idProducto;
+        $tb_kardex_producto_terminado->observaciones=$observaciones;
+        $tb_kardex_producto_terminado->idDocumentos=$idDocumentos;
         $tb_kardex_producto_terminado->tipologia=$tipologia;
         $tb_kardex_producto_terminado->fecha=$fecha;
         $tb_kardex_producto_terminado->cantidadSaldos=$suma1;

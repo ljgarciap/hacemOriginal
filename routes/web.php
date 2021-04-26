@@ -227,7 +227,9 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/kardexproductogeneral", "Tb_kardex_producto_terminadoController@general");
         Route::get("/kardexproducto", "Tb_kardex_producto_terminadoController@index");
         Route::get("/kardexproducto/listar", "Tb_kardex_producto_terminadoController@listar");
-        Route::post("/kardexproducto/store", "Tb_kardex_producto_terminadoController@store");;
+        Route::get("/kardexproductoordenes", "Tb_kardex_producto_terminadoController@ordenes");
+        Route::get("/kardexproducto/puntual/{identificador}", "Tb_kardex_producto_terminadoController@puntual");
+        Route::post("/kardexproducto/store", "Tb_kardex_producto_terminadoController@store");
 
         Route::get("/kardexalmacengeneral", "Tb_kardex_almacenController@general");
         Route::get("/kardexalmacen", "Tb_kardex_almacenController@index");
@@ -242,7 +244,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/kardexproduccion/store", "Tb_kardex_produccionController@store");
 
         Route::get("/inventario", "Tb_inventarioController@index");
-        Route::post("/inventario/actualizar", "Tb_inventarioController@actualizar");
+        Route::post("/inventario/validar", "Tb_inventarioController@validar");
     });
 
 //---------------------------------------------------------------------------//
