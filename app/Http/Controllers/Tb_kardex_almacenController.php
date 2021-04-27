@@ -112,6 +112,26 @@ class Tb_kardex_almacenController extends Controller
         return ['materiales' =>  $materiales];
 
     }
+    public function factura(Request $request) //PARA TRAER DATOS ACORDE
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $factura=$request->factura;
+        $proveedor=$request->proveedor;
+        $materiales = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
+            ->select('tb_kardex_almacen.idGestionMateria','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
+            ->distinct('tb_kardex_almacen.idGestionMateria')
+            ->where([
+                ['tb_kardex_almacen.idDocumentos', '=', '1'],
+                ['tb_kardex_almacen.tipologia', '=', '1'],
+                ['tb_kardex_almacen.detalle', '=', $factura],
+                ['tb_kardex_almacen.observaciones', '=', $proveedor],
+            ])
+            ->orderBy('tb_gestion_materia_prima.id','asc')
+            ->get();
+
+        return ['materiales' =>  $materiales];
+
+    }
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
