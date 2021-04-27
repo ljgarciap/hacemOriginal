@@ -39,10 +39,10 @@ class Tb_proveedorController extends Controller
                 'proveedores' => $proveedores
         ];
     }
-     
+
     public function selectProveedor(){
         $proveedores = Tb_proveedor::where('estado','=','1')
-        ->select('id as idProveedor','proveedor')->orderBy('proveedor','asc')->get();
+        ->select('id as idProveedor','razonSocial')->orderBy('id','asc')->get();
 
         return ['proveedores' => $proveedores];
     }

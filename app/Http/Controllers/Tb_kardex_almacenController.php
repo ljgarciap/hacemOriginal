@@ -100,7 +100,7 @@ class Tb_kardex_almacenController extends Controller
         return ['ordenes' =>  $ordenes];
 
     }
-    public function puntual($identificador) //PARA TRAER DATOS ACORDE
+    public function material($identificador) //PARA TRAER DATOS ACORDE
     {
         //if(!$request->ajax()) return redirect('/');
         $materiales = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
@@ -113,6 +113,24 @@ class Tb_kardex_almacenController extends Controller
 
     }
     public function factura(Request $request) //PARA TRAER DATOS ACORDE
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $proveedor=$request->proveedor;
+        $materiales = Tb_kardex_almacen::join('tb_proveedores','tb_kardex_almacen.observaciones','=','tb_proveedores.id')
+            ->select('tb_kardex_almacen.detalle as factura','tb_proveedores.razonSocial as proveedor')
+            ->distinct('tb_kardex_almacen.detalle')
+            ->where([
+                ['tb_kardex_almacen.idDocumentos', '=', '1'],
+                ['tb_kardex_almacen.tipologia', '=', '1'],
+                ['tb_kardex_almacen.observaciones', '=', $proveedor],
+            ])
+            ->orderBy('tb_kardex_almacen.detalle','asc')
+            ->get();
+
+        return ['materiales' =>  $materiales];
+
+    }
+    public function materialfactura(Request $request) //PARA TRAER DATOS ACORDE
     {
         //if(!$request->ajax()) return redirect('/');
         $factura=$request->factura;

@@ -147,6 +147,30 @@
                                         </div>
                                     </div>
 
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Observaciones</label>
+                                        <label v-else-if="flag==1" class="col-md-3 form-control-label" for="text-input">Proveedor</label>
+                                        <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Proveedor</label>
+                                        <div v-if="flag==6" class="col-md-9">
+                                            <input type="text" v-model="observaciones" class="form-control" placeholder="observaciones">
+                                            <span class="help-block">(*) Ingrese los motivos de la baja</span>
+                                        </div>
+                                        <div v-else-if="flag==1" class="col-md-9">
+                                            <select class="form-control" v-model="observaciones">
+                                                <option value="0" disabled>Seleccione proveedor</option>
+                                                <option v-for="proveedor in arrayProveedores" :key="proveedor.id" :value="proveedor.id" v-text="proveedor.razonSocial"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione Proveedor</span>
+                                        </div>
+                                        <div v-else-if="flag==4" class="col-md-9">
+                                            <select class="form-control" v-model="observaciones" @change='factura($event)'>
+                                                <option value="0" disabled>Seleccione proveedor</option>
+                                                <option v-for="proveedor in arrayProveedores" :key="proveedor.idProveedor" :value="proveedor.idProveedor" v-text="proveedor.razonSocial"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione Proveedor</span>
+                                        </div>
+                                    </div>
+
                                     <!--Inicio de sección número documento-->
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Factura</label>
@@ -169,8 +193,11 @@
                                         </div>
 
                                         <div v-else-if="flag==4" class="col-md-9">
-                                            <input type="text" v-model="detalle" class="form-control" placeholder="Número de factura">
-                                            <span class="help-block">(*) Ingrese el número de factura al cual va a devolver</span>
+                                            <select class="form-control" v-model="detalle" @change='materialFactura($event)'>
+                                                <option value="0" disabled>Seleccione factura</option>
+                                                <option v-for="factura in arrayFactura" :key="factura.factura" :value="factura.factura" v-text="factura.factura"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione el número de factura al cual va a devolver</span>
                                         </div>
 
                                         <div v-else-if="flag==5" class="col-md-9">
@@ -188,24 +215,6 @@
 
                                     </div>
                                         <!--Cierre sección número documento-->
-
-                                    <div v-if="tipoModal==1" class="form-group row">
-                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Observaciones</label>
-                                        <label v-else-if="flag==1" class="col-md-3 form-control-label" for="text-input">Proveedor</label>
-                                        <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Proveedor</label>
-                                        <div v-if="flag==6" class="col-md-9">
-                                            <input type="text" v-model="observaciones" class="form-control" placeholder="observaciones">
-                                            <span class="help-block">(*) Ingrese los motivos de la baja</span>
-                                        </div>
-                                        <div v-else-if="flag==1" class="col-md-9">
-                                            <input type="text" v-model="observaciones" class="form-control" placeholder="Proveedor">
-                                            <span class="help-block">(*) Ingrese Proveedor</span>
-                                        </div>
-                                        <div v-else-if="flag==4" class="col-md-9">
-                                            <input type="text" v-model="observaciones" class="form-control" placeholder="Proveedor">
-                                            <span class="help-block">(*) Ingrese Proveedor</span>
-                                        </div>
-                                    </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <!--Inicio sección datos-->
@@ -302,6 +311,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 idDocumentos:0,
                 id:'',
                 identificador:'',
+                identificadorProveedor:0,
                 fecha : '',
                 cantidadSaldos:'',
                 precioSaldos:'',
@@ -315,7 +325,9 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 arrayMateriaPrima : [],
                 arrayMateriaOrden : [],
                 arrayMateriaFactura : [],
+                arrayFactura : [],
                 arrayOrdenes : [],
+                arrayProveedores : [],
                 producto:'',
                 modal : 0,
                 desplegable : 0,
@@ -379,7 +391,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 //console.log(event.target.value);
                 this.identificadorHoja=event.target.value;
                 let me=this;
-                var url='/kardexalmacen/puntual/'+this.identificadorHoja;
+                var url='/kardexalmacen/material/'+this.identificadorHoja;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayMateriaOrden=respuesta.materiales;
@@ -390,11 +402,43 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                     console.log(error);
                 })
             },
-            materiaFactura(event){
+            listarProveedores(){
                 //console.log(event.target.value);
-                this.identificadorFactura=event.target.value;
                 let me=this;
-                var url='/kardexalmacen/factura?factura='+this.identificadorFactura+'&proveedor='+this.identificadorProveedor;
+                var url='/proveedor/selectProveedor';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayProveedores=respuesta.proveedores;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            factura(event){
+                //console.log(event.target.value);
+                this.identificadorProveedor=event.target.value;
+                identificadorProveedor=this.identificadorProveedor
+                let me=this;
+                var url='/kardexalmacen/factura?proveedor='+this.identificadorProveedor;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayFactura=respuesta.materiales;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            materialFactura(event){
+                console.log(event.target.value);
+                console.log();
+                this.identificadorFactura=event.target.value;
+                this.identificadorProveedor=identificadorProveedor;
+                let me=this;
+                var url='/kardexalmacen/materialfactura?factura='+this.identificadorFactura+'&proveedor='+this.identificadorProveedor;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayMateriaFactura=respuesta.materiales;
@@ -570,6 +614,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
             this.listarProductos(1,this.buscar,this.criterio);
             this.listarMaterias();
             this.listarOrdenes();
+            this.listarProveedores();
         }
     }
 </script>
