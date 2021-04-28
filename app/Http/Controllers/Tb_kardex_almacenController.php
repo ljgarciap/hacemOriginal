@@ -117,13 +117,14 @@ class Tb_kardex_almacenController extends Controller
         //if(!$request->ajax()) return redirect('/');
         $proveedor=$request->proveedor;
         $materiales = Tb_kardex_almacen::join('tb_proveedores','tb_kardex_almacen.observaciones','=','tb_proveedores.id')
-            ->select('tb_kardex_almacen.detalle as factura','tb_proveedores.razonSocial as proveedor')
-            ->distinct('tb_kardex_almacen.detalle')
+            ->select('tb_kardex_almacen.id','tb_kardex_almacen.detalle as factura','tb_proveedores.razonSocial as proveedor',
+            DB::raw("CONCAT('Factura: ',tb_kardex_almacen.detalle,' - ',tb_proveedores.razonSocial) AS detallado"))
             ->where([
                 ['tb_kardex_almacen.idDocumentos', '=', '1'],
                 ['tb_kardex_almacen.tipologia', '=', '1'],
                 ['tb_kardex_almacen.observaciones', '=', $proveedor],
             ])
+            ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('tb_kardex_almacen.detalle');})
             ->orderBy('tb_kardex_almacen.detalle','asc')
             ->get();
 
@@ -133,8 +134,14 @@ class Tb_kardex_almacenController extends Controller
     public function materialfactura(Request $request) //PARA TRAER DATOS ACORDE
     {
         //if(!$request->ajax()) return redirect('/');
-        $factura=$request->factura;
-        $proveedor=$request->proveedor;
+        $kardex=$request->factura;
+        $registros = DB::table('tb_kardex_almacen')->where('id', '=', $kardex)->get();
+
+        foreach ($registros as $registro) {
+            $factura = $registro->detalle;
+            $proveedor = $registro->observaciones;
+        }
+
         $materiales = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
             ->select('tb_kardex_almacen.idGestionMateria','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
             ->distinct('tb_kardex_almacen.idGestionMateria')

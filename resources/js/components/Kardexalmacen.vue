@@ -195,7 +195,7 @@
                                         <div v-else-if="flag==4" class="col-md-9">
                                             <select class="form-control" v-model="detalle" @change='materialFactura($event)'>
                                                 <option value="0" disabled>Seleccione factura</option>
-                                                <option v-for="factura in arrayFactura" :key="factura.factura" :value="factura.factura" v-text="factura.factura"></option>
+                                                <option v-for="factura in arrayFactura" :key="factura.id" :value="factura.id" v-text="factura.detallado"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el número de factura al cual va a devolver</span>
                                         </div>
@@ -312,6 +312,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 id:'',
                 identificador:'',
                 identificadorProveedor:0,
+                identificadorFactura:0,
                 fecha : '',
                 cantidadSaldos:'',
                 precioSaldos:'',
@@ -419,7 +420,6 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
             factura(event){
                 //console.log(event.target.value);
                 this.identificadorProveedor=event.target.value;
-                identificadorProveedor=this.identificadorProveedor
                 let me=this;
                 var url='/kardexalmacen/factura?proveedor='+this.identificadorProveedor;
                 axios.get(url).then(function (response) {
@@ -433,12 +433,10 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 })
             },
             materialFactura(event){
-                console.log(event.target.value);
-                console.log();
+                //console.log(event.target.value);
                 this.identificadorFactura=event.target.value;
-                this.identificadorProveedor=identificadorProveedor;
                 let me=this;
-                var url='/kardexalmacen/materialfactura?factura='+this.identificadorFactura+'&proveedor='+this.identificadorProveedor;
+                var url='/kardexalmacen/materialfactura?factura='+this.identificadorFactura;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayMateriaFactura=respuesta.materiales;
