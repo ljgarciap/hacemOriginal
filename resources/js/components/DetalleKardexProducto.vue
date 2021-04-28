@@ -41,7 +41,6 @@
                                             <td v-if="total.tipologia==2">{{total.cantidad}}</td>
                                             <td v-if="total.tipologia==2">{{total.precio}}</td>
                                             <td v-if="total.tipologia==2">{{total.preciototal}}</td>
-
                                         <td>{{total.cantidadSaldos}}</td>
                                         <td>{{total.precioSaldos}}</td>
                                         <td>{{total.totalsaldos}}</td>

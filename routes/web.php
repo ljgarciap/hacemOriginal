@@ -228,7 +228,9 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/kardexproducto", "Tb_kardex_producto_terminadoController@index");
         Route::get("/kardexproducto/listar", "Tb_kardex_producto_terminadoController@listar");
         Route::get("/kardexproductoordenes", "Tb_kardex_producto_terminadoController@ordenes");
-        Route::get("/kardexproducto/puntual/{identificador}", "Tb_kardex_producto_terminadoController@puntual");
+        Route::get("/kardexproducto/material/{identificador}", "Tb_kardex_producto_terminadoController@material");
+        Route::get("/kardexproducto/factura", "Tb_kardex_producto_terminadoController@factura");
+        Route::get("/kardexproducto/materialfactura", "Tb_kardex_producto_terminadoController@materialfactura");
         Route::post("/kardexproducto/store", "Tb_kardex_producto_terminadoController@store");
 
         Route::get("/kardexalmacengeneral", "Tb_kardex_almacenController@general");
@@ -237,7 +239,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/kardexalmacenordenes", "Tb_kardex_almacenController@ordenes");
         Route::get("/kardexalmacen/material/{identificador}", "Tb_kardex_almacenController@material");
         Route::get("/kardexalmacen/factura", "Tb_kardex_almacenController@factura");
-        Route::get("/kardexalmacen/materialfactura", "Tb_kardex_almacenController@materialfactura");
+        Route::get("/kardexalmacen/productofactura", "Tb_kardex_almacenController@productofactura");
         Route::post("/kardexalmacen/store", "Tb_kardex_almacenController@store");
 
         Route::get("/kardexproducciongeneral", "Tb_kardex_produccionController@general");
