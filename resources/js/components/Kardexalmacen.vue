@@ -277,6 +277,27 @@
                                             <input type="number" v-model="precio" class="form-control" placeholder="Precio">
                                             <span class="help-block">(*) Ingrese el Precio</span>
                                         </div>
+                                        <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==2" class="col-md-9"><!-- Orden->se trae de kardex promedio arrayMateriaOrden-->
+                                            <input type="number" v-model="precio" class="form-control" readonly>
+                                            <span class="help-block">(*) Precio promedio</span>
+                                        </div>
+                                        <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==4" class="col-md-9"><!-- Factura->se trae de kardex valor arrayMateriaFactura-->
+                                            <input type="number" v-model="precio" class="form-control" readonly>
+                                            <span class="help-block">(*) Precio de compra</span>
+                                        </div>
+                                        <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==5" class="col-md-9"><!-- Orden->se trae de kardex promedio arrayMateriaOrden-->
+                                            <input type="number" v-model="precio" class="form-control" readonly>
+                                            <span class="help-block">(*) Precio promedio</span>
+                                        </div>
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==6" class="col-md-9"><!-- Registro->se trae de kardex promedio arrayMateriaPrima-->
+                                            <input type="number" v-model="precio" class="form-control" readonly>
+                                            <span class="help-block">(*) Precio promedio</span>
+                                        </div>
+
                                     </div>
                                         <!--Cierre sección datos-->
 
