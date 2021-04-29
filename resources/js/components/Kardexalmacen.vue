@@ -229,7 +229,7 @@
                                         </div>
 
                                         <div v-else-if="flag==2" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
                                                 <option value="0" disabled>Seleccione una materia</option>
                                                 <option v-for="materia in arrayMateriaOrden" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
                                             </select>
@@ -237,7 +237,7 @@
                                         </div>
 
                                         <div v-else-if="flag==4" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
                                                 <option value="0" disabled>Seleccione una materia</option>
                                                 <option v-for="materia in arrayMateriaFactura" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
                                             </select>
@@ -245,7 +245,7 @@
                                         </div>
 
                                         <div v-else-if="flag==5" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioMateriaCompra($event)'>
                                                 <option value="0" disabled>Seleccione una materia</option>
                                                 <option v-for="materia in arrayMateriaOrden" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
                                             </select>
@@ -253,7 +253,7 @@
                                         </div>
 
                                         <div v-else-if="flag==6" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
                                                 <option value="0" disabled>Seleccione una materia</option>
                                                 <option v-for="materia in arrayMateriaPrima" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
                                             </select>
@@ -334,6 +334,8 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 identificador:'',
                 identificadorProveedor:0,
                 identificadorFactura:0,
+                identificadorMaterial:0,
+                valorMaterial:0,
                 fecha : '',
                 cantidadSaldos:'',
                 precioSaldos:'',
@@ -408,6 +410,36 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
             onChange(event) {
             //console.log(event.target.value);
             this.flag=event.target.value;
+            },
+            precioMateriaCompra(event){
+                //console.log(event.target.value);
+                this.identificadorMaterial=event.target.value;
+                let me=this;
+                var url='/kardexalmacen/preciomaterialcompra/'+this.identificadorMaterial;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.valorMaterial=respuesta.preciomateria.data;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            precioMateriaOrden(event){
+                //console.log(event.target.value);
+                this.identificadorMaterial=event.target.value;
+                let me=this;
+                var url='/kardexalmacen/preciomaterialorden/'+this.identificadorMaterial;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.valorMaterial=respuesta.preciomateria.data;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             materiaOrden(event){
                 //console.log(event.target.value);

@@ -112,6 +112,33 @@ class Tb_kardex_almacenController extends Controller
         return ['materiales' =>  $materiales];
 
     }
+    public function preciomaterialorden($identificador) //DATOS de valor segun orden 2 5 y 6 traigo segun idmateria el valor promedio del kardex
+    {
+        //if(!$request->ajax()) return redirect('/');
+         $preciomaterial= DB::table('tb_kardex_almacen')
+         ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
+         ->orderBy('id', 'DESC')->first();
+
+        return $preciomaterial;
+        //return $preciomateria;
+
+    }
+    public function preciomaterialcompra($identificador) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $preciomaterial = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
+            ->select('tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
+            ->where('tb_orden_produccion_detalle.idOrdenProduccion', '=', $identificador)
+            ->orderBy('tb_gestion_materia_prima.id','asc')
+            ->get();
+
+        foreach ($preciomaterial as $precio) {
+            $preciomateria = $precio->precio;
+        }
+
+        return $preciomateria;
+
+    }
     public function factura(Request $request) //PARA TRAER DATOS ACORDE
     {
         //if(!$request->ajax()) return redirect('/');
