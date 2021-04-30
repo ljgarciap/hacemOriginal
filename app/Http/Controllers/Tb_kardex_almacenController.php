@@ -137,7 +137,14 @@ class Tb_kardex_almacenController extends Controller
         //if(!$request->ajax()) return redirect('/');
         $identificador=$request->material;
         $proveedor=$request->proveedor;
-        $factura=$request->factura;
+        $kardex=$request->factura;
+
+        $registros = DB::table('tb_kardex_almacen')->where('id', '=', $kardex)->get();
+
+        foreach ($registros as $registro) {
+            $factura = $registro->detalle;
+        }
+
         $preciomaterial = Tb_kardex_almacen::first()
         ->select('tb_kardex_almacen.id','tb_kardex_almacen.precio as valorMaterial')
         ->where([

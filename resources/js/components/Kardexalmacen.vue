@@ -163,7 +163,7 @@
                                             <span class="help-block">(*) Seleccione Proveedor</span>
                                         </div>
                                         <div v-else-if="flag==4" class="col-md-9">
-                                            <select class="form-control" v-model="observaciones" @change='factura($event)'>
+                                            <select class="form-control" v-model="observaciones" @change='facturas($event)'>
                                                 <option value="0" disabled>Seleccione proveedor</option>
                                                 <option v-for="proveedor in arrayProveedores" :key="proveedor.idProveedor" :value="proveedor.idProveedor" v-text="proveedor.razonSocial"></option>
                                             </select>
@@ -289,7 +289,7 @@
                                         </div>
                                         <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Precio</label>
                                         <div v-if="flag==5" class="col-md-9"><!-- Orden->se trae de kardex promedio arrayMateriaOrden-->
-                                            <input type="number" v-model="precio step="0.01"" class="form-control" readonly>
+                                            <input type="number" v-model="precio" step="0.01" class="form-control" readonly>
                                             <span class="help-block">(*) Precio promedio</span>
                                         </div>
                                         <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Precio</label>
@@ -470,7 +470,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                     console.log(error);
                 })
             },
-            factura(event){
+            facturas(event){
                 //console.log(event.target.value);
                 this.identificadorProveedor=event.target.value;
                 let me=this;
