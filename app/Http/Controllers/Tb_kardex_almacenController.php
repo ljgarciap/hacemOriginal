@@ -112,32 +112,52 @@ class Tb_kardex_almacenController extends Controller
         return ['materiales' =>  $materiales];
 
     }
-    public function preciomaterialorden($identificador) //DATOS de valor segun orden 2 5 y 6 traigo segun idmateria el valor promedio del kardex
+    public function preciomaterialorden(Request $request) //DATOS de valor segun orden 2 5 y 6 traigo segun idmateria el valor promedio del kardex
     {
         //if(!$request->ajax()) return redirect('/');
-         $preciomaterial= DB::table('tb_kardex_almacen')
-         ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
-         ->orderBy('id', 'DESC')->first();
+        $identificador=$request->material;
+        $preciomaterial = Tb_kardex_almacen::first()
+        ->select('tb_kardex_almacen.id','tb_kardex_almacen.precioSaldos as valorMaterial')
+        ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('tb_kardex_almacen.idGestionMateria');})
+        ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
+        ->get();
 
-        return $preciomaterial;
-        //return $preciomateria;
-
-    }
-    public function preciomaterialcompra($identificador) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
-    {
-        //if(!$request->ajax()) return redirect('/');
-        $preciomaterial = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
-            ->select('tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
-            ->where('tb_orden_produccion_detalle.idOrdenProduccion', '=', $identificador)
-            ->orderBy('tb_gestion_materia_prima.id','asc')
-            ->get();
-
-        foreach ($preciomaterial as $precio) {
-            $preciomateria = $precio->precio;
+        foreach($preciomaterial as $totalg){
+            $id = $totalg->id;
+            $valorMaterial = $totalg->valorMaterial;
         }
 
-        return $preciomateria;
+         return [
+            'id' => $id,
+            'valorMaterial' =>  $valorMaterial
+        ];
+    }
+    public function preciomaterialcompra(Request $request) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $identificador=$request->material;
+        $proveedor=$request->proveedor;
+        $factura=$request->factura;
+        $preciomaterial = Tb_kardex_almacen::first()
+        ->select('tb_kardex_almacen.id','tb_kardex_almacen.precio as valorMaterial')
+        ->where([
+            ['tb_kardex_almacen.idDocumentos', '=', '1'],
+            ['tb_kardex_almacen.tipologia', '=', '1'],
+            ['tb_kardex_almacen.observaciones', '=', $proveedor],
+            ['tb_kardex_almacen.detalle', '=', $factura],
+            ['tb_kardex_almacen.idGestionMateria', '=', $identificador],
+        ])
+        ->get();
 
+        foreach($preciomaterial as $totalg){
+            $id = $totalg->id;
+            $valorMaterial = $totalg->valorMaterial;
+        }
+
+         return [
+            'id' => $id,
+            'valorMaterial' =>  $valorMaterial
+        ];
     }
     public function factura(Request $request) //PARA TRAER DATOS ACORDE
     {
