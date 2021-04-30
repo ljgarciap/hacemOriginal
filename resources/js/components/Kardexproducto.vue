@@ -152,7 +152,7 @@
                                         <label v-else-if="flag==1" class="col-md-3 form-control-label" for="text-input">Proveedor</label>
                                         <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Proveedor</label>
                                         <div v-if="flag==6" class="col-md-9">
-                                            <textarea type="text" v-model="observaciones" class="form-control" placeholder="observaciones"></textarea>
+                                            <input type="text" v-model="observaciones" class="form-control" placeholder="observaciones">
                                             <span class="help-block">(*) Ingrese los motivos de la baja</span>
                                         </div>
                                         <div v-else-if="flag==1" class="col-md-9">
@@ -185,7 +185,7 @@
                                         </div>
 
                                         <div v-else-if="flag==2" class="col-md-9">
-                                            <select class="form-control" v-model="idOrden" @change='materiaOrden($event)'>
+                                            <select class="form-control" v-model="detalle" @change='materiaOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
                                                 <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
                                             </select>
@@ -201,7 +201,7 @@
                                         </div>
 
                                         <div v-else-if="flag==5" class="col-md-9">
-                                            <select class="form-control" v-model="idOrden" @change='materiaOrden($event)'>
+                                            <select class="form-control" v-model="detalle" @change='materiaOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
                                                 <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
                                             </select>
@@ -223,39 +223,39 @@
                                         <div v-if="flag==1" class="col-md-9">
                                             <select class="form-control" v-model="idProducto">
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="materia in arrayMateriaPrima" :key="materia.idProducto" :value="materia.idProducto" v-text="materia.producto"></option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
 
                                         <div v-else-if="flag==2" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="materia in arrayMateriaOrden" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
+                                                <option v-for="producto in arrayMateriaOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                              <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
 
                                         <div v-else-if="flag==4" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioMateriaCompra($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="materia in arrayMateriaFactura" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
+                                                <option v-for="producto in arrayMateriaFactura" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                              <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
 
                                         <div v-else-if="flag==5" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="materia in arrayMateriaOrden" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
+                                                <option v-for="producto in arrayMateriaOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                              <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
 
                                         <div v-else-if="flag==6" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="materia in arrayMateriaPrima" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
+                                                <option v-for="producto in arrayProductos" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                              <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
@@ -277,6 +277,27 @@
                                             <input type="number" v-model="precio" class="form-control" placeholder="Precio">
                                             <span class="help-block">(*) Ingrese el Precio</span>
                                         </div>
+                                        <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==2" class="col-md-9"><!-- Orden->se trae de kardex promedio arrayMateriaOrden-->
+                                            <input type="number" v-model="precio" step="0.01" class="form-control" readonly>
+                                            <span class="help-block">(*) Precio promedio</span>
+                                        </div>
+                                        <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==4" class="col-md-9"><!-- Factura->se trae de kardex valor arrayMateriaFactura-->
+                                            <input type="number" v-model="precio" step="0.01" class="form-control" readonly>
+                                            <span class="help-block">(*) Precio de compra</span>
+                                        </div>
+                                        <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==5" class="col-md-9"><!-- Orden->se trae de kardex promedio arrayMateriaOrden-->
+                                            <input type="number" v-model="precio" step="0.01" class="form-control" readonly>
+                                            <span class="help-block">(*) Precio promedio</span>
+                                        </div>
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==6" class="col-md-9"><!-- Registro->se trae de kardex promedio arrayMateriaPrima-->
+                                            <input type="number" v-model="precio" step="0.01" class="form-control" readonly>
+                                            <span class="help-block">(*) Precio promedio</span>
+                                        </div>
+
                                     </div>
                                         <!--Cierre sección datos-->
 
@@ -313,7 +334,9 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 identificador:'',
                 identificadorProveedor:0,
                 identificadorFactura:0,
+                identificadorMaterial:0,
                 fecha : '',
+                factura : '',
                 cantidadSaldos:'',
                 precioSaldos:'',
                 cantidad:'',
@@ -322,8 +345,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 flag : 0,
                 precio:'',
                 saldos:'',
+                arrayProductos : [],
                 arrayKardexes : [],
-                arrayMateriaPrima : [],
                 arrayMateriaOrden : [],
                 arrayMateriaFactura : [],
                 arrayFactura : [],
@@ -387,6 +410,36 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             onChange(event) {
             //console.log(event.target.value);
             this.flag=event.target.value;
+            },
+            precioMateriaCompra(event){
+                //console.log(event.target.value);
+                this.identificadorMaterial=event.target.value;
+                let me=this;
+                var url='/kardexproducto/preciomaterialcompra?material='+this.identificadorMaterial+'&proveedor='+this.identificadorProveedor+'&factura='+this.identificadorFactura;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.precio=respuesta.valorMaterial;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            precioMateriaOrden(event){
+                //console.log(event.target.value);
+                this.identificadorMaterial=event.target.value;
+                let me=this;
+                var url='/kardexproducto/preciomaterialorden?material='+this.identificadorMaterial;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.precio=respuesta.valorMaterial;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             materiaOrden(event){
                 //console.log(event.target.value);
@@ -492,7 +545,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 var url='/kardexproductogeneral';
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayMateriaPrima=respuesta.materias;
+                me.arrayProductos=respuesta.productos;
                 console.log(url);
                 })
                 .catch(function (error) {

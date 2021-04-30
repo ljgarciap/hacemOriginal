@@ -21,7 +21,7 @@ class Tb_kardex_producto_terminadoController extends Controller
             $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
             ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.fecha','tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad',
             'tb_kardex_producto_terminado.precio','tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
-            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto','tb_producto.estado',
+            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto', 'tb_producto.estado',
             DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as saldos'))
             ->orderBy('tb_kardex_producto_terminado.idProducto','asc')
             ->whereIn('tb_kardex_producto_terminado.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_producto_terminado')->groupBy('idProducto');})
@@ -57,11 +57,11 @@ class Tb_kardex_producto_terminadoController extends Controller
         $identificador= $request->identificador;
 
  /**/
-            $kardex = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
+            $kardex= Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
             ->select('tb_kardex_producto_terminado.id as idKardex','tb_kardex_producto_terminado.fecha','tb_kardex_producto_terminado.detalle','tb_kardex_producto_terminado.cantidad',
             'tb_kardex_producto_terminado.precio',DB::raw('tb_kardex_producto_terminado.cantidad * tb_kardex_producto_terminado.precio as preciototal'),
             'tb_kardex_producto_terminado.cantidadSaldos','tb_kardex_producto_terminado.precioSaldos','tb_kardex_producto_terminado.idProducto',
-            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto','tb_producto.estado',
+            'tb_kardex_producto_terminado.tipologia','tb_producto.producto as producto', 'tb_producto.estado',
             DB::raw('tb_kardex_producto_terminado.cantidadSaldos * tb_kardex_producto_terminado.precioSaldos as totalsaldos'))
             ->where('tb_kardex_producto_terminado.idProducto', '=', $identificador)
             ->orderBy('tb_kardex_producto_terminado.id','asc')->paginate(5);
@@ -82,11 +82,11 @@ class Tb_kardex_producto_terminadoController extends Controller
     public function general()
     {
         //if(!$request->ajax()) return redirect('/');
-        $materias = Tb_producto::where('estado','=','1')
+        $productos = Tb_producto::where('estado','=','1')
             ->select('tb_producto.id as idProducto','tb_producto.producto as producto')
             ->get();
 
-        return ['materias' =>  $materias];
+        return ['productos' =>  $productos];
     }
     public function ordenes() //PARA TRAER DATOS ACORDE
     {
@@ -103,13 +103,63 @@ class Tb_kardex_producto_terminadoController extends Controller
     public function material($identificador) //PARA TRAER DATOS ACORDE
     {
         //if(!$request->ajax()) return redirect('/');
-        $materiales = Tb_orden_produccion::join('tb_producto','tb_orden_produccion.idProducto','=','tb_producto.id')
+        $materiales = Tb_orden_produccion_detalle::join('tb_producto','tb_orden_produccion_detalle.idProducto','=','tb_producto.id')
             ->select('tb_producto.producto as producto','tb_producto.id')
-            ->where('tb_orden_produccion.idOrdenPedido', '=', $identificador)
+            ->where('tb_orden_produccion_detalle.idOrdenProduccion', '=', $identificador)
             ->orderBy('tb_producto.id','asc')
             ->get();
 
         return ['materiales' =>  $materiales];
+
+    }
+    public function preciomaterialorden(Request $request) //DATOS de valor segun orden 2 5 y 6 traigo segun idmateria el valor promedio del kardex
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $identificador=$request->material;
+        $preciomaterial = Tb_kardex_producto_terminado::first()
+        ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precioSaldos as valorMaterial')
+        ->whereIn('tb_kardex_producto_terminado.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_producto_terminado')->groupBy('tb_kardex_producto_terminado.idProducto');})
+        ->where('tb_kardex_producto_terminado.idProducto', '=', $identificador)
+        ->get();
+
+
+        foreach($preciomaterial as $totalg){
+            $id = $totalg->id;
+            $valorMaterial = $totalg->valorMaterial;
+        }
+
+         return [
+            'id' => $id,
+            'valorMaterial' =>  $valorMaterial
+        ];
+
+    }
+    public function preciomaterialcompra(Request $request) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
+    {
+       //if(!$request->ajax()) return redirect('/');
+       $identificador=$request->material;
+       $proveedor=$request->proveedor;
+       $factura=$request->factura;
+       $preciomaterial = Tb_kardex_producto_terminado::first()
+       ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precio as valorMaterial')
+       ->where([
+           ['tb_kardex_producto_terminado.idDocumentos', '=', '1'],
+           ['tb_kardex_producto_terminado.tipologia', '=', '1'],
+           ['tb_kardex_producto_terminado.observaciones', '=', $proveedor],
+           ['tb_kardex_producto_terminado.detalle', '=', $factura],
+           ['tb_kardex_producto_terminado.idProducto', '=', $identificador],
+       ])
+       ->get();
+
+       foreach($preciomaterial as $totalg){
+           $id = $totalg->id;
+           $valorMaterial = $totalg->valorMaterial;
+       }
+
+        return [
+           'id' => $id,
+           'valorMaterial' =>  $valorMaterial
+       ];
 
     }
     public function factura(Request $request) //PARA TRAER DATOS ACORDE
@@ -143,7 +193,7 @@ class Tb_kardex_producto_terminadoController extends Controller
         }
 
         $materiales = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
-            ->select('tb_kardex_producto_terminado.idProducto','tb_producto.producto as producto','tb_producto.id')
+            ->select('tb_kardex_producto_terminado.idProducto','tb_kardex_producto_terminado.producto as producto','tb_producto.id')
             ->distinct('tb_kardex_producto_terminado.idProducto')
             ->where([
                 ['tb_kardex_producto_terminado.idDocumentos', '=', '1'],
