@@ -108,5 +108,16 @@
     <template v-if="menu==26">
         <tomainventarios></tomainventarios>
     </template>
+    
+    <template v-if="menu==27">
+        <manual></manual>
+    
+    </template>
+    <template v-if="menu==28">
+        <cartilla></cartilla>
+    </template>
 
+    <template v-if="menu==29">
+        <cartilladigital></cartilladigital>
+    </template>
     @endsection

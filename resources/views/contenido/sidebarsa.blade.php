@@ -10,13 +10,13 @@
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> <b>Documentación</b></a>
                 <ul class="nav-dropdown-items">
-                    <li class="nav-item">
+                    <li @click="menu=27" class="nav-item">
                         <a class="nav-link" href="{{asset('files/Administrador.pdf')}}" target='new'><i class="icon-book-open"></i> Manual de usuario</a>
                     </li>
-                    <li class="nav-item">
+                    <li @click="menu=28" class="nav-item">
                         <a class="nav-link" href="https://drive.google.com/file/d/1Ej8SepafEu9aHtpbKP3geo5k0MD4KCnU/view" target='new'><i class="icon-book-open"></i> Cartilla</a>
                     </li>
-                    <li class="nav-item">
+                    <li @click="menu=29" class="nav-item">
                         <a class="nav-link" href="https://indd.adobe.com/view/b13edd50-af60-4404-a80d-42cd84e81ab1" target='new'><i class="icon-book-open"></i> Cartilla digital</a>
                     </li>
                 </ul>
