@@ -110,6 +110,9 @@ Vue.component('simulador', require('./components/Simulador.vue').default);
 Vue.component('tomainventarios', require('./components/TomaInventarios.vue').default);
 Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
+Vue.component('manual', require('./components/Manual.vue').default);
+Vue.component('cartilla', require('./components/Cartilla.vue').default);
+Vue.component('cartilladigital', require('./components/CartillaDigital.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

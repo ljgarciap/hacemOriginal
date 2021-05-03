@@ -158,12 +158,12 @@
                                         <div v-else-if="flag==1" class="col-md-9">
                                             <select class="form-control" v-model="observaciones">
                                                 <option value="0" disabled>Seleccione proveedor</option>
-                                                <option v-for="proveedor in arrayProveedores" :key="proveedor.id" :value="proveedor.id" v-text="proveedor.razonSocial"></option>
+                                                <option v-for="proveedor in arrayProveedores" :key="proveedor.idProveedor" :value="proveedor.idProveedor" v-text="proveedor.razonSocial"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione Proveedor</span>
                                         </div>
                                         <div v-else-if="flag==4" class="col-md-9">
-                                            <select class="form-control" v-model="observaciones" @change='factura($event)'>
+                                            <select class="form-control" v-model="observaciones" @change='facturas($event)'>
                                                 <option value="0" disabled>Seleccione proveedor</option>
                                                 <option v-for="proveedor in arrayProveedores" :key="proveedor.idProveedor" :value="proveedor.idProveedor" v-text="proveedor.razonSocial"></option>
                                             </select>
@@ -195,7 +195,7 @@
                                         <div v-else-if="flag==4" class="col-md-9">
                                             <select class="form-control" v-model="detalle" @change='materialFactura($event)'>
                                                 <option value="0" disabled>Seleccione factura</option>
-                                                <option v-for="factura in arrayFactura" :key="factura.id" :value="factura.id" v-text="factura.detalle"></option>
+                                                <option v-for="factura in arrayFactura" :key="factura.id" :value="factura.id" v-text="factura.detallado"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el número de factura al cual va a devolver</span>
                                         </div>
@@ -223,7 +223,7 @@
                                         <div v-if="flag==1" class="col-md-9">
                                             <select class="form-control" v-model="idProducto">
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductos" :key="producto.idProducto" :value="producto.idProducto" v-text="producto.producto"></option>
+                                                <option v-for="producto in arrayProductos" :key="producto.idMateria" :value="producto.idMateria" v-text="producto.materia"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
@@ -255,7 +255,7 @@
                                         <div v-else-if="flag==6" class="col-md-9">
                                             <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductos" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
+                                                <option v-for="producto in arrayMateriaPrima" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                              <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
@@ -284,7 +284,7 @@
                                         </div>
                                         <label v-if="flag==4" class="col-md-3 form-control-label" for="text-input">Precio</label>
                                         <div v-if="flag==4" class="col-md-9"><!-- Factura->se trae de kardex valor arrayMateriaFactura-->
-                                            <input type="number" v-model="precio" step="0.01" class="form-control" readonly>
+                                            <input type="number" v-model="precio" class="form-control" readonly>
                                             <span class="help-block">(*) Precio de compra</span>
                                         </div>
                                         <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Precio</label>
@@ -470,7 +470,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     console.log(error);
                 })
             },
-            factura(event){
+            facturas(event){
                 //console.log(event.target.value);
                 this.identificadorProveedor=event.target.value;
                 let me=this;
