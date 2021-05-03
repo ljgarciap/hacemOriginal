@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Tb_orden_pedido_cliente_detalle;
+use App\Tb_orden_produccion_detalle;
 use App\Tb_producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -294,5 +295,32 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
         $total = $acumuladomd + $acumuladomi + $acumuladomo + $cifunitariored;
 
         return ['total' => $total];
+    }
+    public function listarPendientes(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $identificador= $request->identificador;
+
+ /**/
+            $productos = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
+            ->join("tb_orden_produccion", "tb_orden_produccion.id", "=", "tb_orden_produccion_detalle.idOrdenProduccion")
+            ->select('tb_orden_produccion_detalle.id','tb_orden_produccion_detalle.cantidadRequerida','tb_orden_produccion_detalle.cantidadEntregada','tb_orden_produccion.idOrdenPedido',
+            DB::raw('tb_orden_produccion_detalle.cantidadRequerida - tb_orden_produccion_detalle.cantidadRequerida as diferencias'),
+            'tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.estado')
+            ->where('tb_orden_produccion.idOrdenPedido', '=', $identificador)
+            ->orderBy('tb_orden_produccion_detalle.id','asc')->paginate(5);
+
+        return [
+            'pagination' => [
+                'total'         =>$productos->total(),
+                'current_page'  =>$productos->currentPage(),
+                'per_page'      =>$productos->perPage(),
+                'last_page'     =>$productos->lastPage(),
+                'from'          =>$productos->firstItem(),
+                'to'            =>$productos->lastItem(),
+            ],
+            'productos' =>  $productos
+        ];
+
     }
 }

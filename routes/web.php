@@ -180,6 +180,7 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get("/ordenpedidocliente", "Tb_orden_pedido_cliente_detalleController@index");
         Route::get("/ordenpedidocliente/listar", "Tb_orden_pedido_cliente_detalleController@listar");
+        Route::get("/ordenpedidocliente/listarpendientes", "Tb_orden_pedido_cliente_detalleController@listarPendientes");
         Route::get("/ordenpedidocliente/posibles", "Tb_orden_pedido_cliente_detalleController@posibles");
         Route::get("/ordenpedidocliente/costo", "Tb_orden_pedido_cliente_detalleController@costo");
         Route::post("/ordenpedidocliente/store", "Tb_orden_pedido_cliente_detalleController@store");

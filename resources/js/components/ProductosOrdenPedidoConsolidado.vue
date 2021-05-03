@@ -57,6 +57,41 @@
         </vs-tab>
 
         <vs-tab label="Materia pendiente" icon="format_list_numbered" @click="colorx = '#FFA500'">
+                <!-- Ejemplo de tabla Listado -->
+        <div>
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>Materia prima</th>
+                        <th>Unidades a entregar</th>
+                        <th>Unidades entregadas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="pendiente in arrayPendientes" :key="pendiente.id">
+                        <td v-text="pendiente.producto"></td>
+                        <td v-text="pendiente.cantidadRequerida"></td>
+                        <td v-text="pendiente.cantidadEntregada"></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item" v-if="pagination.current_page > 1">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                    </li>
+                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                    </li>
+                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                    </li>
+                </ul>
+            </nav>
+                    <!-- Fin ejemplo de tabla Listado -->
+        </div>
         </vs-tab>
 
         <vs-tab label="Materia por devolver" icon="format_list_numbered" @click="colorx = '#CB3234'">
@@ -83,6 +118,7 @@
                 unidades:0,
                 tiempo:0,
                 arrayProductos : [],
+                arrayPendientes : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -128,12 +164,25 @@
             }
         },
         methods : {
-                listarProductosOrden(page,buscar,criterio,identificador){
+            listarProductosOrden(page,buscar,criterio,identificador){
                 let me=this;
                 var url='/ordenpedidocliente/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductos=respuesta.productos.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarProductosOrden(identificador){
+                let me=this;
+                var url='/ordenpedidocliente/listarpendientes?identificador=' + identificador;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayPendientes=respuesta.productos.data;
                 me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {

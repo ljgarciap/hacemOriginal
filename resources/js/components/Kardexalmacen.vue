@@ -158,7 +158,7 @@
                                         <div v-else-if="flag==1" class="col-md-9">
                                             <select class="form-control" v-model="observaciones">
                                                 <option value="0" disabled>Seleccione proveedor</option>
-                                                <option v-for="proveedor in arrayProveedores" :key="proveedor.id" :value="proveedor.id" v-text="proveedor.razonSocial"></option>
+                                                <option v-for="proveedor in arrayProveedores" :key="proveedor.idProveedor" :value="proveedor.idProveedor" v-text="proveedor.razonSocial"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione Proveedor</span>
                                         </div>
