@@ -296,20 +296,34 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
 
         return ['total' => $total];
     }
+
     public function listarPendientes(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador= $request->identificador;
 
- /**/
+/*
             $productos = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
             ->join("tb_orden_produccion", "tb_orden_produccion.id", "=", "tb_orden_produccion_detalle.idOrdenProduccion")
-            ->select('tb_orden_produccion_detalle.id','tb_orden_produccion_detalle.cantidadRequerida','tb_orden_produccion_detalle.cantidadEntregada','tb_orden_produccion.idOrdenPedido',
-            DB::raw('tb_orden_produccion_detalle.cantidadRequerida - tb_orden_produccion_detalle.cantidadRequerida as diferencias'),
-            'tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.estado')
             ->where('tb_orden_produccion.idOrdenPedido', '=', $identificador)
-            ->orderBy('tb_orden_produccion_detalle.id','asc')->paginate(5);
-
+            ->select('tb_orden_produccion_detalle.id','tb_orden_produccion_detalle.cantidadRequerida','tb_orden_produccion_detalle.cantidadEntregada','tb_orden_produccion.idOrdenPedido',
+            'tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.estado')
+            ->orderBy('tb_orden_produccion.id','asc')->paginate(5);
+*/
+$productos = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
+->join("tb_orden_produccion", "tb_orden_produccion.id", "=", "tb_orden_produccion_detalle.idOrdenProduccion")
+->select("tb_orden_produccion_detalle.id", DB::raw("sum(tb_orden_produccion_detalle.cantidadRequerida) as cantidad"))
+->groupBy(DB::raw("tb_orden_produccion_detalle.idGestionMateria"))
+->get();
+ /*
+            $productos = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
+            ->join("tb_orden_produccion", "tb_orden_produccion.id", "=", "tb_orden_produccion_detalle.idOrdenProduccion")
+            ->groupBy('tb_orden_produccion_detalle.idGestionMateria')
+            ->where('tb_orden_produccion.idOrdenPedido', '=', $identificador)
+            ->select('tb_orden_produccion_detalle.id','tb_orden_produccion_detalle.cantidadRequerida','tb_orden_produccion_detalle.cantidadEntregada','tb_orden_produccion.idOrdenPedido',
+            'tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.estado')
+            ->orderBy('tb_orden_produccion.id','asc')->paginate(5);
+*/
         return [
             'pagination' => [
                 'total'         =>$productos->total(),

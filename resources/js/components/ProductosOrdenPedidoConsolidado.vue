@@ -167,6 +167,7 @@
             listarProductosOrden(page,buscar,criterio,identificador){
                 let me=this;
                 var url='/ordenpedidocliente/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductos=respuesta.productos.data;
@@ -174,10 +175,10 @@
                 })
                 .catch(function (error) {
                     // handle error
-                    console.log(error);
+                console.log(url);
                 })
             },
-            listarProductosOrden(identificador){
+            listarPendientesOrden(identificador){
                 let me=this;
                 var url='/ordenpedidocliente/listarpendientes?identificador=' + identificador;
                 axios.get(url).then(function (response) {
@@ -187,7 +188,7 @@
                 })
                 .catch(function (error) {
                     // handle error
-                    console.log(error);
+                console.log(url);
                 })
             },
             indexChange: function(args) {
@@ -206,7 +207,8 @@
             }
         },
         mounted() {
-            this.listarProductosOrden(1,'','',this.identificador)
+            this.listarProductosOrden(1,'','',this.identificador);
+            this.listarPendientesOrden(this.identificador);
         }
     }
 </script>

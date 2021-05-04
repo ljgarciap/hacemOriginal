@@ -429,6 +429,7 @@
             mostrarDetalle(id){
                 this.listado=2;
                 this.identificador=id;
+                console.log(this.identificador);
             },
             generarDetalle(id){
                 this.identificador=id;
