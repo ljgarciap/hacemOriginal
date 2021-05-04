@@ -10,7 +10,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Inventarios &nbsp;
+                            <i class="fa fa-align-justify"></i> Inventario &nbsp;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -18,23 +18,23 @@
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
-                                        <th>Cantidad</th>
+                                        <th>Cantidad Existente</th>
                                         <th>Unidad Base</th>
                                         <th>Cantidad Actual</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="total in arrayProductos" :key="total.id">
-                                        <td>{{total.gestionMateria}}</td>
-                                        <td>{{total.cantidad}}</td>
-                                        <td>{{total.unidadBase}}</td>
+                                    <tr v-for="producto in arrayProductos" :key="producto.id">
+                                        <td>{{producto.producto}}</td>
+                                        <td>{{producto.cantidadSaldos}}</td>
+                                        <td>{{producto.unidadBase}}</td>
                                         <td>
-                                            <input type="number" v-model="$validar" step="0.01">
+                                            <input type="number" v-model="cantidad" step="0.01">
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-primary" @click="ValidarInventario($validar)">Validar Inventario</button>
+                            <button type="button" class="btn btn-primary" @click="ValidarInventario(cantidad)">Validar Inventario</button>
                             </div>
                         </div>
                     </div>
