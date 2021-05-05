@@ -63,16 +63,22 @@
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
+                        <th>Producto</th>
                         <th>Materia prima</th>
+                        <th>Unidad de medida</th>
                         <th>Unidades a entregar</th>
                         <th>Unidades entregadas</th>
+                        <th>Faltantes</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="pendiente in arrayPendientes" :key="pendiente.id">
+                        <td v-text="pendiente.terminado"></td>
                         <td v-text="pendiente.producto"></td>
+                        <td v-text="pendiente.unidadBase"></td>
                         <td v-text="pendiente.cantidadRequerida"></td>
                         <td v-text="pendiente.cantidadEntregada"></td>
+                        <td v-text="pendiente.faltante"></td>
                     </tr>
                 </tbody>
             </table>
@@ -95,9 +101,91 @@
         </vs-tab>
 
         <vs-tab label="Materia por devolver" icon="format_list_numbered" @click="colorx = '#CB3234'">
+                        <!-- Ejemplo de tabla Listado -->
+        <div>
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Materia prima</th>
+                        <th>Unidad de medida</th>
+                        <th>Unidades a entregar</th>
+                        <th>Unidades entregadas</th>
+                        <th>Sobrantes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="sobrante in arraySobrantes" :key="sobrante.id">
+                        <td v-text="sobrante.terminado"></td>
+                        <td v-text="sobrante.producto"></td>
+                        <td v-text="sobrante.unidadBase"></td>
+                        <td v-text="sobrante.cantidadRequerida"></td>
+                        <td v-text="sobrante.cantidadEntregada"></td>
+                        <td v-text="sobrante.sobrante"></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item" v-if="pagination.current_page > 1">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                    </li>
+                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                    </li>
+                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                    </li>
+                </ul>
+            </nav>
+                    <!-- Fin ejemplo de tabla Listado -->
+        </div>
         </vs-tab>
 
         <vs-tab label="Materia completa" icon="format_list_numbered" @click="colorx = '#9B59B6'">
+                        <!-- Ejemplo de tabla Listado -->
+        <div>
+            <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Materia prima</th>
+                        <th>Unidad de medida</th>
+                        <th>Unidades a entregar</th>
+                        <th>Unidades entregadas</th>
+                        <th>Faltantes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="completo in arrayCompletos" :key="completo.id">
+                        <td v-text="completo.terminado"></td>
+                        <td v-text="completo.producto"></td>
+                        <td v-text="completo.unidadBase"></td>
+                        <td v-text="completo.cantidadRequerida"></td>
+                        <td v-text="completo.cantidadEntregada"></td>
+                        <td v-text="completo.diferencia"></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item" v-if="pagination.current_page > 1">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                    </li>
+                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                    </li>
+                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                    </li>
+                </ul>
+            </nav>
+                    <!-- Fin ejemplo de tabla Listado -->
+        </div>
         </vs-tab>
 
         </vs-tabs>
@@ -119,6 +207,8 @@
                 tiempo:0,
                 arrayProductos : [],
                 arrayPendientes : [],
+                arraySobrantes : [],
+                arrayCompletos : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -191,6 +281,32 @@
                 console.log(url);
                 })
             },
+            listarSobrantesOrden(identificador){
+                let me=this;
+                var url='/ordenpedidocliente/listarsobrantes?identificador=' + identificador;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arraySobrantes=respuesta.productos.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                console.log(url);
+                })
+            },
+            listarCompletosOrden(identificador){
+                let me=this;
+                var url='/ordenpedidocliente/listarcompletos?identificador=' + identificador;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayCompletos=respuesta.productos.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                console.log(url);
+                })
+            },
             indexChange: function(args) {
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)
@@ -209,6 +325,8 @@
         mounted() {
             this.listarProductosOrden(1,'','',this.identificador);
             this.listarPendientesOrden(this.identificador);
+            this.listarSobrantesOrden(this.identificador);
+            this.listarCompletosOrden(this.identificador);
         }
     }
 </script>
