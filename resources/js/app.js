@@ -113,7 +113,7 @@ Vue.component('usuarios', require('./components/Usuarios.vue').default);
 Vue.component('manual', require('./components/Manual.vue').default);
 Vue.component('cartilla', require('./components/Cartilla.vue').default);
 Vue.component('cartilladigital', require('./components/CartillaDigital.vue').default);
-
+Vue.component('videotutoriales', require('./components/Videos.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

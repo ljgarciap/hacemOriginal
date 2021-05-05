@@ -72,6 +72,7 @@
   }
     .galeria-video-container {
         padding-top: 20px;
+        background: rgb(241, 243, 243);
         font-family: Lato;
     }
 
@@ -80,7 +81,7 @@
     }
 
         .galeria-video:hover {
-            background: #ced3da;
+            background: #c1c6ce;
         }
 
     .galeria-video-frame {
