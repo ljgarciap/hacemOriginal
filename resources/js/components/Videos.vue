@@ -13,37 +13,37 @@
         </div>
         <div class="row galeria-row">
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls></video>
+                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls></video>
+                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls></video>
+                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls></video>
+                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
         </div>
         <div class="row galeria-row">
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls></video>
+                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls></video>
+                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls></video>
+                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls></video>
+                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
         </div>
