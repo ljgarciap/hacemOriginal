@@ -10,6 +10,6 @@
         <embed src="https://indd.adobe.com/view/b13edd50-af60-4404-a80d-42cd84e81ab1" width="100%" height="600px" />
       </center>
     </div>
-    <br />
+    <br>
   </main>
 </template>

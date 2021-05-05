@@ -19,6 +19,9 @@
                     <li @click="menu=29" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-book-open"></i> Cartilla digital</a>
                     </li>
+                    <li @click="menu=30" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Video Tutoriales</a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">

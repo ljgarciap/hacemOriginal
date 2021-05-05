@@ -111,8 +111,8 @@
     
     <template v-if="menu==27">
         <manual></manual>
-    
     </template>
+    
     <template v-if="menu==28">
         <cartilla></cartilla>
     </template>
@@ -120,4 +120,9 @@
     <template v-if="menu==29">
         <cartilladigital></cartilladigital>
     </template>
+
+    <template v-if="menu==30">
+        <videotutoriales></videotutoriales>
+    </template>
+
     @endsection
