@@ -4,9 +4,10 @@
             <li @click="menu=14" class="nav-item">
                 <a class="nav-link active" href="#"><i class="icon-speedometer"></i> <b>Escritorio</b></a>
             </li>
+            <!--
             <li class="nav-title" style="color:#ff671b">
-                <!-- Mantenimiento -->
-            </li>
+                Mantenimiento
+            </li>-->
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> <b>Documentación</b></a>
                 <ul class="nav-dropdown-items">
