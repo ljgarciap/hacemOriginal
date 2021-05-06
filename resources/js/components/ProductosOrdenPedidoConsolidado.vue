@@ -63,22 +63,22 @@
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>Producto</th>
                         <th>Materia prima</th>
                         <th>Unidad de medida</th>
                         <th>Unidades a entregar</th>
                         <th>Unidades entregadas</th>
                         <th>Faltantes</th>
+                        <th>Inventario</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="pendiente in arrayPendientes" :key="pendiente.id">
-                        <td v-text="pendiente.terminado"></td>
                         <td v-text="pendiente.producto"></td>
                         <td v-text="pendiente.unidadBase"></td>
                         <td v-text="pendiente.cantidadRequerida"></td>
                         <td v-text="pendiente.cantidadEntregada"></td>
                         <td v-text="pendiente.faltante"></td>
+                        <td v-text="pendiente.inventario"></td>
                     </tr>
                 </tbody>
             </table>
@@ -107,7 +107,6 @@
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>Producto</th>
                         <th>Materia prima</th>
                         <th>Unidad de medida</th>
                         <th>Unidades a entregar</th>
@@ -117,7 +116,6 @@
                 </thead>
                 <tbody>
                     <tr v-for="sobrante in arraySobrantes" :key="sobrante.id">
-                        <td v-text="sobrante.terminado"></td>
                         <td v-text="sobrante.producto"></td>
                         <td v-text="sobrante.unidadBase"></td>
                         <td v-text="sobrante.cantidadRequerida"></td>
@@ -151,7 +149,6 @@
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>Producto</th>
                         <th>Materia prima</th>
                         <th>Unidad de medida</th>
                         <th>Unidades a entregar</th>
@@ -161,7 +158,6 @@
                 </thead>
                 <tbody>
                     <tr v-for="completo in arrayCompletos" :key="completo.id">
-                        <td v-text="completo.terminado"></td>
                         <td v-text="completo.producto"></td>
                         <td v-text="completo.unidadBase"></td>
                         <td v-text="completo.cantidadRequerida"></td>

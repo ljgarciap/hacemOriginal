@@ -99,14 +99,15 @@ class Tb_orden_pedido_clienteController extends Controller
         {
             //if(!$request->ajax()) return redirect('/');
 
-            // Tomo los productos de la orden de pedido para crear la orden de produccion
+            // Cambio el estado de la orden de pedido
 
             $idOrdenPedido= $request->id;
             $tb_orden_pedido_cliente=Tb_orden_pedido_cliente::findOrFail($request->id);
             $tb_orden_pedido_cliente->estado=2;
             $tb_orden_pedido_cliente->save();
 
-            $tb_orden_pedido_cliente2=Tb_orden_pedido_cliente::findOrFail($request->id);
+            // Tomo los productos de la orden de pedido para crear la orden de produccion
+
             $fecha=$tb_orden_pedido_cliente->fecha;
 
             $ordenes = DB::table('tb_orden_pedido_cliente_detalle')->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $idOrdenPedido)->get();
@@ -143,16 +144,51 @@ class Tb_orden_pedido_clienteController extends Controller
                         $cantidadMateria=$producto->cantidad;
                         $cantidadRequerida=$cantidad*$cantidadMateria;
 
+                        //Voy a modificar esta pequeña parte
+                        /*  Esta era la secciòn que salvaba de una todos los materiales pero por separado, busco agrupar en el insert
                             $tb_orden_produccion_detalle=new Tb_orden_produccion_detalle();
                             $tb_orden_produccion_detalle->idGestionMateria=$idMateriaPrima;
                             $tb_orden_produccion_detalle->cantidadRequerida=$cantidadRequerida;
                             $tb_orden_produccion_detalle->idOrdenProduccion=$idOrdenProduccion;
                             $tb_orden_produccion_detalle->estado=1;
                             $tb_orden_produccion_detalle->save();
+                        */
+                        // Verificaria primero si la materia prima ya se ha ingresado en esta orden, si es asi actualizo, si no la creo.
+                        $flag=0;
+                        $cantidadRequeridaParcial=0;
+//---------------------------------------------------------------------------------------------------------------------------------------------
+                        $verificable = Tb_orden_produccion_detalle::join('tb_orden_produccion','tb_orden_produccion_detalle.idOrdenProduccion','=','tb_orden_produccion.id')
+                        ->select('tb_orden_produccion_detalle.id','tb_orden_produccion_detalle.cantidadRequerida','tb_orden_produccion.idOrdenPedido')
+                        ->where([
+                            ['tb_orden_produccion.idOrdenPedido', '=', $idOrdenPedido],
+                            ['tb_orden_produccion_detalle.idGestionMateria', '=', $idMateriaPrima],
+                        ])
+                        ->get();
+                        foreach($verificable as $verifica){
+                            $parcialRequerida = $verifica->cantidadRequerida;
+                            $verificador = $verifica->id;
+                            if($parcialRequerida > 0){$cantidadRequeridaParcial=$parcialRequerida+$cantidadRequerida; $flag=1;}
+                             else {$flag=0;}
+                            }
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
+                            if($flag==1){
+                                $tb_orden_produccion_detalle=Tb_orden_produccion_detalle::findOrFail($verificador);
+                                $tb_orden_produccion_detalle->cantidadRequerida=$cantidadRequeridaParcial;
+                                $tb_orden_produccion_detalle->save();
+                            }
+                            else{
+                                $tb_orden_produccion_detalle=new Tb_orden_produccion_detalle();
+                                $tb_orden_produccion_detalle->idGestionMateria=$idMateriaPrima;
+                                $tb_orden_produccion_detalle->cantidadRequerida=$cantidadRequerida;
+                                $tb_orden_produccion_detalle->idOrdenProduccion=$idOrdenProduccion;
+                                $tb_orden_produccion_detalle->estado=1;
+                                $tb_orden_produccion_detalle->save();
+                            }
+
                         }
                   }
         }
-
 //---------------------------------------------------------------------------------------------------------------------------------//
 
 }

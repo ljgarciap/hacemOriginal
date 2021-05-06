@@ -309,9 +309,11 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
             ->join("tb_producto", "tb_orden_produccion.idProducto", "=", "tb_producto.id")
             ->whereRaw('tb_orden_produccion.idOrdenPedido='.$identificador.
             ' and (tb_orden_produccion_detalle.cantidadRequerida-tb_orden_produccion_detalle.cantidadEntregada)>0')
-            ->select('tb_orden_produccion_detalle.id','tb_orden_produccion_detalle.cantidadRequerida','tb_orden_produccion_detalle.cantidadEntregada',
-            'tb_orden_produccion.idOrdenPedido','tb_gestion_materia_prima.gestionMateria as producto','tb_unidad_base.unidadBase','tb_producto.producto as terminado',
-            DB::raw('tb_orden_produccion_detalle.cantidadRequerida-tb_orden_produccion_detalle.cantidadEntregada as faltante'))
+            ->select('tb_orden_produccion_detalle.id','tb_orden_produccion_detalle.idGestionMateria','tb_orden_produccion_detalle.cantidadRequerida',
+            'tb_orden_produccion_detalle.cantidadEntregada','tb_orden_produccion.idOrdenPedido','tb_gestion_materia_prima.gestionMateria as producto',
+            'tb_unidad_base.unidadBase','tb_producto.producto as terminado',
+            DB::raw('tb_orden_produccion_detalle.cantidadRequerida-tb_orden_produccion_detalle.cantidadEntregada as faltante'),
+            DB::raw('(select tb_kardex_almacen.cantidadSaldos from tb_kardex_almacen where tb_kardex_almacen.idGestionMateria=tb_orden_produccion_detalle.idGestionMateria order by tb_kardex_almacen.id desc limit 1) inventarios'))
             ->orderBy('tb_producto.id','asc')->paginate(5);
 
         return [
