@@ -13,37 +13,53 @@
         </div>
         <div class="row galeria-row">
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
+                <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                </video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
+               <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                </video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
+               <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                </video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
+               <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                </video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
         </div>
         <div class="row galeria-row">
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                </video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                </video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                </video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="250" src="Videos/Video_Tutorial_Perfiles.mp4" controls preload='none'></video>
+                <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                </video>
                 <label class="text-center form-control btn-warning custom-label">Video Tutorial de Perfiles</label>
             </div>
         </div>
@@ -58,7 +74,8 @@
     }
     .custom-label{
         font-family: arial;
-        font-size: 1em;
+        font-size: 15px;
+        background:rgba(253, 217, 10, 0.966);
     }
      .parrafo {
    font-size:15px;
