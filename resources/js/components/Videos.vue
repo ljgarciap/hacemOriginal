@@ -99,6 +99,7 @@
 
         .galeria-video:hover {
             background: #c1c6ce;
+            cursor: pointer;
         }
 
     .galeria-video-frame {
