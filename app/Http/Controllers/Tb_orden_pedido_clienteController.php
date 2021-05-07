@@ -93,66 +93,56 @@ class Tb_orden_pedido_clienteController extends Controller
         return ['clientes' => $clientes];
     }
 
-//---------------------Funcion para generar las relaciones en las tablas que quedan con los datos-----------------------------------//
+    //---------------------Funcion para generar las relaciones en las tablas que quedan con los datos-----------------------------------//
 
     public function estado(Request $request)
-        {
-            //if(!$request->ajax()) return redirect('/');
+    {
+        //if(!$request->ajax()) return redirect('/');
 
-            // Cambio el estado de la orden de pedido
+        // Tomo los productos de la orden de pedido para crear la orden de produccion
 
-            $idOrdenPedido= $request->id;
-            $tb_orden_pedido_cliente=Tb_orden_pedido_cliente::findOrFail($request->id);
-            $tb_orden_pedido_cliente->estado=2;
-            $tb_orden_pedido_cliente->save();
+        $idOrdenPedido= $request->id;
+        $tb_orden_pedido_cliente=Tb_orden_pedido_cliente::findOrFail($request->id);
+        $tb_orden_pedido_cliente->estado=2;
+        $tb_orden_pedido_cliente->save();
 
-            // Tomo los productos de la orden de pedido para crear la orden de produccion
+        $tb_orden_pedido_cliente2=Tb_orden_pedido_cliente::findOrFail($request->id);
+        $fecha=$tb_orden_pedido_cliente->fecha;
 
-            $fecha=$tb_orden_pedido_cliente->fecha;
+        $ordenes = DB::table('tb_orden_pedido_cliente_detalle')->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $idOrdenPedido)->get();
+        foreach ($ordenes as $orden) {
+            $idProducto=$orden->idProducto;
+            $cantidad=$orden->cantidad;
 
-            $ordenes = DB::table('tb_orden_pedido_cliente_detalle')->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $idOrdenPedido)->get();
-            foreach ($ordenes as $orden) {
-                $idProducto=$orden->idProducto;
-                $cantidad=$orden->cantidad;
+            $maximos = Tb_orden_produccion::select(DB::raw('MAX(tb_orden_produccion.consecutivo) as maximo'))
+            ->get();
 
-                $maximos = Tb_orden_produccion::select(DB::raw('MAX(tb_orden_produccion.consecutivo) as maximo'))
-                ->get();
+            foreach($maximos as $maximo1){
+                $maximosuma = $maximo1->maximo;
+                if($maximosuma > 0){$maximo=$maximosuma+1;}
+                 else {$maximo=1;}
+                }
+            $consecutivo=$maximo;
 
-                foreach($maximos as $maximo1){
-                    $maximosuma = $maximo1->maximo;
-                    if($maximosuma > 0){$maximo=$maximosuma+1;}
-                     else {$maximo=1;}
-                    }
-                $consecutivo=$maximo;
+            $tb_orden_produccion=new Tb_orden_produccion();
+            $tb_orden_produccion->consecutivo=$consecutivo;
+            $tb_orden_produccion->fecha=$fecha;
+            $tb_orden_produccion->idProducto=$idProducto;
+            $tb_orden_produccion->cantidad=$cantidad;
+            $tb_orden_produccion->idOrdenPedido=$idOrdenPedido;
+            $tb_orden_produccion->save();
 
-                $tb_orden_produccion=new Tb_orden_produccion();
-                $tb_orden_produccion->consecutivo=$consecutivo;
-                $tb_orden_produccion->fecha=$fecha;
-                $tb_orden_produccion->idProducto=$idProducto;
-                $tb_orden_produccion->cantidad=$cantidad;
-                $tb_orden_produccion->idOrdenPedido=$idOrdenPedido;
-                $tb_orden_produccion->save();
+            $idOrdenProduccion= $tb_orden_produccion->id;
 
-                $idOrdenProduccion= $tb_orden_produccion->id;
+            // En esta seccion voy a tomar de cada producto los materiales que necesito para el detalle de la orden de produccion
 
-                // En esta seccion voy a tomar de cada producto los materiales que necesito para el detalle de la orden de produccion
+                $productos = DB::table('tb_materia_prima_producto')->where('tb_materia_prima_producto.idHoja', '=', $idProducto)->get();
+                foreach ($productos as $producto) {
+                    $cantidadRequerida=0;
+                    $idMateriaPrima=$producto->idMateriaPrima;
+                    $cantidadMateria=$producto->cantidad;
+                    $cantidadRequerida=$cantidad*$cantidadMateria;
 
-                    $productos = DB::table('tb_materia_prima_producto')->where('tb_materia_prima_producto.idHoja', '=', $idProducto)->get();
-                    foreach ($productos as $producto) {
-                        $cantidadRequerida=0;
-                        $idMateriaPrima=$producto->idMateriaPrima;
-                        $cantidadMateria=$producto->cantidad;
-                        $cantidadRequerida=$cantidad*$cantidadMateria;
-
-                        //Voy a modificar esta pequeña parte
-                        /*  Esta era la secciòn que salvaba de una todos los materiales pero por separado, busco agrupar en el insert
-                            $tb_orden_produccion_detalle=new Tb_orden_produccion_detalle();
-                            $tb_orden_produccion_detalle->idGestionMateria=$idMateriaPrima;
-                            $tb_orden_produccion_detalle->cantidadRequerida=$cantidadRequerida;
-                            $tb_orden_produccion_detalle->idOrdenProduccion=$idOrdenProduccion;
-                            $tb_orden_produccion_detalle->estado=1;
-                            $tb_orden_produccion_detalle->save();
-                        */
                         // Verificaria primero si la materia prima ya se ha ingresado en esta orden, si es asi actualizo, si no la creo.
                         $flag=0;
                         $cantidadRequeridaParcial=0;
@@ -177,7 +167,7 @@ class Tb_orden_pedido_clienteController extends Controller
                                 $tb_orden_produccion_detalle->cantidadRequerida=$cantidadRequeridaParcial;
                                 $tb_orden_produccion_detalle->save();
                             }
-                            else{
+                            elseif($flag==0){
                                 $tb_orden_produccion_detalle=new Tb_orden_produccion_detalle();
                                 $tb_orden_produccion_detalle->idGestionMateria=$idMateriaPrima;
                                 $tb_orden_produccion_detalle->cantidadRequerida=$cantidadRequerida;
@@ -186,9 +176,9 @@ class Tb_orden_pedido_clienteController extends Controller
                                 $tb_orden_produccion_detalle->save();
                             }
 
-                        }
-                  }
-        }
-//---------------------------------------------------------------------------------------------------------------------------------//
+                    }
+              }
+    }
+    //---------------------------------------------------------------------------------------------------------------------------------//
 
 }

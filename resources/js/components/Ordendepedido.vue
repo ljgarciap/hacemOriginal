@@ -508,10 +508,10 @@
                                 this.tipoModal=3; //carga tipos de campos y footers
                                 this.tituloModal='Generando, por favor espere...';
                                 this.identificador=identificador;
+                                this.generarDetalle(this.identificador);
                                 break;
                             }
                         }
-                        this.generarDetalle(this.identificador);
                         break;
                     }
 
