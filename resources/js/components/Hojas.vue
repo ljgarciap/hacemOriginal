@@ -1,7 +1,7 @@
 <template>
         <main class="main">
             <div id="over" class="overbox">
-                <a v-on:click="hideLightbox()"><p class="cierre"><b>Cerrar</b></p></a>
+                <a v-on:click="hideLightbox()"><p class="cierre cursor"><b>Cerrar</b></p></a>
                 <div id="content">
                     <center><img :src="fotoCarga" alt="" class="imglight"></center>
                 </div>
@@ -58,7 +58,7 @@
                                         </td>
                                         <td v-text="producto.producto"></td>
                                         <td v-text="producto.referencia"></td>
-                                        <td><a v-on:click="showLightbox(producto.foto)">Ver producto</a></td>
+                                        <td><a class="cursor" v-on:click="showLightbox(`img/avatars/${producto.foto}`)">Ver producto</a></td>
                                         <td v-text="producto.descripcion"></td>
                                         <td v-text="producto.coleccion"></td>
                                         <td v-text="producto.area"></td>
@@ -897,5 +897,8 @@
     }
     .imglight{
         max-height:500px;
+    }
+    .cursor{
+        cursor: pointer;
     }
 </style>

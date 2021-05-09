@@ -1,7 +1,7 @@
 <template>
         <main class="main">
             <div id="over" class="overbox">
-                <a v-on:click="hideLightbox()"><p class="cierre"><b>Cerrar</b></p></a>
+                <a v-on:click="hideLightbox()"><p class="cierre cursor"><b>Cerrar</b></p></a>
                 <div id="content">
                     <center><img :src="fotoCarga" alt="" class="imglight"></center>
                 </div>
@@ -72,7 +72,7 @@
                                         </td>
                                         <td v-text="producto.producto"></td>
                                         <td v-text="producto.referencia"></td>
-                                        <td><a v-on:click="showLightbox(producto.foto)">Ver producto</a></td>
+                                        <td><a class="cursor" v-on:click="showLightbox(`img/avatars/${producto.foto}`)">Ver producto</a></td>
                                         <td v-text="producto.descripcion"></td>
                                         <td v-text="producto.coleccion"></td>
                                         <td v-text="producto.area"></td>
@@ -157,7 +157,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
+                                    <div v-if="tipoAccion==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Capacidad</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="capacidadMensual" class="form-control" placeholder="Capacidad de producción">
@@ -167,8 +167,9 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Foto</label>
                                         <div class="col-md-9">
-                                            <input type="file" @change="upload_foto"  class="form-control" placeholder="Nombre de foto">
-                                        </div>   
+                                            <input type="file" @change="upload_foto" name="foto" class="form-control" placeholder="Nombre de foto">
+                                        </div>
+                                        
                                     </div>
                                     <div v-if="fotoCarga" class="text-center">
                                     <img :src="fotoCarga"  class="rounded" alt="..." style="max-height:100px; max-width:100px; ">
@@ -335,7 +336,7 @@
                 }
             },
             get_foto(){
-               let foto = (this.foto.length > 100) ? this.foto : "img/descargas/"+ this.foto;
+               let foto = (this.foto.length > 100) ? this.foto : "img/avatars/"+ this.foto;
                return foto;
             },
             crearProducto(){
@@ -587,5 +588,8 @@
     }
     .imglight{
         max-height:500px;
+    }
+    .cursor{
+        cursor: pointer;
     }
 </style>

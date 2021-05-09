@@ -91,7 +91,7 @@ class Tb_productoController extends Controller
             $name = time().'.' . explode('/', explode(':', substr($request->foto, 0, strpos($request->foto, ';')))[1])[1];
             \Image::make($request->foto)->resize(300, null, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(public_path('img/descargas/').$name);
+            })->save(public_path('img/avatars/').$name);
             $request->merge(['foto' => $name]);
            
         }
@@ -121,17 +121,15 @@ class Tb_productoController extends Controller
             $name = time().'.' . explode('/', explode(':', substr($request->foto, 0, strpos($request->foto, ';')))[1])[1];
             \Image::make($request->foto)->resize(300, null, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(public_path('img/descargas/').$name); 
+            })->save(public_path('img/avatars/').$name); 
             $request->merge(['foto' => $name]);
  
-           $userFoto = public_path('img/descargas/').$actualFoto;
+           $userFoto = public_path('img/avatars/').$actualFoto;
  
            if(file_exists($userFoto)){  
  
-               @unlink($userFoto);
-               
-           }
-          
+               @unlink($userFoto); 
+           }    
        }
         if(!$request->ajax()) return redirect('/');
         $tb_producto=Tb_producto::findOrFail($request->id);
