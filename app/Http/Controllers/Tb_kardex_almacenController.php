@@ -103,9 +103,10 @@ class Tb_kardex_almacenController extends Controller
     public function material($identificador) //PARA TRAER DATOS ACORDE
     {
         //if(!$request->ajax()) return redirect('/');
-        $materiales = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
+        $materiales = Tb_orden_produccion_detalle::join('tb_orden_produccion','tb_orden_produccion_detalle.idOrdenProduccion','=','tb_orden_produccion.id')
+            ->join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
             ->select('tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
-            ->where('tb_orden_produccion_detalle.idOrdenProduccion', '=', $identificador)
+            ->where('tb_orden_produccion.consecutivo', '=', $identificador)
             ->orderBy('tb_gestion_materia_prima.id','asc')
             ->get();
 

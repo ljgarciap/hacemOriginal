@@ -12,13 +12,13 @@
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> <b>Documentación</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=27" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Manual de usuario</a>
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Manual de usuario versión pdf</a>
                     </li>
                     <li @click="menu=28" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Cartilla</a>
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Cartilla práctica de costos versión pdf</a>
                     </li>
                     <li @click="menu=29" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Cartilla digital</a>
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Cartilla práctica de costos versión digital</a>
                     </li>
                     <li @click="menu=30" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-book-open"></i> Video Tutoriales</a>

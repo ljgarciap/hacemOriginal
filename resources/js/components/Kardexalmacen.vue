@@ -187,7 +187,7 @@
                                         <div v-else-if="flag==2" class="col-md-9">
                                             <select class="form-control" v-model="detalle" @change='materiaOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
-                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.consecutivo" v-text="orden.consecutivo"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el número de orden de producción</span>
                                         </div>
@@ -203,7 +203,7 @@
                                         <div v-else-if="flag==5" class="col-md-9">
                                             <select class="form-control" v-model="detalle" @change='materiaOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
-                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.consecutivo" v-text="orden.consecutivo"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el número de orden de producción que devuelve</span>
                                         </div>
@@ -450,6 +450,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 var respuesta=response.data;
                 me.arrayMateriaOrden=respuesta.materiales;
                 console.log(url);
+                console.log(this.identificadorHoja);
                 })
                 .catch(function (error) {
                     // handle error

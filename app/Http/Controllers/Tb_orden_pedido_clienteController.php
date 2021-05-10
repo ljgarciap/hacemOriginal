@@ -109,20 +109,20 @@ class Tb_orden_pedido_clienteController extends Controller
         $tb_orden_pedido_cliente2=Tb_orden_pedido_cliente::findOrFail($request->id);
         $fecha=$tb_orden_pedido_cliente->fecha;
 
+        $maximos = Tb_orden_produccion::select(DB::raw('MAX(tb_orden_produccion.consecutivo) as maximo'))
+        ->get();
+
+        foreach($maximos as $maximo1){
+            $maximosuma = $maximo1->maximo;
+            if($maximosuma > 0){$maximo=$maximosuma+1;}
+             else {$maximo=1;}
+            }
+        $consecutivo=$maximo;
+
         $ordenes = DB::table('tb_orden_pedido_cliente_detalle')->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $idOrdenPedido)->get();
         foreach ($ordenes as $orden) {
             $idProducto=$orden->idProducto;
             $cantidad=$orden->cantidad;
-
-            $maximos = Tb_orden_produccion::select(DB::raw('MAX(tb_orden_produccion.consecutivo) as maximo'))
-            ->get();
-
-            foreach($maximos as $maximo1){
-                $maximosuma = $maximo1->maximo;
-                if($maximosuma > 0){$maximo=$maximosuma+1;}
-                 else {$maximo=1;}
-                }
-            $consecutivo=$maximo;
 
             $tb_orden_produccion=new Tb_orden_produccion();
             $tb_orden_produccion->consecutivo=$consecutivo;
