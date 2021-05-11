@@ -224,6 +224,7 @@ class Tb_kardex_almacenController extends Controller
         $observaciones=$request->observaciones;
         $idDocumentos=$request->idDocumentos;
         $tipologia=$request->tipologia;
+        $flagmov=$request->flagmov;
         $valorE=($precio*$cantidad);
 
         //capturo cantidad precio y producto; internamente busco el registro mas reciente de dicho producto y tomo el valor cantidad de ese registro,
@@ -281,5 +282,32 @@ class Tb_kardex_almacenController extends Controller
         $tb_kardex_almacen->cantidadSaldos=$suma1;
         $tb_kardex_almacen->precioSaldos=$suma2;
         $tb_kardex_almacen->save();
+
+        $materiales = Tb_orden_produccion_detalle::join('tb_orden_produccion','tb_orden_produccion_detalle.idOrdenProduccion','=','tb_orden_produccion.id')
+            ->select('tb_orden_produccion_detalle.id as idOrdenDetalle','tb_orden_produccion_detalle.cantidadEntregada as cantidadEntregada')
+            ->where([
+                ['tb_orden_produccion.consecutivo', '=', $detalle],
+                ['tb_orden_produccion_detalle.idGestionMateria', '=', $idProducto]
+            ])
+            ->get();
+
+            foreach($materiales as $material){
+                $idOrdenDetalle = $material->idOrdenDetalle;
+                $cantidadEntregadaPrevia = $material->cantidadEntregada;
+            }
+
+        if($idDocumentos==2){
+            $tb_orden_produccion_detalle=Tb_orden_produccion_detalle::findOrFail($idOrdenDetalle);
+            $cantidadEntregadaActual=$cantidadEntregadaPrevia-$cantidad;
+            $tb_orden_produccion_detalle->cantidadEntregada=$cantidadEntregadaActual;
+            $tb_orden_produccion_detalle->save();
+        }
+        else if($idDocumentos==5){
+            $tb_orden_produccion_detalle=Tb_orden_produccion_detalle::findOrFail($idOrdenDetalle);
+            $cantidadEntregadaActual=$cantidadEntregadaPrevia+$cantidad;
+            $tb_orden_produccion_detalle->cantidadEntregada=$cantidadEntregadaActual;
+            $tb_orden_produccion_detalle->save();
+        }
+
     }
 }
