@@ -36,11 +36,20 @@ class Tb_inventarioController extends Controller
         ];
     }
     public function validar(Request $request)
-    {
+    { 
         if(!$request->ajax()) return redirect('/');
-        $tb_inventario=Tb_kardex_almacen::findOrFail($request->id);
-        $tb_inventario->cantidad=$request->cantidad;
-        $tb_inventario->save();
+        $cantidad=$request->cantidad;
+
+        $validarCantidad = DB::table('tb_kardex_almacen')
+        ->select('id','cantidad','cantidadSaldos as cantidadS','precioSaldos as precioS')
+        ->where('tb_kardex_almacen.idGestionMateria','=', $idProducto)
+        ->orderByDesc('id')
+        ->limit(1)
+        ->get();
+
+        if (!$validarCantidad) {
+     
+        }
     }
     
 }

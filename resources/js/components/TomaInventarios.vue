@@ -18,7 +18,6 @@
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
-                                        <th>Cantidad Existente</th>
                                         <th>Unidad Base</th>
                                         <th>Cantidad Actual</th>
                                     </tr>
@@ -26,7 +25,6 @@
                                 <tbody>
                                     <tr v-for="producto in arrayProductos" :key="producto.id">
                                         <td>{{producto.producto}}</td>
-                                        <td>{{producto.cantidadSaldos}}</td>
                                         <td>{{producto.unidadBase}}</td>
                                         <td>
                                             <input type="number" v-model="cantidad" step="0.01">
@@ -54,6 +52,8 @@
                 listado : 0,
                 arrayProductos:[],
                 cantidad:'',
+                producto:'',
+                unidadBase:'',
                 modal : 0,
                 tipoModal : 0,
             }
