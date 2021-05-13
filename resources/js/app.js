@@ -108,6 +108,8 @@ Vue.component('productoscotizacion', require('./components/ProductosCotizacion.v
 Vue.component('roles', require('./components/Roles.vue').default);
 Vue.component('simulador', require('./components/Simulador.vue').default);
 Vue.component('tomainventarios', require('./components/TomaInventarios.vue').default);
+Vue.component('productosinventario', require('./components/ProductosInventario.vue').default);
+Vue.component('detalleinventario', require('./components/DetalleInventario.vue').default);
 Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
 Vue.component('manual', require('./components/Manual.vue').default);
