@@ -118,7 +118,7 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <detallecotizacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></detallecotizacion>
+                            <detallecotizacion v-bind:identificador="identificador" :key="componentKey"></detallecotizacion>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -238,8 +238,7 @@
         data(){
             return{
                 idCotizacion:0,
-                id:'',
-                identificador:'',
+                identificador:0,
                 fecha : '',
                 condicionEntrega:'',
                 vigencia:'',
@@ -369,20 +368,6 @@
                     console.log(error);
                 })
             },
-            eliminarProducto(){
-                /*
-                let me=this;
-                axios.put('/materiaprimaproducto/deactivate',{
-                    'id': this.id
-                }).then(function (response) {
-                me.forceRerender();
-                me.listarProducto(1,'','materiaprima');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-                */
-            },
             crearCotizacion(){
                 //valido con el metodo de validacion creado
                 let me=this;
@@ -426,6 +411,8 @@
             mostrarDetalle(id){
                 this.listado=2;
                 this.identificador=id;
+                identificador=this.identificador;
+                console.log(this.identificador);
             },
             generarDetalle(id){
                 this.identificador=id;

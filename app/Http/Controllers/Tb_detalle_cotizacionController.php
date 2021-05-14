@@ -22,7 +22,6 @@ class Tb_detalle_cotizacionController extends Controller
             $productos = Tb_detalle_cotizacion::join('tb_producto','tb_detalle_cotizacion.idProducto','=','tb_producto.id')
             ->select('tb_detalle_cotizacion.id','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
             'tb_detalle_cotizacion.precioVenta','tb_detalle_cotizacion.idProducto','tb_detalle_cotizacion.idCotizacion',
-            'tb_detalle_cotizacion.estado',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where('tb_detalle_cotizacion.idCotizacion', '=', $identificador)->get();
             return ['productos' => $productos];

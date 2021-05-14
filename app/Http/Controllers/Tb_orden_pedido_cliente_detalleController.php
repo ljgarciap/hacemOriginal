@@ -301,7 +301,6 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador= $request->identificador;
-
 /**/
             $productos = Tb_orden_produccion_detalle::join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
             ->join("tb_unidad_base", "tb_gestion_materia_prima.idUnidadBase", "=", "tb_unidad_base.id")

@@ -94,6 +94,9 @@ Vue.component('manodeobra', require('./components/ManoDeObraProductos.vue').defa
 Vue.component('maquinaria', require('./components/Maquinaria.vue').default);
 Vue.component('maquinarias', require('./components/Maquinarias.vue').default);
 Vue.component('materiaprima', require('./components/MateriaPrimaProductos.vue').default);
+Vue.component('materiaprimacompleta', require('./components/MateriaPrimaCompleta.vue').default);
+Vue.component('materiaprimarequerida', require('./components/MateriaPrimaRequerida.vue').default);
+Vue.component('materiaprimasobrante', require('./components/MateriaPrimaSobrante.vue').default);
 Vue.component('materias', require('./components/Materias.vue').default);
 Vue.component('ninguno', require('./components/Ninguno.vue').default);
 Vue.component('ordendepedido', require('./components/Ordendepedido.vue').default);
