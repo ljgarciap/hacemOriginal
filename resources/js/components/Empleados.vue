@@ -144,18 +144,19 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idProceso">
+                                            <select class="form-control" v-model="idProceso" @change='selectRelacionPerfil(relacion.idProceso)'>
                                                 <option value="0" disabled>Seleccione un proceso</option>
                                                 <option v-for="relacion in arrayRelacion" :key="relacion.idProceso" :value="relacion.idProceso" v-text="relacion.proceso"></option>
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idPerfil">
                                                 <option value="0" disabled>Seleccione un perfil</option>
-                                                <option v-for="perfil in arrayPerfil" :key="perfil.id" :value="perfil.id" v-text="perfil.perfil"></option>
+                                                <option v-for="perfilrelacion in arrayPerfilRelacion" :key="perfilrelacion.idPerfil" :value="perfilrelacion.idPerfil" v-text="perfilrelacion.perfil"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -226,15 +227,17 @@
                 correo:'',
                 estado:'',
                 arrayEmpleados : [],
-                idPerfil: 0,
-                perfil : '',
-                arrayPerfil: [],
                 idArea: 0,
                 area : '',
                 arrayArea: [],
                 idProceso: 0,
-                proceso : '',
+                proceso:'',
+                relacion:'',
+                perfilrelacion:'',
                 arrayRelacion: [],
+                idPerfil:0,
+                perfil:'',
+                arrayPerfilRelacion:[],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -294,14 +297,15 @@
                     console.log(error);
                 })
             },
-             selectPerfil(){
+            selectPerfil(){
                 let me=this;
                 var url='/perfil/selectPerfil';
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayPerfil=respuesta.perfiles;
+                me.arrayPerfiles=respuesta.perfiles;
                 })
                 .catch(function (error) {
+                    // handle error
                     console.log(error);
                 })
             },
@@ -319,10 +323,22 @@
             },
             selectRelacion(idArea){
                 let me=this;
-                var url='/empleado/selectRelacion/'+this.idArea;
+                var url='/perfil/selectRelacion/'+this.idArea;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayRelacion=respuesta.relaciones;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            selectRelacionPerfil(idProceso){
+                let me=this;
+                var url='/empleado/selectRelacionPerfil/'+this.idProceso;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayPerfilRelacion=respuesta.perfilrelaciones;
                 })
                 .catch(function (error) {
                     // handle error
@@ -491,6 +507,7 @@
                             this.idPerfil=data['idPerfil'];
                             this.tituloModal='Crear nuevo empleado';
                             this.tipoAccion= 1;
+                            this.selectRelacion(this.idArea);
                             break;
                         }
                          case 'actualizar':{
@@ -508,13 +525,14 @@
                             this.direccion=data['direccion'];
                             this.telefono=data['telefono'];
                             this.correo=data['correo'];
+                            this.selectRelacion(this.idArea);
+                            this.selectRelacionPerfil(this.idProceso);
                             break;
                         }
                     }
               }
-
+            break;
             }
-            this.selectRelacion(this.idArea);
             }
         },
         mounted() {
