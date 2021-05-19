@@ -259,13 +259,10 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/inventario", "Tb_inventarioController@index");
         Route::post("/inventario/store", "Tb_inventarioController@store");
         Route::post("/inventario/estado", "Tb_inventarioController@estado");
-        Route::get("/inventario/empleados", "Tb_inventarioController@clientes");
-        Route::put("/inventario/update", "Tb_inventarioController@update");
-        Route::post("/inventario/validar", "Tb_inventarioController@validar");
+        Route::get("/inventario/empleados", "Tb_inventarioController@empleados");
 
         Route::get("/inventariodetalle", "Tb_detalle_inventarioController@index");
         Route::get("/inventariodetalle/listar", "Tb_detalle_inventarioController@listar");
-        Route::get("/inventariodetalle/materias", "Tb_detalle_inventarioController@materias");
         Route::post("/inventariodetalle/store", "Tb_detalle_inventarioController@store");
 
     });

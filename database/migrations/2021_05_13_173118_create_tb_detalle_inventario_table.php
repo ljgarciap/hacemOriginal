@@ -16,8 +16,11 @@ class CreateTbDetalleInventarioTable extends Migration
         Schema::create('tb_detalle_inventario', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idProducto')->constrained('tb_gestion_materia_prima');
-            $table->string('cantidad');
-            $table->string('observacion');
+            $table->string('unidadBase');
+            $table->integer('cantidadSistema');
+            $table->integer('cantidadActual')->nullable();
+            $table->integer('diferencia')->nullable();
+            $table->string('observacion')->nullable();
             $table->foreignId('idInventario')->constrained('tb_inventario');
             //$table->timestamps();
         });

@@ -5,8 +5,8 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="producto">Producto</option>
                                         <option value="id">Id</option>
+                                        <option value="producto">Producto</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarProductosInventario(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarProductosInventario(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -17,30 +17,22 @@
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>Opciones</th>
                         <th>Producto</th>
-                        <th>Unidad</th>
-                        <th>Cantidad</th>
-                        <th>Observación</th>
+                        <th>Unidad Base</th>
+                        <th>Cantidad Actual</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="producto in arrayProductos" :key="producto.id">
+                    <tr v-for="detalle in arrayDetalles" :key="detalle.id">
+                        <td v-text="detalle.producto"></td>
+                        <td v-text="detalle.unidadBase"></td>
                         <td>
-                            <button type="button" @click="$emit('abrirmodal','gestionMateria','actualizar',producto)" class="btn btn-warning btn-sm">
-                            <i class="icon-pencil"></i>
-                            </button> &nbsp;
-                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',producto.id)">
-                                <i class="icon-trash"></i>
-                            </button>
-                        </td>
-                        <td v-text="producto.producto"></td>
-                        <td v-text="producto.unidadBase"></td>
-                        <td v-text="producto.cantidad"></td>
-                        <td v-text="producto.observacion"></td>
+                         <input type="number" v-model="cantidadActual" step="0.01">
+                         </td>
                     </tr>
                 </tbody>
             </table>
+             <button type="button" class="btn btn-primary" @click="actualizarDatos(cantidadActual,observacion)">Validar</button>
             </div>
             <nav>
                 <ul class="pagination">
@@ -70,7 +62,7 @@
             return{
                 unidades:0,
                 tiempo:0,
-                arrayProductos : [],
+                arrayDetalles : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -83,7 +75,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'producto',
+                criterio : 'id',
                 buscar : ''
             }
         },
@@ -121,7 +113,7 @@
                 var url='/inventariodetalle/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayProductos=respuesta.productos.data;
+                me.arrayDetalles=respuesta.detalles.data;
                 me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {
