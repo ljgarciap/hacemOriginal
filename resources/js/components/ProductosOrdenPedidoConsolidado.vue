@@ -67,8 +67,7 @@
         </vs-tab>
 
         <vs-tab label="Materia completa" icon="format_list_numbered" @click="colorx = '#9B59B6'">
-<!-- Ejemplo de tabla Listado
--->
+                <materiaprimacompleta v-bind:identificador="identificador" :key="componentKey"></materiaprimacompleta>
         </vs-tab>
 
         </vs-tabs>

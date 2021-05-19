@@ -19,11 +19,12 @@ class Tb_kardex_almacenController extends Controller
         if ($buscar=='') {
             # Modelo::join('tablaqueseune',basicamente un on)
             $productos = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
-            ->select('tb_kardex_almacen.id','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
+            ->join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
+            ->select('tb_kardex_almacen.id','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad','tb_unidad_base.unidadBase',
             'tb_kardex_almacen.precio','tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
-            'tb_kardex_almacen.tipologia','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
+            'tb_kardex_almacen.tipologia','tb_kardex_almacen.idDocumentos','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
             'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos'))
-            ->orderBy('tb_kardex_almacen.idGestionMateria','asc')
+            ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
             ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
             ->paginate(5);
         }
@@ -31,11 +32,11 @@ class Tb_kardex_almacenController extends Controller
             $productos = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
             ->select('tb_kardex_almacen.id','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
             'tb_kardex_almacen.precio','tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
-            'tb_kardex_almacen.tipologia','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
+            'tb_kardex_almacen.tipologia','tb_kardex_almacen.idDocumentos','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
             'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos'))
             ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
             ->where('tb_kardex_almacen.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('tb_kardex_almacen.idGestionMateria','asc')->paginate(5);
+            ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')->paginate(5);
         }
         return [
             'pagination' => [
@@ -61,10 +62,10 @@ class Tb_kardex_almacenController extends Controller
             ->select('tb_kardex_almacen.id as idMateria','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
             'tb_kardex_almacen.precio',DB::raw('tb_kardex_almacen.cantidad * tb_kardex_almacen.precio as preciototal'),
             'tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
-            'tb_kardex_almacen.tipologia','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
+            'tb_kardex_almacen.tipologia','tb_kardex_almacen.idDocumentos','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
             'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as totalsaldos'))
             ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
-            ->orderBy('tb_kardex_almacen.id','asc')->paginate(5);
+            ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')->paginate(5);
 
         return [
             'pagination' => [
@@ -83,17 +84,19 @@ class Tb_kardex_almacenController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador= $request->identificador;
-        $nombres = Tb_gestion_materia_prima::where('tb_gestion_materia_prima.id', '=', $identificador)
+        $nombreproducto = Tb_gestion_materia_prima::where('tb_gestion_materia_prima.id', '=', $identificador)
         ->select('tb_gestion_materia_prima.id','tb_gestion_materia_prima.gestionMateria as producto')
+        ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
         ->get();
 
-        return ['nombreproducto' =>  $nombres];
+        return ['nombreproducto' =>  $nombreproducto];
     }
     public function general()
     {
         //if(!$request->ajax()) return redirect('/');
         $materias = Tb_gestion_materia_prima::where('estado','=','1')
             ->select('tb_gestion_materia_prima.id as idMateria','tb_gestion_materia_prima.gestionMateria as materia')
+            ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
             ->get();
 
         return ['materias' =>  $materias];
@@ -117,7 +120,7 @@ class Tb_kardex_almacenController extends Controller
             ->join('tb_gestion_materia_prima','tb_orden_produccion_detalle.idGestionMateria','=','tb_gestion_materia_prima.id')
             ->select('tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase','tb_gestion_materia_prima.id')
             ->where('tb_orden_produccion.consecutivo', '=', $identificador)
-            ->orderBy('tb_gestion_materia_prima.id','asc')
+            ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
             ->get();
 
         return ['materiales' =>  $materiales];
@@ -216,7 +219,7 @@ class Tb_kardex_almacenController extends Controller
                 ['tb_kardex_almacen.detalle', '=', $factura],
                 ['tb_kardex_almacen.observaciones', '=', $proveedor],
             ])
-            ->orderBy('tb_gestion_materia_prima.id','asc')
+            ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
             ->get();
 
         return ['materiales' =>  $materiales];

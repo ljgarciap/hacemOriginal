@@ -20,7 +20,10 @@
                         <td v-text="pendiente.cantidadRequerida"></td>
                         <td v-text="pendiente.cantidadEntregada"></td>
                         <td v-text="pendiente.faltante"></td>
-                        <td v-text="pendiente.inventario"></td>
+                        <td v-if="pendiente.inventario>0"><span class="badge badge-success">{{pendiente.inventario}}</span></td>
+                        <td v-else-if="pendiente.inventario<0"><span class="badge badge-warning">{{pendiente.inventario}}</span></td>
+                        <td v-else><span class="badge badge-secondary">0</span></td>
+
                     </tr>
                 </tbody>
             </table>

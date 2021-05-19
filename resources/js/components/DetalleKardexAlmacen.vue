@@ -4,8 +4,10 @@
         <div>
                     <div class="form-group row">
                         <div class="col-md-9">
-                            <div class="input-group" v-for="nombre in arrayNombre" :key="nombre.id">
-                                <h3>Producto: {{nombre.producto}}</h3>
+                            <div class="input-group">
+                                <div v-for="nombre in arrayNombres" :key="nombre.id">
+                                  &nbsp;<b>Producto: </b> {{nombre.producto}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -32,7 +34,13 @@
                                 <tbody>
                                     <tr v-for="total in arrayProductos" :key="total.idMateria">
                                         <td>{{total.fecha}}</td>
-                                        <td>{{total.detalle}}</td>
+
+                                        <td v-if="total.idDocumentos==1"><span class="badge badge-success">Compra por Factura {{total.detalle}}</span></td>
+                                        <td v-else-if="total.idDocumentos==2"><span class="badge badge-success">Devolución Orden {{total.detalle}}</span></td>
+                                        <td v-else-if="total.idDocumentos==4"><span class="badge badge-warning">Devolución Factura {{total.detalle}}</span></td>
+                                        <td v-else-if="total.idDocumentos==5"><span class="badge badge-warning">Entrega Orden {{total.detalle}}</span></td>
+                                        <td v-else><span class="badge badge-secondary">{{total.detalle}}</span></td>
+
 
                                             <td v-if="total.tipologia==1">{{total.cantidad}}</td>
                                             <td v-if="total.tipologia==1">{{total.precio}}</td>
@@ -84,7 +92,7 @@
         data(){
             return{
                 arrayProductos:[],
-                arrayNombre:[],
+                arrayNombres:[],
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -141,11 +149,11 @@
             productoNombre(identificador){
                 let me=this;
                 var url='/kardexalmacen/producto?identificador='+this.identificador;
-                console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
+                me.arrayNombres=respuesta.nombreproducto;
+                console.log(url);
                 console.log(respuesta);
-                me.arrayNombre=respuesta.nombreproducto.data;
                 })
                 .catch(function (error) {
                     // handle error

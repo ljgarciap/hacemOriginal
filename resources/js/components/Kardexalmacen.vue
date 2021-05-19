@@ -41,6 +41,7 @@
                                         <th>Fecha final</th>
                                         <th>Producto</th>
                                         <th>Cantidad existente</th>
+                                        <th>Unidad de medida</th>
                                         <th>Precio promedio</th>
                                         <th>Saldos</th>
                                     </tr>
@@ -56,6 +57,7 @@
                                         <td v-text="producto.fecha"></td>
                                         <td v-text="producto.producto"></td>
                                         <td v-text="producto.cantidadSaldos"></td>
+                                        <td v-text="producto.unidadBase"></td>
                                         <td v-text="producto.precioSaldos"></td>
                                         <td v-text="producto.saldos"></td>
                                     </tr>
