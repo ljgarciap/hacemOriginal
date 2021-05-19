@@ -22,32 +22,40 @@ class Tb_empleadoController extends Controller
         //if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
+        $identificador= $request->identificador;
 
-        /*if ($buscar=='') {
+        if ($buscar=='') {
             # Modelo::join('tablaqueseune',basicamente un on)
-            $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-            'tb_empleado.telefono','tb_empleado.correo','tb_empleado.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
-            'tb_perfil.estado as estado_perfil')
+            $empleados = Tb_empleado::join("tb_perfil","tb_empleado.idPerfil","=","tb_perfil.id")
+            ->join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
+            ->leftJoin('tb_area',function($join){
+                $join->on('tb_proceso.idArea','=','tb_area.id');
+            })
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
+            'tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
         else if($criterio=='perfil'){
-            $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-            'tb_empleado.telefono','tb_empleado.correo','tb_empledo.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
-            'tb_perfil.estado as estado_perfil')
-            ->where('tb_perfil.'.$criterio, 'like', '%'. $buscar . '%')
+            $empleados = Tb_empleado::join("tb_perfil","tb_empleado.idPerfil","=","tb_perfil.id")
+            ->join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
+            ->leftJoin('tb_area',function($join){
+                $join->on('tb_proceso.idArea','=','tb_area.id');
+            })
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
+            'tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
+            ->where('tb_perfil.perfil', 'like', '%'. $buscar . '%')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
         else {
-            # code...
-            $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-            'tb_empleado.telefono','tb_empleado.correo','tb_empledo.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
-            'tb_perfil.estado as estado_perfil')
-            ->where('tb_empleado.'.$criterio, 'like', '%'. $buscar . '%')
+            $empleados = Tb_empleado::join("tb_perfil","tb_empleado.idPerfil","=","tb_perfil.id")
+            ->join("tb_proceso","tb_perfil.idProceso","=","tb_proceso.id")
+            ->leftJoin('tb_area',function($join){
+                $join->on('tb_proceso.idArea','=','tb_area.id');
+            })
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
+            'tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
+            ->where('tb_perfil.perfil', 'like', '%'. $buscar . '%')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
-
         }
 
         return [
@@ -61,63 +69,9 @@ class Tb_empleadoController extends Controller
             ],
                 'empleados' => $empleados
         ];
-    }*/
-    if ($buscar=='') {
-        # Modelo::join('tablaqueseune',basicamente un on)
-        $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-        ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-        'tb_empleado.telefono','tb_empleado.correo','tb_empleado.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
-        'tb_perfil.estado as estado_perfil')
-        ->orderBy('tb_empleado.id','desc')->paginate(5);
     }
-    else if($criterio=='perfil'){
-        $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-        ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-        'tb_empleado.telefono','tb_empleado.correo','tb_empleado.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
-        'tb_perfil.estado as estado_perfil')
-        ->where('tb_perfil.'.$criterio, 'like', '%'. $buscar . '%')
-        ->orderBy('tb_empleado.id','desc')->paginate(5);
-    }
-    else if($criterio=='area'){
-        $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-        ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-        'tb_empleado.telefono','tb_empleado.correo','tb_empleado.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
-        'tb_perfil.estado as estado_perfil')
-        ->where('tb_area.area', 'like', '%'. $buscar . '%')
-        ->orderBy('tb_empleado.id','desc')->paginate(5);
-    }
-    else if($criterio=='proceso'){
-        $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-        ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-        'tb_empleado.telefono','tb_empleado.correo','tb_empleado.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
-        'tb_perfil.estado as estado_perfil')
-        ->where('tb_proceso.proceso', 'like', '%'. $buscar . '%')
-        ->orderBy('tb_empleado.id','desc')->paginate(5);
-    }
-    else {
-        # code...
-        $empleados = Tb_empleado::join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-        ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion',
-        'tb_empleado.telefono','tb_empleado.correo','tb_empleado.estado','tb_perfil.id as idPerfil','tb_perfil.perfil',
-        'tb_perfil.estado as estado_perfil')
-        ->where('tb_empleado.'.$criterio, 'like', '%'. $buscar . '%')
-        ->orderBy('tb_empleado.id','desc')->paginate(5);
 
-    }
-    return [
-        'pagination' => [
-            'total'         =>$empleados->total(),
-            'current_page'  =>$empleados->currentPage(),
-            'per_page'      =>$empleados->perPage(),
-            'last_page'     =>$empleados->lastPage(),
-            'from'          =>$empleados->firstItem(),
-            'to'            =>$empleados->lastItem(),
-        ],
-            'empleados' => $empleados
-    ];
-}
-
-public function selectRelacion($id){
+    public function selectRelacion($id){
     $relaciones = tb_proceso::where([
                 ['estado','=','1'],
                 ['idArea','=',$id],
@@ -126,6 +80,17 @@ public function selectRelacion($id){
             ->orderBy('proceso','asc')->get();
             return ['relaciones' => $relaciones];
     }
+    
+    public function selectRelacionPerfil($id){
+        $perfilrelaciones = tb_perfil::where([
+                    ['estado','=','1'],
+                    ['idProceso','=',$id],
+                ])
+                ->select('id as idPerfil','perfil')
+                ->orderBy('perfil','asc')->get();
+                return ['perfilrelaciones' => $perfilrelaciones];
+        }
+
     public function selectEmpleado(){
         $empleados = Tb_empleado::where('estado','=','1')
         ->select('id as idEmpleado','empleado')->orderBy('empleado','asc')->get();
