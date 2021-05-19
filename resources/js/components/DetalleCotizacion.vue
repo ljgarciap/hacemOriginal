@@ -103,7 +103,7 @@
                 var url='/cotizacioncliente/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayProductos=respuesta.productos;
+                me.arrayProductos=respuesta.productos.data;
                 me.pagination=respuesta.pagination;
                 console.log(this.identificador);
                 })

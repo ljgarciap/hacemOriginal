@@ -16,28 +16,24 @@
                                 </div>
                             </div>
                             <div class="table-responsive">
+                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
                                         <th>Unidad Base</th>
-                                        <th>Cantidad Sistema</th>
                                         <th>Cantidad Actual</th>
-                                        <th>Diferencia</th>
-                                        <th>Observación</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="total in arrayProductos" :key="total.idInventario">
+                                    <tr v-for="total in arrayProductos" :key="total.id">
                                         <td>{{total.producto}}</td>
                                         <td>{{total.unidadBase}}</td>
-                                        <td>{{total.cantidadSistema}}</td>
-                                        <td>{{total.cantidadActual}}</td>
-                                        <td>{{total.diferencia}}</td>
-                                        <td>{{total.observacion}}</td>
+                                        <td><input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad"></td>
                                     </tr>
                                 </tbody>
                             </table>
+                            </form>
                             </div>
                             <nav>
                 <ul class="pagination">
@@ -114,9 +110,10 @@
             }
         },
         methods : {
-        detalleInventario(identificador){
+        listarDetalleInventario(page){
                 let me=this;
-                var url='/inventariodetalle/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                var url='/inventariodetalle/listar?page=' + page;
+                console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductos=respuesta.productos.data;
@@ -126,16 +123,16 @@
                     console.log(error);
                 })
             },
-        cambiarPagina(page,buscar,criterio){
+        cambiarPagina(page){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarDetalleInventario(page,buscar,criterio,this.identificador);
+                me.listarDetalleInventario(page);
             }
         },
         mounted() {
-            this.listarDetalleInventario(1,'','',this.identificador)
+            this.listarDetalleInventario(1)
         }
     }
 </script>

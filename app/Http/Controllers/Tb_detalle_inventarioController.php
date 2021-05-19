@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Tb_detalle_inventario;
+use App\Tb_kardex_almacen;
 use App\Tb_gestion_materia_prima;
 use App\Tb_unidad_base;
 use App\Tb_almacen;
@@ -29,7 +30,7 @@ class Tb_detalle_inventarioController extends Controller
 
 
     public function store(Request $request)
-
+    {
         //if(!$request->ajax()) return redirect('/');
         $tb_detalle_inventario=new Tb_detalle_inventario();
         $tb_detalle_inventario->idProducto=$request->idProducto;
@@ -39,14 +40,16 @@ class Tb_detalle_inventarioController extends Controller
         $tb_detalle_inventario->observacion=$request->observacion;
         $tb_detalle_inventario->idInventario=$request->idInventario;
         $tb_detalle_inventario->save();
+
     }
 
-    public function validar()
+    public function validar(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
-        
+        //if(!$request->ajax()) return redirect('/');
+
         $cantidadActual=$request->cantidadActual;
         $cantidadSistema=$request->cantidadSistema;
+        $idProducto=0;
 
         $validarCantidad = DB::table('tb_kardex_almacen')
         ->select('id','cantidad','cantidadSaldos as cantidadS','precioSaldos as precioS')
@@ -54,5 +57,30 @@ class Tb_detalle_inventarioController extends Controller
         ->orderByDesc('id')
         ->limit(1)
         ->get();
+    }
+
+    public function listar()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $productos = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
+        ->join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
+        ->select('tb_kardex_almacen.idGestionMateria as id','tb_kardex_almacen.cantidadSaldos','tb_gestion_materia_prima.gestionMateria as producto',
+        'tb_unidad_base.unidadBase')
+        ->orderBy('tb_kardex_almacen.idGestionMateria','asc')
+        ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
+        ->paginate(5);
+
+        return [
+            'pagination' => [
+                'total'         =>$productos->total(),
+                'current_page'  =>$productos->currentPage(),
+                'per_page'      =>$productos->perPage(),
+                'last_page'     =>$productos->lastPage(),
+                'from'          =>$productos->firstItem(),
+                'to'            =>$productos->lastItem(),
+            ],
+            'productos' =>  $productos
+        ];
     }
 }

@@ -1,40 +1,29 @@
 <template>
+    <main class="minimo">
+        <template v-if="listado==0">
         <!-- Ejemplo de tabla Listado -->
         <div>
-            <div class="form-group row">
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="id">Id</option>
-                                        <option value="producto">Producto</option>
-                                        </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarProductosInventario(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarProductosInventario(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                                    </div>
-                                </div>
+                            <div class="table-responsive">
+                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Unidad Base</th>
+                                        <th>Cantidad Actual</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="total in arrayProductos" :key="total.id">
+                                        <td>{{total.producto}}</td>
+                                        <td>{{total.unidadBase}}</td>
+                                        <td><input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </form>
                             </div>
-            <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Unidad Base</th>
-                        <th>Cantidad Actual</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="detalle in arrayDetalles" :key="detalle.id">
-                        <td v-text="detalle.producto"></td>
-                        <td v-text="detalle.unidadBase"></td>
-                        <td>
-                         <input type="number" v-model="cantidadActual" step="0.01">
-                         </td>
-                    </tr>
-                </tbody>
-            </table>
-             <button type="button" class="btn btn-primary" @click="actualizarDatos(cantidadActual,observacion)">Validar</button>
-            </div>
-            <nav>
+                            <nav>
                 <ul class="pagination">
                     <li class="page-item" v-if="pagination.current_page > 1">
                         <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
@@ -49,6 +38,8 @@
             </nav>
                     <!-- Fin ejemplo de tabla Listado -->
         </div>
+        </template>
+    </main>
 </template>
 
 <script>
@@ -60,11 +51,10 @@
          },
         data(){
             return{
-                unidades:0,
-                tiempo:0,
-                arrayDetalles : [],
+                listado : 0,
+                arrayProductos:[],
                 modal : 0,
-                tituloModal : '',
+                tipoModal : 0,
                 tipoAccion : 0,
                 pagination : {
                     'total' : 0,
@@ -79,7 +69,7 @@
                 buscar : ''
             }
         },
-        computed:{
+         computed:{
             isActived: function(){
                 return this.pagination.current_page;
             },
@@ -108,51 +98,35 @@
             }
         },
         methods : {
-                listarProductosInventario(page,buscar,criterio,identificador){
+        listarDetalleInventario(page){
                 let me=this;
-                var url='/inventariodetalle/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                var url='/inventariodetalle/listar?page=' + page;
+                console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayDetalles=respuesta.detalles.data;
-                me.pagination=respuesta.pagination;
+                me.arrayProductos=respuesta.productos.data;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
-            cambiarPagina(page,buscar,criterio){
+        cambiarPagina(page){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarProductosInventario(page,buscar,criterio,this.identificador);
+                me.listarDetalleInventario(page);
             }
         },
         mounted() {
-            this.listarProductosInventario(1,'','',this.identificador)
+            this.listarDetalleInventario(1)
         }
     }
 </script>
+
 <style>
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-        z-index: 2000;
-    }
-    .mostrar{
-        display: list-item !important;
-        height: 100% !important;
-        opacity: 1 !important;
-        position: absolute !important;
-        background-color: #3c29297a !important;
-    }
-    .div-error{
-        display: flex;
-        justify-content: center;
-    }
-    .text-error{
-        color: red !important;
-        font-weight: bold;
+    .minimo {
+	min-height: 150px;
     }
 </style>
