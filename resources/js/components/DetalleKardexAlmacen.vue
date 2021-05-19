@@ -1,8 +1,15 @@
 <template>
     <main class="minimo">
-        <template v-if="listado==0">
         <!-- Ejemplo de tabla Listado -->
         <div>
+                    <div class="form-group row">
+                        <div class="col-md-9">
+                            <div class="input-group" v-for="nombre in arrayNombre" :key="nombre.id">
+                                <h3>Producto: {{nombre.producto}}</h3>
+                            </div>
+                        </div>
+                    </div>
+
                             <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
@@ -49,9 +56,21 @@
                             </table>
                             </div>
                     <!-- Fin ejemplo de tabla Listado -->
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item" v-if="pagination.current_page > 1">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1)">Ant</a>
+                    </li>
+                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page)" v-text="page"></a>
+                    </li>
+                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1)">Sig</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-        </template>
     </main>
 </template>
 
@@ -64,28 +83,86 @@
          },
         data(){
             return{
-                listado : 0,
                 arrayProductos:[],
-                modal : 0,
-                tipoModal : 0,
+                arrayNombre:[],
+                pagination : {
+                    'total' : 0,
+                    'current_page' : 0,
+                    'per_page' : 0,
+                    'last_page' : 0,
+                    'from' : 0,
+                    'to' : 0,
+                },
+                offset : 3
+            }
+        },
+        computed:{
+            isActived: function(){
+                return this.pagination.current_page;
+            },
+            //Calcula los elementos de la paginacion
+            pagesNumber: function(){
+                if (!this.pagination.to) {
+                    return[];
+                }
+
+                var from=this.pagination.current_page - this.offset;
+                if (from < 1) {
+                    from = 1;
+                }
+
+                var to = from + (this.offset * 2);
+                if (to >= this.pagination.last_page) {
+                    to = this.pagination.last_page;
+                }
+
+                var pagesArray = [];
+                while (from <= to) {
+                    pagesArray.push(from);
+                    from++;
+                }
+                return pagesArray;
             }
         },
         methods : {
-            acumuladoTotal(identificador){
+            acumuladoTotal(page,identificador){
                 let me=this;
-                var url='/kardexalmacen/listar/?identificador='+this.identificador;
+                var url='/kardexalmacen/listar/?page=' + page + '&identificador='+this.identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductos=respuesta.productos.data;
+                me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
+            productoNombre(identificador){
+                let me=this;
+                var url='/kardexalmacen/producto?identificador='+this.identificador;
+                console.log(url);
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                console.log(respuesta);
+                me.arrayNombre=respuesta.nombreproducto.data;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            cambiarPagina(page){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.acumuladoTotal(page,this.identificador);
+            }
         },
         mounted() {
-            this.acumuladoTotal(this.identificador)
+            this.acumuladoTotal(1,this.identificador);
+            this.productoNombre(this.identificador)
         }
     }
 </script>

@@ -79,6 +79,16 @@ class Tb_kardex_almacenController extends Controller
         ];
 
     }
+    public function producto(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $identificador= $request->identificador;
+        $nombres = Tb_gestion_materia_prima::where('tb_gestion_materia_prima.id', '=', $identificador)
+        ->select('tb_gestion_materia_prima.id','tb_gestion_materia_prima.gestionMateria as producto')
+        ->get();
+
+        return ['nombreproducto' =>  $nombres];
+    }
     public function general()
     {
         //if(!$request->ajax()) return redirect('/');
@@ -261,12 +271,24 @@ class Tb_kardex_almacenController extends Controller
             if($tipologia == 1){
             $suma1=$cantidadS+$cantidad;
             $suma0=$valorP+$valorE;
-            $suma2=($suma0/$suma1);
+
+                if($suma1 == 0){
+                    $suma2=0;
+                    }
+                else{
+                    $suma2=($suma0/$suma1);
+                }
             }
             else{
                 $suma1=$cantidadS-$cantidad;
                 $suma0=$valorP-$valorE;
-                $suma2=($suma0/$suma1);
+
+                if($suma1 == 0){
+                    $suma2=0;
+                    }
+                else{
+                    $suma2=($suma0/$suma1);
+                }
             }
         }
 
