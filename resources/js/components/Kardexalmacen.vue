@@ -265,8 +265,8 @@
                                     </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label v-if="flag!=0"  class="col-md-3 form-control-label" for="text-input">Cantidad</label>
-                                        <div v-if="flag!=0"  class="col-md-9">
+                                        <label v-if="flag!=0" class="col-md-3 form-control-label" for="text-input">Cantidad</label>
+                                        <div v-if="flag!=0" class="col-md-9">
                                             <input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad">
                                             <span class="help-block">(*) Ingrese la Cantidad</span>
                                         </div>
@@ -303,9 +303,9 @@
                                     </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Encargado</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="observaciones">
+                                        <label v-if="flag!=0" class="col-md-3 form-control-label" for="text-input">Encargado</label>
+                                        <div v-if="flag!=0" class="col-md-9">
+                                            <select class="form-control" v-model="idEmpleado">
                                                 <option value="0" disabled>Seleccione empleado</option>
                                                 <option v-for="empleado in arrayEmpleados" :key="empleado.id" :value="empleado.id" v-text="empleado.nombreEmpleado"></option>
                                             </select>
@@ -697,6 +697,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
             this.listarMaterias();
             this.listarOrdenes();
             this.listarProveedores();
+            this.listarEmpleados();
         }
     }
 </script>

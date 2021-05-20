@@ -46,12 +46,12 @@
                                         <td>
                                         <template v-if="inventario.estado==1">
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(inventario.id)">
-                                                <i class="icon-plus"></i><span> Realizar</span>
+                                                <i class="icon-plus"></i><span> Realizar toma</span>
                                             </button>
                                         </template>
                                         <template v-if="inventario.estado==0">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(inventario.id)">
-                                                <i class="icon-magnifier"></i><span> Detalle</span>
+                                                <i class="icon-magnifier"></i><span> Detalle toma</span>
                                             </button>
                                         </template>
                                         </td>

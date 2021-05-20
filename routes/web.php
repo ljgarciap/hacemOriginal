@@ -266,6 +266,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/inventariodetalle", "Tb_detalle_inventarioController@index");
         Route::get("/inventariodetalle/listar", "Tb_detalle_inventarioController@listar");
         Route::post("/inventariodetalle/store", "Tb_detalle_inventarioController@store");
+        Route::post("/inventariodetalle/verificar", "Tb_detalle_inventarioController@verificar");
 
     });
 

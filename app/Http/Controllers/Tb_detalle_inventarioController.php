@@ -43,6 +43,15 @@ class Tb_detalle_inventarioController extends Controller
 
     }
 
+    public function verificar(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $respuesta=$request;
+
+        return ['respuesta' => $respuesta];
+
+    }
+
     public function validar(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
@@ -59,14 +68,15 @@ class Tb_detalle_inventarioController extends Controller
         ->get();
     }
 
-    public function listar()
+    public function listar(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
+        DB::statement(DB::raw('SET @rownum = 0'));
 
         $productos = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
         ->join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
-        ->select('tb_kardex_almacen.idGestionMateria as id','tb_kardex_almacen.cantidadSaldos','tb_gestion_materia_prima.gestionMateria as producto',
-        'tb_unidad_base.unidadBase')
+        ->select('tb_kardex_almacen.idGestionMateria','tb_kardex_almacen.cantidadSaldos','tb_gestion_materia_prima.gestionMateria as producto',
+        'tb_unidad_base.unidadBase',DB::raw('@rownum := @rownum + 1 as id'))
         ->orderBy('tb_kardex_almacen.idGestionMateria','asc')
         ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
         ->paginate(5);
