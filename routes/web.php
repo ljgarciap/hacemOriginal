@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Tb_kardex_almacen;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -269,6 +269,24 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/inventariodetalle/verificar", "Tb_detalle_inventarioController@verificar");
 
     });
+
+    Route::get("validarconsulta",function(){
+        $detalles = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
+        ->select('tb_kardex_almacen.idGestionMateria','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
+        'tb_gestion_materia_prima.id','tb_kardex_almacen.cantidadSaldos')
+        ->distinct('tb_kardex_almacen.idGestionMateria')
+        ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
+        ->get();
+        foreach($detalles as $detalle){
+            echo ($detalle->cantidadSaldos);
+            echo ($detalle->idGestionMateria);
+            echo ($detalle->idUnidadBase);
+        }
+
+      
+        
+    });
+
 
 //---------------------------------------------------------------------------//
 

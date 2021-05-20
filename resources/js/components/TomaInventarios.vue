@@ -48,6 +48,9 @@
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(inventario.id)">
                                                 <i class="icon-plus"></i><span> Realizar toma</span>
                                             </button>
+                                             <button type="button" class="btn btn-warning btn-sm" @click="abrirModal('detalle','crear',inventario.id)">
+                                                <i class="icon-cloud-upload"></i><span> Finalizar</span>
+                                            </button>
                                         </template>
                                         <template v-if="inventario.estado==0">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(inventario.id)">
@@ -145,7 +148,9 @@
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
                                     </div>
-
+                                    <div v-if="tipoModal==3" class="carga">
+                                        <p><hr><h1>Generando, por favor espere...</h1><hr></p>
+                                    </div> 
                                 </form>
                             </div>
                             <div v-if="tipoModal==1" class="modal-footer">
@@ -315,6 +320,20 @@
                 this.identificador=id;
                 (this.identificador);
             },
+            generarDetalle(id){
+                this.identificador=id;
+                let me=this;
+                axios.post('/inventario/estado',{
+                    'id': this.identificador
+                }).then(function (response) {
+                me.cerrarModal('0');
+                me.forceRerender();
+                me.listarInventario(1,'','');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
             ocultarDetalle(){
                 this.listado=0;
             },
@@ -339,6 +358,20 @@
                             }
                         }
                         //this.selectGestionMateria();
+                        break;
+                    }
+                    case "detalle":
+                    {
+                        switch (accion) {
+                            case 'crear':{
+                                this.modal=1;
+                                this.tipoModal=3; //carga tipos de campos y footers
+                                this.tituloModal='Generando, por favor espere...';
+                                this.identificador=identificador;
+                                this.generarDetalle(this.identificador);
+                                break;
+                            }
+                        }
                         break;
                     }
 

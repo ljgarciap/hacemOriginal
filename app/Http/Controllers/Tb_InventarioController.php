@@ -7,6 +7,7 @@ use App\Tb_kardex_almacen;
 use App\Tb_gestion_materia_prima;
 use App\Tb_unidad_base;
 use App\Tb_empleado;
+use App\Tb_detalle_inventario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -54,6 +55,30 @@ class Tb_inventarioController extends Controller
          $tb_inventario->fecha=$request->fecha;
          $tb_inventario->idEmpleado=$request->idEmpleado;
          $tb_inventario->save();
+
+         $detalles = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
+         ->select('tb_kardex_almacen.idGestionMateria','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
+         'tb_gestion_materia_prima.id','tb_kardex_almacen.cantidadSaldos')
+         ->distinct('tb_kardex_almacen.idGestionMateria')
+         ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
+         ->get();
+         foreach($detalles as $detalle){
+             $obj_detalle= new Tb_detalle_inventario();
+             $obj_detalle->idInventario=$tb_inventario->idInventario;
+             $obj_detalle->idGestionMateria=$detalle->idGestionMateria;
+             $obj_detalle->cantidadSaldos=$detalle->cantidadSaldos;
+             $obj_detalle->idUnidadBase=$detalle->idUnidadBase;
+             $obj_detalle->save();
+         }
+         /*echo var_dump($detalles);*/
+            
+            /*foreach($detalles as $detalle){
+                $obj_detalle= new Tb_detalle_inventario();
+                $obj_detalle->idInventario=$tb_inventario->idInventario;
+                $obj_detalle->idProducto=$detalle->idProducto;
+                $obj_detalle->cantidadSisteme=$detalle->
+
+            }*/
      }
     public function empleados()
     {

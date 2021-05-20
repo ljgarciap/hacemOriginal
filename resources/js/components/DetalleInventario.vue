@@ -22,14 +22,20 @@
                                     <tr>
                                         <th>Producto</th>
                                         <th>Unidad Base</th>
+                                        <th>Cantidad Sistema</th>
                                         <th>Cantidad Actual</th>
+                                        <th>Diferencia</th>
+                                        <th>Observación</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="total in arrayProductos" :key="total.id">
                                         <td>{{total.producto}}</td>
                                         <td>{{total.unidadBase}}</td>
-                                        <td><input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad"></td>
+                                        <td>{{total.cantidadSaldos}}</td>
+                                        <td>{{total.cantidadActual}}</td>
+                                        <td>{{total.diferencia}}</td>
+                                        <td>{{total.observacion}}</td>
                                     </tr>
                                 </tbody>
                             </table>
