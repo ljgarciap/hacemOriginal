@@ -17,10 +17,12 @@
                                     <tr v-for="total in arrayProductos" :key="total.id">
                                         <td>{{total.producto}}</td>
                                         <td>{{total.unidadBase}}</td>
-                                        <td><input type="text" v-model="cantidad" class="form-control" placeholder="Cantidad"></td>
+                                        <td><input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad"></td>
+                                        <span v-show="flag"><input type="hidden" v-model="idGestionMateria">{{total.id}}</input></span>
                                     </tr>
                                 </tbody>
                             </table>
+                            <button type="button" class="btn btn-primary" @click="validar()">Validar</button>
                             </form>
                             </div>
                             <nav>
@@ -56,6 +58,7 @@
                 modal : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
+                flag : false,
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,

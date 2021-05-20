@@ -237,7 +237,7 @@ class Tb_kardex_almacenController extends Controller
         $observaciones=$request->observaciones;
         $idDocumentos=$request->idDocumentos;
         $tipologia=$request->tipologia;
-        $flagmov=$request->flagmov;
+        $idEmpleado=$request->idEmpleado;
         $valorE=($precio*$cantidad);
 
         //capturo cantidad precio y producto; internamente busco el registro mas reciente de dicho producto y tomo el valor cantidad de ese registro,
@@ -301,6 +301,7 @@ class Tb_kardex_almacenController extends Controller
         $tb_kardex_almacen->precio=$precio;
         $tb_kardex_almacen->idGestionMateria=$idProducto;
         $tb_kardex_almacen->observaciones=$observaciones;
+        $tb_kardex_almacen->idEmpleado=$idEmpleado;
         $tb_kardex_almacen->idDocumentos=$idDocumentos;
         $tb_kardex_almacen->tipologia=$tipologia;
         $tb_kardex_almacen->fecha=$fecha;

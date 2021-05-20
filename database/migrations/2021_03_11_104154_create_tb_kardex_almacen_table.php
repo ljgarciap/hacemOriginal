@@ -22,6 +22,7 @@ class CreateTbKardexAlmacenTable extends Migration
             $table->float('cantidadSaldos');
             $table->float('precioSaldos');
             $table->string('observaciones', 255);
+            $table->foreignId('idEmpleado')->constrained('tb_empleado');
             $table->foreignId('idDocumentos')->constrained('tb_documentos');
             $table->foreignId('idGestionMateria')->constrained('tb_gestion_materia_prima');
             $table->boolean('tipologia')->default(1);

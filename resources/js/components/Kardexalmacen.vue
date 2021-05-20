@@ -301,6 +301,17 @@
                                         </div>
 
                                     </div>
+
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Encargado</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="observaciones">
+                                                <option value="0" disabled>Seleccione empleado</option>
+                                                <option v-for="empleado in arrayEmpleados" :key="empleado.id" :value="empleado.id" v-text="empleado.nombreEmpleado"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione Empleado</span>
+                                        </div>
+                                    </div>
                                         <!--Cierre sección datos-->
 
                                     <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorKardex">
@@ -353,6 +364,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 arrayMateriaFactura : [],
                 arrayFactura : [],
                 arrayOrdenes : [],
+                arrayEmpleados : [],
                 arrayProveedores : [],
                 producto:'',
                 modal : 0,
@@ -428,7 +440,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                     console.log(error);
                 })
             },
-            precioMateriaOrden(event){
+            precio (event){
                 //console.log(event.target.value);
                 this.identificadorMaterial=event.target.value;
                 let me=this;
@@ -467,6 +479,21 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 var respuesta=response.data;
                 me.arrayProveedores=respuesta.proveedores;
                 console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarEmpleados(){
+                let me=this;
+                var url='/inventario/empleados';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayEmpleados=respuesta.empleados;
+                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
@@ -570,6 +597,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                     'precio':this.precio,
                     'tipologia':this.tipologia,
                     'observaciones':this.observaciones,
+                    'idEmpleado':this.idEmpleado,
                     'idDocumentos':this.idDocumentos,
                     'idProducto':this.idProducto
                 }).then(function (response) {

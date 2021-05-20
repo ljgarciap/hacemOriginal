@@ -9,7 +9,7 @@ class Tb_kardex_almacen extends Model
     protected $table = 'tb_kardex_almacen';
 
     protected $fillable = ['fecha','detalle','cantidad','precio','cantidadSaldos','precioSaldos',
-     'idGestionMateria','tipologia'];
+    'observaciones','idEmpleado','idDocumentos','idGestionMateria','tipologia'];
 
     public $timestamps = false;
 }
