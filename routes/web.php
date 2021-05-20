@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Tb_kardex_almacen;
+use App\Tb_detalle_inventario;
+use App\Tb_inventario;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -272,16 +274,20 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::get("validarconsulta",function(){
         $detalles = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
-        ->select('tb_kardex_almacen.idGestionMateria','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
-        'tb_gestion_materia_prima.id','tb_kardex_almacen.cantidadSaldos')
-        ->distinct('tb_kardex_almacen.idGestionMateria')
-        ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
-        ->get();
-        foreach($detalles as $detalle){
-            echo ($detalle->cantidadSaldos);
-            echo ($detalle->idGestionMateria);
-            echo ($detalle->idUnidadBase);
-        }
+         ->select('tb_kardex_almacen.idGestionMateria','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
+         'tb_gestion_materia_prima.id','tb_kardex_almacen.cantidadSaldos')
+         ->distinct('tb_kardex_almacen.idGestionMateria')
+         ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
+         ->get();
+         $tb_inventario=Tb_inventario::all()->first();
+         foreach($detalles as $detalle){
+             $obj_detalle= new Tb_detalle_inventario();
+             $obj_detalle->idInventario=$tb_inventario->id;
+             $obj_detalle->idProducto=$detalle->idGestionMateria;
+             $obj_detalle->cantidadSistema=$detalle->cantidadSaldos;
+             $obj_detalle->unidadBase=$detalle->idUnidadBase;
+             $obj_detalle->save();
+         }
 
       
         

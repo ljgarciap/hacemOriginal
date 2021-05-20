@@ -64,10 +64,10 @@ class Tb_inventarioController extends Controller
          ->get();
          foreach($detalles as $detalle){
              $obj_detalle= new Tb_detalle_inventario();
-             $obj_detalle->idInventario=$tb_inventario->idInventario;
-             $obj_detalle->idGestionMateria=$detalle->idGestionMateria;
-             $obj_detalle->cantidadSaldos=$detalle->cantidadSaldos;
-             $obj_detalle->idUnidadBase=$detalle->idUnidadBase;
+             $obj_detalle->idInventario=$tb_inventario->id;
+             $obj_detalle->idProducto=$detalle->idGestionMateria;
+             $obj_detalle->cantidadSistema=$detalle->cantidadSaldos;
+             $obj_detalle->unidadBase=$detalle->idUnidadBase;
              $obj_detalle->save();
          }
          /*echo var_dump($detalles);*/

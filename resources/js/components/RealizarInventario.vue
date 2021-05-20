@@ -26,13 +26,10 @@
                                         <td>{{total.producto}}</td>
                                         <td>{{total.unidadBase}}</td>
                                         <td><input type="number" v-model="cantidad[total.id]" class="form-control" placeholder="Cantidad"></td>
-                                        <span v-show="flag">
-                                        <input type="text" v-model="idGestionMateria[total.id]">{{total.idGestionMateria}}</input>
-                                        </span>
                                 </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-primary" @click="validar(idGestionMateria)">Validar</button>
+                            <button type="button" class="btn btn-primary" @click="validar(cantidad)">Validar</button>
                             </form>
                             </div>
                             <nav>
@@ -68,9 +65,7 @@
                 modal : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
-                flag : false,
                 cantidad: [],
-                idGestionMateria: [],
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -126,14 +121,14 @@
                     console.log(error);
                 })
             },
-        validar(idGestionMateria){
+        validar(cantidad){
                 //valido con el metodo de validacion creado
                 let me=this;
                 console.log('idGestionMateria antes de solicitud');
-                console.log(idGestionMateria);
+                console.log(cantidad);
                 console.log('Fin Cargue antes de solicitud');
                 axios.post('/inventariodetalle/verificar',{
-                    data: idGestionMateria
+                    data: cantidad
                 }).then(function (response) {
                 var respuesta=response.data;
                 console.log('Respuesta');
