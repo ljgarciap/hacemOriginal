@@ -440,7 +440,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                     console.log(error);
                 })
             },
-            precio (event){
+            precioMateriaOrden(event){
                 //console.log(event.target.value);
                 this.identificadorMaterial=event.target.value;
                 let me=this;

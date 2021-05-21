@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Tb_kardex_almacen;
 use App\Tb_gestion_materia_prima;
 use App\Tb_orden_produccion;
+use App\Tb_empleado;
 use App\Tb_orden_produccion_detalle;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -59,11 +60,13 @@ class Tb_kardex_almacenController extends Controller
 
  /**/
             $productos = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
+            ->join('tb_empleado','tb_kardex_almacen.idEmpleado','=','tb_empleado.id')
             ->select('tb_kardex_almacen.id as idMateria','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
             'tb_kardex_almacen.precio',DB::raw('tb_kardex_almacen.cantidad * tb_kardex_almacen.precio as preciototal'),
-            'tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
+            'tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria','tb_empleado.id as idEmpleado',
             'tb_kardex_almacen.tipologia','tb_kardex_almacen.idDocumentos','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
-            'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as totalsaldos'))
+            'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as totalsaldos'),
+            DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS encargado"))
             ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
             ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')->paginate(5);
 
