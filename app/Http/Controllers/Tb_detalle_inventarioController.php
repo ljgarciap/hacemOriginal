@@ -58,6 +58,7 @@ class Tb_detalle_inventarioController extends Controller
 
         $cantidadActual=$request->cantidadActual;
         $cantidadSistema=$request->cantidadSistema;
+        $diferencia=$request->diferencia;
         $idProducto=0;
 
         $validarCantidad = DB::table('tb_kardex_almacen')
@@ -66,6 +67,18 @@ class Tb_detalle_inventarioController extends Controller
         ->orderByDesc('id')
         ->limit(1)
         ->get();
+         
+         $detalles = Tb_detalle_inventario::where('id','=','1')
+         ->select('id','cantidadActual','cantidadSistema','diferencia')->get();
+         
+         foreach($detalles as $detalle){
+             $cantidadActual = $detalle->cantidadActual;
+             $cantidadSistema = $detalle->cantidadSistema;
+             $diferencia = $detalle->diferencia;
+        }
+        if($cantidadSistema < $cantidadActual){
+            $diferencia=$cantidadSistema-$cantidadActual;
+        }
     }
 
     public function listar()

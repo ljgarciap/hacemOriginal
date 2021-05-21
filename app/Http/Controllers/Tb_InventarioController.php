@@ -62,6 +62,7 @@ class Tb_inventarioController extends Controller
          ->distinct('tb_kardex_almacen.idGestionMateria')
          ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
          ->get();
+         /*$tb_inventario=Tb_inventario::all()->first();*/
          foreach($detalles as $detalle){
              $obj_detalle= new Tb_detalle_inventario();
              $obj_detalle->idInventario=$tb_inventario->id;

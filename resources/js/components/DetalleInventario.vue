@@ -118,7 +118,7 @@
         methods : {
         listarDetalleInventario(page){
                 let me=this;
-                var url='/inventariodetalle/listar?page=' + page;
+                var url='/inventariodetalle?page=' + page;
                 console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
