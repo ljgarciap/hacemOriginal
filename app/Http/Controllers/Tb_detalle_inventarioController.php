@@ -22,8 +22,8 @@ class Tb_detalle_inventarioController extends Controller
             $detalles = Tb_detalle_inventario::join('tb_gestion_materia_prima','tb_detalle_inventario.idProducto','=','tb_gestion_materia_prima.id')
             ->join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
             ->select('tb_detalle_inventario.id','tb_detalle_inventario.idProducto','tb_detalle_inventario.unidadBase','tb_detalle_inventario.cantidadSistema',
-            'tb_detalle_inventario.cantidadActual','tb_detalle_inventario.observacion','tb_detalle_inventario.idInventario',
-            'tb_gestion_materia_prima.gestionMateria','tb_unidad_base.unidadBase')
+            'tb_detalle_inventario.cantidadActual','tb_detalle_inventario.diferencia','tb_detalle_inventario.observacion','tb_detalle_inventario.idInventario',
+            'tb_gestion_materia_prima.gestionMateria as producto','tb_unidad_base.unidadBase')
             ->where('tb_detalle_inventario.idInventario', '=', $identificador)->get();
 
             return ['detalles' => $detalles];
@@ -87,6 +87,15 @@ class Tb_detalle_inventarioController extends Controller
         //\Log::debug($cantidad);
         return ['inventario'=>$inventario];  
     }
+     
+    public function observacion(Request $request){
+        $observacion=$request->data;
+        $inventario=Tb_detalle_inventario::where('idInventario','=',$observacion[0])->get();
+        foreach($inventario as $i){
+            $i->observacion=$observacion[$i->id];
+            $i->save();
+        }
+    }
 
     public function listar(Request $request)
     {
@@ -111,5 +120,30 @@ class Tb_detalle_inventarioController extends Controller
             ],
             'productos' =>  $productos
         ];
+    }
+    public function listar2(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $id=$request->id;
+        $productos = Tb_detalle_inventario::join('tb_gestion_materia_prima','tb_detalle_inventario.idProducto','=','tb_gestion_materia_prima.id')
+        ->join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
+        ->select('tb_detalle_inventario.id','tb_detalle_inventario.idProducto','tb_detalle_inventario.cantidadSistema','tb_detalle_inventario.diferencia',
+        'tb_gestion_materia_prima.gestionMateria as producto','tb_unidad_base.unidadBase')
+        ->where('tb_detalle_inventario.idInventario','=',$id)
+        ->orderBy('tb_detalle_inventario.idProducto','asc')
+        ->paginate(5);
+
+        return [
+            'pagination' => [
+                'total'         =>$productos->total(),
+                'current_page'  =>$productos->currentPage(),
+                'per_page'      =>$productos->perPage(),
+                'last_page'     =>$productos->lastPage(),
+                'from'          =>$productos->firstItem(),
+                'to'            =>$productos->lastItem(),
+            ],
+            'productos' =>  $productos
+        ];
+        
     }
 }
