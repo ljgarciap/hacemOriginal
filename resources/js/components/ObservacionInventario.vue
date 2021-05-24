@@ -3,18 +3,6 @@
         <template v-if="listado==0">
         <!-- Ejemplo de tabla Listado -->
         <div>
-            <div class="form-group row">
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="id">Id</option>
-                                        <option value="idProducto">Producto</option>
-                                        </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarDetalleInventario(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarDetalleInventario(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="table-responsive">
                             <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                             <table class="table table-bordered table-striped table-sm">
@@ -23,22 +11,29 @@
                                         <th>Producto</th>
                                         <th>Unidad Base</th>
                                         <th>Cantidad Sistema</th>
-                                        <th>Cantidad Actual</th>
                                         <th>Diferencia</th>
                                         <th>Observación</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <!-- V-for inicial sin trabajar matriz
                                     <tr v-for="total in arrayProductos" :key="total.id">
                                         <td>{{total.producto}}</td>
                                         <td>{{total.unidadBase}}</td>
-                                        <td>{{total.cantidadSistema}}</td>
-                                        <td>{{total.cantidadActual}}</td>
-                                        <td>{{total.diferencia}}</td>
-                                        <td>{{total.observacion}}</td>
+                                        <td><input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad"></td>
+                                        <span v-show="flag"><input type="hidden" v-model="idGestionMateria">{{total.id}}</input></span>
                                     </tr>
+                                -->
+                                <tr v-for="total in arrayProductos" :key="total.id">
+                                        <td>{{total.producto}}</td>
+                                        <td>{{total.unidadBase}}</td>
+                                        <td>{{total.cantidadSistema}}</td>
+                                        <td>{{total.diferencia}}</td>
+                                        <td><input type="text" v-model="observacion[total.id]" class="form-control" placeholder="Observacion"></td>
+                                </tr>
                                 </tbody>
                             </table>
+                            <button type="button" class="btn btn-primary" @click="finalizar(observacion)">Finalizar</button>
                             </form>
                             </div>
                             <nav>
@@ -74,6 +69,8 @@
                 modal : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
+                cantidad: [],
+                observacion:[],
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -116,29 +113,48 @@
             }
         },
         methods : {
-        listarDetalleInventario(page,identificador){
+        listarObservacion(page,identificador){
                 let me=this;
-                var url='/inventariodetalle?page=' + page + '&id='+identificador;
+                var url='/inventariodetalle/listar2?page=' + page + '&id='+identificador;
                 console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayProductos=respuesta.detalles;
+                me.arrayProductos=respuesta.productos.data;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
+        finalizar(observacion){
+                //valido con el metodo de validacion creado
+                let me=this;
+                console.log('idGestionMateria antes de solicitud');
+                observacion[0]=this.identificador;
+                console.log(observacion,this.identificador);
+                console.log('Fin Cargue antes de solicitud');
+                axios.post('/inventariodetalle/observacion',{
+                    data: observacion
+                }).then(function (response) {
+                var respuesta=response.data;
+                console.log('Respuesta');
+                console.log(respuesta);
+                me.cerrarModal('0');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
         cambiarPagina(page){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarDetalleInventario(page,this.identificador);
+                me.listarObservacion(page,this.identificador);
             }
         },
         mounted() {
-            this.listarDetalleInventario(1,this.identificador)
+            this.listarObservacion(1,this.identificador)
         }
     }
 </script>
@@ -148,4 +164,3 @@
 	min-height: 150px;
     }
 </style>
-

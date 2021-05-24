@@ -267,8 +267,10 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get("/inventariodetalle", "Tb_detalle_inventarioController@index");
         Route::get("/inventariodetalle/listar", "Tb_detalle_inventarioController@listar");
+        Route::get("/inventariodetalle/listar2", "Tb_detalle_inventarioController@listar2");
         Route::post("/inventariodetalle/store", "Tb_detalle_inventarioController@store");
         Route::post("/inventariodetalle/verificar", "Tb_detalle_inventarioController@verificar1");
+        Route::post("/inventariodetalle/observacion", "Tb_detalle_inventarioController@observacion");
 
     });
    /* Route::get('noBorrar',function(){

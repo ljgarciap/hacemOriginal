@@ -48,13 +48,13 @@
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(inventario.id)">
                                                 <i class="icon-plus"></i><span> Realizar toma</span>
                                             </button>
-                                             <button type="button" class="btn btn-warning btn-sm" @click="abrirModal('detalle','crear',inventario.id)">
-                                                <i class="icon-cloud-upload"></i><span> Finalizar</span>
+                                             <button type="button" class="btn btn-warning btn-sm" @click="mostrarObservacion(inventario.id)">
+                                                <i class="icon-cloud-upload"></i><span> Finalizar Toma</span>
                                             </button>
                                         </template>
                                         <template v-if="inventario.estado==0">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(inventario.id)">
-                                                <i class="icon-magnifier"></i><span> Detalle toma</span>
+                                                <i class="icon-magnifier"></i><span> Detalle inventario</span>
                                             </button>
                                         </template>
                                         </td>
@@ -83,7 +83,7 @@
                 </div>
                 </template>
 
-                <template v-if="listado==1">
+                <template  v-if="listado==1">
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
@@ -101,18 +101,37 @@
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
                 </template>
-                <template v-if="listado==2">
+                <template v-if="listado==2 ">
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
                         <div class="card-header">
+                       <i class="fa fa-align-justify"></i> Observación Inventario &nbsp;
+                        </div>
+                        <div class="card-body">
+                            <observacioninventario v-bind:identificador="identificador" :key="componentKey"></observacioninventario>
+                            <p align="right">
+                                <button class="btn btn-warning"  @click="abrirModal('detalle','crear',identificador)" aria-label="Close">Finalizar Inventario</button>
+                                <button  class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Fin ejemplo de tabla Listado -->
+                </div>
+                </template>
+                <template v-if="listado==3 ">
+                <div class="container-fluid">
+                    <!-- Ejemplo de tabla Listado -->
 
+                    <div class="card">
+                        <div class="card-header">
+                       <i class="fa fa-align-justify"></i> Detalle del Inventario &nbsp;
                         </div>
                         <div class="card-body">
                             <detalleinventario v-bind:identificador="identificador" :key="componentKey"></detalleinventario>
                             <p align="right">
-                                <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
+                                <button  class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
                         </div>
                     </div>
@@ -169,10 +188,12 @@
 <script>
     import moment from 'moment';
     import realizarinventario from '../components/RealizarInventario.vue';
+    import observacioninventario from '../components/ObservacionInventario';
     import detalleinventario from '../components/DetalleInventario';
     export default {
         components: {
             realizarinventario,
+            observacioninventario,
             detalleinventario
         },
         data(){
@@ -315,8 +336,13 @@
                 this.identificador=id;
                 console.log(this.identificador);
             },
-            mostrarDetalle(id){
+            mostrarObservacion(id){
                 this.listado=2;
+                this.identificador=id;
+                console.log(this.identificador);
+            }, 
+            mostrarDetalle(id){
+                this.listado=3;
                 this.identificador=id;
                 (this.identificador);
             },
