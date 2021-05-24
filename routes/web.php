@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Tb_inventario;
+use App\Tb_detalle_inventario;
 
 /*
 |--------------------------------------------------------------------------
@@ -266,10 +268,19 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/inventariodetalle", "Tb_detalle_inventarioController@index");
         Route::get("/inventariodetalle/listar", "Tb_detalle_inventarioController@listar");
         Route::post("/inventariodetalle/store", "Tb_detalle_inventarioController@store");
-        Route::post("/inventariodetalle/verificar", "Tb_detalle_inventarioController@verificar");
+        Route::post("/inventariodetalle/verificar", "Tb_detalle_inventarioController@verificar1");
 
     });
-
+   /* Route::get('noBorrar',function(){
+        $inventario=Tb_detalle_inventario::where('idInventario','=',1)->get();
+        echo var_dump($inventario);
+        foreach($inventario as $i){
+            $i->cantidadActual=$cantidad[$i->id];
+            $i->diferencia=$i->cantidadSistema-$i->cantidadActual;
+            \Log::debug($i);
+            $i->save();
+        }
+    });*/
 
 
 //---------------------------------------------------------------------------//

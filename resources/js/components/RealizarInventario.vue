@@ -108,9 +108,9 @@
             }
         },
         methods : {
-        listarDetalleInventario(page){
+        listarDetalleInventario(page,identificador){
                 let me=this;
-                var url='/inventariodetalle/listar?page=' + page;
+                var url='/inventariodetalle/listar?page=' + page + '&id='+identificador;
                 console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
@@ -125,7 +125,8 @@
                 //valido con el metodo de validacion creado
                 let me=this;
                 console.log('idGestionMateria antes de solicitud');
-                console.log(cantidad);
+                cantidad[0]=this.identificador;
+                console.log(cantidad,this.identificador);
                 console.log('Fin Cargue antes de solicitud');
                 axios.post('/inventariodetalle/verificar',{
                     data: cantidad
@@ -144,11 +145,11 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarDetalleInventario(page);
+                me.listarDetalleInventario(page,this.identificador);
             }
         },
         mounted() {
-            this.listarDetalleInventario(1)
+            this.listarDetalleInventario(1,this.identificador)
         }
     }
 </script>

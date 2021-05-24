@@ -8,6 +8,7 @@ use App\Tb_gestion_materia_prima;
 use App\Tb_unidad_base;
 use App\Tb_almacen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class Tb_detalle_inventarioController extends Controller
@@ -55,7 +56,7 @@ class Tb_detalle_inventarioController extends Controller
     public function validar(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
-
+      
         $cantidadActual=$request->cantidadActual;
         $cantidadSistema=$request->cantidadSistema;
         $diferencia=$request->diferencia;
@@ -68,28 +69,34 @@ class Tb_detalle_inventarioController extends Controller
         ->limit(1)
         ->get();
          
-         $detalles = Tb_detalle_inventario::where('id','=','1')
-         ->select('id','cantidadActual','cantidadSistema','diferencia')->get();
-         
-         foreach($detalles as $detalle){
-             $cantidadActual = $detalle->cantidadActual;
-             $cantidadSistema = $detalle->cantidadSistema;
-             $diferencia = $detalle->diferencia;
+    }
+    public function verificar1(Request $request){
+        $cantidad=$request->data;
+        //\Log::debug($cantidad[0]);
+        $inventario=Tb_detalle_inventario::where('idInventario','=',$cantidad[0])->get();
+        foreach($inventario as $i){
+            $i->cantidadActual=$cantidad[$i->id];
+            $i->diferencia=$i->cantidadActual-$i->cantidadSistema;
+            //\Log::debug($i);
+            $i->save();
         }
-        if($cantidadSistema < $cantidadActual){
-            $diferencia=$cantidadSistema-$cantidadActual;
-        }
+        $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$cantidad[0])->get();
+        //$cantidadActual=$request->cantidadActual;
+        //$output = new Symfony\Component\Console\Output\ConsoleOutput();
+        //$output->writeln("<info>error</info>");
+        //\Log::debug($cantidad);
+        return ['inventario'=>$inventario];  
     }
 
-    public function listar()
+    public function listar(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
-
+        $id=$request->id;
         $productos = Tb_detalle_inventario::join('tb_gestion_materia_prima','tb_detalle_inventario.idProducto','=','tb_gestion_materia_prima.id')
         ->join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
         ->select('tb_detalle_inventario.id','tb_detalle_inventario.idProducto','tb_detalle_inventario.cantidadSistema',
         'tb_gestion_materia_prima.gestionMateria as producto','tb_unidad_base.unidadBase')
-        ->where('tb_detalle_inventario.idInventario','=','1')
+        ->where('tb_detalle_inventario.idInventario','=',$id)
         ->orderBy('tb_detalle_inventario.idProducto','asc')
         ->paginate(5);
 
