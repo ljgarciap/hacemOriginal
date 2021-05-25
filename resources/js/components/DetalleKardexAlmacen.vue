@@ -18,11 +18,11 @@
                                     <tr>
                                         <th>Fecha</th>
                                         <th>Detalle</th>
-
+                                        <!--
                                         <th>Movimiento<br>Cantidad</th>
                                         <th>Movimiento<br>Precio Unitario</th>
                                         <th>Movimiento<br>Precio total</th>
-                                        <!--
+                                        -->
                                         <th>Entradas<br>Cantidad</th>
                                         <th>Entradas<br>Precio Unitario</th>
                                         <th>Entradas<br>Precio total</th>
@@ -30,12 +30,12 @@
                                         <th>Salidas<br>Cantidad</th>
                                         <th>Salidas<br>Precio Unitario</th>
                                         <th>Salidas<br>Precio total</th>
-                                        -->
+
                                         <th>Saldos<br>Cantidad</th>
                                         <th>Saldos<br>Precio Unitario</th>
                                         <th>Saldos<br>Precio total</th>
 
-                                        <th>Encargado<br>Nombre Empleado</th>
+                                        <!-- <th>Encargado<br>Nombre Empleado</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,12 +47,11 @@
                                         <td v-else-if="total.idDocumentos==4"><span class="badge badge-warning">Devolución Factura {{total.detalle}}</span></td>
                                         <td v-else-if="total.idDocumentos==5"><span class="badge badge-warning">Entrega Orden {{total.detalle}}</span></td>
                                         <td v-else><span class="badge badge-secondary">{{total.detalle}}</span></td>
-
+                                            <!--
                                             <td>{{total.cantidad}}</td>
                                             <td>{{total.precio}}</td>
                                             <td>{{total.preciototal}}</td>
-
-                                            <!--
+                                            -->
                                             <td v-if="total.tipologia==1">{{total.cantidad}}</td>
                                             <td v-if="total.tipologia==1">{{total.precio}}</td>
                                             <td v-if="total.tipologia==1">{{total.preciototal}}</td>
@@ -66,13 +65,13 @@
                                             <td v-if="total.tipologia==2">{{total.cantidad}}</td>
                                             <td v-if="total.tipologia==2">{{total.precio}}</td>
                                             <td v-if="total.tipologia==2">{{total.preciototal}}</td>
-                                            -->
+
 
                                         <td>{{total.cantidadSaldos}}</td>
                                         <td>{{total.precioSaldos}}</td>
                                         <td>{{total.totalsaldos}}</td>
 
-                                        <td>{{total.encargado}}</td>
+                                        <!-- <td>{{total.encargado}}</td> -->
                                     </tr>
                                 </tbody>
                             </table>
