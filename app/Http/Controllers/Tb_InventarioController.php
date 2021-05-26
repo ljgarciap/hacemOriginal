@@ -95,7 +95,7 @@ class Tb_inventarioController extends Controller
 
         $idInventario= $request->id;
         $tb_inventario=Tb_inventario::findOrFail($request->id);
-        $tb_inventario->estado=0;
+        $tb_inventario->estado=2;
         $tb_inventario->save();
 
     }

@@ -48,8 +48,10 @@
                                             <button type="button" class="btn btn-danger btn-sm" @click="mostrarProductos(inventario.id)">
                                                 <i class="icon-plus"></i><span> Realizar toma</span>
                                             </button>
-                                             <button type="button" class="btn btn-warning btn-sm" @click="mostrarObservacion(inventario.id)">
-                                                <i class="icon-cloud-upload"></i><span> Finalizar Toma</span>
+                                        </template>
+                                         <template v-if="inventario.estado==2">
+                                           <button type="button" class="btn btn-warning btn-sm" @click="mostrarObservacion(inventario.id)">
+                                                <i class="icon-plus"></i><span> Realizar Observación</span>
                                             </button>
                                         </template>
                                         <template v-if="inventario.estado==0">
@@ -112,7 +114,6 @@
                         <div class="card-body">
                             <observacioninventario v-bind:identificador="identificador" :key="componentKey"></observacioninventario>
                             <p align="right">
-                                <button class="btn btn-warning"  @click="abrirModal('detalle','crear',identificador)" aria-label="Close">Finalizar Inventario</button>
                                 <button  class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
                         </div>

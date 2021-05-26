@@ -30,13 +30,14 @@
                                         <td>{{total.cantidadSistema}}</td>
                                         <td>{{total.diferencia}}</td>
                                         <td><input type="text" v-model="observacion[total.id]" class="form-control" placeholder="Observacion"></td>
-                                         <!--<input type="hidden" name="idInventario[]" value="{{total.idInventario}}"
+                                         <!--<input type="hidden" name="idInventario[]" value="@{{total.idInventario}}"
                                          <td>
                                              <input type="hidden" name="idInventario[]" value="{{total.idInventario}}">
                                          </td>-->
                                 </tr>
                                 </tbody>
                             </table>
+                            <button type="button" class="btn btn-primary" @click="finalizar(observacion)">Finalizar</button>
                             </form>
                             </div>
                             <nav>
