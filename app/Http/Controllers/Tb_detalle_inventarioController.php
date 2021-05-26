@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Tb_detalle_inventario;
+use App\Tb_inventario;
 use App\Tb_kardex_almacen;
 use App\Tb_gestion_materia_prima;
 use App\Tb_unidad_base;
@@ -90,7 +91,7 @@ class Tb_detalle_inventarioController extends Controller
      
     public function observacion(Request $request){
         $observacion=$request->data;
-        $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$observacion[0])->get();
+        $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$request->idInventario)->get();
         foreach($inventario as $i){
             $i->observacion=$observacion[$i->id];
             $i->save();
