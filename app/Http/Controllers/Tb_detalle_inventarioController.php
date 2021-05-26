@@ -90,11 +90,21 @@ class Tb_detalle_inventarioController extends Controller
      
     public function observacion(Request $request){
         $observacion=$request->data;
-        $inventario=Tb_detalle_inventario::where('idInventario','=',$observacion[0])->get();
+        $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$observacion[0])->get();
         foreach($inventario as $i){
             $i->observacion=$observacion[$i->id];
             $i->save();
+            if($i->diferencia>0){
+                //realizar entrada
+            }
+            else{
+                //realizar salida
+            }
         }
+        $tb_inventario=Tb_inventario::findOrFail($request->idInventario);
+        $tb_inventario->estado=0;
+        $tb_inventario->save();
+        return ['inventario'=>$inventario];
     }
 
     public function listar(Request $request)
@@ -130,6 +140,7 @@ class Tb_detalle_inventarioController extends Controller
         ->select('tb_detalle_inventario.id','tb_detalle_inventario.idProducto','tb_detalle_inventario.cantidadSistema','tb_detalle_inventario.diferencia',
         'tb_gestion_materia_prima.gestionMateria as producto','tb_unidad_base.unidadBase')
         ->where('tb_detalle_inventario.idInventario','=',$id)
+        ->where('tb_detalle_inventario.diferencia','!=',0)
         ->orderBy('tb_detalle_inventario.idProducto','asc')
         ->paginate(5);
 
