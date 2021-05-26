@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Tb_detalle_inventario;
+use App\Tb_inventario;
 use App\Tb_kardex_almacen;
 use App\Tb_gestion_materia_prima;
 use App\Tb_unidad_base;
@@ -56,7 +57,7 @@ class Tb_detalle_inventarioController extends Controller
     public function validar(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
-      
+
         $cantidadActual=$request->cantidadActual;
         $cantidadSistema=$request->cantidadSistema;
         $diferencia=$request->diferencia;
@@ -68,7 +69,7 @@ class Tb_detalle_inventarioController extends Controller
         ->orderByDesc('id')
         ->limit(1)
         ->get();
-         
+
     }
     public function verificar1(Request $request){
         $cantidad=$request->data;
@@ -85,9 +86,9 @@ class Tb_detalle_inventarioController extends Controller
         //$output = new Symfony\Component\Console\Output\ConsoleOutput();
         //$output->writeln("<info>error</info>");
         //\Log::debug($cantidad);
-        return ['inventario'=>$inventario];  
+        return ['inventario'=>$inventario];
     }
-     
+
     public function observacion(Request $request){
         $observacion=$request->data;
         $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$observacion[0])->get();
@@ -155,6 +156,6 @@ class Tb_detalle_inventarioController extends Controller
             ],
             'productos' =>  $productos
         ];
-        
+
     }
 }

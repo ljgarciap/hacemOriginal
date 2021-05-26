@@ -131,16 +131,16 @@
                                         <div v-if="desplegable==1" class="col-md-9">
                                             <select class="form-control" v-model="idDocumentos" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
-                                                <option value="1">Compra de material</option>
-                                                <option value="2">Devolución de producción</option>
+                                                <option value="1">Entrega de producción</option>
+                                                <option value="2">Devolución de pedido</option>
                                                 <!-- <option value="3">Inventario inicial</option> -->
                                             </select>
                                         </div>
                                         <div v-else-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
                                             <select class="form-control" v-model="idDocumentos" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
-                                                <option value="4">Devolución a proveedor</option>
-                                                <option value="5">Entrega de material</option>
+                                                <option value="4">Devolución a producción</option>
+                                                <option value="5">Entrega de producto</option>
                                                 <option value="6">Bajas</option>
                                                 <!-- <option value="7">Ajuste de inventario</option> -->
                                             </select>
