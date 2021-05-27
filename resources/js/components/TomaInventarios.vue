@@ -362,6 +362,8 @@
                 });
             },
             ocultarDetalle(){
+                this.listarInventario(1,this.buscar,this.criterio);
+                this.forceRerender();
                 this.listado=0;
             },
             cambiarlistado(payload){
