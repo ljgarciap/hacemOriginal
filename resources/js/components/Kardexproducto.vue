@@ -158,7 +158,7 @@
                                         <label v-if="flag==8" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
                                         <!--En detalle va el numero de documento en este caso de la orden de pedido-->
                                         <div v-if="flag==8" class="col-md-9">
-                                            <select class="form-control" v-model="detalle" @change='materiaOrden($event)'>
+                                            <select class="form-control" v-model="detalle" @change='productosOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
                                                 <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
                                             </select>
@@ -167,7 +167,7 @@
 
                                         <label v-if="flag==9" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
                                         <div v-if="flag==9" class="col-md-9">
-                                            <select class="form-control" v-model="detalle" @change='materiaOrden($event)'>
+                                            <select class="form-control" v-model="detalle" @change='productosOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
                                                 <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
                                             </select>
@@ -182,17 +182,17 @@
                                         <label v-if="flag!=0" class="col-md-3 form-control-label" for="email-input">Productos</label>
 
                                         <div v-if="flag==8" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioProductosOrden($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductos" :key="producto.idMateria" :value="producto.idMateria" v-text="producto.materia"></option>
+                                                <option v-for="producto in arrayProductosOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
 
                                         <div v-else-if="flag==9" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
+                                            <select class="form-control" v-model="idProducto" @change='precioProductosPromedio($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayMateriaPrima" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
+                                                <option v-for="producto in arrayProductosOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                              <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
@@ -269,7 +269,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 saldos:'',
                 arrayProductos : [],
                 arrayKardexes : [],
-                arrayMateriaOrden : [],
+                arrayProductosOrden : [],
                 arrayMateriaFactura : [],
                 arrayFactura : [],
                 arrayOrdenes : [],
@@ -333,22 +333,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             //console.log(event.target.value);
             this.flag=event.target.value;
             },
-            precioMateriaCompra(event){
-                //console.log(event.target.value);
-                this.identificadorMaterial=event.target.value;
-                let me=this;
-                var url='/kardexproducto/preciomaterialcompra?material='+this.identificadorMaterial+'&proveedor='+this.identificadorProveedor+'&factura='+this.identificadorFactura;
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.precio=respuesta.valorMaterial;
-                console.log(url);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            precioMateriaOrden(event){
+            precioProductosOrden(event){
                 //console.log(event.target.value);
                 this.identificadorProducto=event.target.value;
                 let me=this;
@@ -363,14 +348,14 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     console.log(error);
                 })
             },
-            materiaOrden(event){
+            productosOrden(event){
                 //console.log(event.target.value);
                 this.identificadorHoja=event.target.value;
                 let me=this;
-                var url='/kardexproducto/material/'+this.identificadorHoja;
+                var url='/kardexproducto/productos/'+this.identificadorHoja;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayMateriaOrden=respuesta.materiales;
+                me.arrayProductosOrden=respuesta.materiales;
                 console.log(url);
                 })
                 .catch(function (error) {
@@ -400,21 +385,6 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayFactura=respuesta.materiales;
-                console.log(url);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            materialFactura(event){
-                //console.log(event.target.value);
-                this.identificadorFactura=event.target.value;
-                let me=this;
-                var url='/kardexproducto/materialfactura?factura='+this.identificadorFactura;
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayMateriaFactura=respuesta.materiales;
                 console.log(url);
                 })
                 .catch(function (error) {
@@ -462,7 +432,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             forceRerender() {
                 this.componentKey += 1;
                },
-            listarMaterias(){
+            listarProductos(){
                 let me=this;
                 var url='/kardexproductogeneral';
                 axios.get(url).then(function (response) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Tb_kardex_producto_terminado;
 use App\Tb_producto;
+use App\Tb_orden_pedido_cliente_detalle;
 use App\Tb_orden_produccion;
 use App\Tb_orden_produccion_detalle;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,6 @@ class Tb_kardex_producto_terminadoController extends Controller
         ];
 
     }
-
     public function listar(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
@@ -100,12 +100,12 @@ class Tb_kardex_producto_terminadoController extends Controller
         return ['ordenes' =>  $ordenes];
 
     }
-    public function material($identificador) //PARA TRAER DATOS ACORDE
+    public function productos($identificador) //PARA TRAER DATOS ACORDE
     {
         //if(!$request->ajax()) return redirect('/');
-        $materiales = Tb_orden_produccion_detalle::join('tb_producto','tb_orden_produccion_detalle.idGestionMateria','=','tb_producto.id')
+        $materiales = Tb_orden_pedido_cliente_detalle::join('tb_producto','tb_orden_pedido_cliente_detalle.idProducto','=','tb_producto.id')
             ->select('tb_producto.producto as producto','tb_producto.id')
-            ->where('tb_orden_produccion_detalle.idOrdenProduccion', '=', $identificador)
+            ->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $identificador)
             ->orderBy('tb_producto.id','asc')
             ->get();
 
@@ -132,7 +132,41 @@ class Tb_kardex_producto_terminadoController extends Controller
             'valorProducto' =>  $valorProducto
         ];
     }
-    public function preciomaterialcompra(Request $request) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
+    public function precioproductosorden(Request $request) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $identificador=$request->producto;
+        $proveedor=$request->proveedor;
+        $kardexes=$request->factura;
+
+        $registros = DB::table('tb_kardex_producto_terminado')->where('id', '=', $kardexes)->get();
+
+        foreach ($registros as $registro) {
+            $factura = $registro->detalle;
+        }
+
+        $preciomaterial = Tb_kardex_producto_terminado::first()
+        ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precio as valorMaterial')
+        ->where([
+            ['tb_kardex_producto_terminado.idDocumentos', '=', '1'],
+            ['tb_kardex_producto_terminado.tipologia', '=', '1'],
+            ['tb_kardex_producto_terminado.observaciones', '=', $proveedor],
+            ['tb_kardex_producto_terminado.detalle', '=', $factura],
+            ['tb_kardex_producto_terminado.idProducto', '=', $identificador],
+        ])
+        ->get();
+
+        foreach($preciomaterial as $totalg){
+            $id = $totalg->id;
+            $valorMaterial = $totalg->valorMaterial;
+        }
+
+         return [
+            'id' => $id,
+            'valorMaterial' =>  $valorMaterial
+        ];
+    }
+    public function precioproductosorden1(Request $request) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador=$request->material;
@@ -165,51 +199,6 @@ class Tb_kardex_producto_terminadoController extends Controller
             'id' => $id,
             'valorMaterial' =>  $valorMaterial
         ];
-    }
-    public function factura(Request $request) //PARA TRAER DATOS ACORDE
-    {
-        //if(!$request->ajax()) return redirect('/');
-        $proveedor=$request->proveedor;
-        $materiales = Tb_kardex_producto_terminado::join('tb_proveedores','tb_kardex_producto_terminado.observaciones','=','tb_proveedores.id')
-            ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.detalle as factura','tb_proveedores.razonSocial as proveedor',
-            DB::raw("CONCAT('Factura: ',tb_kardex_producto_terminado.detalle,' - ',tb_proveedores.razonSocial) AS detallado"))
-            ->where([
-                ['tb_kardex_producto_terminado.idDocumentos', '=', '1'],
-                ['tb_kardex_producto_terminado.tipologia', '=', '1'],
-                ['tb_kardex_producto_terminado.observaciones', '=', $proveedor],
-            ])
-            ->whereIn('tb_kardex_producto_terminado.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_producto_terminado')->groupBy('tb_kardex_producto_terminado.detalle');})
-            ->orderBy('tb_kardex_producto_terminado.detalle','asc')
-            ->get();
-
-        return ['materiales' =>  $materiales];
-
-    }
-    public function materialfactura(Request $request) //PARA TRAER DATOS ACORDE
-    {
-        //if(!$request->ajax()) return redirect('/');
-        $kardexes=$request->factura;
-        $registros = DB::table('tb_kardex_producto_terminado')->where('id', '=', $kardexes)->get();
-
-        foreach ($registros as $registro) {
-            $factura = $registro->detalle;
-            $proveedor = $registro->observaciones;
-        }
-
-        $materiales = Tb_kardex_producto_terminado::join('tb_producto','tb_kardex_producto_terminado.idProducto','=','tb_producto.id')
-            ->select('tb_kardex_producto_terminado.idProducto','tb_producto.producto as producto','tb_producto.id')
-            ->distinct('tb_kardex_producto_terminado.idProducto')
-            ->where([
-                ['tb_kardex_producto_terminado.idDocumentos', '=', '1'],
-                ['tb_kardex_producto_terminado.tipologia', '=', '1'],
-                ['tb_kardex_producto_terminado.detalle', '=', $factura],
-                ['tb_kardex_producto_terminado.observaciones', '=', $proveedor],
-            ])
-            ->orderBy('tb_producto.id','asc')
-            ->get();
-
-        return ['materiales' =>  $materiales];
-
     }
     public function store(Request $request)
     {
