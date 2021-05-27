@@ -112,24 +112,24 @@ class Tb_kardex_producto_terminadoController extends Controller
         return ['materiales' =>  $materiales];
 
     }
-    public function preciomaterialorden(Request $request) //DATOS de valor segun orden 2 5 y 6 traigo segun idmateria el valor promedio del kardex
+    public function precioproductospromedio(Request $request) //DATOS de valor segun orden 2 5 y 6 traigo segun idmateria el valor promedio del kardex
     {
         //if(!$request->ajax()) return redirect('/');
-        $identificador=$request->material;
+        $identificador=$request->producto;
         $preciomaterial = Tb_kardex_producto_terminado::first()
-        ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precioSaldos as valorMaterial')
+        ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precioSaldos as valorProducto')
         ->whereIn('tb_kardex_producto_terminado.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_producto_terminado')->groupBy('tb_kardex_producto_terminado.idProducto');})
         ->where('tb_kardex_producto_terminado.idProducto', '=', $identificador)
         ->get();
 
         foreach($preciomaterial as $totalg){
             $id = $totalg->id;
-            $valorMaterial = $totalg->valorMaterial;
+            $valorProducto = $totalg->valorProducto;
         }
 
          return [
             'id' => $id,
-            'valorMaterial' =>  $valorMaterial
+            'valorProducto' =>  $valorProducto
         ];
     }
     public function preciomaterialcompra(Request $request) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
