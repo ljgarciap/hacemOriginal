@@ -94,7 +94,7 @@
                             <i class="fa fa-align-justify"></i> Realizar Inventario &nbsp;
                             </div>
                         <div class="card-body">
-                            <realizarinventario v-bind:identificador="identificador" :key="componentKey"></realizarinventario>
+                            <realizarinventario v-bind:identificador="identificador" :key="componentKey" @cambiarlistado="cambiarlistado"></realizarinventario>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -170,7 +170,7 @@
                                     </div>
                                     <div v-if="tipoModal==3" class="carga">
                                         <p><hr><h1>Generando, por favor espere...</h1><hr></p>
-                                    </div> 
+                                    </div>
                                 </form>
                             </div>
                             <div v-if="tipoModal==1" class="modal-footer">
@@ -341,7 +341,7 @@
                 this.listado=2;
                 this.identificador=id;
                 console.log(this.identificador);
-            }, 
+            },
             mostrarDetalle(id){
                 this.listado=3;
                 this.identificador=id;
@@ -363,6 +363,10 @@
             },
             ocultarDetalle(){
                 this.listado=0;
+            },
+            cambiarlistado(payload){
+                //this.listado=2;
+                this.listado = payload.message;
             },
             cerrarModal(variable){
                 this.modal=this.variable;

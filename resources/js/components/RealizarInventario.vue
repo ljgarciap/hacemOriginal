@@ -14,14 +14,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <!-- V-for inicial sin trabajar matriz
-                                    <tr v-for="total in arrayProductos" :key="total.id">
-                                        <td>{{total.producto}}</td>
-                                        <td>{{total.unidadBase}}</td>
-                                        <td><input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad"></td>
-                                        <span v-show="flag"><input type="hidden" v-model="idGestionMateria">{{total.id}}</input></span>
-                                    </tr>
-                                -->
                                 <tr v-for="total in arrayProductos" :key="total.id">
                                         <td>{{total.producto}}</td>
                                         <td>{{total.unidadBase}}</td>
@@ -134,6 +126,7 @@
                 var respuesta=response.data;
                 console.log('Respuesta');
                 console.log(respuesta);
+                me.$emit('cambiarlistado', { message: '2' });
                 me.cerrarModal('0');
                 })
                 .catch(function (error) {
