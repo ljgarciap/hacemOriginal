@@ -86,23 +86,29 @@ class Tb_detalle_inventarioController extends Controller
         //$output = new Symfony\Component\Console\Output\ConsoleOutput();
         //$output->writeln("<info>error</info>");
         //\Log::debug($cantidad);
+        $idInventario=$request->id;
+        $tb_inventario=Tb_inventario::findOrFail($request->id);
+        $tb_inventario->estado=2;
+        $tb_inventario->save();
         return ['inventario'=>$inventario];
     }
 
     public function observacion(Request $request){
         $observacion=$request->data;
-        $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$request->idInventario)->get();
+        $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$observacion[0])->get();
+        //$inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$request->idInventario)->get();
         foreach($inventario as $i){
             $i->observacion=$observacion[$i->id];
             $i->save();
-            if($i->diferencia>0){
+            /*if($i->diferencia>0){
                 //realizar entrada
             }
             else{
                 //realizar salida
-            }
+            }*/
         }
-        $tb_inventario=Tb_inventario::findOrFail($request->idInventario);
+        $idInventario=$request->id;
+        $tb_inventario=Tb_inventario::findOrFail($request->id);
         $tb_inventario->estado=0;
         $tb_inventario->save();
         return ['inventario'=>$inventario];

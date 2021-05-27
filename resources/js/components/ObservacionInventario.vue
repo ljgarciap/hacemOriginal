@@ -30,14 +30,14 @@
                                         <td>{{total.cantidadSistema}}</td>
                                         <td>{{total.diferencia}}</td>
                                         <td><input type="text" v-model="observacion[total.id]" class="form-control" placeholder="Observacion"></td>
-                                         <!--<input type="hidden" name="idInventario[]" value="@{{total.idInventario}}"
+                                         <!--<input type="hidden" value="@{{ total.idInventario}}" v-model="idInventario" />
                                          <td>
                                              <input type="hidden" name="idInventario[]" value="{{total.idInventario}}">
                                          </td>-->
                                 </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-primary" @click="finalizar(observacion)">Finalizar</button>
+                            <button type="button" class="btn btn-warning" @click="finalizar(observacion)">Finalizar Inventario</button>
                             </form>
                             </div>
                             <nav>
@@ -138,11 +138,13 @@
                 console.log(observacion,this.identificador);
                 console.log('Fin Cargue antes de solicitud');
                 axios.post('/inventariodetalle/observacion',{
-                    data: observacion
+                    data: observacion,
+                     'id': this.identificador
                 }).then(function (response) {
                 var respuesta=response.data;
                 console.log('Respuesta');
                 console.log(respuesta);
+                me.$emit('finalizarlistado', { message: '3' });
                 me.cerrarModal('0');
                 })
                 .catch(function (error) {

@@ -89,15 +89,15 @@ class Tb_inventarioController extends Controller
         ->get();
         return ['empleados' => $empleados];
     }
-    public function estado(Request $request)
+    /*public function estado(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
 
         $idInventario= $request->id;
         $tb_inventario=Tb_inventario::findOrFail($request->id);
-        $tb_inventario->estado=2;
+        $tb_inventario->estado=0;
         $tb_inventario->save();
 
-    }
+    }*/
         /**/
 }

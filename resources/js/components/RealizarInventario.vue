@@ -121,7 +121,8 @@
                 console.log(cantidad,this.identificador);
                 console.log('Fin Cargue antes de solicitud');
                 axios.post('/inventariodetalle/verificar',{
-                    data: cantidad
+                    data: cantidad,
+                    'id': this.identificador
                 }).then(function (response) {
                 var respuesta=response.data;
                 console.log('Respuesta');

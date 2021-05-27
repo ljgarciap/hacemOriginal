@@ -112,7 +112,7 @@
                        <i class="fa fa-align-justify"></i> Observación Inventario &nbsp;
                         </div>
                         <div class="card-body">
-                            <observacioninventario v-bind:identificador="identificador" :key="componentKey"></observacioninventario>
+                            <observacioninventario v-bind:identificador="identificador" :key="componentKey" @finalizarlistado="finalizarlistado"></observacioninventario>
                             <p align="right">
                                 <button  class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -365,6 +365,10 @@
                 this.listado=0;
             },
             cambiarlistado(payload){
+                //this.listado=2;
+                this.listado = payload.message;
+            },
+            finalizarlistado(payload){
                 //this.listado=2;
                 this.listado = payload.message;
             },
