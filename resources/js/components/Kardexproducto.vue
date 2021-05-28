@@ -138,7 +138,7 @@
                                         <div v-else-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
                                             <select class="form-control" v-model="idDocumentos" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
-                                                <option value="9">Devolución a producción</option>
+                                                <!-- <option value="9">Devolución a producción</option> -->
                                                 <option value="10">Entrega de pedido</option>
                                                 <!-- <option value="7">Ajuste de inventario</option> -->
                                             </select>
@@ -174,6 +174,15 @@
                                             <span class="help-block">(*) Seleccione el número de orden de producción a la que devuelve</span>
                                         </div>
 
+                                        <label v-if="flag==10" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
+                                        <div v-if="flag==10" class="col-md-9">
+                                            <select class="form-control" v-model="detalle" @change='productosOrden($event)'>
+                                                <option value="0" disabled>Seleccione orden de producción</option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                            </select>
+                                            <span class="help-block">(*) Detalle a quien entrega</span>
+                                        </div>
+
                                     </div>
                                         <!--Cierre sección número documento-->
 
@@ -181,20 +190,12 @@
                                         <!--Inicio sección datos-->
                                         <label v-if="flag!=0" class="col-md-3 form-control-label" for="email-input">Productos</label>
 
-                                        <div v-if="flag==8" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto" @change='precioProductosOrden($event)'>
+                                        <div v-if="flag==8 || flag==10" class="col-md-9">
+                                            <select class="form-control" v-model="idProducto" @change='precioProductosOrden($event,producto.idOrdenPedido)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
                                                 <option v-for="producto in arrayProductosOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el producto</span>
-                                        </div>
-
-                                        <div v-else-if="flag==9" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto" @change='precioProductosPromedio($event)'>
-                                                <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductosOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
-                                            </select>
-                                             <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
 
                                     </div>
@@ -209,18 +210,13 @@
 
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <!--Revisar-->
-                                        <label v-if="flag==8" class="col-md-3 form-control-label" for="text-input">Precio</label>
-                                        <div v-if="flag==8" class="col-md-9">
+                                        <label v-if="flag==8 || flag==10" class="col-md-3 form-control-label" for="text-input">Precio</label>
+                                        <div v-if="flag==8 || flag==10" class="col-md-9">
                                             <input type="number" v-model="precio" class="form-control" placeholder="Precio">
                                             <span class="help-block">(*) Ingrese el Precio</span>
                                         </div>
-                                        <label v-if="flag==9" class="col-md-3 form-control-label" for="text-input">Precio</label>
-                                        <div v-if="flag==9" class="col-md-9"><!-- Orden->se trae de kardex promedio arrayMateriaOrden-->
-                                            <input type="number" v-model="precio" step="0.01" class="form-control" readonly>
-                                            <span class="help-block">(*) Precio promedio</span>
-                                        </div>
-
                                     </div>
+
                                         <!--Cierre sección datos-->
 
                                     <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorKardex">
@@ -261,6 +257,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 factura : '',
                 cantidadSaldos:'',
                 precioSaldos:'',
+                precio:'',
                 cantidad:'',
                 detalle:'',
                 observaciones:'Ninguna',
@@ -333,11 +330,11 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             //console.log(event.target.value);
             this.flag=event.target.value;
             },
-            precioProductosOrden(event){
+            precioProductosOrden(event,idOrdenPedido){
                 //console.log(event.target.value);
                 this.identificadorProducto=event.target.value;
                 let me=this;
-                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto;
+                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto+'&ordenpedido='+this.idOrdenPedido;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.precio=respuesta.valorProducto;
@@ -355,6 +352,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 var url='/kardexproducto/productos/'+this.identificadorHoja;
                 console.log('Url de productos');
                 console.log(url);
+                console.log('Identificador');
+                console.log(this.identificadorHoja);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductosOrden=respuesta.materiales;
@@ -419,7 +418,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     'precio':this.precio,
                     'tipologia':this.tipologia,
                     'observaciones':this.observaciones,
-                    'idDocumentos':this.idDocumentos,
+                    'idDocumentos':this.flag,
                     'idProducto':this.idProducto
                 }).then(function (response) {
                 me.cerrarModal('0');

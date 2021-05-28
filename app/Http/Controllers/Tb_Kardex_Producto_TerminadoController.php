@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Tb_kardex_producto_terminado;
 use App\Tb_producto;
+use App\Tb_orden_pedido_cliente;
 use App\Tb_orden_pedido_cliente_detalle;
 use App\Tb_orden_produccion;
 use App\Tb_orden_produccion_detalle;
@@ -102,10 +103,18 @@ class Tb_kardex_producto_terminadoController extends Controller
     }
     public function productos($identificador) //PARA TRAER DATOS ACORDE
     {
+        $ordenes = Tb_orden_pedido_cliente_detalle::select('tb_orden_pedido_cliente_detalle.idOrdenPedido as idOrdenPedido')
+            ->where('tb_orden_pedido_cliente_detalle.id', '=', $identificador)
+            ->get();
+
+        foreach($ordenes as $orden){
+            $identiforden = $orden->idOrdenPedido;
+        }
         //if(!$request->ajax()) return redirect('/');
         $materiales = Tb_orden_pedido_cliente_detalle::join('tb_producto','tb_orden_pedido_cliente_detalle.idProducto','=','tb_producto.id')
-            ->select('tb_producto.producto as producto','tb_producto.id')
-            ->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $identificador)
+            ->select('tb_producto.producto as producto','tb_producto.id','tb_orden_pedido_cliente_detalle.precioCosto',
+            'tb_orden_pedido_cliente_detalle.precioVenta','tb_orden_pedido_cliente_detalle.idOrdenPedido')
+            ->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $identiforden)
             ->orderBy('tb_producto.id','asc')
             ->get();
 
@@ -116,14 +125,16 @@ class Tb_kardex_producto_terminadoController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador=$request->producto;
-        $preciomaterial = Tb_kardex_producto_terminado::first()
-        ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precioSaldos as valorProducto')
-        ->whereIn('tb_kardex_producto_terminado.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_producto_terminado')->groupBy('tb_kardex_producto_terminado.idProducto');})
-        ->where('tb_kardex_producto_terminado.idProducto', '=', $identificador)
+        $identificadororden=$request->ordenpedido;
+        $preciomaterial = Tb_orden_pedido_cliente_detalle::first()
+        ->select('tb_orden_pedido_cliente_detalle.id','tb_orden_pedido_cliente_detalle.precioCosto','tb_orden_pedido_cliente_detalle.precioVenta as valorProducto')
+        ->where('tb_orden_pedido_cliente_detalle.idProducto', '=', $identificador)
+        ->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $identificadororden)
         ->get();
 
         foreach($preciomaterial as $totalg){
             $id = $totalg->id;
+            $valorCosto = $totalg->precioCosto;
             $valorProducto = $totalg->valorProducto;
         }
 
@@ -224,16 +235,16 @@ class Tb_kardex_producto_terminadoController extends Controller
         }
 
         $tb_kardex_producto_terminado=new Tb_kardex_producto_terminado();
+        $tb_kardex_producto_terminado->fecha=$fecha;
         $tb_kardex_producto_terminado->detalle=$detalle;
         $tb_kardex_producto_terminado->cantidad=$cantidad;
         $tb_kardex_producto_terminado->precio=$precio;
-        $tb_kardex_producto_terminado->idProducto=$idProducto;
-        $tb_kardex_producto_terminado->observaciones=$observaciones;
-        $tb_kardex_producto_terminado->idDocumentos=$idDocumentos;
-        $tb_kardex_producto_terminado->tipologia=$tipologia;
-        $tb_kardex_producto_terminado->fecha=$fecha;
         $tb_kardex_producto_terminado->cantidadSaldos=$suma1;
         $tb_kardex_producto_terminado->precioSaldos=$suma2;
+        $tb_kardex_producto_terminado->observaciones=$observaciones;
+        $tb_kardex_producto_terminado->idDocumentos=$idDocumentos;
+        $tb_kardex_producto_terminado->idProducto=$idProducto;
+        $tb_kardex_producto_terminado->tipologia=$tipologia;
         $tb_kardex_producto_terminado->save();
     }
 }
