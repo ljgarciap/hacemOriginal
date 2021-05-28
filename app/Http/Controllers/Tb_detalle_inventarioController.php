@@ -92,39 +92,133 @@ class Tb_detalle_inventarioController extends Controller
         $tb_inventario->save();
         return ['inventario'=>$inventario];
     }
-
     public function observacion(Request $request){
         $observacion=$request->data;
         $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$observacion[0])->get();
         //$inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$request->idInventario)->get();
+/*
+        $inventario=Tb_detalle_inventario::join('tb_inventario','tb_detalle_inventario.idInventario','=','tb_inventario.id')
+        ->select('tb_inventario.idEmpleado as idEmpleado','tb_inventario.fecha as fecha','tb_detalle_inventario.idProducto as idProducto',
+        'tb_detalle_inventario.diferencia as diferencia','tb_detalle_inventario.observacion as observacion',
+        'tb_detalle_inventario.idInventario as idInventario')
+        ->where('tb_detalle_inventario.diferencia','!=',0)->where('tb_detalle_inventario.idInventario','=',$observacion[0])->get();
+*/
         foreach($inventario as $i){
             $i->observacion=$observacion[$i->id];
+            //$i->observacion=$i->idInventario;
             $i->save();
-            if($i->diferencia>0){
+
+            $identinv=$i->idInventario;
+            $identprod=$i->idProducto;
+
+        /**/
+        $inventariocom=Tb_detalle_inventario::join('tb_inventario','tb_detalle_inventario.idInventario','=','tb_inventario.id')
+        ->select('tb_inventario.idEmpleado as idEmpleado','tb_inventario.fecha as fecha','tb_detalle_inventario.idProducto as idProducto',
+        'tb_detalle_inventario.diferencia as diferencia','tb_detalle_inventario.observacion as observacion',
+        'tb_detalle_inventario.idInventario as idInventario')
+        ->where('tb_detalle_inventario.idInventario','=',$identinv)
+        ->where('tb_detalle_inventario.idProducto','=',$identprod)->get();
+
+        foreach($inventariocom as $inv){
+            $fecha=$inv->fecha;
+            $idProducto = $inv->idProducto;
+            $observaciones=$inv->observacion;
+            $idDocumentos=7;
+            $idEmpleado=$inv->idEmpleado;
+            $cons=$inv->idInventario;
+            $detalle="INV".$cons;
+            }
+
+            if($inv->diferencia>0){
                 //realizar entrada
-                $now = new \DateTime();
-                $fecha=$now->format('Y-m-d');
-
-                $kardex=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$observacion[0])->get();
-                foreach($kardex as $kar){
-                    $idProducto = $kar->idProducto;
-
-                }
-//voy aca este bloque es para ir sacando los datos
-        $detalle=$request->detalle;
-        $cantidad=$request->cantidad;
-        $precio=$request->precio;
-        $observaciones=$request->observaciones;
-        $idDocumentos=$request->idDocumentos;
-        $tipologia=$request->tipologia;
-        $idEmpleado=$request->idEmpleado;
-        $valorE=($precio*$cantidad);
-//voy aca este bloque es para ir sacando los datos
+                $tipologia=1;
+                $cantidad=$i->diferencia;
             }
             else{
                 //realizar salida
+                $tipologia=2;
+                $cantidadneg=$i->diferencia;
+                $cantidad=abs($cantidadneg);
+            }
 
-            }/*Verificar*/
+                $valorparcial=0;
+
+                $preciomaterial = Tb_kardex_almacen::first()
+                ->select('tb_kardex_almacen.id','tb_kardex_almacen.precioSaldos as valorMaterial')
+                ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')
+                ->groupBy('tb_kardex_almacen.idGestionMateria');})
+                ->where('tb_kardex_almacen.idGestionMateria', '=', $idProducto)
+                ->get();
+
+                foreach($preciomaterial as $totalg){
+                    $id = $totalg->id;
+                    $valorMaterial = $totalg->valorMaterial;
+                    $valorparcial=$valorparcial+$valorMaterial;
+                }
+
+                $precio=$valorparcial;
+                $valorE=($precio*$cantidad);
+
+                $precioSaldos = DB::table('tb_kardex_almacen')
+                ->select('id','cantidad as cantidadA','cantidadSaldos as cantidadS','precioSaldos as precioS')
+                ->where('tb_kardex_almacen.idGestionMateria','=', $idProducto)
+                ->orderByDesc('id')
+                ->limit(1)
+                ->get();
+
+                $precioSaldoscant= DB::table('tb_kardex_almacen')
+                ->where('tb_kardex_almacen.idGestionMateria','=', $idProducto)
+                ->count();
+
+                if (!$precioSaldoscant) {
+                    $suma1=$cantidad;
+                    $suma2=$precio;
+                }
+                else{
+                    foreach($precioSaldos as $precioS){
+                        $cantidadA = $precioS->cantidadA;
+                        $cantidadS = $precioS->cantidadS;
+                        $precioSA = $precioS->precioS;
+                        $valorP=($cantidadS*$precioSA);
+                    }
+                    if($tipologia == 1){
+                    $suma1=$cantidadS+$cantidad;
+                    $suma0=$valorP+$valorE;
+
+                        if($suma1 == 0){
+                            $suma2=0;
+                            }
+                        else{
+                            $suma2=($suma0/$suma1);
+                        }
+                    }
+                    else{
+                        $suma1=$cantidadS-$cantidad;
+                        $suma0=$valorP-$valorE;
+
+                        if($suma1 == 0){
+                            $suma2=0;
+                            }
+                        else{
+                            $suma2=($suma0/$suma1);
+                        }
+                    }
+                }
+
+                $tb_kardex_almacen=new Tb_kardex_almacen();
+                $tb_kardex_almacen->detalle=$detalle;
+                $tb_kardex_almacen->cantidad=$cantidad;
+                $tb_kardex_almacen->precio=$precio;
+                $tb_kardex_almacen->idGestionMateria=$idProducto;
+                $tb_kardex_almacen->observaciones=$observaciones;
+                $tb_kardex_almacen->idEmpleado=$idEmpleado;
+                $tb_kardex_almacen->idDocumentos=$idDocumentos;
+                $tb_kardex_almacen->tipologia=$tipologia;
+                $tb_kardex_almacen->fecha=$fecha;
+                $tb_kardex_almacen->cantidadSaldos=$suma1;
+                $tb_kardex_almacen->precioSaldos=$suma2;
+                $tb_kardex_almacen->save();
+        /* */
         }
         $idInventario=$request->id;
         $tb_inventario=Tb_inventario::findOrFail($request->id);
@@ -132,7 +226,26 @@ class Tb_detalle_inventarioController extends Controller
         $tb_inventario->save();
         return ['inventario'=>$inventario];
     }
+    public function parakardex(Request $request){
+        $observacion=$request->data;
+        $inventario=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$observacion)->get();
+        foreach($inventario as $i){
+            if($i->diferencia>0){
+                //realizar entrada
+                $now = new \DateTime();
+                $fecha=$now->format('Y-m-d');
+                $idGestionMateria=$i->idProducto;
 
+                $kardex=Tb_detalle_inventario::where('tb_detalle_inventario.diferencia','!=',0)
+                ->where('tb_detalle_inventario.idInventario','=',$observacion)->get();
+                foreach($kardex as $kar){
+                    $idProducto = $kar->idProducto;
+
+                }
+            }
+        }
+        return ['kardex'=>$kardex];
+    }
     public function listar(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');

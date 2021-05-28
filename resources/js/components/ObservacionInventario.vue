@@ -133,17 +133,18 @@
         finalizar(observacion){
                 //valido con el metodo de validacion creado
                 let me=this;
-                console.log('idGestionMateria antes de solicitud');
+                console.log('idGestionMateria antes de solicitud en el ultimo paso');
                 observacion[0]=this.identificador;
                 console.log(observacion,this.identificador);
-                console.log('Fin Cargue antes de solicitud');
+                console.log('Fin Cargue antes de solicitud en el ultimo paso');
                 axios.post('/inventariodetalle/observacion',{
                     data: observacion,
                      'id': this.identificador
                 }).then(function (response) {
                 var respuesta=response.data;
-                console.log('Respuesta');
+                console.log('Respuesta en el ultimo paso');
                 console.log(respuesta);
+                console.log('Fin Respuesta en el ultimo paso');
                 me.$emit('finalizarlistado', { message: '3' });
                 me.cerrarModal('0');
                 })

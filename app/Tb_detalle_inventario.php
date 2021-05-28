@@ -9,7 +9,7 @@ class Tb_detalle_inventario extends Model
     //
     protected $table = 'tb_detalle_inventario';
 
-    protected $fillable = ['idProducto','cantidad','observacion','idInventario'];
+    protected $fillable = ['idProducto','unidadBase','cantidadSistema','cantidadActual','diferencia','observacion','idInventario'];
 
     public $timestamps = false;
 }
