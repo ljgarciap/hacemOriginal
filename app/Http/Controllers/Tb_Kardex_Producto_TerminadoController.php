@@ -166,40 +166,6 @@ class Tb_kardex_producto_terminadoController extends Controller
             'valorMaterial' =>  $valorMaterial
         ];
     }
-    public function precioproductosorden1(Request $request) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
-    {
-        //if(!$request->ajax()) return redirect('/');
-        $identificador=$request->material;
-        $proveedor=$request->proveedor;
-        $kardexes=$request->factura;
-
-        $registros = DB::table('tb_kardex_producto_terminado')->where('id', '=', $kardexes)->get();
-
-        foreach ($registros as $registro) {
-            $factura = $registro->detalle;
-        }
-
-        $preciomaterial = Tb_kardex_producto_terminado::first()
-        ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precio as valorMaterial')
-        ->where([
-            ['tb_kardex_producto_terminado.idDocumentos', '=', '1'],
-            ['tb_kardex_producto_terminado.tipologia', '=', '1'],
-            ['tb_kardex_producto_terminado.observaciones', '=', $proveedor],
-            ['tb_kardex_producto_terminado.detalle', '=', $factura],
-            ['tb_kardex_producto_terminado.idProducto', '=', $identificador],
-        ])
-        ->get();
-
-        foreach($preciomaterial as $totalg){
-            $id = $totalg->id;
-            $valorMaterial = $totalg->valorMaterial;
-        }
-
-         return [
-            'id' => $id,
-            'valorMaterial' =>  $valorMaterial
-        ];
-    }
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');

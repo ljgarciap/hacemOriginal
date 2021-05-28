@@ -230,16 +230,12 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/cotizacioncliente/posibles", "Tb_detalle_cotizacionController@posibles");
         Route::post("/cotizacioncliente/store", "Tb_detalle_cotizacionController@store");
 
-        Route::get("/kardexproductogeneral", "Tb_kardex_producto_terminadoController@general");
         Route::get("/kardexproducto", "Tb_kardex_producto_terminadoController@index");
         Route::get("/kardexproducto/listar", "Tb_kardex_producto_terminadoController@listar");
         Route::get("/kardexproductoordenes", "Tb_kardex_producto_terminadoController@ordenes");
         Route::get("/kardexproducto/productos/{identificador}", "Tb_kardex_producto_terminadoController@productos");
         Route::get("/kardexproducto/precioproductospromedio", "Tb_kardex_producto_terminadoController@precioproductospromedio");
         Route::get("/kardexproducto/precioproductosorden", "Tb_kardex_producto_terminadoController@precioproductosorden");
-        Route::get("/kardexproducto/factura", "Tb_kardex_producto_terminadoController@factura");
-        Route::get("/kardexproducto/materialfactura", "Tb_kardex_producto_terminadoController@materialfactura");
-        Route::get("/kardexproducto/productofactura", "Tb_kardex_producto_terminadoController@productofactura");
         Route::post("/kardexproducto/store", "Tb_kardex_producto_terminadoController@store");
 
         Route::get("/kardexalmacengeneral", "Tb_kardex_almacenController@general");

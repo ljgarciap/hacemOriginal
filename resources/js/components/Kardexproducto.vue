@@ -353,38 +353,11 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 this.identificadorHoja=event.target.value;
                 let me=this;
                 var url='/kardexproducto/productos/'+this.identificadorHoja;
+                console.log('Url de productos');
+                console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductosOrden=respuesta.materiales;
-                console.log(url);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            listarProveedores(){
-                //console.log(event.target.value);
-                let me=this;
-                var url='/proveedor/selectProveedor';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayProveedores=respuesta.proveedores;
-                console.log(url);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            facturas(event){
-                //console.log(event.target.value);
-                this.identificadorProveedor=event.target.value;
-                let me=this;
-                var url='/kardexproducto/factura?proveedor='+this.identificadorProveedor;
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayFactura=respuesta.materiales;
                 console.log(url);
                 })
                 .catch(function (error) {
@@ -432,19 +405,6 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             forceRerender() {
                 this.componentKey += 1;
                },
-            listarProductos(){
-                let me=this;
-                var url='/kardexproductogeneral';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayProductos=respuesta.productos;
-                console.log(url);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
             crearKardex(){
                 //valido con el metodo de validacion creado
                 if(this.validarKardex()){
@@ -518,7 +478,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                                 this.desplegable= 1; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
-                                this.listarMaterias();
+                                this.listarProductos();
                                 break;
                             }
                             case 'crears':{
@@ -529,7 +489,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                                 this.desplegable= 2; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
-                                this.listarMaterias();
+                                this.listarProductos();
                                 break;
                             }
                         }
@@ -555,9 +515,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
         },
         mounted() {
             this.listarProductos(1,this.buscar,this.criterio);
-            this.listarMaterias();
             this.listarOrdenes();
-            this.listarProveedores();
         }
     }
 </script>

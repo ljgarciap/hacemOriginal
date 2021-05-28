@@ -100,12 +100,31 @@ class Tb_detalle_inventarioController extends Controller
         foreach($inventario as $i){
             $i->observacion=$observacion[$i->id];
             $i->save();
-            /*if($i->diferencia>0){
+            if($i->diferencia>0){
                 //realizar entrada
+                $now = new \DateTime();
+                $fecha=$now->format('Y-m-d');
+
+                $kardex=Tb_detalle_inventario::where('diferencia','!=',0)->where('idInventario','=',$observacion[0])->get();
+                foreach($kardex as $kar){
+                    $idProducto = $kar->idProducto;
+
+                }
+//voy aca este bloque es para ir sacando los datos
+        $detalle=$request->detalle;
+        $cantidad=$request->cantidad;
+        $precio=$request->precio;
+        $observaciones=$request->observaciones;
+        $idDocumentos=$request->idDocumentos;
+        $tipologia=$request->tipologia;
+        $idEmpleado=$request->idEmpleado;
+        $valorE=($precio*$cantidad);
+//voy aca este bloque es para ir sacando los datos
             }
             else{
                 //realizar salida
-            }*/
+
+            }/*Verificar*/
         }
         $idInventario=$request->id;
         $tb_inventario=Tb_inventario::findOrFail($request->id);
