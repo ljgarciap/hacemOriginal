@@ -261,6 +261,13 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarCliente(page,buscar,criterio);
             },
+             indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
             crearCliente(){
                 //valido con el metodo de validacion creado
                 if(this.validarCliente()){
@@ -399,6 +406,9 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.cliente='';
+                this.errorCliente = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

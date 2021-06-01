@@ -157,23 +157,33 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="tipoAccion==1" class="form-group row">
+                                    <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Capacidad</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="capacidadMensual" class="form-control" placeholder="Capacidad de producción">
                                             <span class="help-block">(*) Ingrese la capacidad de producción mensual</span>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Foto</label>
-                                        <div class="col-md-9">
-                                            <input type="file" @change="upload_foto" name="foto" class="form-control" placeholder="Nombre de foto">
+                                      <div class="form-group row">
+                                    <label class="col-md-3 form-control-label" for="text-input">Foto</label>
+                                    <div class="col-md-9">
+                                        <!--poniendo :src se llama a la variable foto-->
+                                        <div v-if="tipoAccion==1">
+                                             <input type="file" @change="subirFoto" name="foto" class="form-control" placeholder="Nombre de foto">
+                                             <br>
+                                              <div v-if="fotoCarga" class="text-center">
+                                             <img :src="fotoCarga"  class="rounded" alt="..." style="max-height:100px; max-width:100px; ">
+                                              </div>
                                         </div>
-                                        
+                                        <div v-if="tipoAccion==2">
+                                           <input type="file" @change="subirFoto" name="foto" class="form-control" placeholder="Nombre de foto">
+                                           <br>
+                                             <div v-if="fotoCarga" class="text-center">
+                                            <img :src="fotoCarga"  class="rounded" alt="..." style="max-height:100px; max-width:100px; ">
+                                             </div>
+                                        </div>
                                     </div>
-                                    <div v-if="fotoCarga" class="text-center">
-                                    <img :src="fotoCarga"  class="rounded" alt="..." style="max-height:100px; max-width:100px; ">
-                                     </div>
+                                </div>
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Descripcion</label>
                                         <div class="col-md-9">
@@ -317,7 +327,14 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarProducto(page,buscar,criterio);
             },
-             upload_foto(e){ // subir un nuevo archivo o imagen
+            indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
+             subirFoto(e){ // subir un nuevo archivo o imagen
               let file = e.target.files[0];
                 let reader = new FileReader();  
 
@@ -464,10 +481,13 @@
                 this.errorProducto=0;
                 this.errorMensaje=[];
 
-                if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
                 if (this.idColeccion==0) this.errorMensaje.push("Debe elegir una colección existente");
                 if (this.idArea==0) this.errorMensaje.push("Debe elegir un área existente");
+                if (!this.producto) this.errorMensaje.push("El nombre del producto no puede estar vacio");
                 if (!this.referencia) this.errorMensaje.push("La referencia no puede estar vacia");
+                if (!this.capacidadMensual) this.errorMensaje.push("La capacidad de producción no puede estar vacia");
+                if (!this.foto) this.errorMensaje.push("La foto no puede estar vacia");
+                if (!this.descripcion) this.errorMensaje.push("La descripción no puede estar vacia");
                 if (this.errorMensaje.length) this.errorProducto=1;
 
                 return this.errorProducto;
@@ -476,6 +496,9 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.producto='';
+                this.errorProducto = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

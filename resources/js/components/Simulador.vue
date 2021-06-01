@@ -363,6 +363,10 @@
             },
             crearSimulacion(){
                 //valido con el metodo de validacion creado
+                 if(this.validarSimulación()){
+                    return;
+                }
+
                 let me=this;
                 axios.post('/simulacion/store',{
                     'detalle': this.detalle,
@@ -418,10 +422,23 @@
             ocultarDetalle(){
                 this.listado=0;
             },
+            validarSimulación(){
+                this.errorSimulacion=0;
+                this.errorMensaje=[];
+
+                if (!this.detalle) this.errorMensaje.push("El nombre de la simulación no puede estar vacio");
+                if (!this.tipocif) this.errorMensaje.push("El tipo de calculo no puede estar vacio");
+                if (this.errorMensaje.length) this.errorSimulacion=1;
+
+                return this.errorSimulacion;
+            },
             cerrarModal(variable){
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
+                this.errorSimulacion = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
             },
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

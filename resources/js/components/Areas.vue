@@ -221,6 +221,13 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarArea(page,buscar,criterio);
             },
+            indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
             crearArea(){
                 //valido con el metodo de validacion creado
                 if(this.validarArea()){
@@ -348,7 +355,7 @@
                 this.area='';
                 this.errorArea = 0,
                 this.errorMensaje = [],
-                errorMensaje.splice()
+                this.forceRerender();
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

@@ -370,6 +370,9 @@
             },
             crearCotizacion(){
                 //valido con el metodo de validacion creado
+                if(this.validarCotización()){
+                    return;
+                }
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 axios.post('/cotizacion/store',{
@@ -431,10 +434,24 @@
             ocultarDetalle(){
                 this.listado=0;
             },
+            validarCotización(){
+                this.errorCotizacion=0;
+                this.errorMensaje=[];
+
+                if (!this.condicionEntrega) this.errorMensaje.push("La Condición de entrega no puede estar vacia");
+                if (!this.vigencia) this.errorMensaje.push("La Vigencia no puede estar vacia");
+                if (!this.idCliente) this.errorMensaje.push("El cliente no puede estar vacio");
+                if (this.errorMensaje.length) this.errorCotizacion=1;
+
+                return this.errorCotizacion;
+            },
             cerrarModal(variable){
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
+                this.errorCotizacion = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
             },
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

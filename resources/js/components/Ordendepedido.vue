@@ -388,7 +388,11 @@
                 */
             },
             crearOrden(){
-                //valido con el metodo de validacion creado
+                 //valido con el metodo de validacion creado
+                if(this.validarOrden()){
+                    return;
+                }
+
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 axios.post('/ordenpedido/store',{
@@ -462,10 +466,23 @@
                     console.log(error);
                 })
             },
+            validarOrden(){
+                this.errorOrden=0;
+                this.errorMensaje=[];
+
+                if (!this.observacion) this.errorMensaje.push("La Observación no puede estar vacia");
+                if (!this.idCliente) this.errorMensaje.push("El cliente no puede estar vacio");
+                if (this.errorMensaje.length) this.errorOrden=1;
+
+                return this.errorOrden;
+            },
             cerrarModal(variable){
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
+                this.errorOrden = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
             },
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

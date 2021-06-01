@@ -237,6 +237,13 @@
                     console.log(error);
                 })
             },
+            indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -378,6 +385,9 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.maquinaria='';
+                this.errorMaquinaria = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

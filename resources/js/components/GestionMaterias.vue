@@ -243,6 +243,20 @@
                     console.log(error);
                 })
             },
+            cambiarPagina(page,buscar,criterio){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.listarArea(page,buscar,criterio);
+            },
+            indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
             selectTipoMateria(){
                 let me=this;
                 var url='/gestionmateria/selectTipoMateria';
@@ -401,6 +415,9 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.gestionmateria='';
+                this.errorGestionMateria = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

@@ -227,6 +227,13 @@
                     console.log(error);
                 })
             },
+            indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
             selectRol(){
                 let me=this;
                 var url='/rol/selectRol';
@@ -365,14 +372,17 @@
 
                 if (!this.name) this.errorMensaje.push("El nombre del usuario no puede estar vacio");
                 if (!this.email) this.errorMensaje.push("El correo del usuario no puede estar vacio");
-                if (this.errorMensaje.length) this.errorPerfil=1;
+                if (this.errorMensaje.length) this.errorUsuario=1;
 
-                return this.errorPerfil;
+                return this.errorUsuario;
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
                 this.name='';
+                this.errorUsuario = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
