@@ -346,6 +346,9 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.area='';
+                this.errorArea = 0,
+                this.errorMensaje = [],
+                errorMensaje.splice()
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
