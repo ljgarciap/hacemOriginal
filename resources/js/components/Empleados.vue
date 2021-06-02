@@ -187,7 +187,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Genero</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="genero">
-                                                <option selected>Seleccione el genero</option>
+                                                <option value="0" disabled>Seleccione el genero</option>
                                                 <option>Masculino</option>
                                                 <option>Femenino</option>
                                             </select>
