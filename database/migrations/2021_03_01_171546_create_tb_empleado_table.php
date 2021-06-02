@@ -20,6 +20,7 @@ class CreateTbEmpleadoTable extends Migration
             $table->string('nombre',255);
             $table->string('apellido',255);
             $table->string('direccion',255);
+            $table->string('genero',255);
             $table->bigInteger('telefono');
             $table->string('correo',255);
             $table->boolean('estado')->default(1);
