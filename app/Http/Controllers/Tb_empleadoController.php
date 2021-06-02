@@ -32,7 +32,7 @@ class Tb_empleadoController extends Controller
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
             ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
-            'tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
+            'tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
         else if($criterio=='perfil'){
@@ -42,7 +42,7 @@ class Tb_empleadoController extends Controller
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
             ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
-            'tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
+            'tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
             ->where('tb_perfil.perfil', 'like', '%'. $buscar . '%')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
@@ -53,7 +53,7 @@ class Tb_empleadoController extends Controller
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
             ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
-            'tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
+            'tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
             ->where('tb_perfil.perfil', 'like', '%'. $buscar . '%')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
@@ -107,6 +107,7 @@ class Tb_empleadoController extends Controller
         $tb_empleado->nombre=$request->nombre;
         $tb_empleado->apellido=$request->apellido;
         $tb_empleado->direccion=$request->direccion;
+        $tb_empleado->genero=$request->genero;
         $tb_empleado->telefono=$request->telefono;
         $tb_empleado->correo=$request->correo;
         $tb_empleado->save();
@@ -122,6 +123,7 @@ class Tb_empleadoController extends Controller
         $tb_empleado->nombre=$request->nombre;
         $tb_empleado->apellido=$request->apellido;
         $tb_empleado->direccion=$request->direccion;
+        $tb_empleado->genero=$request->genero;
         $tb_empleado->telefono=$request->telefono;
         $tb_empleado->correo=$request->correo;
         $tb_empleado->estado='1';

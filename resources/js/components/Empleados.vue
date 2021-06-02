@@ -48,6 +48,7 @@
                                         <th>Perfil</th>
                                         <th>Nombre</th>
                                         <th>Apellido</th>
+                                        <th>Genero</th>
                                         <th>Dirección</th>
                                         <th>Telefono</th>
                                         <th>Correo</th>
@@ -81,6 +82,7 @@
                                         <td v-text="empleado.perfil"></td>
                                         <td v-text="empleado.nombre"></td>
                                         <td v-text="empleado.apellido"></td>
+                                        <td v-text="empleado.genero"></td>
                                         <td v-text="empleado.direccion"></td>
                                         <td v-text="empleado.telefono"></td>
                                         <td v-text="empleado.correo"></td>
@@ -172,6 +174,25 @@
                                             <input type="text" v-model="apellido" class="form-control" placeholder="Apellido del Empleado">
                                         </div>
                                     </div>
+                                    <!--<div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Genero</label>
+                                         <div class="col-md-9">
+                                        <input type="radio" v-model="genero" value="Masculino">
+                                        <label for="male">Masculino</label><br>
+                                        <input type="radio" v-model="genero" value="Femenino">
+                                        <label for="female">Femenino</label><br>
+                                         </div>
+                                    </div>-->
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Genero</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="genero">
+                                                <option selected>Seleccione el genero</option>
+                                                <option>Masculino</option>
+                                                <option>Femenino</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                      <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Dirección</label>
                                         <div class="col-md-9">
@@ -222,6 +243,7 @@
                 documento: 0,
                 nombre:'',
                 apellido:'',
+                genero:'',
                 direccion:'',
                 telefono: 0,
                 correo:'',
@@ -378,6 +400,7 @@
                     'idPerfil': this.idPerfil,
                     'nombre': this.nombre,
                     'apellido': this.apellido,
+                    'genero': this.genero,
                     'direccion': this.direccion,
                     'telefono': this.telefono,
                     'correo': this.correo
@@ -400,6 +423,7 @@
                     'idPerfil': this.idPerfil,
                     'nombre': this.nombre,
                     'apellido': this.apellido,
+                    'genero':this.genero,
                     'direccion': this.direccion,
                     'telefono': this.telefono,
                     'correo': this.correo
@@ -496,6 +520,7 @@
                 if (this.documento<0) this.errorMensaje.push("El Documento no puede ser negativo");
                 if (!this.nombre) this.errorMensaje.push("El Nombre no puede estar vacio");
                 if (!this.apellido) this.errorMensaje.push("El Apellido no puede estar vacio");
+                if (!this.genero) this.errorMensaje.push("El Genero no puede estar vacio");
                 if (!this.direccion) this.errorMensaje.push("La Dirección no puede estar vacia");
                 if (!this.telefono) this.errorMensaje.push("El Telefono no puede estar vacio");
                 if (this.telefono<0) this.errorMensaje.push("El Telefono puede ser negativo");
@@ -539,6 +564,7 @@
                             this.idPerfil=data['idPerfil'];
                             this.nombre=data['nombre'];
                             this.apellido=data['apellido'];
+                            this.genero=data['genero'];
                             this.direccion=data['direccion'];
                             this.telefono=data['telefono'];
                             this.correo=data['correo'];
