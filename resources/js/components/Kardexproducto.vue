@@ -132,6 +132,7 @@
                                             <select class="form-control" v-model="idDocumentos" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
                                                 <option value="8">Entrega de producción</option>
+                                                <option value="9">Devolucion cliente</option>
                                                 <!-- <option value="3">Inventario inicial</option> -->
                                             </select>
                                         </div>
@@ -140,6 +141,7 @@
                                                 <option value="0" disabled>Seleccione tipo de documento</option>
                                                 <!-- <option value="9">Devolución a producción</option> -->
                                                 <option value="10">Entrega de pedido</option>
+                                                <option value="6">Diferencia en conteo o deterioro</option>
                                                 <!-- <option value="7">Ajuste de inventario</option> -->
                                             </select>
                                         </div>
@@ -183,6 +185,15 @@
                                             <span class="help-block">(*) Detalle a quien entrega</span>
                                         </div>
 
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Responsable baja</label>
+                                        <div v-if="flag==6" class="col-md-9">
+                                            <select class="form-control" v-model="detalle">
+                                                <option value="0" disabled>Seleccione empleado responsable</option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                            </select>
+                                            <span class="help-block">(*) Detalle responsable</span>
+                                        </div>
+
                                     </div>
                                         <!--Cierre sección número documento-->
 
@@ -190,7 +201,15 @@
                                         <!--Inicio sección datos-->
                                         <label v-if="flag!=0" class="col-md-3 form-control-label" for="email-input">Productos</label>
 
-                                        <div v-if="flag==8 || flag==10" class="col-md-9">
+                                        <div v-if="flag==8 || flag==9 || flag==10" class="col-md-9">
+                                            <select class="form-control" v-model="idProducto" @change='precioProductosOrden($event)'>
+                                                <option value="0" disabled>Seleccione un producto</option>
+                                                <option v-for="producto in arrayProductosOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
+                                            </select>
+                                            <span class="help-block">(*) Seleccione el producto</span>
+                                        </div>
+
+                                        <div v-if="flag==6" class="col-md-9">
                                             <select class="form-control" v-model="idProducto" @change='precioProductosOrden($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
                                                 <option v-for="producto in arrayProductosOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
@@ -342,6 +361,27 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 console.log(url);
                 console.log(me.identificadorProducto);
                 console.log(me.identificadorHoja);
+                console.log('Seguimiento Valor de producto');
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.precio=respuesta.valorProducto;
+                console.log(url);
+                console.log('Valor de producto');
+                console.log(me.precio);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            precioProductosPromedio(event){
+                //console.log(event.target.value);
+                this.identificadorProducto=event.target.value;
+                let me=this;
+                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto;
+                console.log('Url Seguimiento Valor de producto');
+                console.log(url);
+                console.log(me.identificadorProducto);
                 console.log('Seguimiento Valor de producto');
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;

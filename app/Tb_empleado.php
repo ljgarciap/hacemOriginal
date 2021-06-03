@@ -9,7 +9,7 @@ class Tb_empleado extends Model
     //
     protected $table = 'tb_empleado';
 
-    protected $fillable = ['documento','idPerfil','nombre','apellido','direccion','telefono','correo','estado'];
+    protected $fillable = ['documento','idPerfil','nombre','apellido','direccion','genero','telefono','correo','estado'];
 
     public $timestamps = false;
 

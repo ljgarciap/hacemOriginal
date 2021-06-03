@@ -125,16 +125,16 @@ class Tb_kardex_producto_terminadoController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador=$request->producto;
-        $identificadororden=$request->ordenpedido;
-        $preciomaterial = Tb_orden_pedido_cliente_detalle::first()
-        ->select('tb_orden_pedido_cliente_detalle.id','tb_orden_pedido_cliente_detalle.precioCosto','tb_orden_pedido_cliente_detalle.precioVenta as valorProducto')
-        ->where('tb_orden_pedido_cliente_detalle.idProducto', '=', $identificador)
-        ->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $identificadororden)
+
+        $preciomaterial = DB::table('tb_kardex_producto_terminado')
+        ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precioSaldos as valorProducto')
+        ->where('tb_kardex_producto_terminado.idProducto', '=', $identificador)
+        ->orderByDesc('tb_kardex_producto_terminado.id')
+        ->limit(1)
         ->get();
 
         foreach($preciomaterial as $totalg){
             $id = $totalg->id;
-            $valorCosto = $totalg->precioCosto;
             $valorProducto = $totalg->valorProducto;
         }
 
@@ -171,6 +171,17 @@ class Tb_kardex_producto_terminadoController extends Controller
             'id' => $id,
             'valorProducto' =>  $valorProducto
         ];
+    }
+    public function producto(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $identificador= $request->identificador;
+        $nombreproducto = Tb_producto::where('tb_producto.id', '=', $identificador)
+        ->select('tb_producto.id','tb_producto.producto as producto')
+        ->orderBy('tb_producto.id','asc')
+        ->get();
+
+        return ['nombreproducto' =>  $nombreproducto];
     }
     public function store(Request $request)
     {

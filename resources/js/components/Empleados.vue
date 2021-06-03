@@ -188,8 +188,8 @@
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="genero">
                                                 <option value="0" disabled>Seleccione el genero</option>
-                                                <option>Masculino</option>
-                                                <option>Femenino</option>
+                                                <option value="1">Masculino</option>
+                                                <option value="2">Femenino</option>
                                             </select>
                                         </div>
                                     </div>
