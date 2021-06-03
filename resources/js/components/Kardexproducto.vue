@@ -28,8 +28,8 @@
                                         <select class="form-control col-md-3" v-model="criterio">
                                         <option value="producto">Producto</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarKardex(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarKardex(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarProductos(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarProductos(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                         <label v-if="flag!=0" class="col-md-3 form-control-label" for="email-input">Productos</label>
 
                                         <div v-if="flag==8 || flag==10" class="col-md-9">
-                                            <select class="form-control" v-model="idProducto" @change='precioProductosOrden($event,producto.idOrdenPedido)'>
+                                            <select class="form-control" v-model="idProducto" @change='precioProductosOrden($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
                                                 <option v-for="producto in arrayProductosOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
@@ -333,11 +333,16 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             //console.log(event.target.value);
             this.flag=event.target.value;
             },
-            precioProductosOrden(event,idOrdenPedido){
+            precioProductosOrden(event){
                 //console.log(event.target.value);
                 this.identificadorProducto=event.target.value;
                 let me=this;
-                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto+'&ordenpedido='+this.idOrdenPedido;
+                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto+'&segordenpedido='+this.identificadorHoja;
+                console.log('Url Seguimiento Valor de producto');
+                console.log(url);
+                console.log(me.identificadorProducto);
+                console.log(me.identificadorHoja);
+                console.log('Seguimiento Valor de producto');
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.precio=respuesta.valorProducto;
@@ -357,7 +362,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 var url='/kardexproducto/productos/'+this.identificadorHoja;
                 console.log('Url de productos');
                 console.log(url);
-                console.log('Identificador');
+                console.log('Identificador Hoja');
                 console.log(this.identificadorHoja);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
@@ -400,7 +405,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarkardex(page,buscar,criterio);
+                me.listarProductos(page,buscar,criterio);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -424,11 +429,10 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     'tipologia':this.tipologia,
                     'observaciones':this.observaciones,
                     'idDocumentos':this.flag,
-                    'idProducto':this.idProducto,
-                    'idPrecio':identificadorFactura
+                    'idProducto':this.idProducto
                 }).then(function (response) {
                 me.cerrarModal('0');
-                me.listarKardex(1,'','');
+                me.listarProductos(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);

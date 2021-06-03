@@ -147,34 +147,29 @@ class Tb_kardex_producto_terminadoController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador=$request->producto;
-        $proveedor=$request->proveedor;
-        $kardexes=$request->factura;
+        $segordenpedido=$request->segordenpedido;
 
-        $registros = DB::table('tb_kardex_producto_terminado')->where('id', '=', $kardexes)->get();
-
-        foreach ($registros as $registro) {
-            $factura = $registro->detalle;
+        $ordenes = DB::table('tb_orden_produccion')->where('id', '=', $segordenpedido)->get();
+        foreach ($ordenes as $orden) {
+            $idOrdenPedido = $orden->idOrdenPedido;
         }
 
-        $preciomaterial = Tb_kardex_producto_terminado::first()
-        ->select('tb_kardex_producto_terminado.id','tb_kardex_producto_terminado.precio as valorMaterial')
+        $preciomaterial = Tb_orden_pedido_cliente_detalle::first()
+        ->select('tb_orden_pedido_cliente_detalle.id','tb_orden_pedido_cliente_detalle.precioCosto as valorMaterial')
         ->where([
-            ['tb_kardex_producto_terminado.idDocumentos', '=', '1'],
-            ['tb_kardex_producto_terminado.tipologia', '=', '1'],
-            ['tb_kardex_producto_terminado.observaciones', '=', $proveedor],
-            ['tb_kardex_producto_terminado.detalle', '=', $factura],
-            ['tb_kardex_producto_terminado.idProducto', '=', $identificador],
+            ['tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $idOrdenPedido],
+            ['tb_orden_pedido_cliente_detalle.idProducto', '=', $identificador],
         ])
         ->get();
 
         foreach($preciomaterial as $totalg){
             $id = $totalg->id;
-            $valorMaterial = $totalg->valorMaterial;
+            $valorProducto = $totalg->valorMaterial;
         }
 
          return [
             'id' => $id,
-            'valorMaterial' =>  $valorMaterial
+            'valorProducto' =>  $valorProducto
         ];
     }
     public function store(Request $request)
@@ -189,17 +184,7 @@ class Tb_kardex_producto_terminadoController extends Controller
         $observaciones=$request->observaciones;
         $idDocumentos=$request->idDocumentos;
         $tipologia=$request->tipologia;
-        $precio=0;
-
-        $precioprods = Tb_orden_pedido_cliente_detalle::select('tb_orden_pedido_cliente_detalle.precioCosto')
-            ->where('tb_orden_pedido_cliente_detalle.id', '=', $idPrecio)
-            ->get();
-
-            foreach($precioprods as $precioprod){
-                $precioparc = $precioprods->precioCosto;
-                $precio=$precio+$precioparc;
-            }
-
+        $precio=$request->precio;
         $valorE=($precio*$cantidad);
 
         //capturo cantidad precio y producto; internamente busco el registro mas reciente de dicho producto y tomo el valor cantidad de ese registro,
@@ -236,12 +221,25 @@ class Tb_kardex_producto_terminadoController extends Controller
             if($tipologia == 1){
             $suma1=$cantidadS+$cantidad;
             $suma0=$valorP+$valorE;
-            $suma2=($suma0/$suma1);
+
+                if($suma1 == 0){
+                    $suma2=0;
+                }
+                else{
+                    $suma2=($suma0/$suma1);
+                }
             }
             else{
                 $suma1=$cantidadS-$cantidad;
                 $suma0=$valorP-$valorE;
-                $suma2=($suma0/$suma1);
+
+                if($suma1 == 0){
+                    $suma2=0;
+                }
+                else{
+                    $suma2=($suma0/$suma1);
+                }
+
             }
         }
 
