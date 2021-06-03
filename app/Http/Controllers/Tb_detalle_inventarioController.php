@@ -276,7 +276,8 @@ class Tb_detalle_inventarioController extends Controller
         $id=$request->id;
         $productos = Tb_detalle_inventario::join('tb_gestion_materia_prima','tb_detalle_inventario.idProducto','=','tb_gestion_materia_prima.id')
         ->join('tb_unidad_base','tb_gestion_materia_prima.idUnidadBase','=','tb_unidad_base.id')
-        ->select('tb_detalle_inventario.id','tb_detalle_inventario.idProducto','tb_detalle_inventario.cantidadSistema','tb_detalle_inventario.diferencia',
+        ->select('tb_detalle_inventario.id','tb_detalle_inventario.idProducto','tb_detalle_inventario.cantidadSistema',
+        'tb_detalle_inventario.cantidadActual','tb_detalle_inventario.diferencia',
         'tb_gestion_materia_prima.gestionMateria as producto','tb_unidad_base.unidadBase')
         ->where('tb_detalle_inventario.idInventario','=',$id)
         ->where('tb_detalle_inventario.diferencia','!=',0)

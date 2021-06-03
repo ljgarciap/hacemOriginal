@@ -208,16 +208,18 @@
                                         </div>
                                     </div>
 
+                                    <!--Revisar , por ahora deshabilitado; debo almacenar el precio de produccion en el controlador
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <!--Revisar-->
+
                                         <label v-if="flag==8 || flag==10" class="col-md-3 form-control-label" for="text-input">Precio</label>
                                         <div v-if="flag==8 || flag==10" class="col-md-9">
                                             <input type="number" v-model="precio" class="form-control" placeholder="Precio">
                                             <span class="help-block">(*) Ingrese el Precio</span>
                                         </div>
                                     </div>
+                                    -->
 
-                                        <!--Cierre sección datos-->
+                                    <!--Cierre sección datos-->
 
                                     <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorKardex">
                                         <div class="text-center text-error">
@@ -257,6 +259,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 factura : '',
                 cantidadSaldos:'',
                 precioSaldos:'',
+                precioCosto:'',
                 precio:'',
                 cantidad:'',
                 detalle:'',
@@ -339,6 +342,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 var respuesta=response.data;
                 me.precio=respuesta.valorProducto;
                 console.log(url);
+                console.log('Valor de producto');
+                console.log(me.precio);
                 })
                 .catch(function (error) {
                     // handle error
@@ -419,7 +424,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     'tipologia':this.tipologia,
                     'observaciones':this.observaciones,
                     'idDocumentos':this.flag,
-                    'idProducto':this.idProducto
+                    'idProducto':this.idProducto,
+                    'idPrecio':identificadorFactura
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.listarKardex(1,'','');
@@ -442,7 +448,6 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
 
                 if (!this.detalle) this.errorMensaje.push("El Detalle no puede estar vacio");
                 if (!this.cantidad) this.errorMensaje.push("La Cantidad no puede estar vacia");
-                if (!this.precio) this.errorMensaje.push("El Precio no puede estar vacio");
                 if (!this.idProducto) this.errorMensaje.push("El producto no puede estar vacio");
                 if (this.errorMensaje.length) this.errorKardex=1;
 

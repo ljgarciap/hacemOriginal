@@ -184,11 +184,22 @@ class Tb_kardex_producto_terminadoController extends Controller
         $fecha=$request->fecha;
         $detalle=$request->detalle;
         $cantidad=$request->cantidad;
-        $precio=$request->precio;
+        $idPrecio=$request->idPrecio;
         $idProducto=$request->idProducto;
         $observaciones=$request->observaciones;
         $idDocumentos=$request->idDocumentos;
         $tipologia=$request->tipologia;
+        $precio=0;
+
+        $precioprods = Tb_orden_pedido_cliente_detalle::select('tb_orden_pedido_cliente_detalle.precioCosto')
+            ->where('tb_orden_pedido_cliente_detalle.id', '=', $idPrecio)
+            ->get();
+
+            foreach($precioprods as $precioprod){
+                $precioparc = $precioprods->precioCosto;
+                $precio=$precio+$precioparc;
+            }
+
         $valorE=($precio*$cantidad);
 
         //capturo cantidad precio y producto; internamente busco el registro mas reciente de dicho producto y tomo el valor cantidad de ese registro,

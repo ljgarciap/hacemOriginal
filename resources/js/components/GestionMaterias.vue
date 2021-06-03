@@ -427,7 +427,7 @@
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.tituloModal='Crear nueva gestión';
+                            this.tituloModal='Crear nueva materia prima';
                             this.tipoAccion= 1;
                             this.gestionmateria='';
                             this.idUnidadBase=this.idUnidadBase;
@@ -438,7 +438,7 @@
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar gestión';
+                            this.tituloModal='Editar materia prima';
                             this.tipoAccion= 2;
                             this.gestionMateria=data['gestionMateria'];
                             this.idUnidadBase=data['idUnidadBase'];

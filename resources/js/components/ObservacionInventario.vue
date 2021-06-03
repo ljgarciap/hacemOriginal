@@ -11,6 +11,7 @@
                                         <th>Producto</th>
                                         <th>Unidad Base</th>
                                         <th>Cantidad Sistema</th>
+                                        <th>Cantidad Actual</th>
                                         <th>Diferencia</th>
                                         <th>Observación</th>
                                     </tr>
@@ -28,6 +29,7 @@
                                         <td>{{total.producto}}</td>
                                         <td>{{total.unidadBase}}</td>
                                         <td>{{total.cantidadSistema}}</td>
+                                        <td>{{total.cantidadActual}}</td>
                                         <td>{{total.diferencia}}</td>
                                         <td><input type="text" v-model="observacion[total.id]" class="form-control" placeholder="Observacion"></td>
                                          <!--<input type="hidden" value="@{{ total.idInventario}}" v-model="idInventario" />
