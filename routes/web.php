@@ -233,6 +233,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/kardexproducto", "Tb_kardex_producto_terminadoController@index");
         Route::get("/kardexproducto/listar", "Tb_kardex_producto_terminadoController@listar");
         Route::get("/kardexproductoordenes", "Tb_kardex_producto_terminadoController@ordenes");
+        Route::get("/kardexproductoempleados", "Tb_kardex_producto_terminadoController@empleados");
         Route::get("/kardexproducto/producto", "Tb_kardex_producto_terminadoController@producto");
         Route::get("/kardexproducto/productos/{identificador}", "Tb_kardex_producto_terminadoController@productos");
         Route::get("/kardexproducto/precioproductosorden", "Tb_kardex_producto_terminadoController@precioproductosorden");

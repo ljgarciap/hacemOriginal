@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Tb_empleado;
 use App\Tb_kardex_producto_terminado;
 use App\Tb_producto;
 use App\Tb_orden_pedido_cliente;
@@ -182,6 +184,15 @@ class Tb_kardex_producto_terminadoController extends Controller
         ->get();
 
         return ['nombreproducto' =>  $nombreproducto];
+    }
+    public function empleados()
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $empleados = Tb_empleado::select('tb_empleado.id',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+        ->orderBy('tb_empleado.id','asc')
+        ->get();
+
+        return ['empleados' =>  $empleados];
     }
     public function store(Request $request)
     {

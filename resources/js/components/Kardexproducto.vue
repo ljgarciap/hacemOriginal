@@ -189,7 +189,7 @@
                                         <div v-if="flag==6" class="col-md-9">
                                             <select class="form-control" v-model="detalle">
                                                 <option value="0" disabled>Seleccione empleado responsable</option>
-                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                                <option v-for="empleado in arrayEmpleados" :key="empleado.id" :value="empleado.id" v-text="empleado.empleado"></option>
                                             </select>
                                             <span class="help-block">(*) Detalle responsable</span>
                                         </div>
@@ -425,6 +425,17 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     console.log(error);
                 })
             },
+            listarEmpleados(){
+                let me=this;
+                var url='/kardexproductoempleados';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayEmpleados=respuesta.empleados;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            },
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
             },
@@ -564,6 +575,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
         mounted() {
             this.listarProductos(1,this.buscar,this.criterio);
             this.listarOrdenes();
+            this.listarEmpleados();
         }
     }
 </script>
