@@ -194,6 +194,15 @@ class Tb_kardex_producto_terminadoController extends Controller
 
         return ['empleados' =>  $empleados];
     }
+    public function todos()
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $todos = Tb_producto::select('tb_producto.id','tb_producto.producto as producto')
+        ->orderBy('tb_producto.id','asc')
+        ->get();
+
+        return ['todos' =>  $todos];
+    }
     public function store(Request $request)
     {
         if(!$request->ajax()) return redirect('/');

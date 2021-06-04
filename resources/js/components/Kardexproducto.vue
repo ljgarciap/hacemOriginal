@@ -212,7 +212,7 @@
                                         <div v-if="flag==6" class="col-md-9">
                                             <select class="form-control" v-model="idProducto" @change='precioProductosOrden($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="producto in arrayProductosOrden" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
+                                                <option v-for="producto in arrayTodos" :key="producto.id" :value="producto.id" v-text="producto.producto"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el producto</span>
                                         </div>
@@ -293,6 +293,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 arrayFactura : [],
                 arrayOrdenes : [],
                 arrayProveedores : [],
+                arrayTodos : [],
                 producto:'',
                 modal : 0,
                 desplegable : 0,
@@ -451,6 +452,17 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     console.log(error);
                 })
             },
+            todosProductos(){
+                let me=this;
+                var url='/kardexproductotodos';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayTodos=respuesta.todos;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -576,6 +588,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             this.listarProductos(1,this.buscar,this.criterio);
             this.listarOrdenes();
             this.listarEmpleados();
+            this.todosProductos();
         }
     }
 </script>
