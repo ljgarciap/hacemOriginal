@@ -168,10 +168,58 @@ class Tb_kardex_producto_terminadoController extends Controller
             $id = $totalg->id;
             $valorProducto = $totalg->valorMaterial;
         }
+        //para calcular las cantidades que se solicitaron en la orden
+        $cantidadesesperadas = Tb_orden_pedido_cliente_detalle::first()
+        ->select('tb_orden_pedido_cliente_detalle.id','tb_orden_pedido_cliente_detalle.cantidad as cantidadesesperadas')
+        ->where([
+            ['tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $idOrdenPedido],
+            ['tb_orden_pedido_cliente_detalle.idProducto', '=', $identificador],
+        ])
+        ->get();
+
+        foreach($cantidadesesperadas as $cantidadespera){
+            $cantidadesperada = $cantidadespera->cantidadesesperadas;
+        }
+        //para calcular las cantidades que se reciben en el kardex como ingresos
+        $cantidadesentrantes = Tb_kardex_producto_terminado::select(DB::raw('SUM(cantidad) AS cantidadentrante'))
+        ->where([
+            ['tb_kardex_producto_terminado.idOrdenPedido', '=', $idOrdenPedido],
+            ['tb_kardex_producto_terminado.idProducto', '=', $identificador],
+            ['tb_kardex_producto_terminado.tipologia', '=', '1'],
+        ])
+        ->get();
+
+        foreach($cantidadesentrantes as $cantidadentrante){
+            $cantidadentra = $cantidadentrante->cantidadentrante;
+        }
+        /*
+        //para calcular las cantidades que se reciben en el kardex como salidas
+        $cantidadesentregadas = Tb_kardex_producto_terminado::select(DB::raw('SUM(cantidad) AS cantidadsaliente'))
+        ->where([
+            ['tb_kardex_producto_terminado.idOrdenPedido', '=', $idOrdenPedido],
+            ['tb_kardex_producto_terminado.idProducto', '=', $identificador],
+            ['tb_kardex_producto_terminado.tipologia', '=', '2'],
+        ])
+        ->get();
+
+        foreach($cantidadesentregadas as $cantidadentregada){
+            $valorProducto = $totalg->valorMaterial;
+        }
+        //aca calculo la diferencia entre salidas y entradas
+        */
+        //aca calculo la diferencia entre solicitadas y entregadas
+        $cantidaddiferente=$cantidadesperada-$cantidadentra;
+        if($cantidaddiferente >= 0){
+            $mensajecantidad="Faltan ".$cantidaddiferente." unidades por entregar";
+        }
+        else{
+            $mensajecantidad="Sobran ".$cantidaddiferente." unidades de esta orden";
+        }
 
          return [
             'id' => $id,
-            'valorProducto' =>  $valorProducto
+            'valorProducto' =>  $valorProducto,
+            'mensajecantidad' =>  $mensajecantidad
         ];
     }
     public function producto(Request $request)

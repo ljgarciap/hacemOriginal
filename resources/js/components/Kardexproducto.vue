@@ -223,7 +223,7 @@
                                         <label v-if="flag!=0"  class="col-md-3 form-control-label" for="text-input">Cantidad</label>
                                         <div v-if="flag!=0"  class="col-md-9">
                                             <input type="number" v-model="cantidad" class="form-control" placeholder="Cantidad">
-                                            <span class="help-block">(*) Ingrese la Cantidad</span>
+                                            <span class="help-block">(*) Ingrese la Cantidad. {{mensajecantidad}}</span>
                                         </div>
                                     </div>
 
@@ -295,6 +295,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 arrayProveedores : [],
                 arrayTodos : [],
                 producto:'',
+                mensajecantidad:'',
                 modal : 0,
                 desplegable : 0,
                 listado : 0,
@@ -366,6 +367,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.precio=respuesta.valorProducto;
+                me.mensajecantidad=respuesta.mensajecantidad;
                 console.log(url);
                 console.log('Valor de producto');
                 console.log(me.precio);
