@@ -371,6 +371,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 console.log(url);
                 console.log('Valor de producto');
                 console.log(me.precio);
+                console.log('Cantidad de producto');
+                console.log(me.mensajecantidad);
                 })
                 .catch(function (error) {
                     // handle error

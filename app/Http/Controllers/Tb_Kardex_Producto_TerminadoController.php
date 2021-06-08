@@ -183,7 +183,7 @@ class Tb_kardex_producto_terminadoController extends Controller
         //para calcular las cantidades que se reciben en el kardex como ingresos
         $cantidadesentrantes = Tb_kardex_producto_terminado::select(DB::raw('SUM(cantidad) AS cantidadentrante'))
         ->where([
-            ['tb_kardex_producto_terminado.idOrdenPedido', '=', $idOrdenPedido],
+            ['tb_kardex_producto_terminado.detalle', '=', $idOrdenPedido],
             ['tb_kardex_producto_terminado.idProducto', '=', $identificador],
             ['tb_kardex_producto_terminado.tipologia', '=', '1'],
         ])
