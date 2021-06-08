@@ -261,6 +261,7 @@ class Tb_kardex_producto_terminadoController extends Controller
         $idPrecio=$request->idPrecio;
         $idProducto=$request->idProducto;
         $observaciones=$request->observaciones;
+        $idEmpleado=$request->idEmpleado;
         $idDocumentos=$request->idDocumentos;
         $tipologia=$request->tipologia;
         $precio=$request->precio;
@@ -330,6 +331,7 @@ class Tb_kardex_producto_terminadoController extends Controller
         $tb_kardex_producto_terminado->cantidadSaldos=$suma1;
         $tb_kardex_producto_terminado->precioSaldos=$suma2;
         $tb_kardex_producto_terminado->observaciones=$observaciones;
+        $tb_kardex_producto_terminado->idEmpleado=$idEmpleado;
         $tb_kardex_producto_terminado->idDocumentos=$idDocumentos;
         $tb_kardex_producto_terminado->idProducto=$idProducto;
         $tb_kardex_producto_terminado->tipologia=$tipologia;

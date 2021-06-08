@@ -162,7 +162,7 @@
                                         <div v-if="flag==8" class="col-md-9">
                                             <select class="form-control" v-model="detalle" @change='productosOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
-                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.consecutivo" v-text="orden.consecutivo"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el número de orden de producción que recibe</span>
                                         </div>
@@ -171,7 +171,7 @@
                                         <div v-if="flag==9" class="col-md-9">
                                             <select class="form-control" v-model="detalle" @change='productosOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
-                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.consecutivo" v-text="orden.consecutivo"></option>
                                             </select>
                                             <span class="help-block">(*) Seleccione el número de orden de producción a la que devuelve</span>
                                         </div>
@@ -180,14 +180,23 @@
                                         <div v-if="flag==10" class="col-md-9">
                                             <select class="form-control" v-model="detalle" @change='productosOrden($event)'>
                                                 <option value="0" disabled>Seleccione orden de producción</option>
-                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.id" v-text="orden.consecutivo"></option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.consecutivo" v-text="orden.consecutivo"></option>
                                             </select>
                                             <span class="help-block">(*) Detalle a quien entrega</span>
                                         </div>
 
-                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Responsable baja</label>
+                                        <label v-if="flag==6" class="col-md-3 form-control-label" for="text-input">Número de orden</label>
                                         <div v-if="flag==6" class="col-md-9">
-                                            <select class="form-control" v-model="detalle">
+                                            <select class="form-control" v-model="detalle" @change='productosOrden($event)'>
+                                                <option value="0" disabled>Seleccione orden de producción</option>
+                                                <option v-for="orden in arrayOrdenes" :key="orden.id" :value="orden.consecutivo" v-text="orden.consecutivo"></option>
+                                            </select>
+                                            <span class="help-block">(*) Detalle a quien da baja</span>
+                                        </div>
+
+                                        <label v-if="flag!=0" class="col-md-3 form-control-label" for="text-input">Responsable movimiento</label>
+                                        <div v-if="flag!=0" class="col-md-9">
+                                            <select class="form-control" v-model="idEmpleado">
                                                 <option value="0" disabled>Seleccione empleado responsable</option>
                                                 <option v-for="empleado in arrayEmpleados" :key="empleado.id" :value="empleado.id" v-text="empleado.empleado"></option>
                                             </select>
@@ -274,6 +283,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 identificadorProveedor:0,
                 identificadorFactura:0,
                 identificadorMaterial:0,
+                idEmpleado:'',
                 fecha : '',
                 factura : '',
                 cantidadSaldos:'',
@@ -293,6 +303,7 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 arrayFactura : [],
                 arrayOrdenes : [],
                 arrayProveedores : [],
+                arrayEmpleados : [],
                 arrayTodos : [],
                 producto:'',
                 mensajecantidad:'',
@@ -496,7 +507,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                     'tipologia':this.tipologia,
                     'observaciones':this.observaciones,
                     'idDocumentos':this.flag,
-                    'idProducto':this.idProducto
+                    'idProducto':this.idProducto,
+                    'idEmpleado':this.idEmpleado
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.listarProductos(1,'','');
@@ -529,6 +541,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 this.tituloModal='';
                 this.detalle='';
                 this.idDocumentos='';
+                this.idEmpleado='';
+                this.mensajecantidad='';
                 this.cantidad='';
                 this.observaciones='Ninguna';
                 this.precio='';
