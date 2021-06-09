@@ -1,0 +1,5 @@
+[
+    {"id":"1","grado":"Bajo","porcentaje":"2.0"}, 
+    {"id":"2","grado":"Medio","porcentaje":"3.5"},
+    {"id":"3","grado":"Alto","porcentaje":"5.0"}
+]

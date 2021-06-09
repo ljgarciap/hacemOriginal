@@ -1,0 +1,5 @@
+[
+    {"id":"1","rango":"Bajo","porcentajeHombre":"2.0","porcentajeMujer":"4.0"}, 
+    {"id":"2","rango":"Medio","porcentajeHombre":"3.5","porcentajeMujer":"4.5"},
+    {"id":"3","rango":"Alto","porcentajeHombre":"5.0","porcentajeMujer":"5.0"}
+]

@@ -1,0 +1,9 @@
+[
+{"id":"1","idEsfuerzoMental":"3","idEsfuerzoFisico":"2","idSuplementario":"1","idPersonales":"1","idMonotonia":"8","idEspera":"1","idTiempoEstandar":"3"},
+{"id":"2","idEsfuerzoMental":"1","idEsfuerzoFisico":"1","idSuplementario":"1","idPersonales":"1","idMonotonia":"8","idEspera":"3","idTiempoEstandar":"2"},
+{"id":"3","idEsfuerzoMental":"1","idEsfuerzoFisico":"1","idSuplementario":"1","idPersonales":"1","idMonotonia":"8","idEspera":"3","idTiempoEstandar":"3"},
+{"id":"4","idEsfuerzoMental":"1","idEsfuerzoFisico":"1","idSuplementario":"1","idPersonales":"1","idMonotonia":"8","idEspera":"3","idTiempoEstandar":"4"},
+{"id":"5","idEsfuerzoMental":"1","idEsfuerzoFisico":"1","idSuplementario":"1","idPersonales":"1","idMonotonia":"8","idEspera":"3","idTiempoEstandar":"5"},
+{"id":"6","idEsfuerzoMental":"1","idEsfuerzoFisico":"1","idSuplementario":"1","idPersonales":"1","idMonotonia":"8","idEspera":"3","idTiempoEstandar":"6"},
+{"id":"7","idEsfuerzoMental":"1","idEsfuerzoFisico":"1","idSuplementario":"1","idPersonales":"1","idMonotonia":"8","idEspera":"4","idTiempoEstandar":"7"}
+]

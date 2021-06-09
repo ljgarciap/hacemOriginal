@@ -1,0 +1,9 @@
+[
+    {"id":"1","idHabilidad":"6","idEsfuerzo":"5","idCondiciones":"","idConsistencia":"5","idTiempoEstandar":"1"}, 
+    {"id":"2","idHabilidad":"7","idEsfuerzo":"7","idCondiciones":"","idConsistencia":"7","idTiempoEstandar":"2"},
+    {"id":"3","idHabilidad":"7","idEsfuerzo":"7","idCondiciones":"","idConsistencia":"7","idTiempoEstandar":"3"},
+    {"id":"4","idHabilidad":"7","idEsfuerzo":"7","idCondiciones":"","idConsistencia":"7","idTiempoEstandar":"4"},
+    {"id":"5","idHabilidad":"7","idEsfuerzo":"7","idCondiciones":"","idConsistencia":"7","idTiempoEstandar":"5"},
+    {"id":"6","idHabilidad":"7","idEsfuerzo":"7","idCondiciones":"","idConsistencia":"7","idTiempoEstandar":"6"},
+    {"id":"7","idHabilidad":"7","idEsfuerzo":"7","idCondiciones":"","idConsistencia":"7","idTiempoEstandar":"7"}
+]

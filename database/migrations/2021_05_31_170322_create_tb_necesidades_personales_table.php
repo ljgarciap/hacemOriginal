@@ -15,7 +15,7 @@ class CreateTbNecesidadesPersonalesTable extends Migration
     {
         Schema::create('tb_necesidades_personales', function (Blueprint $table) {
             $table->id();
-            $table->string('grado');
+            $table->string('rango');
             $table->float('porcentajeHombre',8, 2);
             $table->float('porcentajeMujer',8, 2);
             //$table->timestamps();

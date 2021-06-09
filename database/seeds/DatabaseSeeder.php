@@ -110,6 +110,86 @@ class DatabaseSeeder extends Seeder
         //funcion principal que llama cada seeder
         $this->call(Tb_tipo_materiaSeeder::class);
 //-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_esfuerzo_mental'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_esfuerzo_mentalSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_esfuerzo_fisico'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_esfuerzo_fisicoSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_suplementarios'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_suplementariosSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_necesidades_personales'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_necesidades_personalesSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_calificacion_habilidades'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_calificacion_habilidadesSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+         $this->truncateTables([
+            'tb_calificacion_esfuerzo'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_calificacion_esfuerzoSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_calificacion_condiciones'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_calificacion_condicionesSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_calificacion_consistencia'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_calificacion_consistenciaSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_monotonia'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_monotoniaSeeder::class);
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_espera'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_esperaSeeder::class);
+//-------------------------------------------------------------------//
 
 //----------------------------------------------------------------------------------------------//
 

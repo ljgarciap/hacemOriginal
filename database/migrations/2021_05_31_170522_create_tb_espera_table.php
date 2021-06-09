@@ -15,9 +15,9 @@ class CreateTbEsperaTable extends Migration
     {
         Schema::create('tb_espera', function (Blueprint $table) {
             $table->id();
-            $table->string('factor',8, 2);
             $table->float('rangoMin',8, 2);
             $table->float('rangoMax',8, 2);
+            $table->float('factor',8, 2);
             //$table->timestamps();
         });
     }
