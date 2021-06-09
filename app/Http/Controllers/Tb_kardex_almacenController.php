@@ -136,7 +136,7 @@ class Tb_kardex_almacenController extends Controller
         $preciomaterial = Tb_kardex_almacen::first()
         ->select('tb_kardex_almacen.id','tb_kardex_almacen.precioSaldos as valorMaterial')
         ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('tb_kardex_almacen.idGestionMateria');})
-        ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
+        ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador) //aca podria poner en el where que mirara que el valor no es cero y probar
         ->get();
 
         foreach($preciomaterial as $totalg){
@@ -149,7 +149,7 @@ class Tb_kardex_almacenController extends Controller
             'valorMaterial' =>  $valorMaterial
         ];
     }
-    public function preciomaterialcompra(Request $request) //DATOS de valor segun compra 4 traigo segun idmateria el valor de compra del kardex
+    public function preciomaterialcompra(Request $request) //DATOS de valor segun compra traigo segun idmateria el valor de compra del kardex
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador=$request->material;
