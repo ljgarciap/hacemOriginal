@@ -119,6 +119,11 @@ Vue.component('manual', require('./components/Manual.vue').default);
 Vue.component('cartilla', require('./components/Cartilla.vue').default);
 Vue.component('cartilladigital', require('./components/CartillaDigital.vue').default);
 Vue.component('videotutoriales', require('./components/Videos.vue').default);
+Vue.component('tiempoestandar', require('./components/TiempoEstandar.vue').default);
+Vue.component('detalletiempoestandar', require('./components/DetalleTiempoEstandar.vue').default);
+Vue.component('westinghouse', require('./components/WestingHouse.vue').default);
+Vue.component('pds', require('./components/Pds.vue').default);
+Vue.component('ciclos', require('./components/Ciclos.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

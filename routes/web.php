@@ -273,6 +273,12 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/inventariodetalle/verificar", "Tb_detalle_inventarioController@verificar1");
         Route::post("/inventariodetalle/observacion", "Tb_detalle_inventarioController@observacion");
 
+        Route::get("/tiempoestandar", "Tb_tiempo_estandarController@index");
+        Route::post("/tiempoestandar/store", "Tb_tiempo_estandarController@store");
+        Route::get("/tiempoestandar/empleados", "Tb_tiempo_estandarController@empleados");
+        Route::get("/westinghouse/listar", "Tb_tiempo_estandarController@listar");
+        Route::get("/tiempoestandardetalle/listar3", "Tb_tiempo_estandarController@listar3");
+
     });
    /* Route::get('noBorrar',function(){
         $inventario=Tb_detalle_inventario::where('idInventario','=',1)->get();

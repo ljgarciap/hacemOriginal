@@ -110,6 +110,14 @@
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-folder-alt"></i> <b>Mano de Obra</b></a>
+                <ul class="nav-dropdown-items">
+                    <li @click="menu=31" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-note"></i> Tiempo Estandar</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user"></i> <b>Personas</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=12" class="nav-item">

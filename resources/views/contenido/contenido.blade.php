@@ -125,4 +125,8 @@
         <videotutoriales></videotutoriales>
     </template>
 
+    <template v-if="menu==31">
+        <tiempoestandar></tiempoestandar>
+    </template>
+
     @endsection

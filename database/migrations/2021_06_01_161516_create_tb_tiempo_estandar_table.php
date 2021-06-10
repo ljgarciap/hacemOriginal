@@ -17,14 +17,15 @@ class CreateTbTiempoEstandarTable extends Migration
             $table->id();
             $table->date('fecha')->format('Y.m.d');
             $table->foreignId('idEmpleado')->constrained('tb_empleado');
-            $table->integer('tiempoElemental');
-            $table->float('tiempoNormal',8, 2);
-            $table->float('factorPds',8, 2);
-            $table->float('tiempoEstandar',8, 2);
+            $table->float('tiempoElemental',8, 2);
             $table->integer('numeroPiezas');
             $table->integer('piezasPar');
             $table->float('tiempoPiezas',8, 2);
             $table->float('factorValoracion',8, 2);
+            $table->float('tiempoNormal',8, 2);
+            $table->float('factorPds',8, 2);
+            $table->float('tiempoEstandar',8, 2);
+            $table->boolean('estado')->default(1);//1 true en proceso, 0 false finalizado
             //$table->timestamps();
         });
     }
