@@ -548,6 +548,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
                 this.precio='';
                 this.tipologia='';
                 this.flag=0;
+                this.errorKardex=0;
+                this.errorMensaje=[];
                 this.tituloModal='';
                 this.idProducto='';
 

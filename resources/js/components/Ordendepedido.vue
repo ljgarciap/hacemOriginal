@@ -168,7 +168,7 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Producto</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idProducto" @change='costeo()'>
+                                            <select class="form-control" v-model="idProducto" @change='precioProduccion($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
                                                 <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
                                             </select>
@@ -186,7 +186,7 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Costo producción</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="costo" class="form-control" readonly>
+                                            <input type="text" v-model="costopar" class="form-control" readonly>
                                             <span class="help-block">(*) Costo estimado de produccion</span>
                                         </div>
                                     </div>
@@ -195,7 +195,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Precio Venta</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="precioVenta" class="form-control" placeholder="Precio venta unidad">
-                                            <span class="help-block">(*) Ingrese el precio acordado</span>
+                                            <span class="help-block">(*) Ingrese el precio acordado. El costo es {{costopar}}</span>
                                         </div>
                                     </div>
 
@@ -260,6 +260,7 @@
                 registro:'',
                 idProducto: 0,
                 costo: 0,
+                costopar:0,
                 cantidad:'',
                 precioVenta:'',
                 tipoModal : 0,
@@ -311,6 +312,25 @@
         methods : {
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
+            },
+            precioProduccion(event){
+                //console.log(event.target.value);
+                this.identificadorProducto=event.target.value;
+                let me=this;
+                var url='/cotizacioncliente/precioproductos?producto='+this.identificadorProducto;
+                console.log('Url Seguimiento Valor de producto');
+                console.log(url);
+                console.log(me.identificadorProducto);
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.costopar=respuesta.costopar;
+                console.log('Valor de producto');
+                console.log(me.costopar);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             listarOrdenPedido(page,buscar,criterio){
                 let me=this;

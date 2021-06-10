@@ -174,7 +174,7 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Producto</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='precioProduccion($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
                                                 <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
                                             </select>
@@ -192,7 +192,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Precio Venta</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="precioVenta" class="form-control" placeholder="Precio venta unidad">
-                                            <span class="help-block">(*) Ingrese el precio acordado</span>
+                                            <span class="help-block">(*) Ingrese el precio acordado. El costo es {{costopar}}</span>
                                         </div>
                                     </div>
 
@@ -256,6 +256,7 @@
                 idProducto: 0,
                 cantidad:'',
                 valor:'',
+                costopar:'',
                 precioVenta:'',
                 tipoModal : 0,
                 tipoAccion : 0,
@@ -306,6 +307,25 @@
         methods : {
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
+            },
+            precioProduccion(event){
+                //console.log(event.target.value);
+                this.identificadorProducto=event.target.value;
+                let me=this;
+                var url='/cotizacioncliente/precioproductos?producto='+this.identificadorProducto;
+                console.log('Url Seguimiento Valor de producto');
+                console.log(url);
+                console.log(me.identificadorProducto);
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.costopar=respuesta.costopar;
+                console.log('Valor de producto');
+                console.log(me.costopar);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             listarCotizacion(page,buscar,criterio){
                 let me=this;

@@ -24,7 +24,7 @@ class Tb_kardex_almacenController extends Controller
             ->select('tb_kardex_almacen.id','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad','tb_unidad_base.unidadBase',
             'tb_kardex_almacen.precio','tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
             'tb_kardex_almacen.tipologia','tb_kardex_almacen.idDocumentos','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
-            'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos'))
+            'tb_gestion_materia_prima.estado',DB::raw('ROUND(tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos) as saldos'))
             ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')
             ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
             ->paginate(5);
@@ -34,7 +34,7 @@ class Tb_kardex_almacenController extends Controller
             ->select('tb_kardex_almacen.id','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
             'tb_kardex_almacen.precio','tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria',
             'tb_kardex_almacen.tipologia','tb_kardex_almacen.idDocumentos','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
-            'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as saldos'))
+            'tb_gestion_materia_prima.estado',DB::raw('ROUND(tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos) as saldos'))
             ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('idGestionMateria');})
             ->where('tb_kardex_almacen.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')->paginate(5);
@@ -65,7 +65,7 @@ class Tb_kardex_almacenController extends Controller
             'tb_kardex_almacen.precio',DB::raw('tb_kardex_almacen.cantidad * tb_kardex_almacen.precio as preciototal'),
             'tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria','tb_empleado.id as idEmpleado',
             'tb_kardex_almacen.tipologia','tb_kardex_almacen.idDocumentos','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
-            'tb_gestion_materia_prima.estado',DB::raw('tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos as totalsaldos'),
+            'tb_gestion_materia_prima.estado',DB::raw('ROUND(tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos) as totalsaldos'),
             DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS encargado"))
             ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador)
             ->orderBy('tb_gestion_materia_prima.gestionMateria','asc')->paginate(5);
@@ -135,8 +135,11 @@ class Tb_kardex_almacenController extends Controller
         $identificador=$request->material;
         $preciomaterial = Tb_kardex_almacen::first()
         ->select('tb_kardex_almacen.id','tb_kardex_almacen.precioSaldos as valorMaterial')
-        ->whereIn('tb_kardex_almacen.id', function($sub){$sub->selectRaw('max(id)')->from('tb_kardex_almacen')->groupBy('tb_kardex_almacen.idGestionMateria');})
-        ->where('tb_kardex_almacen.idGestionMateria', '=', $identificador) //aca podria poner en el where que mirara que el valor no es cero y probar
+        ->where([
+            ['tb_kardex_almacen.idGestionMateria', '=', $identificador],
+            ['tb_kardex_almacen.precioSaldos', '>', '0'],
+        ]) //aca podria poner en el where que mirara que el valor no es cero y probar edit funciona
+        ->orderBy('tb_kardex_almacen.idGestionMateria','desc')
         ->get();
 
         foreach($preciomaterial as $totalg){

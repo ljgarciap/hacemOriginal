@@ -228,6 +228,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/cotizacioncliente", "Tb_detalle_cotizacionController@index");
         Route::get("/cotizacioncliente/listar", "Tb_detalle_cotizacionController@listar");
         Route::get("/cotizacioncliente/posibles", "Tb_detalle_cotizacionController@posibles");
+        Route::get("/cotizacioncliente/precioproductos", "Tb_detalle_cotizacionController@precioproductos");
         Route::post("/cotizacioncliente/store", "Tb_detalle_cotizacionController@store");
 
         Route::get("/kardexproducto", "Tb_kardex_producto_terminadoController@index");
