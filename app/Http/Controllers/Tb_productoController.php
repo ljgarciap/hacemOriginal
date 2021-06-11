@@ -86,6 +86,7 @@ class Tb_productoController extends Controller
 
     public function store(Request $request)
     {
+        //Almacenar Foto de Producto 
         if($request->foto){
 
             $name = time().'.' . explode('/', explode(':', substr($request->foto, 0, strpos($request->foto, ';')))[1])[1];
@@ -114,7 +115,8 @@ class Tb_productoController extends Controller
     }
 
     public function update(Request $request)
-    {
+    { 
+        //Actualizar Foto de Producto 
         $actualFoto = $tb_producto->foto;
         
         if($request->foto != $actualFoto){

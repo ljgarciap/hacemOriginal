@@ -139,7 +139,7 @@
 
                 <div class="table-responsive col-md-3">
                     <center>
-                        <img :src="this.fotop" alt="" style="max-width:200px; max-height:200px;">
+                        <img :src="'img/avatars/' + this.fotop" alt="" style="max-width:200px; max-height:200px;">
                     </center>
                 </div>
 
