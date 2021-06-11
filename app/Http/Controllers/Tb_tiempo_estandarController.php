@@ -43,7 +43,7 @@ class Tb_tiempo_estandarController extends Controller
              ->select('tb_tiempo_estandar.id','tb_tiempo_estandar.fecha','tb_tiempo_estandar.idEmpleado',
              DB::raw('CONCAT(tb_empleado.nombre," ",tb_empleado.apellido," - ",tb_empleado.documento) as nombreEmpleado'))
             ->where('tb_tiempo_estandar.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('tb_tiempo_estandar.id','dec')->paginate(5);
+            ->orderBy('tb_tiempo_estandar.id','desc')->paginate(5);
          }
          /*
          ,'tb_tiempo_estandar.tiempoElemental',
