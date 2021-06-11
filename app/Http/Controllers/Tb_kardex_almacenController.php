@@ -57,12 +57,11 @@ class Tb_kardex_almacenController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $identificador= $request->identificador;
-
  /**/
             $productos = Tb_kardex_almacen::join('tb_gestion_materia_prima','tb_kardex_almacen.idGestionMateria','=','tb_gestion_materia_prima.id')
             ->join('tb_empleado','tb_kardex_almacen.idEmpleado','=','tb_empleado.id')
             ->select('tb_kardex_almacen.id as idMateria','tb_kardex_almacen.fecha','tb_kardex_almacen.detalle','tb_kardex_almacen.cantidad',
-            'tb_kardex_almacen.precio',DB::raw('tb_kardex_almacen.cantidad * tb_kardex_almacen.precio as preciototal'),
+            'tb_kardex_almacen.precio',DB::raw('ROUND(tb_kardex_almacen.cantidad * tb_kardex_almacen.precio) as preciototal'),
             'tb_kardex_almacen.cantidadSaldos','tb_kardex_almacen.precioSaldos','tb_kardex_almacen.idGestionMateria','tb_empleado.id as idEmpleado',
             'tb_kardex_almacen.tipologia','tb_kardex_almacen.idDocumentos','tb_gestion_materia_prima.gestionMateria as producto','tb_gestion_materia_prima.idUnidadBase',
             'tb_gestion_materia_prima.estado',DB::raw('ROUND(tb_kardex_almacen.cantidadSaldos * tb_kardex_almacen.precioSaldos) as totalsaldos'),
