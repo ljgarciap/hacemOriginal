@@ -6,6 +6,7 @@ use App\Tb_producto;
 use App\Tb_coleccion;
 use App\Tb_area;
 use App\Tb_hoja_de_costo;
+use Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 

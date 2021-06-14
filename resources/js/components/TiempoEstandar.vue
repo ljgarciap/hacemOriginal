@@ -289,15 +289,15 @@
                                         <label v-else-if="flag==2" class="col-md-3 form-control-label" for="text-input">Rango</label>
                                         <label v-else-if="flag==3" class="col-md-3 form-control-label" for="text-input">Rango</label>
                                         <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Rango</label>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==1" class="col-md-9">
                                             <input type="text" v-model="rango" class="form-control" placeholder="Rango">
                                             <span class="help-block">(*) Ingrese el rango</span>
                                         </div>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==2" class="col-md-9">
                                             <input type="text" v-model="rango" class="form-control" placeholder="Rango">
                                             <span class="help-block">(*) Ingrese el rango</span>
                                         </div>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==3" class="col-md-9">
                                             <input type="text" v-model="rango" class="form-control" placeholder="Rango">
                                             <span class="help-block">(*) Ingrese el rango</span>
                                         </div>
@@ -314,15 +314,15 @@
                                         <label v-else-if="flag==2" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
                                         <label v-else-if="flag==3" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
                                         <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==1" class="col-md-9">
                                             <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
                                             <span class="help-block">(*) Ingrese el porcentaje</span>
                                         </div>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==2" class="col-md-9">
                                             <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
                                             <span class="help-block">(*) Ingrese el porcentaje</span>
                                         </div>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==3" class="col-md-9">
                                             <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
                                             <span class="help-block">(*) Ingrese el porcentaje</span>
                                         </div>
@@ -339,15 +339,15 @@
                                         <label v-else-if="flag==2" class="col-md-3 form-control-label" for="text-input">Clasificación</label>
                                         <label v-else-if="flag==3" class="col-md-3 form-control-label" for="text-input">Clasificación</label>
                                         <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Clasificación</label>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==1" class="col-md-9">
                                             <input type="text" v-model="clasificacion" class="form-control" placeholder="Clasificación">
                                             <span class="help-block">(*) Ingrese la clasificación</span>
                                         </div>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==2" class="col-md-9">
                                             <input type="text" v-model="clasificacion" class="form-control" placeholder="Clasificación">
                                             <span class="help-block">(*) Ingrese la clasificación</span>
                                         </div>
-                                        <div v-if="flag==4" class="col-md-9">
+                                        <div v-if="flag==3" class="col-md-9">
                                             <input type="text" v-model="clasificacion" class="form-control" placeholder="Clasificación">
                                             <span class="help-block">(*) Ingrese la clasificación</span>
                                         </div>
@@ -412,11 +412,6 @@
                 nombreEmpleado: '',
                 arrayEmpleados : [],
                 arrayTiempoEstandar : [],
-                idMateriaPrima:0,
-                gestionmateria:'',
-                precioBase:0,
-                unidadBase:'',
-                arrayGestionMaterias:[],
                 modal : 0,
                 seleccion:0,
                 flag : 0,
