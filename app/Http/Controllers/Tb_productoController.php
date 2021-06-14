@@ -86,15 +86,15 @@ class Tb_productoController extends Controller
 
     public function store(Request $request)
     {
-        //Almacenar Foto de Producto 
+        //Almacenar Foto de Producto
         if($request->foto){
-
+//este archivo presenta problemas en las lineas 93 120 y 124
             $name = time().'.' . explode('/', explode(':', substr($request->foto, 0, strpos($request->foto, ';')))[1])[1];
             \Image::make($request->foto)->resize(300, null, function ($constraint) {
                 $constraint->aspectRatio();
             })->save(public_path('img/avatars/').$name);
             $request->merge(['foto' => $name]);
-           
+
         }
         if(!$request->ajax()) return redirect('/');
         $tb_producto=new Tb_producto();
@@ -115,23 +115,23 @@ class Tb_productoController extends Controller
     }
 
     public function update(Request $request)
-    { 
-        //Actualizar Foto de Producto 
+    {
+        //Actualizar Foto de Producto
         $actualFoto = $tb_producto->foto;
-        
+
         if($request->foto != $actualFoto){
             $name = time().'.' . explode('/', explode(':', substr($request->foto, 0, strpos($request->foto, ';')))[1])[1];
             \Image::make($request->foto)->resize(300, null, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(public_path('img/avatars/').$name); 
+            })->save(public_path('img/avatars/').$name);
             $request->merge(['foto' => $name]);
- 
+
            $userFoto = public_path('img/avatars/').$actualFoto;
- 
-           if(file_exists($userFoto)){  
- 
-               @unlink($userFoto); 
-           }    
+
+           if(file_exists($userFoto)){
+
+               @unlink($userFoto);
+           }
        }
         if(!$request->ajax()) return redirect('/');
         $tb_producto=Tb_producto::findOrFail($request->id);
