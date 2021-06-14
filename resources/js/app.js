@@ -124,6 +124,7 @@ Vue.component('detalletiempoestandar', require('./components/DetalleTiempoEstand
 Vue.component('westinghouse', require('./components/WestingHouse.vue').default);
 Vue.component('pds', require('./components/Pds.vue').default);
 Vue.component('ciclos', require('./components/Ciclos.vue').default);
+Vue.component('realizartiempoestandar', require('./components/RealizarTiempoEstandar.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

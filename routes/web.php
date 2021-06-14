@@ -276,8 +276,11 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/tiempoestandar", "Tb_tiempo_estandarController@index");
         Route::post("/tiempoestandar/store", "Tb_tiempo_estandarController@store");
         Route::get("/tiempoestandar/empleados", "Tb_tiempo_estandarController@empleados");
-        Route::get("/westinghouse/listar", "Tb_tiempo_estandarController@listar");
-        Route::get("/tiempoestandardetalle/listar3", "Tb_tiempo_estandarController@listar3");
+        Route::get("/tiempoestandar/ciclos", "Tb_tiempo_estandarController@ciclos");
+        Route::post("/tiempoestandarciclos/guardar", "Tb_tiempo_estandarController@guardar");
+
+        Route::get("/westinghouse/listar", "Tb_detalle_tiempo_estandarController@listar");
+        Route::get("/tiempoestandardetalle/listar3", "Tb_detalle_tiempo_estandarController@listar3");
 
     });
    /* Route::get('noBorrar',function(){

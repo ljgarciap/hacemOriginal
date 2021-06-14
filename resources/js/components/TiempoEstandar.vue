@@ -3,28 +3,26 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Tiempo estandar</li>
+                    <li class="breadcrumb-item active">Tiempo Estandar</li>
                 </ol>
-
-                <template v-if="listado==0">
-                <div class="container-fluid">
+                      <!-- Listado -->
+                <template v-if="listado">
                     <!-- Ejemplo de tabla Listado -->
-
-                    <div class="card">
-                       <div class="card-header">
+                    <div class="container-fluid">
+                        <div class="card">
+                            <div class="card-header">
                             <i class="fa fa-align-justify"></i> Tiempo Estandar
                             <button type="button" @click="abrirModal('tiempoestandar','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
-                        </div>
-
-                        <div class="card-body">
+                           </div>
+                            <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                         <option value="id">Id</option>
-                                        <option value="empleado">Empleado</option>
+                                        <option value="id">Id</option>
+                                        <option value="idEmpleado">Empleado</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarTiempoEstandar(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarTiempoEstandar(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -35,34 +33,42 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Acciones</th>
+                                        <th>Opciones</th>
                                         <th>Empleado</th>
-                                         <th>Fecha</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                     <tr v-for="tiempoestandar in arrayTiempoEstandar" :key="tiempoestandar.id">
                                         <td>
-                                        <template>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarWestingHouse(tiempoestandar.id)">
-                                                <i class="icon-plus"></i><span> Westing House</span>
-                                            </button>
-                                        </template>
-                                         <!--<template v-if="tiempoestandar.estado==2">
-                                           <button type="button" class="btn btn-warning btn-sm" @click="mostrarObservacion(tiempoestandar.id)">
-                                                <i class="icon-plus"></i><span> Realizar Observación</span>
-                                            </button>
-                                        </template>-->
-                                        <template>
+                                            <template v-if="tiempoestandar.estado==1">
+                                            <button type="button" @click="mostrarTiempoEstandar(tiempoestandar.idTiempoEstandar)" class="btn btn-warning btn-sm">
+                                            <i class="icon-plus"></i>
+                                            </button> &nbsp;
+                                            <button type="button" @click="mostrarTiempo(tiempoestandar.id)" class="btn btn-danger btn-sm">
+                                                <i class="icon-plus"></i>
+                                            </button> &nbsp;
+                                            </template>
+                                            <template v-if="tiempoestandar.estado==0">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(tiempoestandar.id)">
-                                                <i class="icon-magnifier"></i><span> Detalle Tiempo Estandar</span>
+                                                <i class="icon-eye"></i><span>Ver Detalle Tiempo Estandar</span>
                                             </button>
                                         </template>
                                         </td>
                                         <td v-text="tiempoestandar.nombreEmpleado"></td>
                                         <td v-text="tiempoestandar.fecha"></td>
+                                        <td>
+                                            <div v-if="tiempoestandar.estado">
+                                            <span class="badge badge-warning">En Proceso</span>
+                                            </div>
+                                            <div v-else>
+                                            <span class="badge badge-success">Finalizado</span>
+                                            </div>
+                                        </td>
                                     </tr>
+
                                 </tbody>
                             </table>
                             </div>
@@ -79,22 +85,80 @@
                                     </li>
                                 </ul>
                             </nav>
+                            </div>
                         </div>
                     </div>
-                    <!-- Fin ejemplo de tabla Listado -->
-                </div>
-                </template>
+                    </template>
+                    <!-- Fin Listado -->
 
-                <template  v-if="listado==1">
-                <div class="container-fluid">
+                    <!-- Detalle -->
+                    <template v-else>
+                        <div class="container-fluid">
+                            <div class="card">
+                                <vs-tabs :color="colorx">
+
+                                <vs-tab label="Ciclos" icon="open_with" @click="colorx = '#8B0000'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Ciclos &nbsp;
+                                        <button type="button" @click="abrirModal('ciclos','crear','arrayCiclos')" class="btn btn-secondary">
+                                            <i class="icon-plus"></i>&nbsp;Nuevo Ciclo
+                                        </button>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <ciclos v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarMateriaPrimaProducto"></ciclos>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="Westing House" icon="pan_tool" @click="colorx = '#FFA500'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Westing House &nbsp;
+                                        <button type="button" @click="abrirModal('westinghouse','crear')" class="btn btn-secondary">
+                                            <i class="icon-plus"></i>&nbsp;Nueva Westing House
+                                        </button>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <westinghouse v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmanodeobra="eliminarManoDeObraProducto"></westinghouse>
+                                    </div>
+
+                                </vs-tab>
+
+                               <vs-tab label="Pds" icon="pan_tool" @click="colorx = '#4611DC'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Pds &nbsp;
+                                        <button type="button" @click="abrirModal('pds','crear')" class="btn btn-secondary">
+                                            <i class="icon-plus"></i>&nbsp;Nueva Pds
+                                        </button>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <pds v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmanodeobra="eliminarManoDeObraProducto"></pds>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
+                                </vs-tab>
+
+                                </vs-tabs>
+                            </div>
+                        </div>
+                    </template>
+                    <template  v-if="listado==2">
+                    <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Westing House &nbsp;
+                            <i class="fa fa-align-justify"></i> Realizar Tiempo Estandar &nbsp;
                             </div>
                         <div class="card-body">
-                            <westinghouse v-bind:identificador="identificador" :key="componentKey" @cambiarlistado="cambiarlistado"></westinghouse>
+                            <realizartiempoestandar v-bind:identificador="identificador" :key="componentKey" @cambiarlistado="cambiarlistado"></realizartiempoestandar>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -103,31 +167,14 @@
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
                 </template>
-                <!--<template v-if="listado==2 ">
-                <div class="container-fluid">
-                     Ejemplo de tabla Listado 
 
-                    <div class="card">
-                        <div class="card-header">
-                       <i class="fa fa-align-justify"></i> Observación Inventario &nbsp;
-                        </div>
-                        <div class="card-body">
-                            <observacioninventario v-bind:identificador="identificador" :key="componentKey" @finalizarlistado="finalizarlistado"></observacioninventario>
-                            <p align="right">
-                                <button  class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
-                            </p>
-                        </div>
-                    </div>-->
-                    <!-- Fin ejemplo de tabla Listado -->
-                <!--</div>
-                </template>-->
                 <template v-if="listado==3 ">
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
                         <div class="card-header">
-                       <i class="fa fa-align-justify"></i> Detalle Tiempo Estandar &nbsp;
+                       <i class="fa fa-align-justify"></i> Detalle del Tiempo Estandar &nbsp;
                         </div>
                         <div class="card-body">
                             <detalletiempoestandar v-bind:identificador="identificador" :key="componentKey"></detalletiempoestandar>
@@ -139,12 +186,14 @@
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
                 </template>
+                    <!-- Fin Detalle -->
 
-                <!--Inicio del modal agregar/actualizar-->
+                    <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
+
                         <div class="modal-content">
-                            <div class="modal-header" v-if="tipoModal!=3">
+                            <div class="modal-header">
                                 <h4 class="modal-title" v-text="tituloModal"></h4>
                                 <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
                                 <span aria-hidden="true">×</span>
@@ -152,8 +201,7 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-
-                                    <div v-if="tipoModal==1" class="form-group row">
+                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="email-input">Empleado</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idEmpleado">
@@ -162,25 +210,155 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input"># Piezas de la Toma de Tiempos <br></label>
+                                        <div class="col-md-9">
+                                            <input type="number" step="0.01" v-model="numeroPiezas" class="form-control" placeholder="# Piezas de la Toma de Tiempos">
+                                            <span class="help-block">(*) Ingrese el numero de piezas</span>
+                                        </div>
+                                    </div>
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Piezas por Par <br></label>
+                                        <div class="col-md-9">
+                                            <input type="number" step="0.01" v-model="piezasPar" class="form-control" placeholder="Piezas por Par">
+                                            <span class="help-block">(*) Ingrese las piezas por par</span>
+                                        </div>
+                                    </div>
 
                                     <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorTiempoEstandar">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
+                                    </div> 
+                                    <div v-if="tipoModal==1" class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                   <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearTiempoTiempoEstandar()">Guardar</button>
+                                   </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tiempo en Ciclos<br></label>
+                                        <div class="col-md-9">
+                                            <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo en Ciclos">
+                                            <span class="help-block">(*) Ingrese el tiempo en ciclos</span>
+                                        </div>
                                     </div>
-                                    <div v-if="tipoModal==3" class="carga">
-                                        <p><hr><h1>Generando, por favor espere...</h1><hr></p>
+
+                                     <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Piezas <br></label>
+                                        <div class="col-md-9">
+                                            <input type="number" step="0.01" v-model="piezas" class="form-control" placeholder="Piezas">
+                                            <span class="help-block">(*) Ingrese las piezas</span>
+                                        </div>
                                     </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorCiclos">
+                                        <div class="text-center text-error">
+                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==3" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idProceso" @change='selectRelacionPerfil(relacion.idProceso)'>
+                                                <option value="0" disabled>Seleccione un proceso</option>
+                                                <option v-for="relacion in arrayRelacion" :key="relacion.idProceso" :value="relacion.idProceso" v-text="relacion.proceso"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==3" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idPerfil" @change='nuevoValor($event)'>
+                                                <option value="0" disabled>Seleccione un perfil</option>
+                                                <option v-for="perfilrelacion in arrayPerfilRelacion" :key="perfilrelacion.idPerfil" :value="perfilrelacion.idPerfil" v-text="perfilrelacion.perfil"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==3">
+
+                                        <div  class="form-group row">
+
+                                            <label class="col-md-3 form-control-label" for="text-input">Tipo de Pago</label>
+
+                                            <div class="col-md-9">
+                                                <select class="form-control" v-model="seleccion" @change='onChange($event)'>
+                                                    <option disabled value="0">Seleccione un tipo de pago</option>
+                                                    <option value="1">Fijo</option>
+                                                    <option value="2">Destajo</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+                                        <div  class="form-group row">
+
+                                            <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Tiempo<br>
+                                            <sub><i>(Valor minuto: $ {{valor}})</i></sub></label>
+
+                                            <div v-if="flag==1" class="col-md-9">
+                                                <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
+                                                <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra en minutos</span>
+                                            </div>
+
+                                            <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Costo</label>
+
+                                            <div v-if="flag==2" class="col-md-9">
+                                                <input type="number" v-model="preciom" class="form-control" placeholder="Valor de mano de obra por tarea">
+                                                <span class="help-block">(*) Ingrese el costo de mano de obra por destajo</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div  class="form-group row">
+
+                                            <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Porcentajes adicionales</label>
+
+                                            <div v-if="flag==2" class="col-md-3">
+                                                <input type="checkbox" true-value="3" false-value="0" v-model="liquidacion" checked>
+                                                <label for="liquidacion">Provisión Liquidación</label>
+                                            </div>
+
+                                            <div v-if="flag==2" class="col-md-3">
+                                                <input type="checkbox" true-value="4" false-value="0" v-model="parafiscales" checked>
+                                                <label for="parafiscales">Seguridad Social</label>
+                                            </div>
+
+                                            <div v-if="flag==2" class="col-md-3">
+                                                <label for="prueba">Total: {{parseInt((preciom*liquidacion*liqui)+(preciom*parafiscales*paraf)+parseInt(preciom))}}</label>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorMateriaPrimaProducto">
+                                        <div class="text-center text-error">
+                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
+                                        </div>
+                                    </div>
+
                                 </form>
                             </div>
-                            <div v-if="tipoModal==1" class="modal-footer">
+
+                                <!-- divs para footer tipo 1 y 2 -->
+
+                            <div v-if="tipoModal==2" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearTiempoEstandar()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearCiclos()">Guardar</button>
                             </div>
+
+                            <div v-if="tipoModal==3" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearWestingHouse()">Guardar</button>
+                            </div>
+
                         </div>
                         <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-dialog -->
+                    <!-- /.modal-dialog tipo Modal 1 -->
                 </div>
                 <!--Fin del modal-->
         </main>
@@ -188,32 +366,52 @@
 
 <script>
     import moment from 'moment';
+    import realizartiempoestandar from '../components/RealizarTiempoEstandar.vue';
+    import detalletiempoestandar from '../components/DetalleTiempoEstandar.vue';
+    import ciclos from '../components/Ciclos';
     import westinghouse from '../components/WestingHouse';
-    import detalletiempoestandar from '../components/DetalleTiempoEstandar';
+    import pds from '../components/Pds';
     export default {
         components: {
+            realizartiempoestandar,
+            detalletiempoestandar,
+            ciclos,
             westinghouse,
-            detalletiempoestandar
+            pds
         },
         data(){
             return{
+                colorx: '#8B0000',
+                listado: 1,
                 idTiempoEstandar:0,
+                idCiclos:0,
                 id:'',
-                identificador:'',
                 fecha : '',
-                estado:'',
+                numeroPiezas:0,
+                piezasPar:0,
+                estado: '',
+                variable : '',
                 idEmpleado: 0,
                 nombreEmpleado: '',
                 arrayEmpleados : [],
                 arrayTiempoEstandar : [],
+                idMateriaPrima:0,
+                gestionmateria:'',
+                precioBase:0,
+                unidadBase:'',
+                arrayGestionMaterias:[],
                 modal : 0,
-                listado : 0,
+                seleccion:0,
+                flag : 0,
                 tituloModal : '',
-                variable : '',
-                registro:'',
                 tipoModal : 0,
                 tipoAccion : 0,
+                arrayCiclos:[],
+                ciclos:'',
+                tiempo:0,
+                piezas:0,
                 errorTiempoEstandar : 0,
+                errorCiclos:0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -225,6 +423,7 @@
                 },
                 offset : 3,
                 criterio : 'id',
+                identificador: 0,
                 buscar : '',
                 componentKey:0
             }
@@ -258,16 +457,21 @@
             }
         },
         methods : {
-            currentDateTime() {
-                return moment().format('YYYY-MM-DD')
+            onChange(event) {
+            //console.log(event.target.value);
+            this.flag=event.target.value;
             },
+            indexChange: function(args) {
+                let newIndex = args.value
+                console.log('Current tab index: ' + newIndex)
+                },
+            forceRerender() {
+                this.componentKey += 1;
+               },
             listarTiempoEstandar(page,buscar,criterio){
                 let me=this;
                 var url='/tiempoestandar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                //console.log(url);
-                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
                 me.arrayTiempoEstandar=respuesta.tiempoestandar.data;
                 me.pagination=respuesta.pagination;
@@ -278,7 +482,7 @@
                     console.log(error);
                 })
             },
-           cambiarPagina(page,buscar,criterio){
+            cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
@@ -307,13 +511,15 @@
                     console.log(error);
                 })
             },
-            crearTiempoEstandar(){
+            crearTiempoTiempoEstandar(){
                 //valido con el metodo de validacion creado
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 axios.post('/tiempoestandar/store',{
                     'fecha': this.fecha,
-                    'idEmpleado': this.idEmpleado
+                    'idEmpleado': this.idEmpleado,
+                    'numeroPiezas':this.numeroPiezas,
+                    'piezasPar':this.piezasPar
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.listarTiempoEstandar(1,'','');
@@ -322,121 +528,170 @@
                     console.log(error);
                 });
             },
-           mostrarWestingHouse(id){
-                this.listado=1;
+            mostrarTiempoEstandar(id){
+                this.listado=0;
                 this.identificador=id;
-                console.log(this.identificador);
+                (this.identificador);
             },
-           /* mostrarObservacion(id){
+            mostrarTiempo(id){
                 this.listado=2;
                 this.identificador=id;
                 console.log(this.identificador);
-            },*/
+            },
             mostrarDetalle(id){
                 this.listado=3;
                 this.identificador=id;
                 (this.identificador);
             },
-            generarDetalle(id){
-                this.identificador=id;
-                let me=this;
-                axios.post('/tiempoestandar/estado',{
-                    'id': this.identificador
-                }).then(function (response) {
-                me.cerrarModal('0');
-                me.forceRerender();
-                me.listarTiempoEstandar(1,'','');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
             ocultarDetalle(){
-                this.listarTiempoEstandar(1,this.buscar,this.criterio);
-                this.forceRerender();
-                this.listado=0;
+                this.listado=1;
+                this.identificador=0;
             },
-            cambiarlistado(payload){
-                //this.listado=2;
-                this.listado = payload.message;
-            },
-            /*finalizarlistado(payload){
-                //this.listado=2;
-                this.listado = payload.message;
-            },*/
             cerrarModal(variable){
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
-                this.errorTiempoEstandar = 0,
-                this.errorMensaje = [],
-                this.forceRerender();
             },
-            abrirModal(modelo, accion, identificador){
+            abrirModal(modelo, accion, identificador, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                    case "tiempoestandar":
-                    {
-                        switch (accion) {
-                            case 'crear':{
-                                this.modal=1;
+
+                case "tiempoestandar":
+                {
+                    switch (accion) {
+                        case 'crear':{
+                            this.modal=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
                                 this.tituloModal='Crear tiempo estandar';
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
                                 break;
-                            }
                         }
-                        break;
                     }
-                    case "detalle":
-                    {
-                        switch (accion) {
-                            case 'crear':{
-                                this.modal=1;
-                                this.tipoModal=3; //carga tipos de campos y footers
-                                this.tituloModal='Generando, por favor espere...';
-                                this.identificador=identificador;
-                                this.generarDetalle(this.identificador);
-                                break;
-                            }
-                        }
-                        break;
-                    }
-
+                    break;
                 }
+
+                case "ciclos":
+                {
+                    switch (accion) {
+                        case 'crear':{
+                            this.modal=1;
+                            this.tipoModal=2;
+                            this.ciclos='';
+                            this.idCiclos=this.idCiclos;
+                            this.tituloModal='Crear nuevo ciclo';
+                            this.tipoAccion= 1;
+                            this.idTiempoEstandar=this.identificador;
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case "westinghouse":
+                {
+                    switch (accion) {
+                        case 'crear':{
+                            this.modal=1;
+                            this.tipoModal=3;
+                            this.idTiempoEstandar=this.identificador;
+                            this.tituloModal='Crear nueva westing house';
+                            this.tipoAccion= 1;
+                            break;
+                        }
+                    }
+                    break;
+                }
+
             }
+
+            },
+            listarCiclos(page,buscar,criterio,identificador){
+                let me=this;
+                var url='/tiempoestandar/ciclos?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayCiclos=respuesta.ciclos.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            crearCiclos(){
+                //valido con el metodo de validacion creado
+                if(this.validarCiclos()){
+                    return;
+                }
+
+                let me=this;
+                axios.post('/tiempoestandarciclos/guardar',{
+                    'idCiclos': this.idCiclos,
+                    'tiempo': this.tiempo,
+                    'piezas': this.piezas
+
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarCiclos(1,'','ciclos');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            validarCiclos(){
+                this.errorCiclos=0;
+                this.errorMensaje=[];
+                if (!this.tiempo) this.errorMensaje.push("El tiempo en ciclos no puede estar vacio");
+                if (!this.piezas) this.errorMensaje.push("las piezas no pueden estar vacias");
+                if (this.errorMensaje.length) this.errorCiclos=1;
+
+                return this.errorCiclos;
+            },       
         },
         mounted() {
-            this.listarTiempoEstandar(1,this.buscar,this.criterio);
+            this.listarTiempoEstandar(1,this.buscar,this.criterio),
             this.listarEmpleados();
         }
     }
 </script>
 <style>
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
+    .fadebox {
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index:3001;
+	-moz-opacity: 0.8;
+	opacity:.80;
+	filter: alpha(opacity=80);
     }
-    .mostrar{
-        display: list-item !important;
-        opacity: 1 !important;
-        position: absolute !important;
-        background-color: #3c29297a !important;
+    .overbox {
+        display: none;
+        position: absolute;
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        z-index:3002;
+        overflow: auto;
     }
-    .div-error{
-        display: flex;
-        justify-content: center;
+    #content {
+        background: transparent;
+        border: solid 3px transparent;
+        padding: 10px;
     }
-    .text-error{
-        color: red !important;
-        font-weight: bold;
+    .cierre {
+        font-weight: 9rem;
+        color:#FFFFFF;
     }
-    .carga{
-        background-color: #3c29297a !important;
-        width: 100% !important;
-        height: 100% !important;
-        text-align: center;
-        color: #ffffffff;
+    .imglight{
+        max-height:500px;
+    }
+    .cursor{
+        cursor: pointer;
     }
 </style>
