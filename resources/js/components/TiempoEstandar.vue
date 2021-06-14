@@ -257,89 +257,106 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="tipoModal==3" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Proceso</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idProceso" @change='selectRelacionPerfil(relacion.idProceso)'>
-                                                <option value="0" disabled>Seleccione un proceso</option>
-                                                <option v-for="relacion in arrayRelacion" :key="relacion.idProceso" :value="relacion.idProceso" v-text="relacion.proceso"></option>
+                                    <div v-if="tipoModal==3" class="form-group row"> <!-- Si es una entrada -->
+                                        <label class="col-md-3 form-control-label" for="email-input">Movimiento</label>
+                                        <div v-if="desplegable==1" class="col-md-9">
+                                            <select class="form-control" v-model="idTiempoEstandar" @change='onChange($event)'>
+                                                <option value="0" disabled>Seleccione una westing House</option>
+                                                <option value="1">Calificación Habilidades</option>
+                                                <option value="2">Calificación Esfuerzo</option>
+                                                <option value="3">Calificación Condiciones</option>
+                                                <option value="4">Calificación Consistencia</option>
+                                                <!-- <option value="3">Inventario inicial</option> -->
+                                            </select>
+                                        </div>
+                                        <div v-else-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
+                                            <select class="form-control" v-model="idTiempoEstandar" @change='onChange($event)'>
+                                                <option value="0" disabled>Seleccione un pds</option>
+                                                <option value="5">Esfuezo Mental</option>
+                                                <option value="6">Esfuerzo Fisico</option>
+                                                <option value="7">Suplementarios</option>
+                                                <option value="8">Necesidades</option>
+                                                <option value="9">Monotonia</option>
+                                                <option value="10">Espera</option>
+                                                <!-- <option value="7">Ajuste de inventario</option> -->
                                             </select>
                                         </div>
                                     </div>
-
+                                    
+                                     <!--Inicio de sección rango-->
                                     <div v-if="tipoModal==3" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Perfil</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idPerfil" @change='nuevoValor($event)'>
-                                                <option value="0" disabled>Seleccione un perfil</option>
-                                                <option v-for="perfilrelacion in arrayPerfilRelacion" :key="perfilrelacion.idPerfil" :value="perfilrelacion.idPerfil" v-text="perfilrelacion.perfil"></option>
-                                            </select>
+                                        <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Rango</label>
+                                        <label v-else-if="flag==2" class="col-md-3 form-control-label" for="text-input">Rango</label>
+                                        <label v-else-if="flag==3" class="col-md-3 form-control-label" for="text-input">Rango</label>
+                                        <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Rango</label>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="rango" class="form-control" placeholder="Rango">
+                                            <span class="help-block">(*) Ingrese el rango</span>
+                                        </div>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="rango" class="form-control" placeholder="Rango">
+                                            <span class="help-block">(*) Ingrese el rango</span>
+                                        </div>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="rango" class="form-control" placeholder="Rango">
+                                            <span class="help-block">(*) Ingrese el rango</span>
+                                        </div>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="rango" class="form-control" placeholder="Rango">
+                                            <span class="help-block">(*) Ingrese el rango</span>
                                         </div>
                                     </div>
+                                     <!--Cierre sección rango-->
 
-                                    <div v-if="tipoModal==3">
-
-                                        <div  class="form-group row">
-
-                                            <label class="col-md-3 form-control-label" for="text-input">Tipo de Pago</label>
-
-                                            <div class="col-md-9">
-                                                <select class="form-control" v-model="seleccion" @change='onChange($event)'>
-                                                    <option disabled value="0">Seleccione un tipo de pago</option>
-                                                    <option value="1">Fijo</option>
-                                                    <option value="2">Destajo</option>
-                                                </select>
-                                            </div>
-
+                                     <!--Inicio de sección porcentaje-->
+                                    <div v-if="tipoModal==3" class="form-group row">
+                                        <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
+                                        <label v-else-if="flag==2" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
+                                        <label v-else-if="flag==3" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
+                                        <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
+                                            <span class="help-block">(*) Ingrese el porcentaje</span>
                                         </div>
-
-                                        <div  class="form-group row">
-
-                                            <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Tiempo<br>
-                                            <sub><i>(Valor minuto: $ {{valor}})</i></sub></label>
-
-                                            <div v-if="flag==1" class="col-md-9">
-                                                <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
-                                                <span class="help-block">(*) Ingrese el tiempo estandar de mano de obra en minutos</span>
-                                            </div>
-
-                                            <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Costo</label>
-
-                                            <div v-if="flag==2" class="col-md-9">
-                                                <input type="number" v-model="preciom" class="form-control" placeholder="Valor de mano de obra por tarea">
-                                                <span class="help-block">(*) Ingrese el costo de mano de obra por destajo</span>
-                                            </div>
-
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
+                                            <span class="help-block">(*) Ingrese el porcentaje</span>
                                         </div>
-
-                                        <div  class="form-group row">
-
-                                            <label v-if="flag==2" class="col-md-3 form-control-label" for="text-input">Porcentajes adicionales</label>
-
-                                            <div v-if="flag==2" class="col-md-3">
-                                                <input type="checkbox" true-value="3" false-value="0" v-model="liquidacion" checked>
-                                                <label for="liquidacion">Provisión Liquidación</label>
-                                            </div>
-
-                                            <div v-if="flag==2" class="col-md-3">
-                                                <input type="checkbox" true-value="4" false-value="0" v-model="parafiscales" checked>
-                                                <label for="parafiscales">Seguridad Social</label>
-                                            </div>
-
-                                            <div v-if="flag==2" class="col-md-3">
-                                                <label for="prueba">Total: {{parseInt((preciom*liquidacion*liqui)+(preciom*parafiscales*paraf)+parseInt(preciom))}}</label>
-                                            </div>
-
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
+                                            <span class="help-block">(*) Ingrese el porcentaje</span>
                                         </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorMateriaPrimaProducto">
-                                        <div class="text-center text-error">
-                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
+                                            <span class="help-block">(*) Ingrese el porcentaje</span>
                                         </div>
                                     </div>
+                                     <!--Cierre sección porcentaje-->
 
+                                      <!--Inicio de sección clasificación-->
+                                    <div v-if="tipoModal==3" class="form-group row">
+                                        <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Clasificación</label>
+                                        <label v-else-if="flag==2" class="col-md-3 form-control-label" for="text-input">Clasificación</label>
+                                        <label v-else-if="flag==3" class="col-md-3 form-control-label" for="text-input">Clasificación</label>
+                                        <label v-else-if="flag==4" class="col-md-3 form-control-label" for="text-input">Clasificación</label>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="clasificacion" class="form-control" placeholder="Clasificación">
+                                            <span class="help-block">(*) Ingrese la clasificación</span>
+                                        </div>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="clasificacion" class="form-control" placeholder="Clasificación">
+                                            <span class="help-block">(*) Ingrese la clasificación</span>
+                                        </div>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="clasificacion" class="form-control" placeholder="Clasificación">
+                                            <span class="help-block">(*) Ingrese la clasificación</span>
+                                        </div>
+                                        <div v-if="flag==4" class="col-md-9">
+                                            <input type="text" v-model="clasificacion" class="form-control" placeholder="Clasificación">
+                                            <span class="help-block">(*) Ingrese la clasificación</span>
+                                        </div>
+                                    </div>
+                                     <!--Cierre sección clasificación-->
                                 </form>
                             </div>
 
@@ -595,6 +612,22 @@
                             this.tipoModal=3;
                             this.idTiempoEstandar=this.identificador;
                             this.tituloModal='Crear nueva westing house';
+                            this.desplegable= 1; //carga tipos de botón en el footer
+                            this.tipoAccion= 1;
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case "pds":
+                {
+                    switch (accion) {
+                        case 'crear':{
+                            this.modal=1;
+                            this.tipoModal=3;
+                            this.idTiempoEstandar=this.identificador;
+                            this.tituloModal='Crear nuevo pds';
+                            this.desplegable= 2; //carga tipos de botón en el footer
                             this.tipoAccion= 1;
                             break;
                         }
