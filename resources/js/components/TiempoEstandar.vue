@@ -6,7 +6,7 @@
                     <li class="breadcrumb-item active">Tiempo Estandar</li>
                 </ol>
                       <!-- Listado -->
-                <template v-if="listado">
+                <template v-if="listado==0">
                     <!-- Ejemplo de tabla Listado -->
                     <div class="container-fluid">
                         <div class="card">
@@ -44,7 +44,7 @@
                                     <tr v-for="tiempoestandar in arrayTiempoEstandar" :key="tiempoestandar.id">
                                         <td>
                                             <template v-if="tiempoestandar.estado==1">
-                                            <button type="button" @click="mostrarTiempoEstandar(tiempoestandar.idTiempoEstandar)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="mostrarTiempoEstandar(tiempoestandar.id)" class="btn btn-warning btn-sm">
                                             <i class="icon-plus"></i>
                                             </button> &nbsp;
                                             <button type="button" @click="mostrarTiempo(tiempoestandar.id)" class="btn btn-danger btn-sm">
@@ -90,14 +90,14 @@
                     </div>
                     </template>
                     <!-- Fin Listado -->
-
+ 
                     <!-- Detalle -->
-                    <template v-else>
+                    <template v-if="listado==1">
                         <div class="container-fluid">
                             <div class="card">
                                 <vs-tabs :color="colorx">
 
-                                <vs-tab label="Ciclos" icon="open_with" @click="colorx = '#8B0000'">
+                                <vs-tab label="Ciclos" icon="pan_tool" @click="colorx = '#8B0000'">
 
                                     <div class="card-header">
                                         <i class="fa fa-align-justify"></i> Ciclos &nbsp;
@@ -107,7 +107,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <ciclos v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarMateriaPrimaProducto"></ciclos>
+                                        <ciclos v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal"></ciclos>
                                     </div>
 
                                 </vs-tab>
@@ -122,7 +122,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <westinghouse v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmanodeobra="eliminarManoDeObraProducto"></westinghouse>
+                                        <westinghouse v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal"></westinghouse>
                                     </div>
 
                                 </vs-tab>
@@ -137,7 +137,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <pds v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmanodeobra="eliminarManoDeObraProducto"></pds>
+                                        <pds v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal"></pds>
                                     </div>
 
                                 </vs-tab>
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                     </template>
-                    <template  v-if="listado==2">
+                     <template  v-if="listado==2">
                     <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
@@ -158,7 +158,7 @@
                             <i class="fa fa-align-justify"></i> Realizar Tiempo Estandar &nbsp;
                             </div>
                         <div class="card-body">
-                            <realizartiempoestandar v-bind:identificador="identificador" :key="componentKey" @cambiarlistado="cambiarlistado"></realizartiempoestandar>
+                            <realizartiempoestandar v-bind:identificador="identificador" :key="componentKey"></realizartiempoestandar>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -525,6 +525,11 @@
             },
             crearTiempoTiempoEstandar(){
                 //valido con el metodo de validacion creado
+                 //valido con el metodo de validacion creado
+                if(this.validarTiempoEstandar()){
+                    return;
+                }
+
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 axios.post('/tiempoestandar/store',{
@@ -540,8 +545,18 @@
                     console.log(error);
                 });
             },
+             validarTiempoEstandar(){
+                this.errorTiempoEstandar=0;
+                this.errorMensaje=[];
+
+                if (!this.numeroPiezas) this.errorMensaje.push("El numero de piezas no puede estar vacio");
+                if (!this.piezasPar) this.errorMensaje.push("Las piezas por par no pueden estar vacias");
+                if (this.errorMensaje.length) this.errorTiempoEstandar=1;
+
+                return this.errorTiempoEstandar;
+            },
             mostrarTiempoEstandar(id){
-                this.listado=0;
+                this.listado=1;
                 this.identificador=id;
                 (this.identificador);
             },
@@ -556,13 +571,18 @@
                 (this.identificador);
             },
             ocultarDetalle(){
-                this.listado=1;
-                this.identificador=0;
+                this.listarTiempoEstandar(1,this.buscar,this.criterio);
+                this.forceRerender();
+                this.listado=0;
             },
             cerrarModal(variable){
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
+                this.errorTiempoEstandar = 0,
+                this.errorMensaje = [],
+                this.forceRerender();
+
             },
             abrirModal(modelo, accion, identificador, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
@@ -590,7 +610,7 @@
                             this.modal=1;
                             this.tipoModal=2;
                             this.ciclos='';
-                            this.idCiclos=this.idCiclos;
+                            this.idTiempo=this.idTiempo;
                             this.tituloModal='Crear nuevo ciclo';
                             this.tipoAccion= 1;
                             this.idTiempoEstandar=this.identificador;
@@ -605,7 +625,7 @@
                         case 'crear':{
                             this.modal=1;
                             this.tipoModal=3;
-                            this.idTiempoEstandar=this.identificador;
+                            this.idTiempo=this.identificador;
                             this.tituloModal='Crear nueva westing house';
                             this.desplegable= 1; //carga tipos de botón en el footer
                             this.tipoAccion= 1;
@@ -620,7 +640,7 @@
                         case 'crear':{
                             this.modal=1;
                             this.tipoModal=3;
-                            this.idTiempoEstandar=this.identificador;
+                            this.idTiempo=this.identificador;
                             this.tituloModal='Crear nuevo pds';
                             this.desplegable= 2; //carga tipos de botón en el footer
                             this.tipoAccion= 1;
@@ -635,7 +655,7 @@
             },
             listarCiclos(page,buscar,criterio,identificador){
                 let me=this;
-                var url='/tiempoestandar/ciclos?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                var url='/tiempoestandar/listarciclos?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayCiclos=respuesta.ciclos.data;
@@ -653,10 +673,11 @@
                 }
 
                 let me=this;
-                axios.post('/tiempoestandarciclos/guardar',{
+                axios.post('/tiempoestandar/guardarciclos',{
                     'idCiclos': this.idCiclos,
                     'tiempo': this.tiempo,
-                    'piezas': this.piezas
+                    'piezas': this.piezas,
+                    'idTiempo':this.idTiempo
 
                 }).then(function (response) {
                 me.cerrarModal();

@@ -39,7 +39,12 @@
                                         <td>{{total.idEmpleado}}</td>
                                         <td>{{total.proceso}}</td>
                                         <td>{{total.perfil}}</td>
-                                        <td>{{total.genero}}</td>
+                                       <div v-if="total.genero==1">
+                                            <td>Masculino</td>
+                                            </div>
+                                            <div v-else>
+                                            <td>Femenino</td>
+                                            </div>
                                         <td>{{total.tiempoElemental}}</td>
                                         <td>{{total.numeroPiezas}}</td>
                                         <td>{{total.piezasPar}}</td>
@@ -130,7 +135,7 @@
         methods : {
         listarDetalleTiempoEstandar(page,identificador){
                 let me=this;
-                var url='/tiempoestandardetalle/listar3?page=' + page + '&id='+identificador;
+                var url='/tiempoestandardetalle/listardetalle?page=' + page + '&id='+identificador;
                 console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;

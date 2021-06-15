@@ -16,12 +16,13 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
+                                        <th>Opciones</th>
                                         <th>Tiempo</th>
                                         <th>Piezas</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="ciclos in arrayCiclos" :key="ciclos.id">
+                                    <tr v-for="ciclos in arrayCiclos" :key="ciclos.id">   
                                         <td v-text="ciclos.tiempo"></td>
                                         <td v-text="ciclos.piezas"></td>
                                     </tr>
@@ -107,7 +108,7 @@
         methods : {
                 listarCiclos(page,buscar,criterio,identificador){
                 let me=this;
-                var url='/tiempoestandar/ciclos?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                var url='/tiempoestandar/listarciclos?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayCiclos=respuesta.ciclos.data;
