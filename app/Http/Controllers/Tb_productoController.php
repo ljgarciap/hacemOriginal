@@ -139,6 +139,7 @@ class Tb_productoController extends Controller
             
            }
        }
+       $tb_producto->foto=$name;
         $tb_producto->descripcion=$request->descripcion;
         $tb_producto->idColeccion=$request->idColeccion;
         $tb_producto->idArea=$request->idArea;
