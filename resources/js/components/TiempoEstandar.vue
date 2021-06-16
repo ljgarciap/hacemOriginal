@@ -6,7 +6,7 @@
                     <li class="breadcrumb-item active">Tiempo Estandar</li>
                 </ol>
                       <!-- Listado -->
-                <template v-if="listado==0">
+                <template v-if="listado==1">
                     <!-- Ejemplo de tabla Listado -->
                     <div class="container-fluid">
                         <div class="card">
@@ -92,7 +92,7 @@
                     <!-- Fin Listado -->
  
                     <!-- Detalle -->
-                    <template v-if="listado==1">
+                    <template v-if="listado==2">
                         <div class="container-fluid">
                             <div class="card">
                                 <vs-tabs :color="colorx">
@@ -101,7 +101,7 @@
 
                                     <div class="card-header">
                                         <i class="fa fa-align-justify"></i> Ciclos &nbsp;
-                                        <button type="button" @click="abrirModal('ciclos','crear','arrayCiclos')" class="btn btn-secondary">
+                                        <button type="button" @click="abrirModal('ciclos','crear')" class="btn btn-secondary">
                                             <i class="icon-plus"></i>&nbsp;Nuevo Ciclo
                                         </button>
                                     </div>
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                     </template>
-                     <template  v-if="listado==2">
+                     <template  v-if="listado==3">
                     <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
@@ -168,7 +168,7 @@
                 </div>
                 </template>
 
-                <template v-if="listado==3 ">
+                <template v-if="listado==4">
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
@@ -201,6 +201,8 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+
+                                     <!--Inicia el modal para crear tiempo estandar-->
                                      <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="email-input">Empleado</label>
                                         <div class="col-md-9">
@@ -234,7 +236,9 @@
                                     <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                    <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearTiempoTiempoEstandar()">Guardar</button>
                                    </div>
-
+                                    <!--Termina el modal para crear tiempo estandar-->
+                                    
+                                    <!--Inicia el modal para crear ciclos-->
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tiempo en Ciclos<br></label>
                                         <div class="col-md-9">
@@ -256,7 +260,9 @@
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
                                     </div>
+                                    <!--Termina el modal para crear ciclos-->
 
+                                   <!--Inicia el modal para crear westing house y pds-->
                                     <div v-if="tipoModal==3" class="form-group row"> <!-- Si es una entrada -->
                                         <label class="col-md-3 form-control-label" for="email-input">Movimiento</label>
                                         <div v-if="desplegable==1" class="col-md-9">
@@ -269,7 +275,10 @@
                                                 <!-- <option value="3">Inventario inicial</option> -->
                                             </select>
                                         </div>
-                                        <div v-else-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
+                                    </div>
+                                     <div v-if="tipoModal==4" class="form-group row"> 
+                                        <label class="col-md-3 form-control-label" for="email-input">Movimiento</label>
+                                        <div v-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
                                             <select class="form-control" v-model="idTiempoEstandar" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione un pds</option>
                                                 <option value="5">Esfuezo Mental</option>
@@ -278,11 +287,11 @@
                                                 <option value="8">Necesidades</option>
                                                 <option value="9">Monotonia</option>
                                                 <option value="10">Espera</option>
-                                                <!-- <option value="7">Ajuste de inventario</option> -->
                                             </select>
                                         </div>
                                     </div>
                                     
+                                    <!--Inicia el modal para crear westing house-->
                                      <!--Inicio de sección rango-->
                                     <div v-if="tipoModal==3" class="form-group row">
                                         <label v-if="flag==1" class="col-md-3 form-control-label" for="text-input">Rango</label>
@@ -357,19 +366,129 @@
                                         </div>
                                     </div>
                                      <!--Cierre sección clasificación-->
+
+                                     <div v-if="tipoModal==3" class="form-group row div-error" v-show="errorWestingHouse">
+                                        <div class="text-center text-error">
+                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
+                                        </div>
+                                    </div>
+                                    <!--Termina el modal para crear westing house-->
+
+                                    <!--Inicia el modal para crear pds-->
+                                    <!--Inicio sección esfuerzoMental,esfuerzoFisico,Suplementarios-->
+                                       <!--Inicio de sección grado-->
+                                    <div v-if="tipoModal==4" class="form-group row">
+                                        <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Grado</label>
+                                        <label v-else-if="flag==6" class="col-md-3 form-control-label" for="text-input">Grado</label>
+                                        <label v-else-if="flag==7" class="col-md-3 form-control-label" for="text-input">Grado</label>
+                                        <div v-if="flag==5" class="col-md-9">
+                                            <input type="text" v-model="grado" class="form-control" placeholder="Grado">
+                                            <span class="help-block">(*) Ingrese el grado</span>
+                                        </div>
+                                         <div v-if="flag==6" class="col-md-9">
+                                            <input type="text" v-model="grado" class="form-control" placeholder="Grado">
+                                            <span class="help-block">(*) Ingrese el grado</span>
+                                        </div>
+                                         <div v-if="flag==7" class="col-md-9">
+                                            <input type="text" v-model="grado" class="form-control" placeholder="Grado">
+                                            <span class="help-block">(*) Ingrese el grado</span>
+                                        </div>
+                                    </div>
+                                     <!--Cierre sección grado-->
+
+                                      <!--Inicio de sección porcentaje-->
+                                    <div v-if="tipoModal==4" class="form-group row">
+                                        <label v-if="flag==5" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
+                                        <label v-else-if="flag==6" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
+                                        <label v-else-if="flag==7" class="col-md-3 form-control-label" for="text-input">Porcentaje</label>
+                                        <div v-if="flag==5" class="col-md-9">
+                                            <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
+                                            <span class="help-block">(*) Ingrese el porcentaje</span>
+                                        </div>
+                                        <div v-if="flag==6" class="col-md-9">
+                                            <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
+                                            <span class="help-block">(*) Ingrese el porcentaje</span>
+                                        </div>
+                                        <div v-if="flag==7" class="col-md-9">
+                                            <input type="number" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
+                                            <span class="help-block">(*) Ingrese el porcentaje</span>
+                                        </div>
+                                    </div>
+                                     <!--Cierre sección porcentaje-->
+                                     <!--Cierre sección esfuerzoMental,esfuerzoFisico,Suplementarios-->
+
+                                       <!--Inicio de sección necesidades personales-->
+                                    <div v-if="tipoModal==4" class="form-group row">
+                                        <label v-if="flag==8" class="col-md-3 form-control-label" for="text-input">Rango</label>
+                                        <div v-if="flag==8" class="col-md-9">
+                                            <input type="text" v-model="rango" class="form-control" placeholder="Rango">
+                                            <span class="help-block">(*) Ingrese el rango</span>
+                                        </div>
+                                    </div>
+                                     <div v-if="tipoModal==4" class="form-group row">
+                                        <label v-if="flag==8" class="col-md-3 form-control-label" for="text-input">Porcentaje Hombre</label>
+                                         <div v-if="flag==8" class="col-md-9">
+                                            <input type="number" v-model="porcentajeHombre" class="form-control" placeholder="Porcentaje Hombre">
+                                            <span class="help-block">(*) Ingrese el porcentaje hombre</span>
+                                        </div>
+                                         </div>
+                                      <div v-if="tipoModal==4" class="form-group row">
+                                        <label v-if="flag==8" class="col-md-3 form-control-label" for="text-input">Porcentaje Mujer</label>
+                                        <div v-if="flag==8" class="col-md-9">
+                                            <input type="number" v-model="porcentajeMujer" class="form-control" placeholder="Porcentaje Mujer">
+                                            <span class="help-block">(*) Ingrese el porcentaje mujer</span>
+                                        </div>
+                                         </div>
+                                     <!--Cierre sección necesidades Personales-->
+
+                                      <div v-if="tipoModal==4" class="form-group row div-error" v-show="errorPds">
+                                        <div class="text-center text-error">
+                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
+                                        </div>
+                                    </div>
+                                    <!--Termina el modal para crear pds-->
                                 </form>
                             </div>
 
-                                <!-- divs para footer tipo 1 y 2 -->
+                                <!-- divs para footer tipo 2 y 3 -->
 
                             <div v-if="tipoModal==2" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearCiclos()">Guardar</button>
                             </div>
 
-                            <div v-if="tipoModal==3" class="modal-footer">
+                            <div v-if="tipoModal==3 && flag==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearWestingHouse()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearHabilidades()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==3 && flag==2" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearEsfuerzo()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==3 && flag==3" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1 " class="btn btn-primary" @click="crearCondiciones()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==3 && flag==4" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearConsistencia()">Guardar</button>
+                            </div>
+
+                            <div v-if="tipoModal==4 && flag==5" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearEsfuerzoMental()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==4 && flag==6" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearEsfuerzoFisico()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==4 && flag==7" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1 " class="btn btn-primary" @click="crearSuplementarios()">Guardar</button>
+                            </div>
+                             <div v-if="tipoModal==4 && flag==8" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==1 " class="btn btn-primary" @click="crearPersonales()">Guardar</button>
                             </div>
 
                         </div>
@@ -401,7 +520,7 @@
                 colorx: '#8B0000',
                 listado: 1,
                 idTiempoEstandar:0,
-                idCiclos:0,
+                idTiempo:0,
                 id:'',
                 fecha : '',
                 numeroPiezas:0,
@@ -412,19 +531,25 @@
                 nombreEmpleado: '',
                 arrayEmpleados : [],
                 arrayTiempoEstandar : [],
-                modal : 0,
-                seleccion:0,
-                flag : 0,
+                rango:'',
+                porcentaje:0,
+                clasificacion:'',
                 tituloModal : '',
                 tipoModal : 0,
                 tipoAccion : 0,
-                arrayCiclos:[],
-                ciclos:'',
                 tiempo:0,
                 piezas:0,
+                grado:'',
+                porcentajeHombre:0,
+                porcentajeMujer:0,
                 errorTiempoEstandar : 0,
                 errorCiclos:0,
+                errorWestingHouse:0,
+                errorPds:0,
                 errorMensaje : [],
+                modal : 0,
+                seleccion:0,
+                flag : 0,
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -556,30 +681,44 @@
                 return this.errorTiempoEstandar;
             },
             mostrarTiempoEstandar(id){
-                this.listado=1;
+                this.listado=2;
                 this.identificador=id;
                 (this.identificador);
             },
             mostrarTiempo(id){
-                this.listado=2;
+                this.listado=3;
                 this.identificador=id;
                 console.log(this.identificador);
             },
             mostrarDetalle(id){
-                this.listado=3;
+                this.listado=4;
                 this.identificador=id;
                 (this.identificador);
             },
             ocultarDetalle(){
                 this.listarTiempoEstandar(1,this.buscar,this.criterio);
                 this.forceRerender();
-                this.listado=0;
+                this.listado=1;
             },
             cerrarModal(variable){
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
+                this.idEmpleado='';
+                this.numeroPiezas='';
+                this.piezasPar='';
+                this.tiempo='';
+                this.piezas='';
+                this.rango='';
+                this.porcentaje='',
+                this.clasificacion='',
+                this.grado='',
+                this.porcentajeHombre='',
+                this.porcentajeMujer='',
                 this.errorTiempoEstandar = 0,
+                this.errorCiclos=0,
+                this.errorWestingHouse=0,
+                this.errorPds=0,
                 this.errorMensaje = [],
                 this.forceRerender();
 
@@ -609,11 +748,9 @@
                         case 'crear':{
                             this.modal=1;
                             this.tipoModal=2;
-                            this.ciclos='';
-                            this.idTiempo=this.idTiempo;
+                            this.idTiempo=this.identificador;
                             this.tituloModal='Crear nuevo ciclo';
                             this.tipoAccion= 1;
-                            this.idTiempoEstandar=this.identificador;
                             break;
                         }
                     }
@@ -639,7 +776,7 @@
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.tipoModal=3;
+                            this.tipoModal=4;
                             this.idTiempo=this.identificador;
                             this.tituloModal='Crear nuevo pds';
                             this.desplegable= 2; //carga tipos de botón en el footer
@@ -696,7 +833,267 @@
                 if (this.errorMensaje.length) this.errorCiclos=1;
 
                 return this.errorCiclos;
-            },       
+            },
+            listarWestingHouse(page,buscar,criterio,identificador){
+                let me=this;
+                var url='/tiempoestandar/listarwesting?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayWesting=respuesta.westinghouse.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            crearHabilidades(){
+                //valido con el metodo de validacion creado
+                if(this.validarHabilidades()){
+                    return;
+                }
+                let me=this;
+                axios.post('/tiempoestandar/guardarHabilidad',{
+                    'rango': this.rango,
+                    'porcentaje': this.porcentaje,
+                    'clasificacion':this.clasificacion,
+                    'idTiempo':this.idTiempo
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarWestingHouse(1,'','westinghouse');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }, 
+            validarHabilidades(){
+                this.errorWestingHouse=0;
+                this.errorMensaje=[];
+                if (!this.rango) this.errorMensaje.push("El rango no puede estar vacio");
+                if (!this.porcentaje) this.errorMensaje.push("El porcentaje no puede estar vacio");
+                if (!this.clasificacion) this.errorMensaje.push("La clasificación no puede estar vacio");
+                if (this.errorMensaje.length) this.errorWestingHouse=1;
+                
+                return this.errorWestingHouse;
+            },
+            crearEsfuerzo(){
+                //valido con el metodo de validacion creado
+                if(this.validarEsfuerzo()){
+                    return;
+                }
+                let me=this;
+                axios.post('/tiempoestandar/guardarEsfuerzo',{
+                    'rango': this.rango,
+                    'porcentaje': this.porcentaje,
+                    'clasificacion':this.clasificacion,
+                    'idTiempo':this.idTiempo
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarWestingHouse(1,'','westinghouse');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }, 
+            validarEsfuerzo(){
+                this.errorWestingHouse=0;
+                this.errorMensaje=[];
+                if (!this.rango) this.errorMensaje.push("El rango no puede estar vacio");
+                if (!this.porcentaje) this.errorMensaje.push("El porcentaje no puede estar vacio");
+                if (!this.clasificacion) this.errorMensaje.push("La clasificación no puede estar vacio");
+                if (this.errorMensaje.length) this.errorWestingHouse=1;
+
+                return this.errorWestingHouse;
+            },     
+            crearCondiciones(){
+                //valido con el metodo de validacion creado
+                if(this.validarCondiciones()){
+                    return;
+                }
+                let me=this;
+                axios.post('/tiempoestandar/guardarCondiciones',{
+                    'rango': this.rango,
+                    'porcentaje': this.porcentaje,
+                    'clasificacion':this.clasificacion,
+                    'idTiempo':this.idTiempo
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarWestingHouse(1,'','westinghouse');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            validarCondiciones(){
+                this.errorWestingHouse=0;
+                this.errorMensaje=[];
+                if (!this.rango) this.errorMensaje.push("El rango no puede estar vacio");
+                if (!this.porcentaje) this.errorMensaje.push("El porcentaje no puede estar vacio");
+                if (!this.clasificacion) this.errorMensaje.push("La clasificación no puede estar vacio");
+                if (this.errorMensaje.length) this.errorWestingHouse=1;
+
+                return this.errorWestingHouse;
+            },    
+            crearConsistencia(){
+                //valido con el metodo de validacion creado
+                if(this.validarConsistencia()){
+                    return;
+                }
+                let me=this;
+                axios.post('/tiempoestandar/guardarConsistencia',{
+                    'rango': this.rango,
+                    'porcentaje': this.porcentaje,
+                    'clasificacion':this.clasificacion,
+                    'idTiempo':this.idTiempo
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarWestingHouse(1,'','westinghouse');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }, 
+            validarConsistencia(){
+                this.errorWestingHouse=0;
+                this.errorMensaje=[];
+                if (!this.rango) this.errorMensaje.push("El rango no puede estar vacio");
+                if (!this.porcentaje) this.errorMensaje.push("El porcentaje no puede estar vacio");
+                if (!this.clasificacion) this.errorMensaje.push("La clasificación no puede estar vacio");
+                if (this.errorMensaje.length) this.errorWestingHouse=1;
+
+                return this.errorWestingHouse;
+            },
+            listarPds(page,buscar,criterio,identificador){
+                let me=this;
+                var url='/tiempoestandar/listarpds?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayPds=respuesta.pds.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            crearEsfuerzoMental(){
+                //valido con el metodo de validacion creado
+                if(this.validarEsfuerzoMental()){
+                    return;
+                }
+                let me=this;
+                axios.post('/tiempoestandar/guardarEsfuerzoMental',{
+                    'grado': this.grado,
+                    'porcentaje': this.porcentaje,
+                    'idTiempo':this.idTiempo
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarPds(1,'','pds');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }, 
+            validarEsfuerzoMental(){
+                this.errorPds=0;
+                this.errorMensaje=[];
+                if (!this.grado) this.errorMensaje.push("El grado no puede estar vacio");
+                if (!this.porcentaje) this.errorMensaje.push("El porcentaje no puede estar vacio");
+                if (this.errorMensaje.length) this.errorPds=1;
+                
+                return this.errorPds;
+            },
+            crearEsfuerzoFisico(){
+                //valido con el metodo de validacion creado
+                if(this.validarEsfuerzoFisico()){
+                    return;
+                }
+                let me=this;
+                axios.post('/tiempoestandar/guardarEsfuerzoFisico',{
+                    'grado': this.grado,
+                    'porcentaje': this.porcentaje,
+                    'idTiempo':this.idTiempo
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarPds(1,'','pds');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }, 
+            validarEsfuerzoFisico(){
+                this.errorPds=0;
+                this.errorMensaje=[];
+                if (!this.grado) this.errorMensaje.push("El grado no puede estar vacio");
+                if (!this.porcentaje) this.errorMensaje.push("El porcentaje no puede estar vacio");
+                if (this.errorMensaje.length) this.errorPds=1;
+                
+                return this.errorPds;
+            },
+            crearSuplementarios(){
+                //valido con el metodo de validacion creado
+                if(this.validarSuplementarios()){
+                    return;
+                }
+                let me=this;
+                axios.post('/tiempoestandar/guardarSuplementarios',{
+                    'grado': this.grado,
+                    'porcentaje': this.porcentaje,
+                    'idTiempo':this.idTiempo
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarPds(1,'','pds');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }, 
+           validarSuplementarios(){
+                this.errorPds=0;
+                this.errorMensaje=[];
+                if (!this.grado) this.errorMensaje.push("El grado no puede estar vacio");
+                if (!this.porcentaje) this.errorMensaje.push("El porcentaje no puede estar vacio");
+                if (this.errorMensaje.length) this.errorPds=1;
+                
+                return this.errorPds;
+            },
+            crearPersonales(){
+                //valido con el metodo de validacion creado
+                if(this.validarPersonales()){
+                    return;
+                }
+                let me=this;
+                axios.post('/tiempoestandar/guardarPersonales',{
+                    'rango': this.rango,
+                    'porcentajeHombre': this.porcentajeHombre,
+                    'porcentajeMujer':this.porcentajeMujer,
+                    'idTiempo':this.idTiempo
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarPds(1,'','pds');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }, 
+            validarPersonales(){
+                this.errorPds=0;
+                this.errorMensaje=[];
+                if (!this.rango) this.errorMensaje.push("El rango no puede estar vacio");
+                if (!this.porcentajeHombre) this.errorMensaje.push("El porcentaje hombre no puede estar vacio");
+                if (!this.porcentajeMujer) this.errorMensaje.push("El porcentaje mujer no puede estar vacio");
+                if (this.errorMensaje.length) this.errorPds=1;
+                
+                return this.errorPds;
+            },            
         },
         mounted() {
             this.listarTiempoEstandar(1,this.buscar,this.criterio),

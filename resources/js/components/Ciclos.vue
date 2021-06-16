@@ -16,7 +16,6 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Opciones</th>
                                         <th>Tiempo</th>
                                         <th>Piezas</th>
                                     </tr>
