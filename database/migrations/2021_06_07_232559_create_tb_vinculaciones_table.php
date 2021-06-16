@@ -19,7 +19,7 @@ class CreateTbVinculacionesTable extends Migration
             $table->integer('tipoSalario')->default(1);
             $table->integer('salarioBasicoMensual');
             $table->date('fechaInicio');
-            $table->date('fechaFin');
+            $table->date('fechaFin')->default('0000-00-00');
             $table->foreignId('idEmpleado')->constrained('tb_empleado');
             //$table->timestamps();
         });
