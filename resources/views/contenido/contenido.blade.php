@@ -108,11 +108,11 @@
     <template v-if="menu==26">
         <tomainventarios></tomainventarios>
     </template>
-    
+
     <template v-if="menu==27">
         <manual></manual>
     </template>
-    
+
     <template v-if="menu==28">
         <cartilla></cartilla>
     </template>
@@ -127,6 +127,18 @@
 
     <template v-if="menu==31">
         <tiempoestandar></tiempoestandar>
+    </template>
+
+    <template v-if="menu==32">
+        <vinculacion></vinculacion>
+    </template>
+
+    <template v-if="menu==33">
+        <novedades></novedades>
+    </template>
+
+    <template v-if="menu==34">
+        <cierrenomina></cierrenomina>
     </template>
 
     @endsection

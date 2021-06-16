@@ -293,6 +293,13 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/tiempoestandar/validar", "Tb_detalle_tiempo_estandarController@validar");
         Route::get("/tiempoestandardetalle/listardetalle", "Tb_detalle_tiempo_estandarController@listardetalle");
 
+        Route::get("/vinculacion", "Tb_vinculacionesController@index");
+        Route::post("/vinculacion/store", "Tb_vinculacionesController@store");
+        Route::put("/vinculacion/update", "Tb_vinculacionesController@update");
+        Route::put("/vinculacion/deactivate", "Tb_vinculacionesController@deactivate");
+        Route::put("/vinculacion/activate", "Tb_vinculacionesController@activate");
+        Route::get("/vinculacion/selectvinculacion", "Tb_vinculacionesController@selectvinculacion");
+
     });
    /* Route::get('noBorrar',function(){
         $inventario=Tb_detalle_inventario::where('idInventario','=',1)->get();
