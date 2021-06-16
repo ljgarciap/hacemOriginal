@@ -6,7 +6,6 @@ use App\Tb_empleado;
 use App\Tb_pds;
 use App\Tb_perfil;
 use App\Tb_proceso;
-use App\Tb_ciclos;
 use App\Tb_tiempo_estandar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -73,6 +72,7 @@ class Tb_tiempo_estandarController extends Controller
          $tb_tiempo_estandar->piezasPar=$request->piezasPar;
          $tb_tiempo_estandar->tiempoPiezas=0;
          $tb_tiempo_estandar->factorValoracion=0;
+         $tb_tiempo_estandar->estado=1;
          $tb_tiempo_estandar->save();
 
     
@@ -86,36 +86,4 @@ class Tb_tiempo_estandarController extends Controller
         ->get();
         return ['empleados' => $empleados];
     }
-    
-    public function ciclos(Request $request)
-    {
-        //if(!$request->ajax()) return redirect('/');
-        $id=$request->id;
-        $ciclos = Tb_ciclos::join('tb_tiempo_estandar','tb_ciclos.idTiempoEstandar','=','tb_ciclos.id')
-        ->select('tb_ciclos.tiempo','tb_ciclos.piezas','tb.ciclos.idTiempoestandar')
-        ->where('tb_ciclos.id','=',$id)
-        ->orderBy('tb_ciclos.id','asc')
-        ->paginate(5);
-
-        return [
-            'pagination' => [
-                'total'         =>$ciclos->total(),
-                'current_page'  =>$ciclos->currentPage(),
-                'per_page'      =>$ciclos->perPage(),
-                'last_page'     =>$ciclos->lastPage(),
-                'from'          =>$ciclos->firstItem(),
-                'to'            =>$ciclos->lastItem(),
-            ],
-            'ciclos' =>  $ciclos
-        ];
-    }
-    public function guardar(Request $request)
-     {
-         //if(!$request->ajax()) return redirect('/');
-         $tb_ciclos=new Tb_ciclos();
-         $tb_ciclos->tiempo=$request->tiempo;
-         $tb_ciclos->piezas=$request->piezas;
-         $tb_ciclos->idTiempoEstandar->idTiempoEstandar;
-         $tb_ciclos->save();
-     }
 }
