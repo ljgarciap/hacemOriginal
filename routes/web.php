@@ -276,6 +276,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/tiempoestandar", "Tb_tiempo_estandarController@index");
         Route::post("/tiempoestandar/store", "Tb_tiempo_estandarController@store");
         Route::get("/tiempoestandar/empleados", "Tb_tiempo_estandarController@empleados");
+        Route::post("/tiempoestandar/estado", "Tb_tiempo_estandarController@estado");
 
         Route::get("/tiempoestandar/listarciclos", "Tb_detalle_tiempo_estandarController@listarciclos");
         Route::post("/tiempoestandar/guardarciclos", "Tb_detalle_tiempo_estandarController@guardarciclos");
@@ -289,8 +290,6 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/tiempoestandar/guardarEsfuerzoFisico", "Tb_detalle_tiempo_estandarController@guardarEsfuerzoFisico");
         Route::post("/tiempoestandar/guardarSuplementarios", "Tb_detalle_tiempo_estandarController@guardarSuplementarios");
         Route::post("/tiempoestandar/guardarPersonales", "Tb_detalle_tiempo_estandarController@guardarPersonales");
-        Route::get("/tiempoestandar/listartiempo", "Tb_detalle_tiempo_estandarController@listartiempo");
-        Route::post("/tiempoestandar/validar", "Tb_detalle_tiempo_estandarController@validar");
         Route::get("/tiempoestandardetalle/listardetalle", "Tb_detalle_tiempo_estandarController@listardetalle");
 
         Route::get("/vinculacion", "Tb_vinculacionesController@index");

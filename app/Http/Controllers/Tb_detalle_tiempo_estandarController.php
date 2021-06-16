@@ -19,6 +19,7 @@ use App\Tb_suplementarios;
 use App\Tb_necesidades_personales;
 use App\Tb_monotonia;
 use App\Tb_Espera;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -30,8 +31,8 @@ class Tb_detalle_tiempo_estandarController extends Controller
         //if(!$request->ajax()) return redirect('/');
         $id=$request->id;
         $ciclos = Tb_ciclos::join('tb_tiempo_estandar','tb_ciclos.idTiempoEstandar','=','tb_tiempo_estandar.id')
-        ->select('tb_ciclos.tiempo','tb_ciclos.piezas','tb.ciclos.idTiempoestandar')
-        ->where('tb_ciclos.id','=',$id)
+        ->select('tb_ciclos.tiempo','tb_ciclos.piezas','tb_ciclos.idTiempoEstandar')
+        ->where('tb_ciclos.idTiempoEstandar','=',$id)
         ->orderBy('tb_ciclos.id','asc')
         ->paginate(5);
 
@@ -50,10 +51,13 @@ class Tb_detalle_tiempo_estandarController extends Controller
     public function guardarciclos(Request $request)
      {
          //if(!$request->ajax()) return redirect('/');
+        
+         //\Log::debug(var_dump($request));
          $tb_ciclos=new Tb_ciclos();
          $tb_ciclos->tiempo=$request->tiempo;
          $tb_ciclos->piezas=$request->piezas;
-         $tb_ciclos->idTiempoEstandar=1;
+         //$tb_ciclos->idTiempoEstandar=1;
+         $tb_ciclos->idTiempoEstandar=$request->idTiempoEstandar;
          $tb_ciclos->save();
      }
     // Aca termina la tabla de ciclos
@@ -91,22 +95,24 @@ class Tb_detalle_tiempo_estandarController extends Controller
     public function guardarHabilidad(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
+        
         $tb_habilidades=new Tb_calificacion_habilidades();
         $tb_habilidades->rango=$request->rango;
         $tb_habilidades->porcentaje=$request->porcentaje;
         $tb_habilidades->clasificacion=$request->clasificacion;
         $tb_habilidades->save();
 
-        $habilidades = Tb_westing_house::join('tb_calificacion_habilidades','tb_westing_house.idHabilidad','=','tb_calificacion_habilidades.id')
-        ->select('tb_westing_house.idHabilidad','tb_calificacion_habilidades.id')
-        ->orderBy('tb_westing_house.id','asc')
+        /*$habilidades = Tb_westing_house::join('tb_calificacion_habilidades','tb_westing_house.idHabilidad','=','tb_calificacion_habilidades.id')
+        ->join('tb_tiempo_estandar','tb_westing_house.idTiempoEstandar','=','tb_tiempo_estandar.id')
+        ->select('tb_westing_house.idHabilidad','tb_calificacion_habilidades.id','tb_westing_house.idTiempoEstandar')
+        ->orderBy('tb_westing_house.idTiempoEstandar','asc')
         ->whereIn('tb_westing_house.id', function($sub){$sub->selectRaw('max(id)')->from('tb_westing_house')->groupBy('idHabilidad');})
         ->get();
          foreach($habilidades as $h){
              $obj_habilidad= new Tb_westing_house();
-             $obj_habilidad->idHabilidad=$tb_habilidades->id;
+             $obj_habilidad->idHabilidad=$h->id;
              $obj_habilidad->save();
-         }
+         }*/
     }
     public function guardarEsfuerzo(Request $request)
     {
@@ -205,50 +211,6 @@ class Tb_detalle_tiempo_estandarController extends Controller
     }
 
      // Aca termina la tabla de pds
-
-     // Aca comienza la tabla de validar tiempo estandar
-    public function listartiempo(Request $request)
-    {
-        //if(!$request->ajax()) return redirect('/');
-        $id=$request->id;
-        $tiempoestandar = Tb_tiempo_estandar::join('tb_empleado','tb_tiempo_estandar.idEmpleado','=','tb_empleado.id')
-        ->join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
-        ->join('tb_proceso','tb_perfil.idProceso','=','tb_proceso.id')
-        ->select('tb_tiempo_estandar.tiempoNormal','tb_tiempo_estandar.factorPds','tb_tiempo_estandar.tiempoEstandar')
-        ->where('tb_tiempo_estandar.id','=',$id)
-        ->orderBy('tb_tiempo_estandar.id','asc')
-        ->paginate(5);
-
-        return [
-            'pagination' => [
-                'total'         =>$tiempoestandar->total(),
-                'current_page'  =>$tiempoestandar->currentPage(),
-                'per_page'      =>$tiempoestandar->perPage(),
-                'last_page'     =>$tiempoestandar->lastPage(),
-                'from'          =>$tiempoestandar->firstItem(),
-                'to'            =>$tiempoestandar->lastItem(),
-            ],
-            'tiempoestandar' =>  $tiempoestandar
-        ];
-    }
-
-    public function validar(Request $request){
-        $tiempoEstandar=$request->data;
-        $tiempoNormal=$request->tiempoNormal;
-        $factorPds=$request->factorPds;
-        $tiempos=Tb_tiempo_estandar::where('idTiempoEstandar','=',$tiempoEstandar[0])->get();
-        foreach($tiempos as $t){
-            $t->tiempoEstandar=$tiempoEstandar[$t->id];
-            $t->tiempoEstandar=$t->tiempoNormal*$t->factorPds;
-            $t->save();
-        }
-        $idTiempoEstandar=$request->id;
-        $tb_tiempo_estandar=Tb_tiempo_estandar::findOrFail($request->id);
-        $tb_tiempo_estandar->estado=0;
-        $tb_tiempo_estandar->save();
-        return ['tiempos'=>$tiempos];
-    }
-     // Aca termina la tabla de validar tiempo estandar
 
      // Aca comienza el detalle del tiempo estandar
     public function listardetalle(Request $request)

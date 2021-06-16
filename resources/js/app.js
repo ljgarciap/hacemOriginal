@@ -124,7 +124,6 @@ Vue.component('detalletiempoestandar', require('./components/DetalleTiempoEstand
 Vue.component('westinghouse', require('./components/WestingHouse.vue').default);
 Vue.component('pds', require('./components/Pds.vue').default);
 Vue.component('ciclos', require('./components/Ciclos.vue').default);
-Vue.component('realizartiempoestandar', require('./components/RealizarTiempoEstandar.vue').default);
 Vue.component('vinculacion', require('./components/Vinculacion.vue').default);
 Vue.component('novedades', require('./components/Novedades.vue').default);
 Vue.component('cierrenomina', require('./components/CierreNomina.vue').default);
