@@ -23,6 +23,8 @@ class CreateTbEmpleadoTable extends Migration
             $table->integer('genero')->unsigned();
             $table->bigInteger('telefono');
             $table->string('correo',255);
+            $table->string('contacto',255);
+            $table->bigInteger('telefonocontacto');
             $table->boolean('estado')->default(1);
            // $table->timestamps();
         });

@@ -80,7 +80,7 @@ class Tb_empleadoController extends Controller
             ->orderBy('proceso','asc')->get();
             return ['relaciones' => $relaciones];
     }
-    
+
     public function selectRelacionPerfil($id){
         $perfilrelaciones = tb_perfil::where([
                     ['estado','=','1'],
@@ -110,6 +110,8 @@ class Tb_empleadoController extends Controller
         $tb_empleado->genero=$request->genero;
         $tb_empleado->telefono=$request->telefono;
         $tb_empleado->correo=$request->correo;
+        $tb_empleado->contacto=$request->contacto;
+        $tb_empleado->telefonocontacto=$request->telefonocontacto;
         $tb_empleado->save();
     }
 
@@ -126,6 +128,8 @@ class Tb_empleadoController extends Controller
         $tb_empleado->genero=$request->genero;
         $tb_empleado->telefono=$request->telefono;
         $tb_empleado->correo=$request->correo;
+        $tb_empleado->contacto=$request->contacto;
+        $tb_empleado->telefonocontacto=$request->telefonocontacto;
         $tb_empleado->estado='1';
         $tb_empleado->save();
     }

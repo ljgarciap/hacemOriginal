@@ -22,7 +22,9 @@ class Tb_empleadoSeeder extends Seeder
             'direccion' => 'Av 1 1 1',
 			'genero' => '1',
 			'telefono' => '111',
-			'correo' => 'a@a.a'
+			'correo' => 'a@a.a',
+            'contacto' => 'Contacto de empleado',
+			'telefonocontacto' => '111222',
         ]);
 
     }

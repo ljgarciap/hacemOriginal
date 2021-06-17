@@ -211,6 +211,18 @@
                                             <input type="text" v-model="correo" class="form-control" placeholder="Correo del Empleado">
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Contacto emergencia</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="contacto" class="form-control" placeholder="Contacto de emergencia">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Telefono emergencia</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="telefonocontacto" class="form-control" placeholder="Telefono de emergencia">
+                                        </div>
+                                    </div>
 
                                     <div class="form-group row div-error" v-show="errorEmpleado">
                                         <div class="text-center text-error">
@@ -245,6 +257,8 @@
                 apellido:'',
                 genero:'',
                 direccion:'',
+                telefonocontacto:0,
+                contacto:'',
                 telefono: 0,
                 correo:'',
                 estado:'',
@@ -403,7 +417,9 @@
                     'genero': this.genero,
                     'direccion': this.direccion,
                     'telefono': this.telefono,
-                    'correo': this.correo
+                    'correo': this.correo,
+                    'telefonocontacto': this.telefonocontacto,
+                    'contacto': this.contacto
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarEmpleado(1,'','empleado');
@@ -426,7 +442,9 @@
                     'genero':this.genero,
                     'direccion': this.direccion,
                     'telefono': this.telefono,
-                    'correo': this.correo
+                    'correo': this.correo,
+                    'telefonocontacto': this.telefonocontacto,
+                    'contacto': this.contacto
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarEmpleado(1,'','empleado');
