@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Tb_empleado;
+use App\Tb_eps;
+use App\Tb_administradora_pensiones;
+use App\Tb_niveles_riesgo;
 use App\Tb_vinculaciones;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -76,6 +80,30 @@ class Tb_vinculacionesController extends Controller
         $tb_vinculaciones->estado='1';
         $tb_vinculaciones->fechaInicio=$request->fechaInicio;
         $tb_vinculaciones->save();
+    }
+
+    public function selectEmpleado(){
+        $empleados = Tb_empleado::where('tb_empleado.estado','=','1')
+        ->select('tb_empleado.id as idEmpleado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+        ->orderBy('empleado','asc')->get();
+
+        return ['empleados' => $empleados];
+    }
+
+    public function selectNivel(){
+        $niveles = Tb_niveles_riesgo::orderBy('id','asc')->get();
+        return ['niveles' => $niveles];
+        echo $niveles;
+    }
+
+    public function selectEps(){
+        $eps = Tb_eps::orderBy('id','asc')->get();
+        return ['eps' => $eps];
+    }
+
+    public function selectPensiones(){
+        $pensiones = Tb_administradora_pensiones::orderBy('id','asc')->get();
+        return ['pensiones' => $pensiones];
     }
 
 }

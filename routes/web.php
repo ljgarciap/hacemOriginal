@@ -298,6 +298,10 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/vinculacion/update", "Tb_vinculacionesController@update");
         Route::put("/vinculacion/deactivate", "Tb_vinculacionesController@deactivate");
         Route::put("/vinculacion/activate", "Tb_vinculacionesController@activate");
+        Route::get("/vinculacion/selectempleado", "Tb_vinculacionesController@selectEmpleado");
+        Route::get("/vinculacion/selecteps", "Tb_vinculacionesController@selectEps");
+        Route::get("/vinculacion/selectnivel", "Tb_vinculacionesController@selectNivel");
+        Route::get("/vinculacion/selectpensiones", "Tb_vinculacionesController@selectPensiones");
         Route::get("/vinculacion/selectvinculacion", "Tb_vinculacionesController@selectvinculacion");
 
     });

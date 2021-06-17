@@ -108,7 +108,7 @@
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idEmpleado">
                                                 <option value="0" disabled>Seleccione un Empleado</option>
-                                                <option v-for="empleado in arrayEmpleados" :key="empleado.id" :value="empleado.id" v-text="empleado.nombre"></option>
+                                                <option v-for="empleado in arrayEmpleados" :key="empleado.idEmpleado" :value="empleado.idEmpleado" v-text="empleado.empleado"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -118,8 +118,8 @@
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="tipoContrato">
                                                 <option value="0" disabled>Seleccione un tipo de contrato</option>
-                                                <option value="1" disabled>Termino Fijo</option>
-                                                <option value="2" disabled>Termino Indefinido</option>
+                                                <option value="1">Termino Fijo</option>
+                                                <option value="2">Termino Indefinido</option>
                                             </select>
                                         </div>
                                     </div>
@@ -127,10 +127,10 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tipo Salario</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="tipoContrato">
+                                            <select class="form-control" v-model="tipoSalario">
                                                 <option value="0" disabled>Seleccione un tipo de salario</option>
-                                                <option value="1" disabled>Fijo</option>
-                                                <option value="2" disabled>Destajo</option>
+                                                <option value="1">Fijo</option>
+                                                <option value="2">Destajo</option>
                                             </select>
                                         </div>
                                     </div>
@@ -178,11 +178,18 @@
     export default {
         data(){
             return{
-                idVinculacion:0,
+                idEmpleado:0,
+                tipoContrato:0,
+                tipoSalario:0,
+                idNivelArl:0,
+                idEps:0,
+                idPensiones:0,
+                salarioBasicoMensual:'',
                 id:'',
-                vinculacion:'',
+                fechaInicio:'',
                 estado:'',
                 arrayVinculaciones : [],
+                arrayEmpleados : [],
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
@@ -269,7 +276,11 @@
 
                 let me=this;
                 axios.post('/vinculacion/store',{
-                    'vinculacion': this.Vinculacion
+                    'idEmpleado': this.idEmpleado,
+                    'tipoContrato': this.tipoContrato,
+                    'tipoSalario': this.tipoSalario,
+                    'salarioBasicoMensual': this.salarioBasicoMensual,
+                    'fechaInicio': this.fechaInicio
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
@@ -382,10 +393,25 @@
                 this.errorVinculacion=0;
                 this.errorMensaje=[];
 
-                if (!this.vinculacion) this.errorMensaje.push("El nombre de la vinculacion no puede estar vacio");
+                //if (!this.idEmpleado) this.errorMensaje.push("El nombre del empleado no puede estar vacio");
                 if (this.errorMensaje.length) this.errorVinculacion=1;
 
                 return this.errorVinculacion;
+            },
+            listarEmpleados(){
+                let me=this;
+                var url='/vinculacion/selectempleado';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayEmpleados=respuesta.empleados;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             cerrarModal(){
                 this.modal=0;
@@ -423,7 +449,7 @@
             }
         },
         mounted() {
-            this.listarVinculacion(1,this.buscar,this.criterio);
+            this.listarEmpleados();
         }
     }
 </script>
