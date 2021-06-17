@@ -91,7 +91,8 @@
                             </div>
                         </div>
                     </div>
-                    </template>
+
+                </template>
                     <!-- Fin Listado -->
 
                     <!-- Detalle -->

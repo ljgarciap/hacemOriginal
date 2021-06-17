@@ -14,3 +14,8 @@ Importante sobre el uso de seeders; el seeder unidadBase carga desde su mismo ar
 
 Actualización listado de colaboradores.
 Se añaden a los seeders los datos capturados en las experiencias con los empresarios; se relaciona la seccion a comentariar en caso de querer una base limpia para pruebas en el archivo DatabaseSeeder.
+
+## 17-06-21
+
+Actualización módulos.
+Se añaden a los seeders los datos de empleados y los modulos actualizados.
