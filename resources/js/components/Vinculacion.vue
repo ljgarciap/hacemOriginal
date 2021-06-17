@@ -34,7 +34,13 @@
                                     <tr>
                                         <th>Opciones</th>
                                         <th>Id</th>
-                                        <th>Area</th>
+                                        <th>Tipo contrato</th>
+                                        <th>Tipo Salario</th>
+                                        <th>Sueldo Base</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Nivel Riesgo</th>
+                                        <th>Eps</th>
+                                        <th>Pensiones</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
@@ -59,7 +65,15 @@
 
                                         </td>
                                         <td v-text="vinculacion.id"></td>
-                                        <td v-text="vinculacion.vinculacion"></td>
+                                        <td v-if="vinculacion.tipoContrato==1">Término Fijo</td>
+                                        <td v-if="vinculacion.tipoContrato==2">Término Indefinido</td>
+                                        <td v-if="vinculacion.tipoSalario==1">Sueldo Fijo</td>
+                                        <td v-if="vinculacion.tipoSalario==2">Destajo</td>
+                                        <td v-text="vinculacion.salarioBasicoMensual"></td>
+                                        <td v-text="vinculacion.fechaInicio"></td>
+                                        <td v-text="vinculacion.idNivelArl"></td>
+                                        <td v-text="vinculacion.nombreEps"></td>
+                                        <td v-text="vinculacion.nombrePensiones"></td>
                                         <td>
                                             <div v-if="vinculacion.estado">
                                             <span class="badge badge-success">Activo</span>
@@ -151,6 +165,36 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Nivel Arl</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idNivelArl">
+                                                <option value="0" disabled>Seleccione un nivel de riesgo</option>
+                                                <option v-for="nivel in arrayNiveles" :key="nivel.id" :value="nivel.id" v-text="nivel.nivelArl"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Eps</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idEps">
+                                                <option value="0" disabled>Seleccione una Eps</option>
+                                                <option v-for="eps in arrayEps" :key="eps.id" :value="eps.id" v-text="eps.nombreEps"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Pensiones</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idPensiones">
+                                                <option value="0" disabled>Seleccione un Fondo de Pensiones</option>
+                                                <option v-for="pension in arrayPensiones" :key="pension.id" :value="pension.id" v-text="pension.nombrePensiones"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row div-error" v-show="errorVinculacion">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
@@ -189,6 +233,9 @@
                 fechaInicio:'',
                 estado:'',
                 arrayVinculaciones : [],
+                arrayEps : [],
+                arrayNiveles : [],
+                arrayPensiones : [],
                 arrayEmpleados : [],
                 modal : 0,
                 tituloModal : '',
@@ -280,7 +327,10 @@
                     'tipoContrato': this.tipoContrato,
                     'tipoSalario': this.tipoSalario,
                     'salarioBasicoMensual': this.salarioBasicoMensual,
-                    'fechaInicio': this.fechaInicio
+                    'fechaInicio': this.fechaInicio,
+                    'idNivelArl': this.idNivelArl,
+                    'idEps': this.idEps,
+                    'idPensiones': this.idPensiones
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
@@ -413,6 +463,51 @@
                     console.log(error);
                 })
             },
+            listarEps(){
+                let me=this;
+                var url='/vinculacion/selecteps';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayEps=respuesta.eps;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarNivel(){
+                let me=this;
+                var url='/vinculacion/selectnivel';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayNiveles=respuesta.niveles;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarPensiones(){
+                let me=this;
+                var url='/vinculacion/selectpensiones';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayPensiones=respuesta.pensiones;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
@@ -450,6 +545,10 @@
         },
         mounted() {
             this.listarEmpleados();
+            this.listarNivel();
+            this.listarEps();
+            this.listarPensiones();
+            this.listarVinculacion(1,'','');
         }
     }
 </script>

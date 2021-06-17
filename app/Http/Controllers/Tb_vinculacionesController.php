@@ -15,27 +15,32 @@ class Tb_vinculacionesController extends Controller
     //
     public function index(Request $request)
     {
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
 
         if ($buscar=='') {
-            $areas = Tb_vinculaciones::orderBy('id','desc')->paginate(5);
+            $vinculaciones = Tb_vinculaciones::join("tb_eps","tb_vinculaciones.idEps","=","tb_eps.id")
+            ->join("tb_administradora_pensiones","tb_vinculaciones.idPensiones","=","tb_administradora_pensiones.id")
+            ->select('tb_vinculaciones.id','tb_vinculaciones.tipoContrato','tb_vinculaciones.tipoSalario','tb_vinculaciones.salarioBasicoMensual',
+            'tb_vinculaciones.fechaInicio','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
+            'tb_vinculaciones.idEps','tb_vinculaciones.idPensiones','tb_vinculaciones.estado','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones')
+            ->orderBy('tb_vinculaciones.id','desc')->paginate(5);
         }
         else {
-            $areas = Tb_vinculaciones::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+            $vinculaciones = Tb_vinculaciones::where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
         }
 
         return [
             'pagination' => [
-                'total'         =>$areas->total(),
-                'current_page'  =>$areas->currentPage(),
-                'per_page'      =>$areas->perPage(),
-                'last_page'     =>$areas->lastPage(),
-                'from'          =>$areas->firstItem(),
-                'to'            =>$areas->lastItem(),
+                'total'         =>$vinculaciones->total(),
+                'current_page'  =>$vinculaciones->currentPage(),
+                'per_page'      =>$vinculaciones->perPage(),
+                'last_page'     =>$vinculaciones->lastPage(),
+                'from'          =>$vinculaciones->firstItem(),
+                'to'            =>$vinculaciones->lastItem(),
             ],
-                'areas' => $areas
+                'vinculaciones' => $vinculaciones
         ];
     }
 
@@ -48,6 +53,9 @@ class Tb_vinculacionesController extends Controller
         $tb_vinculaciones->salarioBasicoMensual=$request->salarioBasicoMensual;
         $tb_vinculaciones->fechaInicio=$request->fechaInicio;
         $tb_vinculaciones->idEmpleado=$request->idEmpleado;
+        $tb_vinculaciones->idNivelArl=$request->idNivelArl;
+        $tb_vinculaciones->idEps=$request->idEps;
+        $tb_vinculaciones->idPensiones=$request->idPensiones;
         $tb_vinculaciones->save();
     }
 
@@ -60,6 +68,9 @@ class Tb_vinculacionesController extends Controller
         $tb_vinculaciones->salarioBasicoMensual=$request->salarioBasicoMensual;
         $tb_vinculaciones->fechaInicio=$request->fechaInicio;
         $tb_vinculaciones->idEmpleado=$request->idEmpleado;
+        $tb_vinculaciones->idNivelArl=$request->idNivelArl;
+        $tb_vinculaciones->idEps=$request->idEps;
+        $tb_vinculaciones->idPensiones=$request->idPensiones;
         $tb_vinculaciones->estado='1';
         $tb_vinculaciones->save();
     }
@@ -93,7 +104,6 @@ class Tb_vinculacionesController extends Controller
     public function selectNivel(){
         $niveles = Tb_niveles_riesgo::orderBy('id','asc')->get();
         return ['niveles' => $niveles];
-        echo $niveles;
     }
 
     public function selectEps(){
