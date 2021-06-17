@@ -39,11 +39,6 @@ class Tb_tiempo_estandarController extends Controller
             ->where('tb_tiempo_estandar.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_tiempo_estandar.id','desc')->paginate(5);
          }
-         /*
-         ,'tb_tiempo_estandar.tiempoElemental',
-             'tb_tiempo_estandar.tiempoNormal','tb_tiempo_estandar.factorPds','tb_tiempo_estandar.tiempoEstandar','tb_tiempo_estandar.numeroPiezas',
-             'tb_tiempo_estandar.piezasPar','tb_tiempo_estandar.tiempoPiezas','tb_tiempo_estandar.factorValoracion',
-         */
          return [
              'pagination' => [
                  'total'         =>$tiempoestandar->total(),
@@ -60,7 +55,6 @@ class Tb_tiempo_estandarController extends Controller
      public function store(Request $request)
      {
          //if(!$request->ajax()) return redirect('/');
-
          $tb_tiempo_estandar=new Tb_tiempo_estandar();
          $tb_tiempo_estandar->fecha=$request->fecha;
          $tb_tiempo_estandar->idEmpleado=$request->idEmpleado;
@@ -73,10 +67,7 @@ class Tb_tiempo_estandarController extends Controller
          $tb_tiempo_estandar->tiempoPiezas=0;
          $tb_tiempo_estandar->factorValoracion=0;
          $tb_tiempo_estandar->estado=1;
-         $tb_tiempo_estandar->save();
-
-    
-         
+         $tb_tiempo_estandar->save(); 
      }
      public function empleados()
     {
@@ -85,5 +76,13 @@ class Tb_tiempo_estandarController extends Controller
         DB::raw('CONCAT(tb_empleado.nombre," ",tb_empleado.apellido," - ",tb_empleado.documento) as nombreEmpleado'))
         ->get();
         return ['empleados' => $empleados];
+    }
+     public function estado(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $idTiempoEstandar= $request->id;
+        $tb_tiempo_estandar=Tb_tiempo_estandar::findOrFail($request->id);
+        $tb_tiempo_estandar->estado=0;
+        $tb_tiempo_estandar->save();
     }
 }

@@ -12,4 +12,8 @@ class Tb_tiempo_estandar extends Model
     protected $fillable = ['fecha','idEmpleado','tiempoElemental','tiempoNormal','factorPds','tiempoEstandar','numeroPiezas','piezasPar','tiempoPiezas','factorValoracion'];
 
     public $timestamps = false;
+    
+    public function ciclos(){
+        return $this->belongsTo('App\Tb_tiempo_estandar', 'id');
+    }
 }

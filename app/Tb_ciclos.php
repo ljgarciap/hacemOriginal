@@ -12,4 +12,8 @@ class Tb_ciclos extends Model
     protected $fillable = ['tiempo','piezas','idTiempoEstandar'];
 
     public $timestamps = false;
+
+    public function tiempoestandar(){
+        return $this->hasMany('App\Tb_ciclos');
+    }
 }

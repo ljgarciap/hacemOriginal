@@ -44,12 +44,12 @@
                                     <tr v-for="tiempoestandar in arrayTiempoEstandar" :key="tiempoestandar.id">
                                         <td>
                                             <template v-if="tiempoestandar.estado==1">
-                                            <button type="button" @click="mostrarTiempoEstandar(tiempoestandar.id)" class="btn btn-warning btn-sm">
-                                            <i class="icon-plus"></i>
-                                            </button> &nbsp;
-                                            <button type="button" @click="mostrarTiempo(tiempoestandar.id)" class="btn btn-danger btn-sm">
-                                                <i class="icon-plus"></i>
-                                            </button> &nbsp;
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarTiempoEstandar(tiempoestandar.id)">
+                                                <i class="icon-plus"><span>Agregar</span></i>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-sm" @click="abrirModal('detalle','crear',tiempoestandar.id)">
+                                                <i class="icon-plus"><span>Validar</span></i>
+                                            </button>
                                             </template>
                                             <template v-if="tiempoestandar.estado==0">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(tiempoestandar.id)">
@@ -117,7 +117,7 @@
                                     <div class="card-header">
                                         <i class="fa fa-align-justify"></i> Westing House &nbsp;
                                         <button type="button" @click="abrirModal('westinghouse','crear')" class="btn btn-secondary">
-                                            <i class="icon-plus"></i>&nbsp;Nueva Westing House
+                                            <i class="icon-plus"></i>&nbsp;Asignar Nueva Westing House
                                         </button>
                                     </div>
 
@@ -149,26 +149,8 @@
                             </div>
                         </div>
                     </template>
-                     <template  v-if="listado==3">
-                    <div class="container-fluid">
-                    <!-- Ejemplo de tabla Listado -->
 
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Realizar Tiempo Estandar &nbsp;
-                            </div>
-                        <div class="card-body">
-                            <realizartiempoestandar v-bind:identificador="identificador" :key="componentKey"></realizartiempoestandar>
-                            <p align="right">
-                                <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Fin ejemplo de tabla Listado -->
-                </div>
-                </template>
-
-                <template v-if="listado==4">
+                <template v-if="listado==3">
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
@@ -254,6 +236,11 @@
                                             <span class="help-block">(*) Ingrese las piezas</span>
                                         </div>
                                     </div>
+                                    <div v-if="tipoModal==2" class="form-group row">
+                                        <div class="col-md-9">
+                                            <input type="hidden" v-model="idTiempoEstandar" id="idTiempoEstandar">
+                                        </div>
+                                    </div>
 
                                     <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorCiclos">
                                         <div class="text-center text-error">
@@ -284,7 +271,7 @@
                                                 <option value="5">Esfuezo Mental</option>
                                                 <option value="6">Esfuerzo Fisico</option>
                                                 <option value="7">Suplementarios</option>
-                                                <option value="8">Necesidades</option>
+                                                <option value="8">Necesidades Personales</option>
                                                 <option value="9">Monotonia</option>
                                                 <option value="10">Espera</option>
                                             </select>
@@ -447,6 +434,11 @@
                                         </div>
                                     </div>
                                     <!--Termina el modal para crear pds-->
+                                 <!-- Si el tipo es 3 solo es modal para mostrar carga -->
+
+                                    <div v-if="tipoModal==5" class="carga">
+                                        <p><hr><h1>Generando, por favor espere...</h1><hr></p>
+                                    </div>
                                 </form>
                             </div>
 
@@ -502,14 +494,12 @@
 
 <script>
     import moment from 'moment';
-    import realizartiempoestandar from '../components/RealizarTiempoEstandar.vue';
     import detalletiempoestandar from '../components/DetalleTiempoEstandar.vue';
     import ciclos from '../components/Ciclos';
     import westinghouse from '../components/WestingHouse';
     import pds from '../components/Pds';
     export default {
         components: {
-            realizartiempoestandar,
             detalletiempoestandar,
             ciclos,
             westinghouse,
@@ -519,8 +509,8 @@
             return{
                 colorx: '#8B0000',
                 listado: 1,
+                identificador:0,
                 idTiempoEstandar:0,
-                idTiempo:0,
                 id:'',
                 fecha : '',
                 numeroPiezas:0,
@@ -691,9 +681,23 @@
                 console.log(this.identificador);
             },
             mostrarDetalle(id){
-                this.listado=4;
+                this.listado=3;
                 this.identificador=id;
                 (this.identificador);
+            },
+            generarDetalle(id){
+                this.identificador=id;
+                let me=this;
+                axios.post('/tiempoestandar/estado',{
+                    'id': this.identificador
+                }).then(function (response) {
+                me.cerrarModal('0');
+                me.forceRerender();
+                me.listarTiempoEstandar(1,'','');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             ocultarDetalle(){
                 this.listarTiempoEstandar(1,this.buscar,this.criterio);
@@ -748,7 +752,7 @@
                         case 'crear':{
                             this.modal=1;
                             this.tipoModal=2;
-                            this.idTiempo=this.identificador;
+                            this.idTiempoEstandar=this.identificador;
                             this.tituloModal='Crear nuevo ciclo';
                             this.tipoAccion= 1;
                             break;
@@ -786,6 +790,20 @@
                     }
                     break;
                 }
+                case "detalle":
+                    {
+                        switch (accion) {
+                            case 'crear':{
+                                this.modal=1;
+                                this.tipoModal=5; //carga tipos de campos y footers
+                                this.tituloModal='Generando, por favor espere...';
+                                this.identificador=identificador;
+                                break;
+                            }
+                        }
+                        this.generarDetalle(this.identificador);
+                        break;
+                    }
 
             }
 
@@ -814,7 +832,7 @@
                     'idCiclos': this.idCiclos,
                     'tiempo': this.tiempo,
                     'piezas': this.piezas,
-                    'idTiempo':this.idTiempo
+                    'idTiempoEstandar':this.idTiempoEstandar
 
                 }).then(function (response) {
                 me.cerrarModal();
@@ -856,8 +874,7 @@
                 axios.post('/tiempoestandar/guardarHabilidad',{
                     'rango': this.rango,
                     'porcentaje': this.porcentaje,
-                    'clasificacion':this.clasificacion,
-                    'idTiempo':this.idTiempo
+                    'clasificacion':this.clasificacion
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
@@ -886,8 +903,7 @@
                 axios.post('/tiempoestandar/guardarEsfuerzo',{
                     'rango': this.rango,
                     'porcentaje': this.porcentaje,
-                    'clasificacion':this.clasificacion,
-                    'idTiempo':this.idTiempo
+                    'clasificacion':this.clasificacion
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
@@ -916,8 +932,7 @@
                 axios.post('/tiempoestandar/guardarCondiciones',{
                     'rango': this.rango,
                     'porcentaje': this.porcentaje,
-                    'clasificacion':this.clasificacion,
-                    'idTiempo':this.idTiempo
+                    'clasificacion':this.clasificacion
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
@@ -946,8 +961,7 @@
                 axios.post('/tiempoestandar/guardarConsistencia',{
                     'rango': this.rango,
                     'porcentaje': this.porcentaje,
-                    'clasificacion':this.clasificacion,
-                    'idTiempo':this.idTiempo
+                    'clasificacion':this.clasificacion
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
@@ -1016,8 +1030,7 @@
                 let me=this;
                 axios.post('/tiempoestandar/guardarEsfuerzoFisico',{
                     'grado': this.grado,
-                    'porcentaje': this.porcentaje,
-                    'idTiempo':this.idTiempo
+                    'porcentaje': this.porcentaje
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
@@ -1044,8 +1057,7 @@
                 let me=this;
                 axios.post('/tiempoestandar/guardarSuplementarios',{
                     'grado': this.grado,
-                    'porcentaje': this.porcentaje,
-                    'idTiempo':this.idTiempo
+                    'porcentaje': this.porcentaje
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
@@ -1073,8 +1085,7 @@
                 axios.post('/tiempoestandar/guardarPersonales',{
                     'rango': this.rango,
                     'porcentajeHombre': this.porcentajeHombre,
-                    'porcentajeMujer':this.porcentajeMujer,
-                    'idTiempo':this.idTiempo
+                    'porcentajeMujer':this.porcentajeMujer
                 }).then(function (response) {
                 me.cerrarModal();
                 me.forceRerender();
