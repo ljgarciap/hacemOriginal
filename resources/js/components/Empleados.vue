@@ -30,9 +30,6 @@
                                         <option value="perfil">Perfil</option>
                                         <option value="nombre">Nombre</option>
                                         <option value="apellido">Apellido</option>
-                                        <option value="direccion">Dirección</option>
-                                        <option value="telefono">Telefono</option>
-                                        <option value="correo">Correo</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarEmpleado(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarEmpleado(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -44,14 +41,14 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
-                                        <th>Id</th>
+                                        <!-- <th>Id</th> -->
                                         <th>Documento</th>
-                                        <th>Area</th>
+                                        <!-- <th>Area</th>
                                         <th>Proceso</th>
-                                        <th>Perfil</th>
+                                        <th>Perfil</th> -->
                                         <th>Nombre</th>
                                         <th>Apellido</th>
-                                        <th>Genero</th>
+                                        <!-- <th>Genero</th> -->
                                         <th>Dirección</th>
                                         <th>Telefono</th>
                                         <th>Correo</th>
@@ -83,14 +80,14 @@
                                         </template>
 
                                         </td>
-                                        <td v-text="empleado.id"></td>
+                                        <!-- <td v-text="empleado.id"></td> -->
                                         <td v-text="empleado.documento"></td>
-                                        <td v-text="empleado.area"></td>
+                                        <!-- <td v-text="empleado.area"></td>
                                         <td v-text="empleado.proceso"></td>
-                                        <td v-text="empleado.perfil"></td>
+                                        <td v-text="empleado.perfil"></td> -->
                                         <td v-text="empleado.nombre"></td>
                                         <td v-text="empleado.apellido"></td>
-                                        <td v-text="empleado.genero"></td>
+                                        <!-- <td v-text="empleado.genero"></td> -->
                                         <td v-text="empleado.direccion"></td>
                                         <td v-text="empleado.telefono"></td>
                                         <td v-text="empleado.correo"></td>
@@ -359,6 +356,7 @@
                 idEmpleado:0,
                 id:'',
                 documento: 0,
+                listado: 1,
                 nombre:'',
                 apellido:'',
                 genero:'',
