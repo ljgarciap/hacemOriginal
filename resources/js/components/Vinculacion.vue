@@ -10,7 +10,8 @@
 
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
-
+                <vs-tabs :color="colorx">
+                    <vs-tab label="Vinculaciones activas" icon="open_with" @click="colorx = '#8B0000'">
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Vinculación &nbsp;
@@ -23,7 +24,6 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="area">Area</option>
                                         <option value="id">Id</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarVinculacion(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
@@ -36,28 +36,28 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
-                                        <th>Id</th>
+                                        <!-- <th>Id</th> -->
+                                        <th>Empleado</th>
                                         <th>Tipo contrato</th>
                                         <th>Tipo Salario</th>
                                         <th>Sueldo Base</th>
                                         <th>Fecha Inicio</th>
                                         <th>Nivel Riesgo</th>
+                                        <!--
                                         <th>Eps</th>
                                         <th>Pensiones</th>
                                         <th>Estado</th>
+                                        -->
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                     <tr v-for="vinculacion in arrayVinculaciones" :key="vinculacion.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('vinculacion','actualizar',vinculacion)" class="btn btn-warning btn-sm">
-                                            <i class="icon-pencil"></i>
-                                            </button> &nbsp;
 
                                         <template v-if="vinculacion.estado">
                                             <button type="button" class="btn btn-danger btn-sm" @click="desactivarVinculacion(vinculacion.id)">
-                                                <i class="icon-trash"></i>
+                                                <i class="icon-close"></i>
                                             </button>
                                         </template>
                                         <template v-else>
@@ -67,7 +67,8 @@
                                         </template>
 
                                         </td>
-                                        <td v-text="vinculacion.id"></td>
+                                        <!-- <td v-text="vinculacion.id"></td> -->
+                                        <td v-text="vinculacion.empleado"></td>
                                         <td v-if="vinculacion.tipoContrato==1">Término Fijo</td>
                                         <td v-if="vinculacion.tipoContrato==2">Término Indefinido</td>
                                         <td v-if="vinculacion.tipoSalario==1">Sueldo Fijo</td>
@@ -75,6 +76,7 @@
                                         <td v-text="vinculacion.salarioBasicoMensual"></td>
                                         <td v-text="vinculacion.fechaInicio"></td>
                                         <td v-text="vinculacion.idNivelArl"></td>
+                                        <!--
                                         <td v-text="vinculacion.nombreEps"></td>
                                         <td v-text="vinculacion.nombrePensiones"></td>
                                         <td>
@@ -85,6 +87,7 @@
                                             <span class="badge badge-danger">Desactivado</span>
                                             </div>
                                         </td>
+                                        -->
                                     </tr>
 
                                 </tbody>
@@ -105,107 +108,110 @@
                             </nav>
                         </div>
                     </div>
+                    </vs-tab>
+                    <vs-tab label="Vinculaciones inactivas" icon="open_with" @click="colorx = '#FFA500'">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Vinculación &nbsp;
+                            <button type="button" @click="abrirModal('vinculacion','crear')" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Nuevo
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="id">Id</option>
+                                        </select>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarVinculacion(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarVinculacion(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Opciones</th>
+                                        <!-- <th>Id</th> -->
+                                        <th>Empleado</th>
+                                        <th>Tipo contrato</th>
+                                        <th>Tipo Salario</th>
+                                        <th>Sueldo Base</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Nivel Riesgo</th>
+                                        <!--
+                                        <th>Eps</th>
+                                        <th>Pensiones</th>
+                                        <th>Estado</th>
+                                        -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr v-for="vinculacion in arrayVinculaciones" :key="vinculacion.id">
+                                        <td>
+
+                                        <template v-if="vinculacion.estado">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarVinculacion(vinculacion.id)">
+                                                <i class="icon-close"></i>
+                                            </button>
+                                        </template>
+                                        <template v-else>
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarVinculacion(vinculacion.id)">
+                                                <i class="icon-check"></i>
+                                            </button>
+                                        </template>
+
+                                        </td>
+                                        <!-- <td v-text="vinculacion.id"></td> -->
+                                        <td v-text="vinculacion.empleado"></td>
+                                        <td v-if="vinculacion.tipoContrato==1">Término Fijo</td>
+                                        <td v-if="vinculacion.tipoContrato==2">Término Indefinido</td>
+                                        <td v-if="vinculacion.tipoSalario==1">Sueldo Fijo</td>
+                                        <td v-if="vinculacion.tipoSalario==2">Destajo</td>
+                                        <td v-text="vinculacion.salarioBasicoMensual"></td>
+                                        <td v-text="vinculacion.fechaInicio"></td>
+                                        <td v-text="vinculacion.idNivelArl"></td>
+                                        <!--
+                                        <td v-text="vinculacion.nombreEps"></td>
+                                        <td v-text="vinculacion.nombrePensiones"></td>
+                                        <td>
+                                            <div v-if="vinculacion.estado">
+                                            <span class="badge badge-success">Activo</span>
+                                            </div>
+                                            <div v-else>
+                                            <span class="badge badge-danger">Desactivado</span>
+                                            </div>
+                                        </td>
+                                        -->
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            </div>
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item" v-if="pagination.current_page > 1">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                                    </li>
+                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                                    </li>
+                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    </vs-tab>
+                </vs-tabs>
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
 
                 </template>
-
-                    <!-- Detalle -->
-                    <template v-else>
-                        <div class="container-fluid">
-                            <div class="card">
-                                <vs-tabs :color="colorx">
-
-                                <vs-tab label="Materia Prima" icon="open_with" @click="colorx = '#8B0000'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                        <button type="button" @click="abrirModal('gestionMateria','crear','arrayGestionMaterias')" class="btn btn-secondary">
-                                            <i class="icon-plus"></i>&nbsp;Nueva materia prima
-                                        </button>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <materiaprima v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarMateriaPrimaProducto"></materiaprima>
-                                    </div>
-
-                                </vs-tab>
-
-                                <vs-tab label="Mano de Obra" icon="pan_tool" @click="colorx = '#FFA500'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                        <button type="button" @click="abrirModal('gestionManoDeObra','crear')" class="btn btn-secondary">
-                                            <i class="icon-plus"></i>&nbsp;Nueva mano de obra
-                                        </button>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <manodeobra v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmanodeobra="eliminarManoDeObraProducto"></manodeobra>
-                                    </div>
-
-                                </vs-tab>
-
-                                <vs-tab label="CIF" icon="account_balance" @click="colorx = '#CB3234'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                            <i class="icon-plus"></i>&nbsp;Cif asociados
-                                    </div>
-
-                                    <div class="card-body">
-                                        <cif v-bind:identificador="identificador" :key="componentKey"></cif>
-                                    </div>
-
-                                </vs-tab>
-
-                                <!-- //comentariada pestaña maquinaria; valor va incluido en la de cif
-                                <vs-tab label="MAQUINARIA" icon="build" @click="colorx = '#FFC89A'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                            <i class="icon-plus"></i>&nbsp;Maquinaria
-                                    </div>
-
-                                    <div class="card-body">
-                                        <maquinaria></maquinaria>
-                                    </div>
-
-                                </vs-tab>
-                                -->
-
-                                <vs-tab label="Consolidado" icon="view_list" @click="colorx = '#20603d'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                    </div>
-
-                                    <div class="card-body">
-                                        <hojadecostos v-bind:identificador="identificador" :key="componentKey"></hojadecostos>
-                                    </div>
-
-                                </vs-tab>
-
-                                <vs-tab label="Detallado" icon="format_list_numbered" @click="colorx = '#9B59B6'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                    </div>
-
-                                    <div class="card-body">
-                                        <hojadecostosdetalle v-bind:identificador="identificador" :key="componentKey"></hojadecostosdetalle>
-                                    </div>
-
-                                </vs-tab>
-
-                                <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
-                                </vs-tab>
-
-                                </vs-tabs>
-                            </div>
-                        </div>
-                    </template>
-                    <!-- Fin Detalle -->
 
                 <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
@@ -244,7 +250,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tipo Salario</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="tipoSalario">
+                                            <select class="form-control" v-model="tipoSalario" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione un tipo de salario</option>
                                                 <option value="1">Fijo</option>
                                                 <option value="2">Destajo</option>
@@ -252,7 +258,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
+                                    <div class="form-group row" v-if="flag==1">
                                         <label class="col-md-3 form-control-label" for="text-input">Salario Base</label>
                                         <div class="col-md-9">
                                             <input type="number" v-model="salarioBasicoMensual" class="form-control" placeholder="Ingrese el salario básico mensual">
@@ -328,12 +334,13 @@
                 idEmpleado:0,
                 colorx: '#8B0000',
                 listado: 1,
+                flag: 0,
                 tipoContrato:0,
                 tipoSalario:0,
                 idNivelArl:0,
                 idEps:0,
                 idPensiones:0,
-                salarioBasicoMensual:'',
+                salarioBasicoMensual:0,
                 id:'',
                 fechaInicio:'',
                 estado:'',
@@ -390,6 +397,14 @@
             }
         },
         methods : {
+            onChange(event) {
+            //console.log(event.target.value);
+            this.flag=event.target.value;
+            if (this.flag == 1) {
+               this.salarioBasicoMensual = '';
+            } else
+            this.salarioBasicoMensual = 0;
+            },
             listarVinculacion(page,buscar,criterio){
                 let me=this;
                 var url='/vinculacion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
@@ -423,14 +438,10 @@
             mostrarDetalle(id,producto,area){
                 this.listado=0;
                 this.identificador=id;
-                this.identificadorArea=area;
-                this.productoNombre=producto;
             },
             ocultarDetalle(){
                 this.listado=1;
                 this.identificador=0;
-                this.identificadorArea=0;
-                this.productoNombre='';
             },
             crearVinculacion(){
                 //valido con el metodo de validacion creado
@@ -627,6 +638,9 @@
             },
             cerrarModal(){
                 this.modal=0;
+                this.flag=0;
+                this.tipoContrato=0;
+                this.tipoSalario=0;
                 this.tituloModal='';
                 this.vinculacion='';
                 this.errorVinculacion = 0,

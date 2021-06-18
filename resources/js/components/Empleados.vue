@@ -5,6 +5,9 @@
                     <li class="breadcrumb-item">Home</li>
                     <li class="breadcrumb-item active">Empleados</li>
                 </ol>
+
+                <template v-if="listado">
+
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
@@ -59,6 +62,11 @@
 
                                     <tr v-for="empleado in arrayEmpleados" :key="empleado.id">
                                         <td>
+
+                                            <button type="button" @click="mostrarDetalle(empleado.id)" class="btn btn-success btn-sm">
+                                            <i class="icon-eye"></i>
+                                            </button> &nbsp;
+
                                             <button type="button" @click="abrirModal('empleado','actualizar',empleado)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
@@ -116,6 +124,104 @@
                     </div>
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
+
+                </template>
+
+                    <!-- Detalle -->
+                    <template v-else>
+                        <div class="container-fluid">
+                            <div class="card">
+                                <vs-tabs :color="colorx">
+
+                                <!-- Muestra vs-tab con cabecera para abrir modal inicio
+                                <vs-tab label="Materia Prima" icon="open_with" @click="colorx = '#8B0000'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                        <button type="button" @click="abrirModal('gestionMateria','crear','arrayGestionMaterias')" class="btn btn-secondary">
+                                            <i class="icon-plus"></i>&nbsp;Nueva materia prima
+                                        </button>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <materiaprima v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarMateriaPrimaProducto"></materiaprima>
+                                    </div>
+
+                                </vs-tab>
+                                Muestra vs-tab con cabecera para abrir modal fin-->
+
+                                <vs-tab label="Materia Prima" icon="open_with" @click="colorx = '#8B0000'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                           <i class="icon-plus"></i>&nbsp;Nueva materia prima
+                                    </div>
+
+                                    <div class="card-body">
+                                        <materiaprima v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarMateriaPrimaProducto"></materiaprima>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="Mano de Obra" icon="pan_tool" @click="colorx = '#FFA500'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                            <i class="icon-plus"></i>&nbsp;Nueva mano de obra
+                                    </div>
+
+                                    <div class="card-body">
+                                        <manodeobra v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmanodeobra="eliminarManoDeObraProducto"></manodeobra>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="CIF" icon="account_balance" @click="colorx = '#CB3234'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                            <i class="icon-plus"></i>&nbsp;Cif asociados
+                                    </div>
+
+                                    <div class="card-body">
+                                        <cif v-bind:identificador="identificador" :key="componentKey"></cif>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="Consolidado" icon="view_list" @click="colorx = '#20603d'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                    </div>
+
+                                    <div class="card-body">
+                                        <hojadecostos v-bind:identificador="identificador" :key="componentKey"></hojadecostos>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="Detallado" icon="format_list_numbered" @click="colorx = '#9B59B6'">
+
+                                    <div class="card-header">
+                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
+                                    </div>
+
+                                    <div class="card-body">
+                                        <hojadecostosdetalle v-bind:identificador="identificador" :key="componentKey"></hojadecostosdetalle>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
+                                </vs-tab>
+
+                                </vs-tabs>
+                            </div>
+                        </div>
+                    </template>
+                    <!-- Fin Detalle -->
+
                 <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -347,6 +453,14 @@
             forceRerender() {
                 this.componentKey += 1;
                },
+            mostrarDetalle(id,producto,area){
+                this.listado=0;
+                this.identificador=id;
+            },
+            ocultarDetalle(){
+                this.listado=1;
+                this.identificador=0;
+            },
             selectPerfil(){
                 let me=this;
                 var url='/perfil/selectPerfil';
