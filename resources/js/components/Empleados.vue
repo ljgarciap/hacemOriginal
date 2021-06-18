@@ -147,65 +147,26 @@
                                 </vs-tab>
                                 Muestra vs-tab con cabecera para abrir modal fin-->
 
-                                <vs-tab label="Materia Prima" icon="open_with" @click="colorx = '#8B0000'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                           <i class="icon-plus"></i>&nbsp;Nueva materia prima
-                                    </div>
+                                <vs-tab label="Datos Contacto" icon="open_with" @click="colorx = '#8B0000'">
 
                                     <div class="card-body">
-                                        <materiaprima v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarMateriaPrimaProducto"></materiaprima>
+
                                     </div>
 
                                 </vs-tab>
 
-                                <vs-tab label="Mano de Obra" icon="pan_tool" @click="colorx = '#FFA500'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                            <i class="icon-plus"></i>&nbsp;Nueva mano de obra
-                                    </div>
+                                <vs-tab label="Datos contrato" icon="pan_tool" @click="colorx = '#FFA500'">
 
                                     <div class="card-body">
-                                        <manodeobra v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmanodeobra="eliminarManoDeObraProducto"></manodeobra>
+
                                     </div>
 
                                 </vs-tab>
 
-                                <vs-tab label="CIF" icon="account_balance" @click="colorx = '#CB3234'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                            <i class="icon-plus"></i>&nbsp;Cif asociados
-                                    </div>
+                                <vs-tab label="Datos adicionales" icon="account_balance" @click="colorx = '#CB3234'">
 
                                     <div class="card-body">
-                                        <cif v-bind:identificador="identificador" :key="componentKey"></cif>
-                                    </div>
 
-                                </vs-tab>
-
-                                <vs-tab label="Consolidado" icon="view_list" @click="colorx = '#20603d'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                    </div>
-
-                                    <div class="card-body">
-                                        <hojadecostos v-bind:identificador="identificador" :key="componentKey"></hojadecostos>
-                                    </div>
-
-                                </vs-tab>
-
-                                <vs-tab label="Detallado" icon="format_list_numbered" @click="colorx = '#9B59B6'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                    </div>
-
-                                    <div class="card-body">
-                                        <hojadecostosdetalle v-bind:identificador="identificador" :key="componentKey"></hojadecostosdetalle>
                                     </div>
 
                                 </vs-tab>
