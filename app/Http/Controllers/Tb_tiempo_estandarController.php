@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tb_empleado;
 use App\Tb_pds;
+use App\Tb_westing_house;
 use App\Tb_perfil;
 use App\Tb_proceso;
 use App\Tb_tiempo_estandar;
@@ -62,12 +63,31 @@ class Tb_tiempo_estandarController extends Controller
          $tb_tiempo_estandar->tiempoNormal=0;
          $tb_tiempo_estandar->factorPds=0;
          $tb_tiempo_estandar->tiempoEstandar=0;
-         $tb_tiempo_estandar->numeroPiezas=$request->numeroPiezas;
+         $tb_tiempo_estandar->numeroPiezas=0;
          $tb_tiempo_estandar->piezasPar=$request->piezasPar;
          $tb_tiempo_estandar->tiempoPiezas=0;
          $tb_tiempo_estandar->factorValoracion=0;
          $tb_tiempo_estandar->estado=1;
          $tb_tiempo_estandar->save(); 
+
+         $tb_westing_house = new Tb_westing_house();
+         $tb_westing_house->idHabilidad=1;
+         $tb_westing_house->idEsfuerzo=1;
+         $tb_westing_house->idCondiciones=1;
+         $tb_westing_house->idConsistencia=1;
+         $tb_westing_house->idTiempoEstandar=$tb_tiempo_estandar->id;
+         $tb_westing_house->save();
+
+         $tb_pds = new Tb_pds();
+         $tb_pds->idEsfuerzoMental=1;
+         $tb_pds->idEsfuerzoFisico=1;
+         $tb_pds->idSuplementario=1;
+         $tb_pds->idPersonales=1;
+         $tb_pds->idMonotonia=1;
+         $tb_pds->idEspera=1;
+         $tb_pds->valorEspera=0;
+         $tb_pds->idTiempoEstandar=$tb_tiempo_estandar->id;
+         $tb_pds->save();
      }
      public function empleados()
     {
@@ -80,6 +100,7 @@ class Tb_tiempo_estandarController extends Controller
      public function estado(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
+
         $idTiempoEstandar= $request->id;
         $tb_tiempo_estandar=Tb_tiempo_estandar::findOrFail($request->id);
         $tb_tiempo_estandar->estado=0;

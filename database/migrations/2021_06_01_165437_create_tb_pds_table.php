@@ -20,7 +20,8 @@ class CreateTbPdsTable extends Migration
             $table->foreignId('idSuplementario')->constrained('tb_suplementarios');
             $table->foreignId('idPersonales')->constrained('tb_necesidades_personales');
             $table->foreignId('idMonotonia')->constrained('tb_monotonia');
-            $table->foreignId('idEspera')->constrained('tb_espera');
+            $table->foreignId('idEspera')->constrained('tb_espera')->nullable();
+            $table->integer('valorEspera');
             $table->foreignId('idTiempoEstandar')->constrained('tb_tiempo_estandar');
             //$table->timestamps();
         });

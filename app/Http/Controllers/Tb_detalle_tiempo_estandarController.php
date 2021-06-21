@@ -18,7 +18,7 @@ use App\Tb_esfuerzo_fisico;
 use App\Tb_suplementarios;
 use App\Tb_necesidades_personales;
 use App\Tb_monotonia;
-use App\Tb_Espera;
+use App\Tb_espera;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +33,7 @@ class Tb_detalle_tiempo_estandarController extends Controller
         $ciclos = Tb_ciclos::join('tb_tiempo_estandar','tb_ciclos.idTiempoEstandar','=','tb_tiempo_estandar.id')
         ->select('tb_ciclos.tiempo','tb_ciclos.piezas','tb_ciclos.idTiempoEstandar')
         ->where('tb_ciclos.idTiempoEstandar','=',$id)
-        ->orderBy('tb_ciclos.id','asc')
+        ->orderBy('tb_ciclos.id','desc')
         ->paginate(5);
 
         return [
@@ -56,162 +56,200 @@ class Tb_detalle_tiempo_estandarController extends Controller
          $tb_ciclos=new Tb_ciclos();
          $tb_ciclos->tiempo=$request->tiempo;
          $tb_ciclos->piezas=$request->piezas;
-         //$tb_ciclos->idTiempoEstandar=1;
          $tb_ciclos->idTiempoEstandar=$request->idTiempoEstandar;
          $tb_ciclos->save();
+
+         $tiempos = DB::table('tb_ciclos')
+         ->where('tb_ciclos.idTiempoEstandar','=',1)
+         ->avg('tiempo');
+         
+         $piezas = DB::table('tb_ciclos')
+         ->where('tb_ciclos.idTiempoEstandar','=',1)
+         ->avg('piezas');
+
+         $tiempo_estandar= Tb_tiempo_estandar::find($request->idTiempoEstandar);
+         $tiempo_estandar->numeroPiezas=intval($piezas);
+         $tiempo_estandar->tiempoElemental=floatval($tiempos);
+         $tiempo_estandar->tiempoPiezas=(($tiempo_estandar->tiempoElemental/60)/$tiempo_estandar->numeroPiezas)*$tiempo_estandar->piezasPar;
+         $tiempo_estandar->save();
      }
     // Aca termina la tabla de ciclos
 
-    // Aca comienza la tabla de westing house
-    public function listarwesting(Request $request)
+     // Aca comienza las westing house
+
+     public function listarwesting(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
         $id=$request->id;
-        $westinghouse = Tb_westing_house::join('tb_tiempo_estandar','tb_westing_house.idTiempoEstandar','=','tb_tiempo_estandar.id')
-        ->join('tb_calificacion_habilidades','tb_westing_house.idHabilidad','=','tb_calificacion_habilidades.id')
-        ->join('tb_calificacion_esfuerzo','tb_westing_house.idEsfuerzo','=','tb_calificacion_esfuerzo.id')
-        ->join('tb_calificacion_condiciones','tb_westing_house.idCondiciones','=','tb_calificacion_condiciones.id')
-        ->join('tb_calificacion_consistencia','tb_westing_house.idConsistencia','=','tb_calificacion_consistencia.id')
-        ->select('tb_westing_house.idHabilidad','tb_westing_house.idEsfuerzo','tb_westing_house.idCondiciones',
-        'tb_westing_house.idConsistencia','tb_westing_house.idTiempoEstandar','tb_calificacion_habilidades.rango as idHabilidad','tb_calificacion_esfuerzo.rango as idEsfuerzo',
-        'tb_calificacion_condiciones.rango as idCondiciones','tb_calificacion_consistencia.rango as idConsistencia')
-        ->where('tb_westing_house.idTiempoEstandar','=',$id)
+        $westinghouse = Tb_westing_house::where('idTiempoEstandar','=',$id)
         ->orderBy('tb_westing_house.id','asc')
         ->paginate(5);
-
-        return [
-            'pagination' => [
-                'total'         =>$westinghouse->total(),
-                'current_page'  =>$westinghouse->currentPage(),
-                'per_page'      =>$westinghouse->perPage(),
-                'last_page'     =>$westinghouse->lastPage(),
-                'from'          =>$westinghouse->firstItem(),
-                'to'            =>$westinghouse->lastItem(),
-            ],
-            'westinghouse' =>  $westinghouse
-        ];
+        //\Log::debug(var_dump($westinghouse));
+        return ['westinghouse' =>  $westinghouse];
     }
-
-    public function guardarHabilidad(Request $request)
+    
+    public function habilidad()
     {
-        //if(!$request->ajax()) return redirect('/');
-        
-        $tb_habilidades=new Tb_calificacion_habilidades();
-        $tb_habilidades->rango=$request->rango;
-        $tb_habilidades->porcentaje=$request->porcentaje;
-        $tb_habilidades->clasificacion=$request->clasificacion;
-        $tb_habilidades->save();
-
-        /*$habilidades = Tb_westing_house::join('tb_calificacion_habilidades','tb_westing_house.idHabilidad','=','tb_calificacion_habilidades.id')
-        ->join('tb_tiempo_estandar','tb_westing_house.idTiempoEstandar','=','tb_tiempo_estandar.id')
-        ->select('tb_westing_house.idHabilidad','tb_calificacion_habilidades.id','tb_westing_house.idTiempoEstandar')
-        ->orderBy('tb_westing_house.idTiempoEstandar','asc')
-        ->whereIn('tb_westing_house.id', function($sub){$sub->selectRaw('max(id)')->from('tb_westing_house')->groupBy('idHabilidad');})
+        $habilidades = Tb_calificacion_habilidades::select('tb_calificacion_habilidades.id','tb_calificacion_habilidades.rango','tb_calificacion_habilidades.porcentaje',
+        'tb_calificacion_habilidades.clasificacion',
+        DB::raw('(tb_calificacion_habilidades.rango) as nombreHabilidad'))
         ->get();
-         foreach($habilidades as $h){
-             $obj_habilidad= new Tb_westing_house();
-             $obj_habilidad->idHabilidad=$h->id;
-             $obj_habilidad->save();
-         }*/
+        return ['habilidades' => $habilidades];
     }
-    public function guardarEsfuerzo(Request $request)
+    public function esfuerzo()
     {
-        //if(!$request->ajax()) return redirect('/');
-        $tb_habilidades=new Tb_calificacion_esfuerzo();
-        $tb_habilidades->rango=$request->rango;
-        $tb_habilidades->porcentaje=$request->porcentaje;
-        $tb_habilidades->clasificacion=$request->clasificacion;
-        $tb_habilidades->save();
+        $esfuerzo = Tb_calificacion_esfuerzo::select('tb_calificacion_esfuerzo.id','tb_calificacion_esfuerzo.rango','tb_calificacion_esfuerzo.porcentaje',
+        'tb_calificacion_esfuerzo.clasificacion',
+        DB::raw('(tb_calificacion_esfuerzo.rango) as nombreEsfuerzo'))
+        ->get();
+        return ['esfuerzo' => $esfuerzo];
     }
-    public function guardarCondiciones(Request $request)
+    public function condiciones()
     {
-        //if(!$request->ajax()) return redirect('/');
-        $tb_habilidades=new Tb_calificacion_condiciones();
-        $tb_habilidades->rango=$request->rango;
-        $tb_habilidades->porcentaje=$request->porcentaje;
-        $tb_habilidades->clasificacion=$request->clasificacion;
-        $tb_habilidades->save();
+        $condiciones = Tb_calificacion_condiciones::select('tb_calificacion_condiciones.id','tb_calificacion_condiciones.rango','tb_calificacion_condiciones.porcentaje',
+        'tb_calificacion_condiciones.clasificacion',
+        DB::raw('(tb_calificacion_condiciones.rango) as nombreCondicion'))
+        ->get();
+        return ['condiciones' => $condiciones];
     }
-    public function guardarConsistencia(Request $request)
+    public function consistencia()
     {
-        //if(!$request->ajax()) return redirect('/');
-        $tb_habilidades=new Tb_calificacion_consistencia();
-        $tb_habilidades->rango=$request->rango;
-        $tb_habilidades->porcentaje=$request->porcentaje;
-        $tb_habilidades->clasificacion=$request->clasificacion;
-        $tb_habilidades->save();
+        $consistencia = Tb_calificacion_consistencia::select('tb_calificacion_consistencia.id','tb_calificacion_consistencia.rango','tb_calificacion_consistencia.porcentaje',
+        'tb_calificacion_consistencia.clasificacion',
+        DB::raw('(tb_calificacion_consistencia.rango) as nombreConsistencia'))
+        ->get();
+        return ['consistencia' => $consistencia];
     }
-     // Aca termina la tabla de westing house
+    public function guardarWestingHouse(Request $request)
+     {
+         //if(!$request->ajax()) return redirect('/');
+         $tb_westing_house=Tb_westing_house::findOrFail($request->id);
+         $tb_westing_house->idHabilidad=$request->idHabilidad;
+         $tb_westing_house->idEsfuerzo=$request->idEsfuerzo;
+         $tb_westing_house->idCondiciones=$request->idCondiciones;
+         $tb_westing_house->idConsistencia=$request->idConsistencia;
+         $tb_westing_house->idTiempoEstandar=$request->idTiempoEstandar;
+         $tb_westing_house->save();
+         
+         $habilidad=Tb_calificacion_habilidades::findOrFail($request->idHabilidad);
+         $esfuerzos=Tb_calificacion_esfuerzo::findOrFail($request->idEsfuerzo);
+         $condicion=Tb_calificacion_condiciones::findOrFail($request->idCondiciones);
+         $consistencias=Tb_calificacion_consistencia::findOrFail($request->idConsistencia);
 
-     // Aca comienza la tabla de pds
-    public function listarpds(Request $request)
-    {
-        //if(!$request->ajax()) return redirect('/');
+         $factor=1+$habilidad->porcentaje+$esfuerzos->porcentaje+$condicion->porcentaje+$consistencias->porcentaje;
+         $tiempo_estandar=Tb_tiempo_estandar::findOrFail($request->idTiempoEstandar);
+         $tiempo_estandar->factorValoracion=$factor;
+         $tiempo_estandar->tiempoNormal=$tiempo_estandar->tiempoPiezas*$factor;
+         $tiempo_estandar->save();
+     }
+
+
+     // Aca termina las westing house
+
+     // Aca comienza las pds
+      
+     public function listarpds(Request $request)
+     {   
+         //if(!$request->ajax()) return redirect('/');
          $id=$request->id;
-         $pds = Tb_pds::join('tb_tiempo_estandar','tb_pds.idTiempoEstandar','=','tb_pds.id')
-        ->join('tb_esfuerzo_mental','tb_pds.idEsfuerzoMental','=','tb_esfuerzo_mental.id')
-        ->join('tb_esfuerzo_fisico','tb_pds.idEsfuerzoFisico','=','tb_esfuerzo_fisico.id')
-        ->join('tb_suplementarios','tb_pds.idSuplementario','=','tb_suplementarios.id')
-        ->join('tb_necesidades_personales','tb_pds.idPersonales','=','tb_necesidades_personales.id')
-        ->join('tb_monotonia','tb_pds.idMonotonia','=','tb_monotonia.id')
-        ->join('tb_espera','tb_pds.idEspera','=','tb_espera.id')
-        ->select('tb_pds.idEsfuerzoMental','tb_pds.idEsfuerzoFisico','tb_pds.idSuplementario',
-        'tb_pds.idPersonales','tb_pds.idMonotonia','tb_pds.idEspera','tb_pds.idTiempoEstandar',
-        'tb_esfuerzo_mental.grado as idEsfuerzoMental','tb_esfuerzo_fisico.grado as idEsfuerzoFisico',
-        'tb_suplementarios.grado as idSuplementario','tb_necesidades_personales.rango as idPersonales',
-        'tb_monotonia.clasificacion as idMonotonia','tb_espera.rangoMin as idEspera')
-        ->where('tb_pds.idTiempoEstandar','=',$id)
-        ->orderBy('tb_pds.id','asc')
-        ->paginate(5);
+         $pds = Tb_pds::where('idTiempoEstandar','=',$id)
+         ->orderBy('tb_pds.id','asc')
+         ->paginate(5);
+         //\Log::debug(var_dump($pds));
+         return ['pds' =>  $pds];
+     }
 
-        return [
-            'pagination' => [
-                'total'         =>$pds->total(),
-                'current_page'  =>$pds->currentPage(),
-                'per_page'      =>$pds->perPage(),
-                'last_page'     =>$pds->lastPage(),
-                'from'          =>$pds->firstItem(),
-                'to'            =>$pds->lastItem(),
-            ],
-            'pds' =>  $pds
-        ];
-    }
-    public function guardarEsfuerzoMental(Request $request)
+     public function esfuerzomental()
     {
-        //if(!$request->ajax()) return redirect('/');
-        $tb_esfuerzo_mental=new Tb_esfuerzo_mental();
-        $tb_esfuerzo_mental->grado=$request->grado;
-        $tb_esfuerzo_mental->porcentaje=$request->porcentaje;
-        $tb_esfuerzo_mental->save();
+        $esfuerzomental = Tb_esfuerzo_mental::select('tb_esfuerzo_mental.id','tb_esfuerzo_mental.grado','tb_esfuerzo_mental.porcentaje',
+        DB::raw('(tb_esfuerzo_mental.grado) as nombreEsfuerzoMental'))
+        ->get();
+        return ['esfuerzomental' => $esfuerzomental];
     }
-    public function guardarEsfuerzoFisico(Request $request)
+     public function esfuerzofisico()
+     {
+         $esfuerzofisico = Tb_esfuerzo_fisico::select('tb_esfuerzo_fisico.id','tb_esfuerzo_fisico.grado','tb_esfuerzo_fisico.porcentaje',
+         DB::raw('(tb_esfuerzo_fisico.grado) as nombreEsfuerzoFisico'))
+         ->get();
+         return ['esfuerzofisico' => $esfuerzofisico];
+     }
+    public function suplementarios()
     {
-        //if(!$request->ajax()) return redirect('/');
-        $tb_esfuerzo_fisico=new Tb_esfuerzo_fisico();
-        $tb_esfuerzo_fisico->grado=$request->grado;
-        $tb_esfuerzo_fisico->porcentaje=$request->porcentaje;
-        $tb_esfuerzo_fisico->save();
+        $suplementarios = Tb_suplementarios::select('tb_suplementarios.id','tb_suplementarios.grado','tb_suplementarios.porcentaje',
+        DB::raw('(tb_suplementarios.grado) as nombreSuplementario'))
+        ->get();
+        return ['suplementarios' => $suplementarios];
     }
-    public function guardarSuplementarios(Request $request)
+    public function personales()
     {
-        //if(!$request->ajax()) return redirect('/');
-        $tb_suplementarios=new Tb_suplementarios();
-        $tb_suplementarios->grado=$request->grado;
-        $tb_suplementarios->porcentaje=$request->porcentaje;
-        $tb_suplementarios->save();
+        $personales = Tb_necesidades_personales::select('tb_necesidades_personales.id','tb_necesidades_personales.rango','tb_necesidades_personales.porcentajeHombre',
+        'tb_necesidades_personales.porcentajeMujer',
+        DB::raw('(tb_necesidades_personales.rango) as nombrePersonales'))
+        ->get();
+        return ['personales' => $personales];
     }
-    public function guardarPersonales(Request $request)
+    public function espera()
     {
-        //if(!$request->ajax()) return redirect('/');
-        $tb_necesidades_personales=new Tb_necesidades_personales();
-        $tb_necesidades_personales->rango=$request->rango;
-        $tb_necesidades_personales->porcentajeHombre=$request->porcentajeHombre;
-        $tb_necesidades_personales->porcentajeMujer=$request->porcentajeMujer;
-        $tb_necesidades_personales->save();
+        $espera = Tb_espera::select('tb_espera.id','tb_espera.rangoMin','tb_espera.rangoMax',
+        'tb_espera.factor',
+        DB::raw('(tb_espera.factor) as nombreEspera'))
+        ->get();
+        return ['espera' => $espera];
     }
 
-     // Aca termina la tabla de pds
+    public function guardarPds(Request $request)
+     {
+         //if(!$request->ajax()) return redirect('/');
+         $tb_pds=Tb_pds::findOrFail($request->id);
+         $tb_pds->idEsfuerzoMental=$request->idEsfuerzoMental;
+         $tb_pds->idEsfuerzoFisico=$request->idEsfuerzoFisico;
+         $tb_pds->idSuplementario=$request->idSuplementario;
+         $tb_pds->idPersonales=$request->idPersonales;
+         $tb_pds->idMonotonia=1;
+         $tb_pds->idEspera=1;
+         $tb_pds->valorEspera=$request->valorEspera;
+         $tb_pds->idTiempoEstandar=$request->idTiempoEstandar;
+         $tb_pds->save();
+         
+         $esperap = Tb_espera::select('tb_espera.id')
+         ->where('rangoMin', '<=', $request->valorEspera)
+         ->where('rangoMax', '>=', $request->valorEspera)
+         ->first();
+         $tb_pds->idEspera=$esperap->id;   
+         $tb_pds->save();
 
+         $tiempo_estandar= Tb_tiempo_estandar::find($request->idTiempoEstandar);
+         $valor=$tiempo_estandar->tiempoPiezas*$tiempo_estandar->factorValoracion;
+         if ($valor>16) {
+             $valor=16;
+         }
+         $monotonia = Tb_monotonia::select('tb_monotonia.id')
+         ->where('rangoMin', '<=', $valor)
+         ->where('rangoMax', '>=', $valor)
+         ->first();
+         $tb_pds->idMonotonia=$monotonia->id;   
+         $tb_pds->save();
+          
+
+         $esfuerzom=Tb_esfuerzo_mental::findOrFail($request->idEsfuerzoMental);
+         $esfuerzof=Tb_esfuerzo_fisico::findOrFail($request->idEsfuerzoFisico);
+         $esperas=Tb_espera::findOrFail($request->idEspera);
+         $empleado = Tb_empleado::findOrFail($tiempo_estandar->idEmpleado);
+         $personal=Tb_necesidades_personales::findOrFail($request->idPersonales);
+         $suplementario=Tb_suplementarios::findOrFail($request->idSuplementario);
+         $monoto=Tb_monotonia::findOrFail($request->idMonotonia);
+
+         //= ( ( (em+ef) * espera) + (personales) + (suplementarios)+ (monotonia) )/1+1
+         $factorPds=((($esfuerzom->porcentaje+$esfuerzof->porcentaje) * $esperas->factor) + 
+         (($empleado->genero==1)?$personal->porcentajeHombre:$personal->porcentajeMujer) +
+         $suplementario->porcentaje + $monoto->porcentaje)/1+1;
+         $tiempo_estandar=Tb_tiempo_estandar::findOrFail($request->idTiempoEstandar);
+         $tiempo_estandar->factorPds=$factorPds;
+         $tiempo_estandar->tiempoEstandar=$tiempo_estandar->tiempoNormal*$factorPds;
+         $tiempo_estandar->save();
+     }
+     // Aca termina las pds
+      
      // Aca comienza el detalle del tiempo estandar
     public function listardetalle(Request $request)
     {

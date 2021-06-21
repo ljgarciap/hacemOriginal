@@ -14,18 +14,20 @@ class Tb_empleadoSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('tb_empleado')->insert([
-            'documento' => '12345',
-            'idPerfil' => '1',
-            'nombre' => 'Empleado',
-            'apellido' => 'SuperNumerario',
-            'direccion' => 'Av 1 1 1',
-			'genero' => '1',
-			'telefono' => '111',
-			'correo' => 'a@a.a',
-            'contacto' => 'Contacto de empleado',
-			'telefonocontacto' => '111222',
-        ]);
-
+        $data = json_decode(file_get_contents(__DIR__ . '/json/tb_empleado.json'));
+        foreach ($data as $item){
+            Tb_empleado::create(array(
+                'documento' => $item->documento,
+                'idPerfil' => $item->idPerfil,
+                'nombre' => $item->nombre,
+                'apellido' => $item->apellido,
+                'direccion' => $item->direccion,
+                'genero' => $item->genero,
+                'telefono' => $item->telefono,
+                'correo' => $item->correo,
+                'contacto' => $item->contacto,
+                'telefonocontacto' => $item->telefonocontacto
+            ));
+            }
     }
 }
