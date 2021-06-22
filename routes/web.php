@@ -201,6 +201,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/empleado/update", "Tb_empleadoController@update");
         Route::put("/empleado/deactivate", "Tb_empleadoController@deactivate");
         Route::put("/empleado/activate", "Tb_empleadoController@activate");
+        Route::get("/empleado/detalleEmpleado", "Tb_empleadoController@detalleEmpleado");
         Route::get("/empleado/selectEmpleado", "Tb_empleadoController@selectEmpleado");
         Route::get("/empleado/selectRelacion/{id}", "Tb_empleadoController@selectRelacion");
         Route::get("/empleado/selectRelacionPerfil/{id}", "Tb_empleadoController@selectRelacionPerfil");

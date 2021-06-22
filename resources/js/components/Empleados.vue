@@ -41,17 +41,12 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
-                                        <!-- <th>Id</th> -->
                                         <th>Documento</th>
-                                        <!-- <th>Area</th>
-                                        <th>Proceso</th>
-                                        <th>Perfil</th> -->
                                         <th>Nombre</th>
                                         <th>Apellido</th>
-                                        <!-- <th>Genero</th> -->
-                                        <th>Dirección</th>
-                                        <th>Telefono</th>
-                                        <th>Correo</th>
+                                        <th>Area</th>
+                                        <th>Proceso</th>
+                                        <th>Perfil</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
@@ -80,17 +75,12 @@
                                         </template>
 
                                         </td>
-                                        <!-- <td v-text="empleado.id"></td> -->
                                         <td v-text="empleado.documento"></td>
-                                        <!-- <td v-text="empleado.area"></td>
-                                        <td v-text="empleado.proceso"></td>
-                                        <td v-text="empleado.perfil"></td> -->
                                         <td v-text="empleado.nombre"></td>
                                         <td v-text="empleado.apellido"></td>
-                                        <!-- <td v-text="empleado.genero"></td> -->
-                                        <td v-text="empleado.direccion"></td>
-                                        <td v-text="empleado.telefono"></td>
-                                        <td v-text="empleado.correo"></td>
+                                        <td v-text="empleado.area"></td>
+                                        <td v-text="empleado.proceso"></td>
+                                        <td v-text="empleado.perfil"></td>
                                         <td>
                                             <div v-if="empleado.estado">
                                             <span class="badge badge-success">Activo</span>
@@ -130,27 +120,37 @@
                             <div class="card">
                                 <vs-tabs :color="colorx">
 
-                                <!-- Muestra vs-tab con cabecera para abrir modal inicio
-                                <vs-tab label="Materia Prima" icon="open_with" @click="colorx = '#8B0000'">
-
-                                    <div class="card-header">
-                                        <i class="fa fa-align-justify"></i> Producto: {{this.productoNombre}} &nbsp;
-                                        <button type="button" @click="abrirModal('gestionMateria','crear','arrayGestionMaterias')" class="btn btn-secondary">
-                                            <i class="icon-plus"></i>&nbsp;Nueva materia prima
-                                        </button>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <materiaprima v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarMateriaPrimaProducto"></materiaprima>
-                                    </div>
-
-                                </vs-tab>
-                                Muestra vs-tab con cabecera para abrir modal fin-->
-
                                 <vs-tab label="Datos Contacto" icon="open_with" @click="colorx = '#8B0000'">
 
                                     <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Apellido</th>
+                                                        <th>Dirección</th>
+                                                        <th>Telefono</th>
+                                                        <th>Correo</th>
+                                                        <th>Contacto emergencia</th>
+                                                        <th>Teléfono emergencia</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
+                                                    <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
+                                                        <td v-text="detalleempleado.nombre"></td>
+                                                        <td v-text="detalleempleado.apellido"></td>
+                                                        <td v-text="detalleempleado.direccion"></td>
+                                                        <td v-text="detalleempleado.telefono"></td>
+                                                        <td v-text="detalleempleado.correo"></td>
+                                                        <td v-text="detalleempleado.contacto"></td>
+                                                        <td v-text="detalleempleado.telefonocontacto"></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
 
                                 </vs-tab>
@@ -158,7 +158,34 @@
                                 <vs-tab label="Datos contrato" icon="pan_tool" @click="colorx = '#FFA500'">
 
                                     <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Apellido</th>
+                                                        <th>Tipo contrato</th>
+                                                        <th>Tipo salario</th>
+                                                        <th>Salario Mensual</th>
+                                                        <th>Fecha Inicio</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
+                                                    <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
+                                                        <td v-text="detalleempleado.nombre"></td>
+                                                        <td v-text="detalleempleado.apellido"></td>
+                                                        <td v-if="detalleempleado.tipocontrato">Término fijo</td>
+                                                        <td v-else-if="detalleempleado.tipocontrato==2">Término indefinido</td>
+                                                        <td v-if="detalleempleado.tiposalario">Sueldo fijo</td>
+                                                        <td v-else-if="detalleempleado.tiposalario==2">Destajo</td>
+                                                        <td v-text="detalleempleado.salarioBasicoMensual"></td>
+                                                        <td v-text="detalleempleado.fechainicio"></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
 
                                 </vs-tab>
@@ -166,7 +193,30 @@
                                 <vs-tab label="Datos adicionales" icon="account_balance" @click="colorx = '#CB3234'">
 
                                     <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Apellido</th>
+                                                        <th>Nivel de Riesgo</th>
+                                                        <th>Eps</th>
+                                                        <th>Fondo de pensiones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
+                                                    <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
+                                                        <td v-text="detalleempleado.nombre"></td>
+                                                        <td v-text="detalleempleado.apellido"></td>
+                                                        <td v-text="detalleempleado.idNivelArl"></td>
+                                                        <td v-text="detalleempleado.nombreEps"></td>
+                                                        <td v-text="detalleempleado.nombrePensiones"></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
 
                                 </vs-tab>
@@ -328,6 +378,7 @@
                 correo:'',
                 estado:'',
                 arrayEmpleados : [],
+                arrayDetalleEmpleados: [],
                 idArea: 0,
                 area : '',
                 arrayArea: [],
@@ -335,6 +386,7 @@
                 proceso:'',
                 relacion:'',
                 perfilrelacion:'',
+                colorx:'#8B0000',
                 arrayRelacion: [],
                 idPerfil:0,
                 perfil:'',
@@ -398,6 +450,20 @@
                     console.log(error);
                 })
             },
+            listarDetalleEmpleado(id){
+                let me=this;
+                var url='/empleado/detalleEmpleado?id='+id;
+                console.log('Url peticion empleado');
+                console.log(url);
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayDetalleEmpleados=respuesta.detalleempleados;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -412,9 +478,12 @@
             forceRerender() {
                 this.componentKey += 1;
                },
-            mostrarDetalle(id,producto,area){
+            mostrarDetalle(id){
                 this.listado=0;
                 this.identificador=id;
+                console.log('Identificador empleado');
+                console.log(this.identificador);
+                this.listarDetalleEmpleado(id);
             },
             ocultarDetalle(){
                 this.listado=1;
