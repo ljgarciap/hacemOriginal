@@ -18,6 +18,7 @@ class CreateTbNovedadesTable extends Migration
             $table->date('fechaNovedad');
             $table->string('concepto', 255);
             $table->float('valor',10,2);
+            $table->boolean('tipologia')->default(1);
             $table->foreignId('idEmpleado')->constrained('tb_empleado');
             $table->foreignId('idNomina')->constrained('tb_nomina');
         });

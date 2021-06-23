@@ -3,28 +3,33 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Areas</li>
+                    <li class="breadcrumb-item active">Novedades</li>
                 </ol>
+
+                <template v-if="listado==0">
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Areas &nbsp;
-                            <button type="button" @click="abrirModal('area','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
+                       <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Novedades
+                            <button type="button" @click="abrirModal('kardex','crear')" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Entrada
+                            </button>
+                            <button type="button" @click="abrirModal('kardex','crears')" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Salida
                             </button>
                         </div>
+
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="area">Area</option>
-                                        <option value="id">Id</option>
+                                        <option value="producto">Fecha</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarArea(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarArea(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarProductos(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarProductos(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -32,44 +37,30 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Opciones</th>
-                                        <th>Id</th>
-                                        <th>Area</th>
-                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                        <th>Fecha novedad</th>
+                                        <th>Concepto</th>
+                                        <th>Valor</th>
+                                        <th>Empleado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="area in arrayAreas" :key="area.id">
+                                    <tr v-for="kardex in arrayKardexes" :key="kardex.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('area','actualizar',area)" class="btn btn-warning btn-sm">
-                                            <i class="icon-pencil"></i>
-                                            </button> &nbsp;
-
-                                        <template v-if="area.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarArea(area.id)">
-                                                <i class="icon-trash"></i>
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(kardex.idProducto)">
+                                                <i class="icon-eye"></i><span> Ver kárdex</span>
                                             </button>
-                                        </template>
-                                        <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarArea(area.id)">
-                                                <i class="icon-check"></i>
-                                            </button>
-                                        </template>
-
                                         </td>
-                                        <td v-text="area.id"></td>
-                                        <td v-text="area.area"></td>
-                                        <td>
-                                            <div v-if="area.estado">
-                                            <span class="badge badge-success">Activo</span>
-                                            </div>
-                                            <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
-                                            </div>
-                                        </td>
+                                        <td v-text="kardex.fechaNovedad"></td>
+                                        <td v-text="kardex.concepto"></td>
+                                        <td v-text="kardex.valor"></td>
+                                        <!--
+                                        <td v-text="kardex.tipologia"></td>
+                                        <td v-text="kardex.idEmpleado"></td>
+                                        <td v-text="kardex.idNomina"></td>
+                                        -->
                                     </tr>
-
                                 </tbody>
                             </table>
                             </div>
@@ -90,11 +81,13 @@
                     </div>
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
+                </template>
+
                 <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header" v-if="tipoModal!=3">
                                 <h4 class="modal-title" v-text="tituloModal"></h4>
                                 <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
                                 <span aria-hidden="true">×</span>
@@ -102,35 +95,66 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="area" class="form-control" placeholder="Nombre de área">
-                                            <span class="help-block">(*) Ingrese el nombre del área</span>
+
+                                    <div v-if="tipoModal==1" class="form-group row"> <!-- Si es una entrada -->
+                                        <label class="col-md-3 form-control-label" for="email-input">Novedad</label>
+                                        <div v-if="desplegable==1" class="col-md-9">
+                                            <select class="form-control" v-model="concepto" @change='onChange($event)'>
+                                                <option value="0" disabled>Seleccione tipo de novedad</option>
+                                                <option value="1">Horas extras y recargos</option>
+                                                <option value="2">Prima extralegal</option>
+                                                <option value="3">Bonificaciones</option>
+                                                <option value="4">Comisiones</option>
+                                                <option value="5">Viaticos</option>
+                                                <option value="6">No factor salarial</option>
+                                            </select>
+                                        </div>
+                                        <div v-else-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
+                                            <select class="form-control" v-model="concepto" @change='onChange($event)'>
+                                                <option value="0" disabled>Seleccione tipo de novedad</option>
+                                                <option value="7">Fondo de solaridad</option>
+                                                <option value="8">Retenciòn en la fuente</option>
+                                                <option value="9">Sindicato</option>
+                                                <option value="10">Préstamos</option>
+                                                <option value="11">Embargos</option>
+                                                <option value="12">Descuento por libranza/otros</option>
+                                                <!--
+                                                <option value="13">Descuento a salud</option>
+                                                <option value="14">Descuento a pensión</option>
+                                                -->
+                                            </select>
                                         </div>
                                     </div>
 
-                                    <!--
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
-                                        <div class="col-md-9">
-                                            <input type="email" v-model="estado" class="form-control" placeholder="Enter Email">
-                                        </div>
-                                    </div>
-                                    -->
+                                    <div v-if="tipoModal==1" class="form-group row">
 
-                                    <div class="form-group row div-error" v-show="errorArea">
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
+                                            <span class="help-block">(*) Ingrese el Valor</span>
+                                        </div>
+
+                                        <label v-if="flag!=0" class="col-md-3 form-control-label" for="text-input">Empleado</label>
+                                        <div v-if="flag!=0" class="col-md-9">
+                                            <select class="form-control" v-model="idEmpleado">
+                                                <option value="0" disabled>Seleccione empleado</option>
+                                                <option v-for="empleado in arrayEmpleados" :key="empleado.id" :value="empleado.id" v-text="empleado.empleado"></option>
+                                            </select>
+                                            <span class="help-block">(*) Empleado</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorKardex">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
                                     </div>
-
                                 </form>
                             </div>
-                            <div class="modal-footer">
+                            <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearArea()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarArea()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearKardex()">Guardar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -142,18 +166,53 @@
 </template>
 
 <script>
+import moment from 'moment';
+import detallekardexproducto from '../components/DetalleKardexProducto';
+
     export default {
         data(){
             return{
-                idArea:0,
+                idProducto:0,
+                idDocumentos:0,
                 id:'',
-                area:'',
-                estado:'',
-                arrayAreas : [],
+                identificador:'',
+                identificadorProveedor:0,
+                identificadorFactura:0,
+                identificadorMaterial:0,
+                idEmpleado:'',
+                fecha : '',
+                factura : '',
+                cantidadSaldos:'',
+                precioSaldos:'',
+                precioCosto:'',
+                precio:'',
+                cantidad:'',
+                detalle:'',
+                observaciones:'Ninguna',
+                flag : 0,
+                precio:'',
+                saldos:'',
+                arrayProductos : [],
+                arrayKardexes : [],
+                arrayProductosOrden : [],
+                arrayMateriaFactura : [],
+                arrayFactura : [],
+                arrayOrdenes : [],
+                arrayProveedores : [],
+                arrayEmpleados : [],
+                arrayTodos : [],
+                producto:'',
+                mensajecantidad:'',
                 modal : 0,
+                desplegable : 0,
+                listado : 0,
                 tituloModal : '',
+                variable : '',
+                idOrden : 0,
+                tipologia : 0,
+                tipoModal : 0,
                 tipoAccion : 0,
-                errorArea : 0,
+                errorKardex : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -164,8 +223,9 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'area',
-                buscar : ''
+                criterio : 'producto',
+                buscar : '',
+                componentKey:0
             }
         },
         computed:{
@@ -174,7 +234,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -193,24 +253,124 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
         methods : {
-            listarArea(page,buscar,criterio){
+            onChange(event) {
+            //console.log(event.target.value);
+            this.flag=event.target.value;
+            },
+            precioProductosOrden(event){
+                //console.log(event.target.value);
+                this.identificadorProducto=event.target.value;
                 let me=this;
-                var url='/area?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
+                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto+'&segordenpedido='+this.identificadorHoja;
+                console.log('Url Seguimiento Valor de producto');
+                console.log(url);
+                console.log(me.identificadorProducto);
+                console.log(me.identificadorHoja);
+                console.log('Seguimiento Valor de producto');
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
-                me.arrayAreas=respuesta.areas.data;
-                me.pagination=respuesta.pagination;
-                    //console.log(response);
+                me.precio=respuesta.valorProducto;
+                me.mensajecantidad=respuesta.mensajecantidad;
+                console.log(url);
+                console.log('Valor de producto');
+                console.log(me.precio);
+                console.log('Cantidad de producto');
+                console.log(me.mensajecantidad);
                 })
                 .catch(function (error) {
                     // handle error
+                    console.log(error);
+                })
+            },
+            precioProductosPromedio(event){
+                //console.log(event.target.value);
+                this.identificadorProducto=event.target.value;
+                let me=this;
+                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto;
+                console.log('Url Seguimiento Valor de producto');
+                console.log(url);
+                console.log(me.identificadorProducto);
+                console.log('Seguimiento Valor de producto');
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.precio=respuesta.valorProducto;
+                console.log(url);
+                console.log('Valor de producto');
+                console.log(me.precio);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            productosOrden(event){
+                //console.log(event.target.value);
+                this.identificadorHoja=event.target.value;
+                let me=this;
+                var url='/kardexproducto/productos/'+this.identificadorHoja;
+                console.log('Url de productos');
+                console.log(url);
+                console.log('Identificador Hoja');
+                console.log(this.identificadorHoja);
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayProductosOrden=respuesta.materiales;
+                console.log(url);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarOrdenes(){
+                let me=this;
+                var url='/kardexproductoordenes';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayOrdenes=respuesta.ordenes;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            },
+            listarEmpleados(){
+                let me=this;
+                var url='/kardexproductoempleados';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayEmpleados=respuesta.empleados;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            },
+            currentDateTime() {
+                return moment().format('YYYY-MM-DD')
+            },
+            listarProductos(page,buscar,criterio){
+                let me=this;
+                var url='/kardexproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayKardexes=respuesta.kardex.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            },
+            todosProductos(){
+                let me=this;
+                var url='/kardexproductotodos';
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayTodos=respuesta.todos;
+                })
+                .catch(function (error) {
                     console.log(error);
                 })
             },
@@ -219,7 +379,7 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarArea(page,buscar,criterio);
+                me.listarProductos(page,buscar,criterio);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -228,167 +388,127 @@
             forceRerender() {
                 this.componentKey += 1;
                },
-            crearArea(){
+            crearKardex(){
                 //valido con el metodo de validacion creado
-                if(this.validarArea()){
+                if(this.validarKardex()){
                     return;
                 }
-
                 let me=this;
-                axios.post('/area/store',{
-                    'area': this.area
-                    //'estado': this.estado,
-                    //'dato': this.dato
+                this.fecha= moment().format('YYYY-MM-DD');
+                axios.post('/kardexproducto/store',{
+                    'detalle':this.detalle,
+                    'fecha': this.fecha,
+                    'cantidad':this.cantidad,
+                    'precio':this.precio,
+                    'tipologia':this.tipologia,
+                    'observaciones':this.observaciones,
+                    'idDocumentos':this.flag,
+                    'idProducto':this.idProducto,
+                    'idEmpleado':this.idEmpleado
                 }).then(function (response) {
-                me.cerrarModal();
-                me.listarArea(1,'','area');
+                me.cerrarModal('0');
+                me.listarProductos(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            editarArea(){
-                if(this.validarArea()){
-                    return;
-                }
-
-                let me=this;
-                axios.put('/area/update',{
-                    'area': this.area,
-                    'id': this.idArea
-                    //'estado': this.estado,
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarArea(1,'','area');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            mostrarDetalle(id){
+                this.listado=2;
+                this.identificador=id;
             },
-            desactivarArea(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Está seguro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/area/deactivate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarArea(1,'','area');
-                    swalWithBootstrapButtons.fire(
-                    'Area desactivada!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarArea();
-                }
-                })
+            ocultarDetalle(){
+                this.listado=0;
             },
-            activarArea(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este registro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/area/activate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarArea(1,'','area');
-                    swalWithBootstrapButtons.fire(
-                    'Area activada!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarArea();
-                }
-                })
-            },
-            validarArea(){
-                this.errorArea=0;
+            validarKardex(){
+                this.errorProducto=0;
+                this.errorKardex=0;
                 this.errorMensaje=[];
 
-                if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
-                if (this.errorMensaje.length) this.errorArea=1;
+                if (!this.detalle) this.errorMensaje.push("El Detalle no puede estar vacio");
+                if (!this.cantidad) this.errorMensaje.push("La Cantidad no puede estar vacia");
+                if (!this.idProducto) this.errorMensaje.push("El producto no puede estar vacio");
+                if (this.errorMensaje.length) this.errorKardex=1;
 
-                return this.errorArea;
+                return this.errorKardex;
             },
-            cerrarModal(){
-                this.modal=0;
+            cerrarModal(variable){
+                this.modal=this.variable;
                 this.tituloModal='';
-                this.area='';
-                this.errorArea = 0,
-                this.errorMensaje = [],
-                this.forceRerender();
+                this.detalle='';
+                this.idDocumentos='';
+                this.idEmpleado='';
+                this.mensajecantidad='';
+                this.cantidad='';
+                this.observaciones='Ninguna';
+                this.precio='';
+                this.tipologia='';
+                this.flag=0;
+                this.errorKardex=0;
+                this.errorMensaje=[];
+                this.tituloModal='';
+                this.idProducto='';
+
+                this.listarProductos(1,this.buscar,this.criterio);
             },
-            abrirModal(modelo, accion, data=[]){
+            abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "area":
-                {
-                    switch (accion) {
-                        case 'crear':{
-                            this.modal=1;
-                            this.area='';
-                            this.tituloModal='Crear nueva área';
-                            this.tipoAccion= 1;
-                            break;
+                    case "kardex":
+                    {
+                        switch (accion) {
+                            case 'crear':{
+                                this.modal=1;
+                                this.tipologia=1;
+                                this.tipoModal=1; //carga tipos de campos y footers
+                                this.tituloModal='Kardex de producto terminado entrada';
+                                this.desplegable= 1; //carga tipos de botón en el footer
+                                this.tipoAccion= 1; //carga tipos de botón en el footer
+                                this.fecha= moment().format('YYYY-MM-DD');
+                                this.listarProductos();
+                                break;
+                            }
+                            case 'crears':{
+                                this.modal=1;
+                                this.tipologia=2;
+                                this.tipoModal=1; //carga tipos de campos y footers
+                                this.tituloModal='Kardex de producto terminado salida';
+                                this.desplegable= 2; //carga tipos de botón en el footer
+                                this.tipoAccion= 1; //carga tipos de botón en el footer
+                                this.fecha= moment().format('YYYY-MM-DD');
+                                this.listarProductos();
+                                break;
+                            }
                         }
-                        case 'actualizar':{
-                            //console.log(data);
-                            this.modal=1;
-                            this.tituloModal='Editar área';
-                            this.tipoAccion= 2;
-                            this.idArea=data['id'];
-                            this.area=data['area'];
-                            break;
-                        }
+                        break;
                     }
+                    case "detalle":
+                    {
+                        switch (accion) {
+                            case 'crear':{
+                                this.modal=1;
+                                this.tipoModal=3; //carga tipos de campos y footers
+                                this.tituloModal='Generando, por favor espere...';
+                                this.identificador=identificador;
+                                break;
+                            }
+                        }
+                        this.generarDetalle(this.identificador);
+                        break;
+                    }
+
                 }
-            }
             }
         },
         mounted() {
-            this.listarArea(1,this.buscar,this.criterio);
+            this.listarProductos(1,this.buscar,this.criterio);
+            this.listarOrdenes();
+            this.listarEmpleados();
+            this.todosProductos();
         }
     }
 </script>
+
 <style>
     .modal-content{
         width: 100% !important;
@@ -407,5 +527,12 @@
     .text-error{
         color: red !important;
         font-weight: bold;
+    }
+    .carga{
+        background-color: #3c29297a !important;
+        width: 100% !important;
+        height: 100% !important;
+        text-align: center;
+        color: #ffffffff;
     }
 </style>

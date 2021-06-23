@@ -640,4 +640,3 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
         color: #ffffffff;
     }
 </style>
-

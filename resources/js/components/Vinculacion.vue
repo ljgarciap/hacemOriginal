@@ -55,14 +55,9 @@
                                     <tr v-for="vinculacion in arrayVinculaciones" :key="vinculacion.id">
                                         <td>
 
-                                        <template v-if="vinculacion.estado">
+                                        <template>
                                             <button type="button" class="btn btn-danger btn-sm" @click="desactivarVinculacion(vinculacion.id)">
                                                 <i class="icon-close"></i>
-                                            </button>
-                                        </template>
-                                        <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarVinculacion(vinculacion.id)">
-                                                <i class="icon-check"></i>
                                             </button>
                                         </template>
 
@@ -139,7 +134,7 @@
                                         <th>Tipo contrato</th>
                                         <th>Tipo Salario</th>
                                         <th>Sueldo Base</th>
-                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Fin</th>
                                         <th>Nivel Riesgo</th>
                                         <!--
                                         <th>Eps</th>
@@ -153,16 +148,12 @@
                                     <tr v-for="vinculacion in arrayVinculaciones" :key="vinculacion.id">
                                         <td>
 
-                                        <template v-if="vinculacion.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarVinculacion(vinculacion.id)">
-                                                <i class="icon-close"></i>
-                                            </button>
-                                        </template>
-                                        <template v-else>
+                                        <template>
                                             <button type="button" class="btn btn-success btn-sm" @click="activarVinculacion(vinculacion.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
+
 
                                         </td>
                                         <!-- <td v-text="vinculacion.id"></td> -->
@@ -172,7 +163,7 @@
                                         <td v-if="vinculacion.tipoSalario==1">Sueldo Fijo</td>
                                         <td v-if="vinculacion.tipoSalario==2">Destajo</td>
                                         <td v-text="vinculacion.salarioBasicoMensual"></td>
-                                        <td v-text="vinculacion.fechaInicio"></td>
+                                        <td v-text="vinculacion.fechaFin"></td>
                                         <td v-text="vinculacion.idNivelArl"></td>
                                         <!--
                                         <td v-text="vinculacion.nombreEps"></td>
@@ -345,6 +336,7 @@
                 fechaInicio:'',
                 estado:'',
                 arrayVinculaciones : [],
+                arrayVinculacionesInactivas : [],
                 arrayEps : [],
                 arrayNiveles : [],
                 arrayPensiones : [],
@@ -413,6 +405,22 @@
                     // handle success
                 var respuesta=response.data;
                 me.arrayVinculaciones=respuesta.vinculaciones.data;
+                me.pagination=respuesta.pagination;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarVinculacionInactiva(page,buscar,criterio){
+                let me=this;
+                var url='/vinculacioninactiva?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayVinculacionesInactivas=respuesta.vinculaciones.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
                 })

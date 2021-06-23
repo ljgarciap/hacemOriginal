@@ -297,6 +297,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/tiempoestandardetalle/listardetalle", "Tb_detalle_tiempo_estandarController@listardetalle");
 
         Route::get("/vinculacion", "Tb_vinculacionesController@index");
+        Route::get("/vinculacioninactiva", "Tb_vinculacionesController@vinculacionesInactivas");
         Route::post("/vinculacion/store", "Tb_vinculacionesController@store");
         Route::put("/vinculacion/update", "Tb_vinculacionesController@update");
         Route::put("/vinculacion/deactivate", "Tb_vinculacionesController@deactivate");
