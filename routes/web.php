@@ -313,13 +313,27 @@ Route::group(['middleware' => ['guest']], function () {
     });
     /*Route::get('noBorrar',function(){
         $tiempos = DB::table('tb_ciclos')
-         ->where('tb_ciclos.idTiempoEstandar','=',1)
+         ->where('tb_ciclos.idTiempoEstandar','=',2)
          ->avg('tiempo');
+         echo "Prom Tiempos: ",$tiempos;
 
-         $piezas = DB::table('tb_ciclos')
-         ->where('tb_ciclos.idTiempoEstandar','=',1)
+        $piezas = DB::table('tb_ciclos')
+         ->where('tb_ciclos.idTiempoEstandar','=',2)
          ->avg('piezas');
-         echo var_dump($tiempos, intval($piezas));
+         echo "Prom Piezas: ",$piezas;
+
+         $tiempo_estandar= Tb_tiempo_estandar::find(2);
+         $tiempoPiezas=$tiempo_estandar->tiempoPiezas;
+      
+         $tiempoPiezas=$tiempo_estandar->tiempoPiezas;
+         if($tiempo_estandar->numeroPiezas != 0){     
+            $tiempoPiezas=(($tiempo_estandar->tiempoElemental/60)/$tiempo_estandar->numeroPiezas)*$tiempo_estandar->piezasPar;  
+         }
+         else{
+            $tiempoPiezas=1;     
+            //echo "No se puede dividir por cero!!";
+         }     
+         echo "Tiempo Piezas: ",$tiempoPiezas;
     });*/
 
 

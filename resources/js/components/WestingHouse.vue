@@ -88,9 +88,6 @@
                 idEsfuerzo:0,
                 idCondiciones:0,
                 idConsistencia:0,
-                modal : 0,
-                tituloModal : '',
-                tipoAccion : 0,
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -155,7 +152,7 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarCiclos(page,this.identificador);
+                me.listarWesting(page,this.identificador);
             },
         forceRerender() {
                 this.componentKey += 1;
@@ -235,8 +232,8 @@
                     'idConsistencia':this.idConsistencia,
                     'idTiempoEstandar':this.identificador
                 }).then(function (response) {
-                me.listarWesting(1,'','');
-                me.clear();
+                me.clear();    
+                me.listarWesting(1,this.identificador);
                 me.forceRender();
                 })
                 .catch(function (error) {
