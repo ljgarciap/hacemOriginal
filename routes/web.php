@@ -308,6 +308,8 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/vinculacion/selectpensiones", "Tb_vinculacionesController@selectPensiones");
         Route::get("/vinculacion/selectvinculacion", "Tb_vinculacionesController@selectvinculacion");
 
+        Route::get("/novedades", "Tb_novedadesController@index");
+
     });
     /*Route::get('noBorrar',function(){
         $tiempos = DB::table('tb_ciclos')

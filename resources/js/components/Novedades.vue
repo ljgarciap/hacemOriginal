@@ -13,10 +13,10 @@
                     <div class="card">
                        <div class="card-header">
                             <i class="fa fa-align-justify"></i> Novedades
-                            <button type="button" @click="abrirModal('kardex','crear')" class="btn btn-secondary">
+                            <button type="button" @click="abrirModal('novedad','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Entrada
                             </button>
-                            <button type="button" @click="abrirModal('kardex','crears')" class="btn btn-secondary">
+                            <button type="button" @click="abrirModal('novedad','crears')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Salida
                             </button>
                         </div>
@@ -28,8 +28,8 @@
                                         <select class="form-control col-md-3" v-model="criterio">
                                         <option value="producto">Fecha</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarProductos(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarProductos(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarNovedades(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarNovedades(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -46,19 +46,19 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="kardex in arrayKardexes" :key="kardex.id">
+                                    <tr v-for="novedad in arrayNovedades" :key="novedad.id">
                                         <td>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(kardex.idProducto)">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(novedad.idProducto)">
                                                 <i class="icon-eye"></i><span> Ver kárdex</span>
                                             </button>
                                         </td>
-                                        <td v-text="kardex.fechaNovedad"></td>
-                                        <td v-text="kardex.concepto"></td>
-                                        <td v-text="kardex.valor"></td>
+                                        <td v-text="novedad.fechaNovedad"></td>
+                                        <td v-text="novedad.concepto"></td>
+                                        <td v-text="novedad.valor"></td>
                                         <!--
-                                        <td v-text="kardex.tipologia"></td>
-                                        <td v-text="kardex.idEmpleado"></td>
-                                        <td v-text="kardex.idNomina"></td>
+                                        <td v-text="novedad.tipologia"></td>
+                                        <td v-text="novedad.idEmpleado"></td>
+                                        <td v-text="novedad.idNomina"></td>
                                         -->
                                     </tr>
                                 </tbody>
@@ -134,8 +134,8 @@
                                             <span class="help-block">(*) Ingrese el Valor</span>
                                         </div>
 
-                                        <label v-if="flag!=0" class="col-md-3 form-control-label" for="text-input">Empleado</label>
-                                        <div v-if="flag!=0" class="col-md-9">
+                                        <label class="col-md-3 form-control-label" for="text-input">Empleado</label>
+                                        <div class="col-md-9">
                                             <select class="form-control" v-model="idEmpleado">
                                                 <option value="0" disabled>Seleccione empleado</option>
                                                 <option v-for="empleado in arrayEmpleados" :key="empleado.id" :value="empleado.id" v-text="empleado.empleado"></option>
@@ -143,9 +143,17 @@
                                             <span class="help-block">(*) Empleado</span>
                                         </div>
 
+                                        <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha de Novedad</label>
+                                        <div class="col-md-9">
+                                            <input type="date" v-model="fechaNovedad" class="form-control" placeholder="Ingrese la fecha de la novedad">
+                                            <span class="help-block">(*) Ingrese fecha de novedad</span>
+                                        </div>
+                                        </div>
+
                                     </div>
 
-                                    <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorKardex">
+                                    <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorNovedad">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -154,7 +162,7 @@
                             </div>
                             <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearKardex()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearnovedad()">Guardar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -167,52 +175,28 @@
 
 <script>
 import moment from 'moment';
-import detallekardexproducto from '../components/DetalleKardexProducto';
-
     export default {
         data(){
             return{
-                idProducto:0,
-                idDocumentos:0,
                 id:'',
                 identificador:'',
-                identificadorProveedor:0,
-                identificadorFactura:0,
-                identificadorMaterial:0,
                 idEmpleado:'',
                 fecha : '',
-                factura : '',
-                cantidadSaldos:'',
-                precioSaldos:'',
-                precioCosto:'',
-                precio:'',
-                cantidad:'',
-                detalle:'',
-                observaciones:'Ninguna',
                 flag : 0,
-                precio:'',
-                saldos:'',
-                arrayProductos : [],
-                arrayKardexes : [],
-                arrayProductosOrden : [],
-                arrayMateriaFactura : [],
-                arrayFactura : [],
-                arrayOrdenes : [],
-                arrayProveedores : [],
+                valor:'',
+                arrayNovedades : [],
                 arrayEmpleados : [],
-                arrayTodos : [],
-                producto:'',
                 mensajecantidad:'',
                 modal : 0,
                 desplegable : 0,
                 listado : 0,
                 tituloModal : '',
                 variable : '',
-                idOrden : 0,
+                hoy : '',
                 tipologia : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
-                errorKardex : 0,
+                errorNovedad : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -261,125 +245,31 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             //console.log(event.target.value);
             this.flag=event.target.value;
             },
-            precioProductosOrden(event){
-                //console.log(event.target.value);
-                this.identificadorProducto=event.target.value;
+            listarNovedades(page,buscar,criterio){
                 let me=this;
-                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto+'&segordenpedido='+this.identificadorHoja;
-                console.log('Url Seguimiento Valor de producto');
-                console.log(url);
-                console.log(me.identificadorProducto);
-                console.log(me.identificadorHoja);
-                console.log('Seguimiento Valor de producto');
+                var url='/novedades?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
+                    // handle success
                 var respuesta=response.data;
-                me.precio=respuesta.valorProducto;
-                me.mensajecantidad=respuesta.mensajecantidad;
-                console.log(url);
-                console.log('Valor de producto');
-                console.log(me.precio);
-                console.log('Cantidad de producto');
-                console.log(me.mensajecantidad);
+                me.arrayNovedades=respuesta.novedades.data;
+                me.pagination=respuesta.pagination;
+                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
-                    console.log(error);
-                })
-            },
-            precioProductosPromedio(event){
-                //console.log(event.target.value);
-                this.identificadorProducto=event.target.value;
-                let me=this;
-                var url='/kardexproducto/precioproductosorden?producto='+this.identificadorProducto;
-                console.log('Url Seguimiento Valor de producto');
-                console.log(url);
-                console.log(me.identificadorProducto);
-                console.log('Seguimiento Valor de producto');
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.precio=respuesta.valorProducto;
-                console.log(url);
-                console.log('Valor de producto');
-                console.log(me.precio);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            productosOrden(event){
-                //console.log(event.target.value);
-                this.identificadorHoja=event.target.value;
-                let me=this;
-                var url='/kardexproducto/productos/'+this.identificadorHoja;
-                console.log('Url de productos');
-                console.log(url);
-                console.log('Identificador Hoja');
-                console.log(this.identificadorHoja);
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayProductosOrden=respuesta.materiales;
-                console.log(url);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            listarOrdenes(){
-                let me=this;
-                var url='/kardexproductoordenes';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayOrdenes=respuesta.ordenes;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-            },
-            listarEmpleados(){
-                let me=this;
-                var url='/kardexproductoempleados';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayEmpleados=respuesta.empleados;
-                })
-                .catch(function (error) {
                     console.log(error);
                 })
             },
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
             },
-            listarProductos(page,buscar,criterio){
-                let me=this;
-                var url='/kardexproducto?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayKardexes=respuesta.kardex.data;
-                me.pagination=respuesta.pagination;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-            },
-            todosProductos(){
-                let me=this;
-                var url='/kardexproductotodos';
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                me.arrayTodos=respuesta.todos;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarProductos(page,buscar,criterio);
+                me.listarNovedades(page,buscar,criterio);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -388,30 +278,42 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             forceRerender() {
                 this.componentKey += 1;
                },
-            crearKardex(){
+            crearNovedad(){
                 //valido con el metodo de validacion creado
-                if(this.validarKardex()){
+                if(this.validarNovedad()){
                     return;
                 }
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
-                axios.post('/kardexproducto/store',{
-                    'detalle':this.detalle,
-                    'fecha': this.fecha,
-                    'cantidad':this.cantidad,
-                    'precio':this.precio,
+                axios.post('/novedad/store',{
+                    'fechaNovedad': this.fechaNovedad,
+                    'concepto':this.concepto,
+                    'valor':this.valor,
                     'tipologia':this.tipologia,
-                    'observaciones':this.observaciones,
-                    'idDocumentos':this.flag,
-                    'idProducto':this.idProducto,
                     'idEmpleado':this.idEmpleado
+                    //'idNomina':this.idNomina
                 }).then(function (response) {
                 me.cerrarModal('0');
-                me.listarProductos(1,'','');
+                me.listarNovedades(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+            listarEmpleados(){
+                let me=this;
+                var url='/vinculacion/selectempleado';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayEmpleados=respuesta.empleados;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             mostrarDetalle(id){
                 this.listado=2;
@@ -420,80 +322,60 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             ocultarDetalle(){
                 this.listado=0;
             },
-            validarKardex(){
+            validarnovedad(){
                 this.errorProducto=0;
-                this.errorKardex=0;
+                this.errorNovedad=0;
                 this.errorMensaje=[];
 
-                if (!this.detalle) this.errorMensaje.push("El Detalle no puede estar vacio");
-                if (!this.cantidad) this.errorMensaje.push("La Cantidad no puede estar vacia");
-                if (!this.idProducto) this.errorMensaje.push("El producto no puede estar vacio");
-                if (this.errorMensaje.length) this.errorKardex=1;
+                if (!this.idEmpleado) this.errorMensaje.push("El empleado no puede estar vacio");
+                if (this.errorMensaje.length) this.errorNovedad=1;
 
-                return this.errorKardex;
+                return this.errorNovedad;
             },
             cerrarModal(variable){
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
-                this.idDocumentos='';
                 this.idEmpleado='';
                 this.mensajecantidad='';
-                this.cantidad='';
-                this.observaciones='Ninguna';
-                this.precio='';
+                this.valor='';
                 this.tipologia='';
                 this.flag=0;
-                this.errorKardex=0;
+                this.errorNovedad=0;
                 this.errorMensaje=[];
                 this.tituloModal='';
-                this.idProducto='';
 
-                this.listarProductos(1,this.buscar,this.criterio);
+                this.listarNovedades(1,this.buscar,this.criterio);
             },
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                    case "kardex":
+                    case "novedad":
                     {
                         switch (accion) {
                             case 'crear':{
                                 this.modal=1;
                                 this.tipologia=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Kardex de producto terminado entrada';
+                                this.tituloModal='Ingreso de novedades';
                                 this.desplegable= 1; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
-                                this.fecha= moment().format('YYYY-MM-DD');
-                                this.listarProductos();
+                                this.fechaNovedad= moment().format('YYYY-MM-DD');
+                                this.listarNovedades();
                                 break;
                             }
                             case 'crears':{
                                 this.modal=1;
                                 this.tipologia=2;
                                 this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Kardex de producto terminado salida';
+                                this.tituloModal='Ingreso de novedades deducibles';
                                 this.desplegable= 2; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
-                                this.fecha= moment().format('YYYY-MM-DD');
-                                this.listarProductos();
+                                this.fechaNovedad= moment().format('YYYY-MM-DD');
+                                this.listarNovedades();
                                 break;
                             }
                         }
-                        break;
-                    }
-                    case "detalle":
-                    {
-                        switch (accion) {
-                            case 'crear':{
-                                this.modal=1;
-                                this.tipoModal=3; //carga tipos de campos y footers
-                                this.tituloModal='Generando, por favor espere...';
-                                this.identificador=identificador;
-                                break;
-                            }
-                        }
-                        this.generarDetalle(this.identificador);
                         break;
                     }
 
@@ -501,10 +383,8 @@ import detallekardexproducto from '../components/DetalleKardexProducto';
             }
         },
         mounted() {
-            this.listarProductos(1,this.buscar,this.criterio);
-            this.listarOrdenes();
+            this.listarNovedades(1,this.buscar,this.criterio);
             this.listarEmpleados();
-            this.todosProductos();
         }
     }
 </script>

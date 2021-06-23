@@ -145,7 +145,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="vinculacion in arrayVinculaciones" :key="vinculacion.id">
+                                    <tr v-for="vinculacion in arrayVinculacionesInactivas" :key="vinculacion.id">
                                         <td>
 
                                         <template>
@@ -435,6 +435,7 @@
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarVinculacion(page,buscar,criterio);
+                this.listarVinculacionInactiva(page,buscar,criterio);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -472,6 +473,7 @@
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarVinculacion(1,'','Vinculacion');
+                this.listarVinculacionInactiva(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -491,6 +493,7 @@
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarVinculacion(1,'','vinculacion');
+                this.listarVinculacionInactiva(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -522,6 +525,7 @@
                         'fechaFin': fechaFin
                     }).then(function (response) {
                     me.listarVinculacion(1,'','vinculacion');
+                    this.listarVinculacionInactiva(1,'','');
                     swalWithBootstrapButtons.fire(
                     'Vinculacion desactivada!'
                     )
@@ -533,6 +537,7 @@
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
                     me.listarVinculacion();
+                    this.listarVinculacionInactiva(1,'','');
                 }
                 })
             },
@@ -561,6 +566,7 @@
                         'id': id
                     }).then(function (response) {
                     me.listarVinculacion(1,'','vinculacion');
+                    this.listarVinculacionInactiva(1,'','');
                     swalWithBootstrapButtons.fire(
                     'Vinculacion activada!'
                     )
@@ -572,6 +578,7 @@
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
                     me.listarVinculacion();
+                    this.listarVinculacionInactiva(1,'','');
                 }
                 })
             },
@@ -688,6 +695,7 @@
             this.listarEps();
             this.listarPensiones();
             this.listarVinculacion(1,'','');
+            this.listarVinculacionInactiva(1,'','');
         }
     }
 </script>
