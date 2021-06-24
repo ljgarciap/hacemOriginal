@@ -33,8 +33,9 @@ class Tb_empleadoController extends Controller
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
-            'tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono',
+            'tb_empleado.correo','tb_empleado.idPerfil','tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso',
+            'tb_proceso.proceso','tb_proceso.idArea','tb_area.area','tb_empleado.tipoSangre','tb_empleado.enfermedades')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
         else if($criterio=='perfil'){
@@ -43,8 +44,9 @@ class Tb_empleadoController extends Controller
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
-            'tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono',
+            'tb_empleado.correo','tb_empleado.idPerfil','tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso',
+            'tb_proceso.proceso','tb_proceso.idArea','tb_area.area','tb_empleado.tipoSangre','tb_empleado.enfermedades')
             ->where('tb_perfil.perfil', 'like', '%'. $buscar . '%')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
@@ -54,8 +56,9 @@ class Tb_empleadoController extends Controller
             ->leftJoin('tb_area',function($join){
                 $join->on('tb_proceso.idArea','=','tb_area.id');
             })
-            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo','tb_empleado.idPerfil',
-            'tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso','tb_proceso.proceso','tb_proceso.idArea','tb_area.area')
+            ->select('tb_empleado.id','tb_empleado.documento','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono',
+            'tb_empleado.correo','tb_empleado.idPerfil','tb_empleado.genero','tb_empleado.estado as estado','tb_perfil.perfil','tb_perfil.idProceso',
+            'tb_proceso.proceso','tb_proceso.idArea','tb_area.area','tb_empleado.tipoSangre','tb_empleado.enfermedades')
             ->where('tb_perfil.perfil', 'like', '%'. $buscar . '%')
             ->orderBy('tb_empleado.id','desc')->paginate(5);
         }
@@ -118,11 +121,11 @@ class Tb_empleadoController extends Controller
         ->join("tb_administradora_pensiones","tb_empleado.idPensiones","=","tb_administradora_pensiones.id")
         ->where('tb_empleado.id','=',$buscar)
         ->where('tb_vinculaciones.estado','=','1')
-        ->select('tb_empleado.id as id','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono',
-        'tb_empleado.correo','tb_empleado.contacto','tb_empleado.telefonocontacto','tb_empleado.genero','tb_empleado.idEps','tb_empleado.idPensiones',
-        'tb_vinculaciones.tipocontrato','tb_vinculaciones.tiposalario','tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio',
-        'tb_vinculaciones.idNivelArl','tb_empleado.idEps','tb_empleado.idPensiones','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones')->orderBy('tb_empleado.id','asc')->get();
-
+        ->select('tb_empleado.id as id','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo',
+        'tb_empleado.contacto','tb_empleado.telefonocontacto','tb_empleado.genero','tb_empleado.idEps','tb_empleado.idPensiones','tb_vinculaciones.tipocontrato',
+        'tb_vinculaciones.tiposalario','tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio','tb_vinculaciones.idNivelArl','tb_empleado.idEps',
+        'tb_empleado.idPensiones','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones','tb_empleado.tipoSangre','tb_empleado.enfermedades')
+        ->orderBy('tb_empleado.id','asc')->get();
         return ['detalleempleados' => $detalleempleados];
     }
     public function store(Request $request)
