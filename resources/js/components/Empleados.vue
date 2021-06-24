@@ -120,15 +120,13 @@
                             <div class="card">
                                 <vs-tabs :color="colorx">
 
-                                <vs-tab label="Datos Contacto" icon="open_with" @click="colorx = '#8B0000'">
+                                <vs-tab label="Datos Contacto" icon="open_with" @click="colorx = '#CB3234'">
 
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped table-sm">
                                                 <thead>
                                                     <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Apellido</th>
                                                         <th>Dirección</th>
                                                         <th>Telefono</th>
                                                         <th>Correo</th>
@@ -139,8 +137,6 @@
                                                 <tbody>
 
                                                     <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
-                                                        <td v-text="detalleempleado.nombre"></td>
-                                                        <td v-text="detalleempleado.apellido"></td>
                                                         <td v-text="detalleempleado.direccion"></td>
                                                         <td v-text="detalleempleado.telefono"></td>
                                                         <td v-text="detalleempleado.correo"></td>
@@ -155,15 +151,13 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="Datos contrato" icon="pan_tool" @click="colorx = '#FFA500'">
+                                <vs-tab label="Datos Contrato" icon="pan_tool" @click="colorx = '#4611DC'">
 
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped table-sm">
                                                 <thead>
                                                     <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Apellido</th>
                                                         <th>Tipo contrato</th>
                                                         <th>Tipo salario</th>
                                                         <th>Salario Mensual</th>
@@ -173,8 +167,6 @@
                                                 <tbody>
 
                                                     <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
-                                                        <td v-text="detalleempleado.nombre"></td>
-                                                        <td v-text="detalleempleado.apellido"></td>
                                                         <td v-if="detalleempleado.tipocontrato">Término fijo</td>
                                                         <td v-else-if="detalleempleado.tipocontrato==2">Término indefinido</td>
                                                         <td v-if="detalleempleado.tiposalario">Sueldo fijo</td>
@@ -182,7 +174,6 @@
                                                         <td v-text="detalleempleado.salarioBasicoMensual"></td>
                                                         <td v-text="detalleempleado.fechainicio"></td>
                                                     </tr>
-
                                                 </tbody>
                                             </table>
                                         </div>
@@ -190,16 +181,17 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="Datos adicionales" icon="account_balance" @click="colorx = '#CB3234'">
+                                <vs-tab label="Datos Adicionales" icon="account_balance" @click="colorx = '#F84E13'">
 
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped table-sm">
                                                 <thead>
                                                     <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Apellido</th>
+                                                        <th>Genero</th>
                                                         <th>Nivel de Riesgo</th>
+                                                        <th>Tipo de Sangre</th>
+                                                        <th>Enfermedades Existentes</th>
                                                         <th>Eps</th>
                                                         <th>Fondo de pensiones</th>
                                                     </tr>
@@ -207,9 +199,15 @@
                                                 <tbody>
 
                                                     <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
-                                                        <td v-text="detalleempleado.nombre"></td>
-                                                        <td v-text="detalleempleado.apellido"></td>
+                                                        <div v-if="detalleempleado.genero==1">
+                                                         <td>Masculino</td>
+                                                         </div>
+                                                         <div v-else>
+                                                         <td>Femenino</td>
+                                                         </div>
                                                         <td v-text="detalleempleado.idNivelArl"></td>
+                                                        <td v-text="detalleempleado.tipoSangre"></td>
+                                                        <td v-text="detalleempleado.enfermedades"></td>
                                                         <td v-text="detalleempleado.nombreEps"></td>
                                                         <td v-text="detalleempleado.nombrePensiones"></td>
                                                     </tr>
@@ -337,7 +335,36 @@
                                             <input type="number" v-model="telefonocontacto" class="form-control" placeholder="Telefono de emergencia">
                                         </div>
                                     </div>
-
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="email-input">Seleccione la Eps</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idEps">
+                                                <option value="0" disabled>Seleccione la Eps</option>
+                                                <option v-for="eps in arrayEps" :key="eps.id" :value="eps.id" v-text="eps.nombreEps"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="email-input">Seleccione la Administradora Pensiones</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idPensiones">
+                                                <option value="0" disabled>Seleccione la Administradora de Pensiones</option>
+                                                <option v-for="pensiones in arrayPensiones" :key="pensiones.id" :value="pensiones.id" v-text="pensiones.nombrePensiones"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                     <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo de Sangre</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="tipoSangre" class="form-control" placeholder="Tipo de sangre">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Enfermedades Existentes</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="enfermedades" class="form-control" placeholder="Enfermedades existentes">
+                                        </div>
+                                    </div>
                                     <div class="form-group row div-error" v-show="errorEmpleado">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
@@ -375,10 +402,18 @@
                 telefonocontacto:0,
                 contacto:'',
                 telefono: 0,
+                tipoSangre:'',
+                enfermedades:'',
                 correo:'',
                 estado:'',
                 arrayEmpleados : [],
                 arrayDetalleEmpleados: [],
+                idEps:0,
+                nombreEps: '',
+                arrayEps:[],
+                idPensiones:0,
+                nombrePensiones: '',
+                arrayPensiones:[],
                 idArea: 0,
                 area : '',
                 arrayArea: [],
@@ -537,6 +572,36 @@
                     console.log(error);
                 })
             },
+            selectEps(){
+                let me=this;
+                var url='/empleado/selectEps';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayEps=respuesta.eps;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            selectPensiones(){
+                let me=this;
+                var url='/empleado/selectPensiones';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayPensiones=respuesta.pensiones;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -561,7 +626,11 @@
                     'telefono': this.telefono,
                     'correo': this.correo,
                     'telefonocontacto': this.telefonocontacto,
-                    'contacto': this.contacto
+                    'contacto': this.contacto,
+                    'idEps':this.idEps,
+                    'idPensiones':this.idPensiones,
+                    'tipoSangre':this.tipoSangre,
+                    'enfermedades':this.enfermedades
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarEmpleado(1,'','empleado');
@@ -586,7 +655,11 @@
                     'telefono': this.telefono,
                     'correo': this.correo,
                     'telefonocontacto': this.telefonocontacto,
-                    'contacto': this.contacto
+                    'contacto': this.contacto,
+                    'idEps':this.idEps,
+                    'idPensiones':this.idPensiones,
+                    'tipoSangre':this.tipoSangre,
+                    'enfermedades':this.enfermedades
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarEmpleado(1,'','empleado');
@@ -685,6 +758,10 @@
                 if (!this.telefono) this.errorMensaje.push("El Telefono no puede estar vacio");
                 if (this.telefono<0) this.errorMensaje.push("El Telefono puede ser negativo");
                 if (!this.correo) this.errorMensaje.push("El Correo no puede estar vacio");
+                if (!this.tipoSangre) this.errorMensaje.push("El contacto no puede estar vacio");
+                if (!this.enfermedades) this.errorMensaje.push("El telefono de contacto no puede estar vacio");
+                if (!this.tipoSangre) this.errorMensaje.push("El tipo de sangre no puede estar vacio");
+                if (!this.enfermedades) this.errorMensaje.push("Las enfermedades no pueden estar vacias");
                 if (this.errorMensaje.length) this.errorEmpleado=1;
 
                 return this.errorEmpleado;
@@ -693,6 +770,22 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.empleado='';
+                this.documento="";
+                this.idArea="";
+                this.idProceso="";
+                this.idPerfil=
+                this.nombre="";
+                this.apellido= "";
+                this.genero="";
+                this.direccion="";
+                this.telefono="";
+                this.correo="";
+                this.contacto="";
+                this.telefonocontacto="";
+                this.idEps="";
+                this.idPensiones="";
+                this.tipoSangre="";
+                this.enfermedades="";
                 this.errorEmpleado = 0,
                 this.errorMensaje = [],
                 this.forceRerender();
@@ -728,6 +821,10 @@
                             this.direccion=data['direccion'];
                             this.telefono=data['telefono'];
                             this.correo=data['correo'];
+                            this.contacto=data['contacto'];
+                            this.telefonocontacto=data['telefonocontacto'];
+                            this.tipoSangre=data=['tipoSangre'];
+                            this.enfermedades=data=['enfermedades'];
                             this.selectRelacion(this.idArea);
                             this.selectRelacionPerfil(this.idProceso);
                             break;
@@ -742,6 +839,8 @@
             this.listarEmpleado(1,this.buscar,this.criterio);
             this.selectArea();
             this.selectPerfil();
+            this.selectEps();
+            this.selectPensiones();
         }
     }
 </script>

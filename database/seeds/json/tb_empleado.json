@@ -1,3 +1,5 @@
 [
-  {"id":"1","documento": "12345","idPerfil":"1","nombre":"Empleado","apellido":"SuperNumerario","direccion":"Av 1 1 1","genero":"1","telefono":"111","correo": "a@a.a","contacto":"Contacto de empleado","telefonocontacto": "111222","idEps":"1","idPensiones": "1"}
+  {"id":"1","documento": "12345","idPerfil":"1","nombre":"Empleado","apellido":"SuperNumerario","direccion":"Av 1 1 1","genero":"1","telefono":"111","correo": "a@a.a","contacto":"Contacto de empleado","telefonocontacto": "111222","idEps":"1","idPensiones": "1","tipoSangre":"B-","enfermedades":"Ninguna"},
+  {"id":"2","documento": "23456","idPerfil":"9","nombre":"Juan","apellido":"Vargas","direccion":"Girón","genero":"1","telefono":"222","correo": "juanvargas@gmail.com","contacto":"David","telefonocontacto": "2223333","idEps":"2","idPensiones": "3","tipoSangre":"O+","enfermedades":"Alergia al Polen"}, 
+  {"id":"3","documento": "34567","idPerfil":"4","nombre":"Maria","apellido":"Florez","direccion":"Bucaramanga","genero":"2","telefono":"333","correo": "mafeflorez@gmail.com","contacto":"Dayana","telefonocontacto": "333444","idEps":"4","idPensiones": "5","tipoSangre":"A-","enfermedades":"Ninguna"}
 ]

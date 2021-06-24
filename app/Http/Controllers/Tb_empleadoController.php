@@ -7,6 +7,8 @@ use App\Tb_perfil;
 use App\Tb_area;
 use App\Tb_proceso;
 use App\Tb_empleado;
+use App\Tb_administradora_pensiones;
+use App\Tb_eps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -97,6 +99,18 @@ class Tb_empleadoController extends Controller
 
         return ['empleados' => $empleados];
     }
+    public function selectEps(){
+        $eps = Tb_eps::select('tb_eps.id','tb_eps.nombreEps',
+        DB::raw('(tb_eps.nombreEps) as nombreEps'))
+        ->get();
+        return ['eps' => $eps];
+    }
+    public function selectPensiones(){
+        $pensiones = Tb_administradora_pensiones::select('tb_administradora_pensiones.id','tb_administradora_pensiones.nombrePensiones',
+        DB::raw('(tb_administradora_pensiones.nombrePensiones) as nombrePensiones'))
+        ->get();
+        return ['pensiones' => $pensiones];
+    }
     public function detalleEmpleado(Request $request){
         $buscar= $request->id;
         $detalleempleados = Tb_empleado::join("tb_vinculaciones","tb_empleado.id","=","tb_vinculaciones.idEmpleado")
@@ -105,9 +119,9 @@ class Tb_empleadoController extends Controller
         ->where('tb_empleado.id','=',$buscar)
         ->where('tb_vinculaciones.estado','=','1')
         ->select('tb_empleado.id as id','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono',
-        'tb_empleado.correo','tb_empleado.contacto','tb_empleado.telefonocontacto','tb_vinculaciones.tipocontrato','tb_vinculaciones.tiposalario',
-        'tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio','tb_vinculaciones.idNivelArl','tb_empleado.idEps',
-        'tb_empleado.idPensiones','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones')->orderBy('tb_empleado.id','asc')->get();
+        'tb_empleado.correo','tb_empleado.contacto','tb_empleado.telefonocontacto','tb_empleado.genero','tb_empleado.idEps','tb_empleado.idPensiones',
+        'tb_vinculaciones.tipocontrato','tb_vinculaciones.tiposalario','tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio',
+        'tb_vinculaciones.idNivelArl','tb_empleado.idEps','tb_empleado.idPensiones','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones')->orderBy('tb_empleado.id','asc')->get();
 
         return ['detalleempleados' => $detalleempleados];
     }
@@ -128,6 +142,8 @@ class Tb_empleadoController extends Controller
         $tb_empleado->telefonocontacto=$request->telefonocontacto;
         $tb_empleado->idEps=$request->idEps;
         $tb_empleado->idPensiones=$request->idPensiones;
+        $tb_empleado->tipoSangre=$request->tipoSangre;
+        $tb_empleado->enfermedades=$request->enfermedades;
         $tb_empleado->save();
     }
 
@@ -148,6 +164,8 @@ class Tb_empleadoController extends Controller
         $tb_empleado->telefonocontacto=$request->telefonocontacto;
         $tb_empleado->idEps=$request->idEps;
         $tb_empleado->idPensiones=$request->idPensiones;
+        $tb_empleado->tipoSangre=$request->tipoSangre;
+        $tb_empleado->enfermedades=$request->enfermedades;
         $tb_empleado->estado='1';
         $tb_empleado->save();
     }

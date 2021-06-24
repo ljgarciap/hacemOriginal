@@ -27,6 +27,8 @@ class CreateTbEmpleadoTable extends Migration
             $table->bigInteger('telefonocontacto');
             $table->foreignId('idEps')->constrained('tb_eps');
             $table->foreignId('idPensiones')->constrained('tb_administradora_pensiones');
+            $table->string('tipoSangre');
+            $table->string('enfermedades');
             $table->boolean('estado')->default(1);
            // $table->timestamps();
         });

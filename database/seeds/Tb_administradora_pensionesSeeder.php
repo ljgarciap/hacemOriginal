@@ -17,5 +17,17 @@ class Tb_administradora_pensionesSeeder extends Seeder
         DB::table('tb_administradora_pensiones')->insert([
             'nombrePensiones' => 'Horizonte'
         ]);
+        DB::table('tb_administradora_pensiones')->insert([
+            'nombrePensiones' => 'Colfondos'
+        ]);
+        DB::table('tb_administradora_pensiones')->insert([
+            'nombrePensiones' => 'Porvenir'
+        ]);
+        DB::table('tb_administradora_pensiones')->insert([
+            'nombrePensiones' => 'Protección'
+        ]);
+        DB::table('tb_administradora_pensiones')->insert([
+            'nombrePensiones' => 'Colpensiones'
+        ]);
     }
 }
