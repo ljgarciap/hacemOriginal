@@ -22,6 +22,8 @@ use App\Tb_espera;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Storage;
+
 
 class Tb_detalle_tiempo_estandarController extends Controller
 {
@@ -59,18 +61,27 @@ class Tb_detalle_tiempo_estandarController extends Controller
          $tb_ciclos->idTiempoEstandar=$request->idTiempoEstandar;
          $tb_ciclos->save();
 
-         $tiempos = DB::table('tb_ciclos')
-         ->where('tb_ciclos.idTiempoEstandar','=',1)
-         ->avg('tiempo');
-         
          $piezas = DB::table('tb_ciclos')
-         ->where('tb_ciclos.idTiempoEstandar','=',1)
+         ->where('tb_ciclos.idTiempoEstandar','=',$request->idTiempoEstandar)
          ->avg('piezas');
 
+         $tiempos = DB::table('tb_ciclos')
+         ->where('tb_ciclos.idTiempoEstandar','=',$request->idTiempoEstandar)
+         ->avg('tiempo');
+         
          $tiempo_estandar= Tb_tiempo_estandar::find($request->idTiempoEstandar);
+         /*Storage::put('file.txt', 'tiempoElemental:'.$tiempo_estandar->tiempoElemental.',numPiezas:'.$tiempo_estandar->numeroPiezas.
+         ',piezasPar:'.$tiempo_estandar->piezasPar);*/
          $tiempo_estandar->numeroPiezas=intval($piezas);
          $tiempo_estandar->tiempoElemental=floatval($tiempos);
-         $tiempo_estandar->tiempoPiezas=(($tiempo_estandar->tiempoElemental/60)/$tiempo_estandar->numeroPiezas)*$tiempo_estandar->piezasPar;
+         $tiempoPiezas=$tiempo_estandar->tiempoPiezas;
+         if($tiempo_estandar->numeroPiezas != 0){     
+            $tiempoPiezas=(($tiempo_estandar->tiempoElemental/60)/$tiempo_estandar->numeroPiezas)*$tiempo_estandar->piezasPar;  
+         }
+         else{     
+            $tiempoPiezas = 1;
+         }
+         $tiempo_estandar->tiempoPiezas=$tiempoPiezas;  
          $tiempo_estandar->save();
      }
     // Aca termina la tabla de ciclos
@@ -142,12 +153,9 @@ class Tb_detalle_tiempo_estandarController extends Controller
          $tiempo_estandar->tiempoNormal=$tiempo_estandar->tiempoPiezas*$factor;
          $tiempo_estandar->save();
      }
-
-
      // Aca termina las westing house
 
      // Aca comienza las pds
-      
      public function listarpds(Request $request)
      {   
          //if(!$request->ajax()) return redirect('/');
@@ -233,16 +241,18 @@ class Tb_detalle_tiempo_estandarController extends Controller
 
          $esfuerzom=Tb_esfuerzo_mental::findOrFail($request->idEsfuerzoMental);
          $esfuerzof=Tb_esfuerzo_fisico::findOrFail($request->idEsfuerzoFisico);
-         $esperas=Tb_espera::findOrFail($request->idEspera);
+         $esperas=Tb_espera::findOrFail($tb_pds->idEspera);
          $empleado = Tb_empleado::findOrFail($tiempo_estandar->idEmpleado);
          $personal=Tb_necesidades_personales::findOrFail($request->idPersonales);
          $suplementario=Tb_suplementarios::findOrFail($request->idSuplementario);
          $monoto=Tb_monotonia::findOrFail($request->idMonotonia);
 
          //= ( ( (em+ef) * espera) + (personales) + (suplementarios)+ (monotonia) )/1+1
-         $factorPds=((($esfuerzom->porcentaje+$esfuerzof->porcentaje) * $esperas->factor) + 
-         (($empleado->genero==1)?$personal->porcentajeHombre:$personal->porcentajeMujer) +
-         $suplementario->porcentaje + $monoto->porcentaje)/1+1;
+         /*Storage::put('file.txt', 'em:'.$esfuerzom->porcentaje.',ef:'.$esfuerzof->porcentaje.',esp:'.$esperas->factor.',pers:'.
+         $personal->porcentajeHombre.',supl:'.$suplementario->porcentaje.',monot:'.$monoto->porcentaje);*/
+         $factorPds=(( ((($esfuerzom->porcentaje/100.0)+($esfuerzof->porcentaje/100.0)) * $esperas->factor) + 
+         (($empleado->genero==1)?($personal->porcentajeHombre/100.0):($personal->porcentajeMujer/100.0)) +
+         ($suplementario->porcentaje/100.0) + ($monoto->porcentaje/100.0))/1)+1;
          $tiempo_estandar=Tb_tiempo_estandar::findOrFail($request->idTiempoEstandar);
          $tiempo_estandar->factorPds=$factorPds;
          $tiempo_estandar->tiempoEstandar=$tiempo_estandar->tiempoNormal*$factorPds;

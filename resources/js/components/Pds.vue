@@ -266,8 +266,8 @@
                     'valorEspera':this.valorEspera,
                     'idTiempoEstandar':this.identificador
                 }).then(function (response) {
-                me.listarPds(1,'','');
-                me.clear();
+                me.clear();    
+                me.listarPds(1,this.identificador);
                 me.forceRender();
                 })
                 .catch(function (error) {

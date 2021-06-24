@@ -3,18 +3,6 @@
         <template v-if="listado==0">
         <!-- Ejemplo de tabla Listado -->
         <div>
-            <div class="form-group row">
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="id">Id</option>
-                                        <option value="idEmpleado">Empleado</option>
-                                        </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarDetalleTiempoEstandar(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarDetalleTiempoEstandar(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="table-responsive">
                             <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                             <table class="table table-bordered table-striped table-sm">
