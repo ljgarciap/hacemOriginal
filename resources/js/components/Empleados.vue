@@ -118,8 +118,17 @@
                     <template v-else>
                         <div class="container-fluid">
                             <div class="card">
+                              <div class="form-group row">
+                                <div class="col-md-9">
+                                  <div class="input-group">
+                                   <div v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
+                                    &nbsp;<b>Empleado: </b> {{detalleempleado.nombre}} {{detalleempleado.apellido}}
+                                   </div>
+                                   </div>
+                                </div>
+                             </div>
                                 <vs-tabs :color="colorx">
-
+                                
                                 <vs-tab label="Datos Contacto" icon="open_with" @click="colorx = '#CB3234'">
 
                                     <div class="card-body">
@@ -199,12 +208,8 @@
                                                 <tbody>
 
                                                     <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
-                                                        <div v-if="detalleempleado.genero==1">
-                                                         <td>Masculino</td>
-                                                         </div>
-                                                         <div v-else>
-                                                         <td>Femenino</td>
-                                                         </div>
+                                                         <td v-if="detalleempleado.genero==1">Masculino</td>
+                                                         <td v-else>Femenino</td>
                                                         <td v-text="detalleempleado.idNivelArl"></td>
                                                         <td v-text="detalleempleado.tipoSangre"></td>
                                                         <td v-text="detalleempleado.enfermedades"></td>
