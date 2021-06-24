@@ -107,8 +107,6 @@ class Tb_vinculacionesController extends Controller
         $tb_vinculaciones->fechaInicio=$request->fechaInicio;
         $tb_vinculaciones->idEmpleado=$request->idEmpleado;
         $tb_vinculaciones->idNivelArl=$request->idNivelArl;
-        $tb_vinculaciones->idEps=$request->idEps;
-        $tb_vinculaciones->idPensiones=$request->idPensiones;
         $tb_vinculaciones->save();
     }
 
@@ -122,8 +120,6 @@ class Tb_vinculacionesController extends Controller
         $tb_vinculaciones->fechaInicio=$request->fechaInicio;
         $tb_vinculaciones->idEmpleado=$request->idEmpleado;
         $tb_vinculaciones->idNivelArl=$request->idNivelArl;
-        $tb_vinculaciones->idEps=$request->idEps;
-        $tb_vinculaciones->idPensiones=$request->idPensiones;
         $tb_vinculaciones->estado='1';
         $tb_vinculaciones->save();
     }

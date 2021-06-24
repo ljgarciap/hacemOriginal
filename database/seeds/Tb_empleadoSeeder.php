@@ -26,7 +26,9 @@ class Tb_empleadoSeeder extends Seeder
                 'telefono' => $item->telefono,
                 'correo' => $item->correo,
                 'contacto' => $item->contacto,
-                'telefonocontacto' => $item->telefonocontacto
+                'telefonocontacto' => $item->telefonocontacto,
+                'idEps' => $item->idEps,
+                'idPensiones' => $item->idPensiones
             ));
             }
     }

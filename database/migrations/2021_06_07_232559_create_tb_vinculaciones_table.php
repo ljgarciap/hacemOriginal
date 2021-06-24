@@ -22,8 +22,6 @@ class CreateTbVinculacionesTable extends Migration
             $table->date('fechaFin')->default('1900-01-01');
             $table->foreignId('idEmpleado')->constrained('tb_empleado');
             $table->foreignId('idNivelArl')->constrained('tb_niveles_riesgo');
-            $table->foreignId('idEps')->constrained('tb_eps');
-            $table->foreignId('idPensiones')->constrained('tb_administradora_pensiones');
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });

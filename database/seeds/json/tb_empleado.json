@@ -1,3 +1,3 @@
 [
-  {"id":"1","documento": "12345","idPerfil":"1","nombre":"Empleado","apellido":"SuperNumerario","direccion":"Av 1 1 1","genero":"1","telefono":"111","correo": "a@a.a","contacto":"Contacto de empleado","telefonocontacto": "111222"}  
+  {"id":"1","documento": "12345","idPerfil":"1","nombre":"Empleado","apellido":"SuperNumerario","direccion":"Av 1 1 1","genero":"1","telefono":"111","correo": "a@a.a","contacto":"Contacto de empleado","telefonocontacto": "111222","idEps":"1","idPensiones": "1"}
 ]

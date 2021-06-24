@@ -106,8 +106,8 @@ class Tb_empleadoController extends Controller
         ->where('tb_vinculaciones.estado','=','1')
         ->select('tb_empleado.id as id','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono',
         'tb_empleado.correo','tb_empleado.contacto','tb_empleado.telefonocontacto','tb_vinculaciones.tipocontrato','tb_vinculaciones.tiposalario',
-        'tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio','tb_vinculaciones.idNivelArl','tb_vinculaciones.idEps',
-        'tb_vinculaciones.idPensiones','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones')->orderBy('tb_empleado.id','asc')->get();
+        'tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio','tb_vinculaciones.idNivelArl','tb_empleado.idEps',
+        'tb_empleado.idPensiones','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones')->orderBy('tb_empleado.id','asc')->get();
 
         return ['detalleempleados' => $detalleempleados];
     }
@@ -126,6 +126,8 @@ class Tb_empleadoController extends Controller
         $tb_empleado->correo=$request->correo;
         $tb_empleado->contacto=$request->contacto;
         $tb_empleado->telefonocontacto=$request->telefonocontacto;
+        $tb_empleado->idEps=$request->idEps;
+        $tb_empleado->idPensiones=$request->idPensiones;
         $tb_empleado->save();
     }
 
@@ -144,6 +146,8 @@ class Tb_empleadoController extends Controller
         $tb_empleado->correo=$request->correo;
         $tb_empleado->contacto=$request->contacto;
         $tb_empleado->telefonocontacto=$request->telefonocontacto;
+        $tb_empleado->idEps=$request->idEps;
+        $tb_empleado->idPensiones=$request->idPensiones;
         $tb_empleado->estado='1';
         $tb_empleado->save();
     }
