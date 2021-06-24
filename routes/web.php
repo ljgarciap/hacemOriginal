@@ -309,6 +309,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/vinculacion/selectvinculacion", "Tb_vinculacionesController@selectvinculacion");
 
         Route::get("/novedades", "Tb_novedadesController@index");
+        Route::post("/novedades/store", "Tb_novedadesController@store");
 
     });
     /*Route::get('noBorrar',function(){

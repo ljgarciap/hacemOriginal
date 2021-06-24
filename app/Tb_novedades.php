@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Tb_novedades extends Model
 {
     //
+    protected $table = 'tb_novedades';
+
     protected $fillable = ['fechaNovedad','concepto','valor','tipologia','idEmpleado','idNomina'];
 
     public $timestamps = false;

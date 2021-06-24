@@ -37,7 +37,6 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Acciones</th>
                                         <th>Fecha novedad</th>
                                         <th>Concepto</th>
                                         <th>Valor</th>
@@ -47,14 +46,10 @@
                                 <tbody>
 
                                     <tr v-for="novedad in arrayNovedades" :key="novedad.id">
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="mostrarDetalle(novedad.idProducto)">
-                                                <i class="icon-eye"></i><span> Ver kárdex</span>
-                                            </button>
-                                        </td>
                                         <td v-text="novedad.fechaNovedad"></td>
                                         <td v-text="novedad.concepto"></td>
                                         <td v-text="novedad.valor"></td>
+                                        <td v-text="novedad.empleado"></td>
                                         <!--
                                         <td v-text="novedad.tipologia"></td>
                                         <td v-text="novedad.idEmpleado"></td>
@@ -138,17 +133,15 @@
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idEmpleado">
                                                 <option value="0" disabled>Seleccione empleado</option>
-                                                <option v-for="empleado in arrayEmpleados" :key="empleado.id" :value="empleado.id" v-text="empleado.empleado"></option>
+                                                <option v-for="empleado in arrayEmpleados" :key="empleado.idEmpleado" :value="empleado.idEmpleado" v-text="empleado.empleado"></option>
                                             </select>
                                             <span class="help-block">(*) Empleado</span>
                                         </div>
 
-                                        <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Fecha de Novedad</label>
                                         <div class="col-md-9">
                                             <input type="date" v-model="fechaNovedad" class="form-control" placeholder="Ingrese la fecha de la novedad">
                                             <span class="help-block">(*) Ingrese fecha de novedad</span>
-                                        </div>
                                         </div>
 
                                     </div>
@@ -162,7 +155,7 @@
                             </div>
                             <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearnovedad()">Guardar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearNovedad()">Guardar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -280,12 +273,16 @@ import moment from 'moment';
                },
             crearNovedad(){
                 //valido con el metodo de validacion creado
+                console.log('Carga valores');
+                /*
                 if(this.validarNovedad()){
+                    console.log('Carga valores correcta');
                     return;
                 }
+                */
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
-                axios.post('/novedad/store',{
+                axios.post('/novedades/store',{
                     'fechaNovedad': this.fechaNovedad,
                     'concepto':this.concepto,
                     'valor':this.valor,
@@ -293,8 +290,8 @@ import moment from 'moment';
                     'idEmpleado':this.idEmpleado
                     //'idNomina':this.idNomina
                 }).then(function (response) {
+                console.log('Enviados valores');
                 me.cerrarModal('0');
-                me.listarNovedades(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -323,7 +320,6 @@ import moment from 'moment';
                 this.listado=0;
             },
             validarnovedad(){
-                this.errorProducto=0;
                 this.errorNovedad=0;
                 this.errorMensaje=[];
 

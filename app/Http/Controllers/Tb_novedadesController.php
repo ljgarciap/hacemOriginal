@@ -26,7 +26,7 @@ class Tb_novedadesController extends Controller
             ->join("tb_nomina","tb_novedades.idNomina","=","tb_nomina.id")
             ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor',
             'tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio',
-            'tb_tb_nomina.fechaFin','tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+            'tb_nomina.fechaFin','tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_novedades.id','desc')
             ->where('tb_nomina.estado','=','1')->paginate(5);
         }
@@ -35,7 +35,7 @@ class Tb_novedadesController extends Controller
             ->join("tb_nomina","tb_novedades.idNomina","=","tb_nomina.id")
             ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor',
             'tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio',
-            'tb_tb_nomina.fechaFin','tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+            'tb_nomina.fechaFin','tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_novedades.id','desc')
             ->where('tb_nomina.estado','=','1')
             ->where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
@@ -66,19 +66,29 @@ class Tb_novedadesController extends Controller
         //if(!$request->ajax()) return redirect('/');
 
         $fechaValidacion=$request->fechaNovedad;
+
+        if($request->concepto==1){
+            $tipologia=1;
+        }
+        else{
+            $tipologia=0;
+        }
+
         $nominas = Tb_nomina::select('tb_nomina.id')
         ->where('tb_nomina.fechaInicio','<=',$fechaValidacion)
         ->where('tb_nomina.estado','=','1')->get();
 
+
         foreach($nominas as $nomina){
-            $idNomina = $nomina->id;
+            $idNominax = $nomina->id;
+            $idNomina=$idNominax;
         }
 
         $tb_novedades=new Tb_novedades();
         $tb_novedades->fechaNovedad=$request->fechaNovedad;
         $tb_novedades->concepto=$request->concepto;
         $tb_novedades->valor=$request->valor;
-        $tb_novedades->tipologia=$request->tipologia;
+        $tb_novedades->tipologia=$tipologia;
         $tb_novedades->idEmpleado=$request->idEmpleado;
         $tb_novedades->idNomina=$idNomina;
         //$tb_novedades->idNomina=$request->idNomina;
