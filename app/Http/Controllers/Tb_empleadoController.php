@@ -100,8 +100,8 @@ class Tb_empleadoController extends Controller
     public function detalleEmpleado(Request $request){
         $buscar= $request->id;
         $detalleempleados = Tb_empleado::join("tb_vinculaciones","tb_empleado.id","=","tb_vinculaciones.idEmpleado")
-        ->join("tb_eps","tb_vinculaciones.idEps","=","tb_eps.id")
-        ->join("tb_administradora_pensiones","tb_vinculaciones.idPensiones","=","tb_administradora_pensiones.id")
+        ->join("tb_eps","tb_empleado.idEps","=","tb_eps.id")
+        ->join("tb_administradora_pensiones","tb_empleado.idPensiones","=","tb_administradora_pensiones.id")
         ->where('tb_empleado.id','=',$buscar)
         ->where('tb_vinculaciones.estado','=','1')
         ->select('tb_empleado.id as id','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono',
