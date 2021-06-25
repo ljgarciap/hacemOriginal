@@ -116,17 +116,24 @@ class Tb_empleadoController extends Controller
     }
     public function detalleEmpleado(Request $request){
         $buscar= $request->id;
-        $detalleempleados = Tb_empleado::join("tb_vinculaciones","tb_empleado.id","=","tb_vinculaciones.idEmpleado")
-        ->join("tb_eps","tb_empleado.idEps","=","tb_eps.id")
+        $detalleempleados = Tb_empleado::join("tb_eps","tb_empleado.idEps","=","tb_eps.id")
         ->join("tb_administradora_pensiones","tb_empleado.idPensiones","=","tb_administradora_pensiones.id")
         ->where('tb_empleado.id','=',$buscar)
-        ->where('tb_vinculaciones.estado','=','1')
         ->select('tb_empleado.id as id','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_empleado.telefono','tb_empleado.correo',
-        'tb_empleado.contacto','tb_empleado.telefonocontacto','tb_empleado.genero','tb_empleado.idEps','tb_empleado.idPensiones','tb_vinculaciones.tipocontrato',
-        'tb_vinculaciones.tiposalario','tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio','tb_vinculaciones.idNivelArl','tb_empleado.idEps',
+        'tb_empleado.contacto','tb_empleado.telefonocontacto','tb_empleado.genero','tb_empleado.idEps','tb_empleado.idPensiones','tb_empleado.idEps',
         'tb_empleado.idPensiones','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones','tb_empleado.tipoSangre','tb_empleado.enfermedades')
         ->orderBy('tb_empleado.id','asc')->get();
         return ['detalleempleados' => $detalleempleados];
+    }
+    public function vinculacionEmpleado(Request $request){
+        $buscar= $request->id;
+        $detalleempleados = Tb_empleado::join("tb_vinculaciones","tb_empleado.id","=","tb_vinculaciones.idEmpleado")
+        ->where('tb_empleado.id','=',$buscar)
+        ->where('tb_vinculaciones.estado','=','1')
+        ->select('tb_empleado.id as id','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_vinculaciones.tipocontrato',
+        'tb_vinculaciones.tiposalario','tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio','tb_vinculaciones.idNivelArl')
+        ->orderBy('tb_empleado.id','asc')->get();
+        return ['vinculacionempleados' => $detalleempleados];
     }
     public function store(Request $request)
     {

@@ -202,6 +202,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/empleado/deactivate", "Tb_empleadoController@deactivate");
         Route::put("/empleado/activate", "Tb_empleadoController@activate");
         Route::get("/empleado/detalleEmpleado", "Tb_empleadoController@detalleEmpleado");
+        Route::get("/empleado/vinculacionEmpleado", "Tb_empleadoController@vinculacionEmpleado");
         Route::get("/empleado/selectEmpleado", "Tb_empleadoController@selectEmpleado");
         Route::get("/empleado/selectEps", "Tb_empleadoController@selectEps");
         Route::get("/empleado/selectPensiones", "Tb_empleadoController@selectPensiones");
@@ -327,15 +328,15 @@ Route::group(['middleware' => ['guest']], function () {
 
          $tiempo_estandar= Tb_tiempo_estandar::find(2);
          $tiempoPiezas=$tiempo_estandar->tiempoPiezas;
-      
+
          $tiempoPiezas=$tiempo_estandar->tiempoPiezas;
-         if($tiempo_estandar->numeroPiezas != 0){     
-            $tiempoPiezas=(($tiempo_estandar->tiempoElemental/60)/$tiempo_estandar->numeroPiezas)*$tiempo_estandar->piezasPar;  
+         if($tiempo_estandar->numeroPiezas != 0){
+            $tiempoPiezas=(($tiempo_estandar->tiempoElemental/60)/$tiempo_estandar->numeroPiezas)*$tiempo_estandar->piezasPar;
          }
          else{
-            $tiempoPiezas=1;     
+            $tiempoPiezas=1;
             //echo "No se puede dividir por cero!!";
-         }     
+         }
          echo "Tiempo Piezas: ",$tiempoPiezas;
     });*/
 

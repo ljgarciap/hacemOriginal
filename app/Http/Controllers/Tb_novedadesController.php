@@ -24,18 +24,18 @@ class Tb_novedadesController extends Controller
         if ($buscar=='') {
             $novedades = Tb_novedades::join("tb_empleado","tb_novedades.idEmpleado","=","tb_empleado.id")
             ->join("tb_nomina","tb_novedades.idNomina","=","tb_nomina.id")
-            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor',
-            'tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio',
-            'tb_nomina.fechaFin','tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.observacion',
+            'tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
+            'tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_novedades.id','desc')
             ->where('tb_nomina.estado','=','1')->paginate(5);
         }
         else {
             $novedades = Tb_novedades::join("tb_empleado","tb_novedades.idEmpleado","=","tb_empleado.id")
             ->join("tb_nomina","tb_novedades.idNomina","=","tb_nomina.id")
-            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor',
-            'tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio',
-            'tb_nomina.fechaFin','tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.observacion',
+            'tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
+            'tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_novedades.id','desc')
             ->where('tb_nomina.estado','=','1')
             ->where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
@@ -88,6 +88,7 @@ class Tb_novedadesController extends Controller
         $tb_novedades->fechaNovedad=$request->fechaNovedad;
         $tb_novedades->concepto=$request->concepto;
         $tb_novedades->valor=$request->valor;
+        $tb_novedades->observacion=$request->observacion;
         $tb_novedades->tipologia=$tipologia;
         $tb_novedades->idEmpleado=$request->idEmpleado;
         $tb_novedades->idNomina=$idNomina;

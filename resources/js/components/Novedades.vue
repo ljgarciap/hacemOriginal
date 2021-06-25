@@ -14,10 +14,10 @@
                        <div class="card-header">
                             <i class="fa fa-align-justify"></i> Novedades
                             <button type="button" @click="abrirModal('novedad','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Entrada
+                                <i class="icon-plus"></i>&nbsp;Novedad
                             </button>
                             <button type="button" @click="abrirModal('novedad','crears')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Salida
+                                <i class="icon-plus"></i>&nbsp;Deducible
                             </button>
                         </div>
 
@@ -101,24 +101,21 @@
                                                 <option value="3">Bonificaciones</option>
                                                 <option value="4">Comisiones</option>
                                                 <option value="5">Viaticos</option>
-                                                <option value="6">No factor salarial</option>
+                                                <option value="6">Conceptos que no son factor salarial</option>
                                             </select>
                                         </div>
-                                        <div v-else-if="desplegable==2" class="col-md-9"> <!-- Si es una salida -->
+                                        <!-- Si es una salida -->
+                                        <div v-else-if="desplegable==2" class="col-md-9">
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
-                                                <option value="7">Fondo de solaridad</option>
-                                                <option value="8">Retenciòn en la fuente</option>
-                                                <option value="9">Sindicato</option>
-                                                <option value="10">Préstamos</option>
-                                                <option value="11">Embargos</option>
-                                                <option value="12">Descuento por libranza/otros</option>
-                                                <!--
-                                                <option value="13">Descuento a salud</option>
-                                                <option value="14">Descuento a pensión</option>
-                                                -->
+                                                <option value="9">Retenciòn en la fuente</option>
+                                                <option value="10">Sindicato</option>
+                                                <option value="11">Préstamos</option>
+                                                <option value="12">Embargos</option>
+                                                <option value="13">Descuento por libranza/otros</option>
                                             </select>
                                         </div>
+
                                     </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
@@ -142,6 +139,12 @@
                                         <div class="col-md-9">
                                             <input type="date" v-model="fechaNovedad" class="form-control" placeholder="Ingrese la fecha de la novedad">
                                             <span class="help-block">(*) Ingrese fecha de novedad</span>
+                                        </div>
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Observación</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="observacion" class="form-control" placeholder="Observación">
+                                            <span class="help-block">(*) Ingrese observación</span>
                                         </div>
 
                                     </div>
@@ -286,6 +289,7 @@ import moment from 'moment';
                     'fechaNovedad': this.fechaNovedad,
                     'concepto':this.concepto,
                     'valor':this.valor,
+                    'observacion':this.observacion,
                     'tipologia':this.tipologia,
                     'idEmpleado':this.idEmpleado
                     //'idNomina':this.idNomina

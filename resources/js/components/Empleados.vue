@@ -128,7 +128,7 @@
                                 </div>
                              </div>
                                 <vs-tabs :color="colorx">
-                                
+
                                 <vs-tab label="Datos Contacto" icon="open_with" @click="colorx = '#CB3234'">
 
                                     <div class="card-body">
@@ -160,36 +160,6 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="Datos Contrato" icon="pan_tool" @click="colorx = '#4611DC'">
-
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-striped table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Tipo contrato</th>
-                                                        <th>Tipo salario</th>
-                                                        <th>Salario Mensual</th>
-                                                        <th>Fecha Inicio</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
-                                                        <td v-if="detalleempleado.tipocontrato">Término fijo</td>
-                                                        <td v-else-if="detalleempleado.tipocontrato==2">Término indefinido</td>
-                                                        <td v-if="detalleempleado.tiposalario">Sueldo fijo</td>
-                                                        <td v-else-if="detalleempleado.tiposalario==2">Destajo</td>
-                                                        <td v-text="detalleempleado.salarioBasicoMensual"></td>
-                                                        <td v-text="detalleempleado.fechainicio"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                </vs-tab>
-
                                 <vs-tab label="Datos Adicionales" icon="account_balance" @click="colorx = '#F84E13'">
 
                                     <div class="card-body">
@@ -198,7 +168,6 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Genero</th>
-                                                        <th>Nivel de Riesgo</th>
                                                         <th>Tipo de Sangre</th>
                                                         <th>Enfermedades Existentes</th>
                                                         <th>Eps</th>
@@ -208,15 +177,46 @@
                                                 <tbody>
 
                                                     <tr v-for="detalleempleado in arrayDetalleEmpleados" :key="detalleempleado.id">
-                                                         <td v-if="detalleempleado.genero==1">Masculino</td>
-                                                         <td v-else>Femenino</td>
-                                                        <td v-text="detalleempleado.idNivelArl"></td>
+                                                        <td v-if="detalleempleado.genero==1">Masculino</td>
+                                                        <td v-else>Femenino</td>
                                                         <td v-text="detalleempleado.tipoSangre"></td>
                                                         <td v-text="detalleempleado.enfermedades"></td>
                                                         <td v-text="detalleempleado.nombreEps"></td>
                                                         <td v-text="detalleempleado.nombrePensiones"></td>
                                                     </tr>
 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </vs-tab>
+
+                                <vs-tab label="Datos Contrato" icon="pan_tool" @click="colorx = '#4611DC'">
+
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tipo contrato</th>
+                                                        <th>Tipo salario</th>
+                                                        <th>Nivel de Riesgo</th>
+                                                        <th>Salario Mensual</th>
+                                                        <th>Fecha Inicio</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr v-for="vinculacionempleado in arrayVinculacionEmpleados" :key="vinculacionempleado.id">
+                                                        <td v-if="vinculacionempleado.tipocontrato">Término fijo</td>
+                                                        <td v-else-if="vinculacionempleado.tipocontrato==2">Término indefinido</td>
+                                                        <td v-if="vinculacionempleado.tiposalario">Sueldo fijo</td>
+                                                        <td v-else-if="vinculacionempleado.tiposalario==2">Destajo</td>
+                                                        <td v-text="vinculacionempleado.idNivelArl"></td>
+                                                        <td v-text="vinculacionempleado.salarioBasicoMensual"></td>
+                                                        <td v-text="vinculacionempleado.fechainicio"></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -413,6 +413,7 @@
                 estado:'',
                 arrayEmpleados : [],
                 arrayDetalleEmpleados: [],
+                arrayVinculacionEmpleados: [],
                 idEps:0,
                 nombreEps: '',
                 arrayEps:[],
@@ -504,6 +505,20 @@
                     console.log(error);
                 })
             },
+            listarVinculacionEmpleado(id){
+                let me=this;
+                var url='/empleado/vinculacionEmpleado?id='+id;
+                console.log('Url peticion empleado');
+                console.log(url);
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayVinculacionEmpleados=respuesta.vinculacionempleados;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -524,6 +539,7 @@
                 console.log('Identificador empleado');
                 console.log(this.identificador);
                 this.listarDetalleEmpleado(id);
+                this.listarVinculacionEmpleado(id);
             },
             ocultarDetalle(){
                 this.listado=1;
