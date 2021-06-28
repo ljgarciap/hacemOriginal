@@ -386,6 +386,7 @@
                 this.tituloModal='';
                 this.maquinaria='';
                 this.errorMaquinaria = 0,
+                this.fecha='';
                 this.errorMensaje = [],
                 this.forceRerender();
             },

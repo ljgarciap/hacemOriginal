@@ -380,6 +380,7 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.name='';
+                this.email='';
                 this.errorUsuario = 0,
                 this.errorMensaje = [],
                 this.forceRerender();

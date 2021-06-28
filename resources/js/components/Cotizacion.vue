@@ -469,6 +469,12 @@
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
+                this.condicionEntrega='';
+                this.idCliente='';
+                this.vigencia='';
+                this.idProducto='';
+                this.cantidad='';
+                this.precioVenta='';
                 this.errorCotizacion = 0,
                 this.errorMensaje = [],
                 this.forceRerender();

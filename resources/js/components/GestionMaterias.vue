@@ -415,6 +415,10 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.gestionmateria='';
+                this.idTipoMateria='';
+                this.gestionMateria='';
+                this.idUnidadBase='';
+                this.precioBase='';
                 this.errorGestionMateria = 0,
                 this.errorMensaje = [],
                 this.forceRerender();

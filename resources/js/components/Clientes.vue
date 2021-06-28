@@ -406,6 +406,12 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.cliente='';
+                this.documento='';
+                this.nombre='';
+                this.apellido='';
+                this.direccion='';
+                this.telefono='';
+                this.correo='';
                 this.errorCliente = 0,
                 this.errorMensaje = [],
                 this.forceRerender();

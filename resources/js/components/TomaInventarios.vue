@@ -378,6 +378,7 @@
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
+                this.idEmpleado='';
             },
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla

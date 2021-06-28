@@ -496,8 +496,14 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.producto='';
+                this.referencia='';
+                this.fotoCarga='';
+                this.descripcion='';
+                this.idColeccion='';
+                this.idArea='';
                 this.errorProducto = 0,
                 this.errorMensaje = [],
+                this.capacidadMensual='';
                 this.forceRerender();
             },
             abrirModal(modelo, accion, data=[]){

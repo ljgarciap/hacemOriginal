@@ -406,6 +406,12 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.proveedor='';
+                this.nit='';
+                this.razonSocial='';
+                this.contacto='';
+                this.telefono='';
+                this.direccion='';
+                this.correo='';
                 this.errorProveedor = 0,
                 this.errorMensaje = [],
                 this.forceRerender();

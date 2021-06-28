@@ -636,6 +636,7 @@ import detallekardexalmacen from '../components/DetalleKardexAlmacen';
                 this.cantidad='';
                 this.observaciones='Ninguna';
                 this.precio='';
+                this.idEmpleado='';
                 this.tipologia='';
                 this.flag=0;
                 this.errorKardex=0;

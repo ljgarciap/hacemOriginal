@@ -437,6 +437,9 @@
                 this.tituloModal='';
                 this.detalle='';
                 this.errorSimulacion = 0,
+                this.idProducto='';
+                this.unidades='';
+                this.tiempo='';
                 this.errorMensaje = [],
                 this.forceRerender();
             },

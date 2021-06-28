@@ -405,6 +405,8 @@
                 this.modal=0;
                 this.tituloModal='';
                 this.perfil='';
+                this.valorMinuto='';
+                this.proceso='';
                 this.errorPerfil = 0,
                 this.errorMensaje = [],
                 this.forceRerender();
@@ -430,6 +432,7 @@
                             this.tipoAccion= 2;
                             this.idPerfil=data['id'];
                             this.perfil=data['perfil'];
+                            this.valorMinuto=data['valorMinuto'];
                             this.idProceso=data['idProceso']; // añadido para alimentar el select
                             this.proceso=data['proceso']; //añadido para alimentar el select
                             this.idArea=data['idArea']; // añadido para alimentar el select

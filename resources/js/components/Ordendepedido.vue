@@ -500,6 +500,12 @@
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
+                this.observacion='';
+                this.idCliente='';
+                this.idProducto='';
+                this.cantidad='';
+                this.costopar='';
+                this.precioVenta='';
                 this.errorOrden = 0,
                 this.errorMensaje = [],
                 this.forceRerender();
