@@ -26,7 +26,8 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="producto">Fecha</option>
+                                        <option value="fechaNovedad">Fecha</option>
+                                        <option value="empleado">Fecha</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarNovedades(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarNovedades(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -96,23 +97,23 @@
                                         <div v-if="desplegable==1" class="col-md-9">
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
-                                                <option value="1">Horas extras y recargos</option>
-                                                <option value="2">Prima extralegal</option>
-                                                <option value="3">Bonificaciones</option>
-                                                <option value="4">Comisiones</option>
-                                                <option value="5">Viaticos</option>
-                                                <option value="6">Conceptos que no son factor salarial</option>
+                                                <option value="1">Detalle Ingresos</option>
+                                                <option value="2">Horas extras y recargos</option>
+                                                <option value="3">Prima extralegal</option>
+                                                <option value="4">Bonificaciones</option>
+                                                <option value="5">Comisiones</option>
+                                                <option value="6">Viaticos</option>
+                                                <option value="7">Conceptos que no son factor salarial</option>
                                             </select>
                                         </div>
                                         <!-- Si es una salida -->
                                         <div v-else-if="desplegable==2" class="col-md-9">
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
-                                                <option value="9">Retenciòn en la fuente</option>
-                                                <option value="10">Sindicato</option>
-                                                <option value="11">Préstamos</option>
-                                                <option value="12">Embargos</option>
-                                                <option value="13">Descuento por libranza/otros</option>
+                                                <option value="51">Sindicato</option>
+                                                <option value="52">Préstamos</option>
+                                                <option value="53">Embargos</option>
+                                                <option value="54">Descuento por libranza/otros</option>
                                             </select>
                                         </div>
 
@@ -120,26 +121,68 @@
 
                                     <div v-if="tipoModal==1" class="form-group row">
 
-                                        <label class="col-md-3 form-control-label" for="text-input">Valor</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha de Novedad</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
-                                            <span class="help-block">(*) Ingrese el Valor</span>
+                                            <input type="date" v-model="fechaNovedad" class="form-control" placeholder="Ingrese la fecha de la novedad">
+                                            <span class="help-block">(*) Ingrese fecha de novedad</span>
                                         </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1" class="form-group row">
 
                                         <label class="col-md-3 form-control-label" for="text-input">Empleado</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idEmpleado">
+                                            <select class="form-control" v-model="idEmpleado" @change='selectCaract($event)'>
                                                 <option value="0" disabled>Seleccione empleado</option>
                                                 <option v-for="empleado in arrayEmpleados" :key="empleado.idEmpleado" :value="empleado.idEmpleado" v-text="empleado.empleado"></option>
                                             </select>
                                             <span class="help-block">(*) Empleado</span>
                                         </div>
 
-                                        <label class="col-md-3 form-control-label" for="text-input">Fecha de Novedad</label>
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && flag==1 && tiposalario==1" class="form-group row">
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Dias laborados</label>
                                         <div class="col-md-9">
-                                            <input type="date" v-model="fechaNovedad" class="form-control" placeholder="Ingrese la fecha de la novedad">
-                                            <span class="help-block">(*) Ingrese fecha de novedad</span>
+                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
+                                            <span class="help-block">(*) Dias de labor</span>
                                         </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && flag==1 && tiposalario==2" class="form-group row">
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor Tarea</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
+                                            <span class="help-block">(*) Valor tarea entregada</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && concepto>2" class="form-group row">
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
+                                            <span class="help-block">(*) Ingrese el Valor</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && flag==1 && tiposalario==2" class="form-group row">
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Observación</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="observacion" class="form-control" placeholder="Observación">
+                                            <span class="help-block">(*) Ingrese detalle de tarea</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && concepto>2" class="form-group row">
 
                                         <label class="col-md-3 form-control-label" for="text-input">Observación</label>
                                         <div class="col-md-9">
@@ -176,9 +219,10 @@ import moment from 'moment';
             return{
                 id:'',
                 identificador:'',
-                idEmpleado:'',
+                idEmpleado:0,
                 fecha : '',
                 flag : 0,
+                concepto : 0,
                 valor:'',
                 arrayNovedades : [],
                 arrayEmpleados : [],
@@ -190,6 +234,7 @@ import moment from 'moment';
                 variable : '',
                 hoy : '',
                 tipologia : 0,
+                tiposalario : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
                 errorNovedad : 0,
@@ -203,7 +248,7 @@ import moment from 'moment';
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'producto',
+                criterio : 'fechaNovedad',
                 buscar : '',
                 componentKey:0
             }
@@ -240,6 +285,26 @@ import moment from 'moment';
             onChange(event) {
             //console.log(event.target.value);
             this.flag=event.target.value;
+            console.log('Valor flag:');
+            console.log(this.flag);
+            },
+            selectCaract(event) { //Busca el dato de la tipologia de sueldo
+            //console.log(event.target.value);
+            this.idEmp=event.target.value;
+                console.log('Id empleado select:');
+                console.log(this.idEmp);
+                var url='/novedades/salario?identificador=' + this.idEmp;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                this.tiposalario=respuesta.tiposalario;
+                //
+                console.log('Tipo de salario:');
+                console.log(this.tiposalario);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
             },
             listarNovedades(page,buscar,criterio){
                 let me=this;
@@ -251,6 +316,8 @@ import moment from 'moment';
                 me.arrayNovedades=respuesta.novedades.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
+                    console.log('Valor inicial Tipo de salario:');
+                    console.log(this.tiposalario);
                 })
                 .catch(function (error) {
                     // handle error
@@ -303,7 +370,7 @@ import moment from 'moment';
             },
             listarEmpleados(){
                 let me=this;
-                var url='/vinculacion/selectempleado';
+                var url='/novedades/selectempleado';
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -336,16 +403,18 @@ import moment from 'moment';
                 this.modal=this.variable;
                 this.tituloModal='';
                 this.detalle='';
-                this.idEmpleado='';
+                this.idEmpleado=0;
                 this.mensajecantidad='';
                 this.valor='';
                 this.tipologia='';
                 this.flag=0;
+                this.tiposalario=0;
+                this.concepto=0;
                 this.errorNovedad=0;
                 this.errorMensaje=[];
                 this.tituloModal='';
 
-                this.listarNovedades(1,this.buscar,this.criterio);
+                this.listarNovedades(1,'','fechaNovedad');
             },
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
@@ -361,7 +430,7 @@ import moment from 'moment';
                                 this.desplegable= 1; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fechaNovedad= moment().format('YYYY-MM-DD');
-                                this.listarNovedades();
+                                this.listarNovedades(1,'','fechaNovedad');
                                 break;
                             }
                             case 'crears':{
@@ -372,7 +441,7 @@ import moment from 'moment';
                                 this.desplegable= 2; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fechaNovedad= moment().format('YYYY-MM-DD');
-                                this.listarNovedades();
+                                this.listarNovedades(1,'','fechaNovedad');
                                 break;
                             }
                         }
@@ -383,7 +452,7 @@ import moment from 'moment';
             }
         },
         mounted() {
-            this.listarNovedades(1,this.buscar,this.criterio);
+            this.listarNovedades(1,'','fechaNovedad');
             this.listarEmpleados();
         }
     }

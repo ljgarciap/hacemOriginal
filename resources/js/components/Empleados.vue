@@ -192,7 +192,7 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="Datos Contrato" icon="pan_tool" @click="colorx = '#4611DC'">
+                                <vs-tab label="Datos Vinculación" icon="pan_tool" @click="colorx = '#4611DC'">
 
                                     <div class="card-body">
                                         <div class="table-responsive">

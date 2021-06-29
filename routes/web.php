@@ -311,8 +311,16 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/vinculacion/selectpensiones", "Tb_vinculacionesController@selectPensiones");
         Route::get("/vinculacion/selectvinculacion", "Tb_vinculacionesController@selectvinculacion");
 
+        Route::get("/nomina", "Tb_nominaController@index");
+        Route::post("/nomina/store", "Tb_nominaController@store");
+        Route::put("/nomina/update", "Tb_nominaController@update");
+        Route::put("/nomina/deactivate", "Tb_nominaController@deactivate");
+        Route::put("/nomina/activate", "Tb_nominaController@activate");
+
         Route::get("/novedades", "Tb_novedadesController@index");
         Route::post("/novedades/store", "Tb_novedadesController@store");
+        Route::get("/novedades/salario", "Tb_novedadesController@selectSalario");
+        Route::get("/novedades/selectempleado", "Tb_novedadesController@selectEmpleado");
 
     });
     /*Route::get('noBorrar',function(){

@@ -147,7 +147,7 @@
                         <a class="nav-link" href="#"><i class="icon-book-open"></i> Novedades</a>
                     </li>
                     <li @click="menu=34" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Cierre nómina</a>
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Gestionar nómina</a>
                     </li>
                 </ul>
             </li>

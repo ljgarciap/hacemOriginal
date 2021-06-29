@@ -54,7 +54,8 @@ class Tb_novedadesController extends Controller
         ];
     }
     public function selectEmpleado(){
-        $empleados = Tb_empleado::where('tb_empleado.estado','=','1')
+        $empleados = Tb_vinculaciones::join("tb_empleado","tb_vinculaciones.idEmpleado","=","tb_empleado.id")
+        ->where('tb_vinculaciones.estado','=','1')
         ->select('tb_empleado.id as idEmpleado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
         ->orderBy('empleado','asc')->get();
 
@@ -67,10 +68,10 @@ class Tb_novedadesController extends Controller
 
         $fechaValidacion=$request->fechaNovedad;
 
-        if($request->concepto==1){
+        if($request->concepto<50){ //Margen de 50 conceptos para tipologia 1 -> Entradas
             $tipologia=1;
         }
-        else{
+        else{//Margen superior a 50 conceptos para tipologia 0 -> Deducciones
             $tipologia=0;
         }
 
@@ -96,4 +97,26 @@ class Tb_novedadesController extends Controller
         $tb_novedades->save();
     }
 
+    public function selectSalario(Request $request)//tipo sueldo
+    {
+
+        $idEmpleado=$request->identificador;
+        $tipoSal='';
+
+        $salarios = Tb_vinculaciones::first()
+        ->where('tb_vinculaciones.estado','=','1')
+        ->where('tb_vinculaciones.idEmpleado','=',$idEmpleado)
+        ->orderByDesc('tb_vinculaciones.id')
+        ->get();
+
+        foreach($salarios as $salario){
+            $tipoSal = $salario->tipoContrato;
+        }
+
+        //var_dump($salarios);
+
+        return [
+            'tiposalario' => $tipoSal
+        ];
+    }
 }
