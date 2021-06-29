@@ -110,13 +110,13 @@ class Tb_novedadesController extends Controller
         ->get();
 
         foreach($salarios as $salario){
-            $tipoSal = $salario->tipoContrato;
+            $tipoSal = $salario->tipoSalario;
         }
 
         //var_dump($salarios);
 
         return [
-            'tiposalario' => $tipoSal
+            'tipologiasalario' => $tipoSal
         ];
     }
 }

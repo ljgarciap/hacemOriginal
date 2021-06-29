@@ -141,8 +141,8 @@
                                         </div>
 
                                     </div>
-
-                                    <div v-if="tipoModal==1 && flag==1 && tiposalario==1" class="form-group row">
+                                <!-- -->
+                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==1" class="form-group row">
 
                                         <label class="col-md-3 form-control-label" for="text-input">Dias laborados</label>
                                         <div class="col-md-9">
@@ -152,7 +152,7 @@
 
                                     </div>
 
-                                    <div v-if="tipoModal==1 && flag==1 && tiposalario==2" class="form-group row">
+                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
 
                                         <label class="col-md-3 form-control-label" for="text-input">Valor Tarea</label>
                                         <div class="col-md-9">
@@ -162,7 +162,7 @@
 
                                     </div>
 
-                                    <div v-if="tipoModal==1 && concepto>2" class="form-group row">
+                                    <div v-if="tipoModal==1 && flag>2" class="form-group row">
 
                                         <label class="col-md-3 form-control-label" for="text-input">Valor</label>
                                         <div class="col-md-9">
@@ -171,8 +171,8 @@
                                         </div>
 
                                     </div>
-
-                                    <div v-if="tipoModal==1 && flag==1 && tiposalario==2" class="form-group row">
+                                <!-- -->
+                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
 
                                         <label class="col-md-3 form-control-label" for="text-input">Observación</label>
                                         <div class="col-md-9">
@@ -182,7 +182,7 @@
 
                                     </div>
 
-                                    <div v-if="tipoModal==1 && concepto>2" class="form-group row">
+                                    <div v-if="tipoModal==1 && flag>2" class="form-group row">
 
                                         <label class="col-md-3 form-control-label" for="text-input">Observación</label>
                                         <div class="col-md-9">
@@ -218,6 +218,8 @@ import moment from 'moment';
         data(){
             return{
                 id:'',
+                tipologiasalario:0,
+                observacion:'',
                 identificador:'',
                 idEmpleado:0,
                 fecha : '',
@@ -234,7 +236,6 @@ import moment from 'moment';
                 variable : '',
                 hoy : '',
                 tipologia : 0,
-                tiposalario : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
                 errorNovedad : 0,
@@ -289,17 +290,19 @@ import moment from 'moment';
             console.log(this.flag);
             },
             selectCaract(event) { //Busca el dato de la tipologia de sueldo
-            //console.log(event.target.value);
-            this.idEmp=event.target.value;
-                console.log('Id empleado select:');
-                console.log(this.idEmp);
-                var url='/novedades/salario?identificador=' + this.idEmp;
+                let me=this;
+                this.idEmpleado=event.target.value;
+                var url='/novedades/salario?identificador=' + this.idEmpleado;
+                console.log(url);
+                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
+                    // handle success
                 var respuesta=response.data;
-                this.tiposalario=respuesta.tiposalario;
-                //
-                console.log('Tipo de salario:');
-                console.log(this.tiposalario);
+                me.tipologiasalario=respuesta.tipologiasalario;
+                    //console.log(response);
+                    console.log("Tipo de salario");
+                    console.log(respuesta);
+                    console.log(me.tipologiasalario);
                 })
                 .catch(function (error) {
                     // handle error
@@ -316,8 +319,6 @@ import moment from 'moment';
                 me.arrayNovedades=respuesta.novedades.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
-                    console.log('Valor inicial Tipo de salario:');
-                    console.log(this.tiposalario);
                 })
                 .catch(function (error) {
                     // handle error
@@ -408,7 +409,7 @@ import moment from 'moment';
                 this.valor='';
                 this.tipologia='';
                 this.flag=0;
-                this.tiposalario=0;
+                this.tipologiasalario=0;
                 this.concepto=0;
                 this.errorNovedad=0;
                 this.errorMensaje=[];
