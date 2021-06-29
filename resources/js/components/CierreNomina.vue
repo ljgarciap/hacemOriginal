@@ -11,7 +11,7 @@
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Nómina &nbsp;
-                            <button type="button" @click="abrirModal('area','crear')" class="btn btn-secondary">
+                            <button type="button" @click="abrirModal('nomina','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
@@ -33,34 +33,34 @@
                                     <tr>
                                         <th>Opciones</th>
                                         <th>Id</th>
-                                        <th>Area</th>
+                                        <th>Fecha</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <tr v-for="area in arrayAreas" :key="area.id">
+                                    <tr v-for="nomina in arrayNomina" :key="nomina.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('area','actualizar',area)" class="btn btn-warning btn-sm">
+                                            <button type="button" @click="abrirModal('nomina','actualizar',nomina)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
 
-                                        <template v-if="area.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarArea(area.id)">
+                                        <template v-if="nomina.estado">
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarNomina(nomina.id)">
                                                 <i class="icon-trash"></i>
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarArea(area.id)">
+                                            <button type="button" class="btn btn-success btn-sm" @click="activarNomina(nomina.id)">
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
 
                                         </td>
-                                        <td v-text="area.id"></td>
-                                        <td v-text="area.area"></td>
+                                        <td v-text="nomina.id"></td>
+                                        <td v-text="nomina.fecha"></td>
                                         <td>
-                                            <div v-if="area.estado">
+                                            <div v-if="nomina.estado">
                                             <span class="badge badge-success">Activo</span>
                                             </div>
                                             <div v-else>
@@ -68,7 +68,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                             </div>
@@ -101,24 +100,21 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
+                                    <div v-if="tipoModal==1"  class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha Inicio</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="area" class="form-control" placeholder="Nombre de área">
-                                            <span class="help-block">(*) Ingrese el nombre del área</span>
+                                            <input type="datetime-local" v-model="fechaInicio" class="form-control" placeholder="Fecha de inicio">
+                                            <span class="help-block">(*) Ingrese la fecha de inicio</span>
                                         </div>
                                     </div>
-
-                                    <!--
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
+                                    <div v-if="tipoModal==2"  class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha Fin</label>
                                         <div class="col-md-9">
-                                            <input type="email" v-model="estado" class="form-control" placeholder="Enter Email">
+                                            <input type="datetime-local" v-model="fechaFin" class="form-control" placeholder="Fecha de Fin">
+                                            <span class="help-block">(*) Ingrese la fecha de fin</span>
                                         </div>
                                     </div>
-                                    -->
-
-                                    <div class="form-group row div-error" v-show="errorArea">
+                                    <div class="form-group row div-error" v-show="errorNomina">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
                                         </div>
@@ -126,10 +122,13 @@
 
                                 </form>
                             </div>
-                            <div class="modal-footer">
+                            <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearArea()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarArea()">Editar</button>
+                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearNomina()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==2" class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                            <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarNomina()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -144,15 +143,17 @@
     export default {
         data(){
             return{
-                idArea:0,
+                idNomina:0,
                 id:'',
-                area:'',
+                fechaInicio:'',
+                fechaFin:'',
                 estado:'',
-                arrayAreas : [],
+                arrayNomina : [],
                 modal : 0,
                 tituloModal : '',
+                tipoModal : 0,
                 tipoAccion : 0,
-                errorArea : 0,
+                errorNomina : 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -163,7 +164,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'area',
+                criterio : 'fecha',
                 buscar : ''
             }
         },
@@ -199,12 +200,12 @@
         methods : {
             listarNomina(page,buscar,criterio){
                 let me=this;
-                var url='/area?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/nomina?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
                 var respuesta=response.data;
-                me.arrayAreas=respuesta.areas.data;
+                me.arrayNomina=respuesta.nomina.data;
                 me.pagination=respuesta.pagination;
                     //console.log(response);
                 })
@@ -218,7 +219,7 @@
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarArea(page,buscar,criterio);
+                me.listarNomina(page,buscar,criterio);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -227,45 +228,37 @@
             forceRerender() {
                 this.componentKey += 1;
                },
-            crearArea(){
+            crearNomina(){
                 //valido con el metodo de validacion creado
-                if(this.validarArea()){
-                    return;
-                }
-
                 let me=this;
-                axios.post('/area/store',{
-                    'area': this.area
+                axios.post('/nomina/store',{
+                    'fechaInicio': this.fechaInicio
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarArea(1,'','area');
+                me.listarNomina(1,'','nomina');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            editarArea(){
-                if(this.validarArea()){
-                    return;
-                }
-
+            editarNomina(){
                 let me=this;
-                axios.put('/area/update',{
-                    'area': this.area,
-                    'id': this.idArea
+                axios.put('/nomina/update',{
+                    'id': this.idNomina,
+                     'fechaFin': this.fechaFin
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();
-                me.listarArea(1,'','area');
+                me.listarNomina(1,'','nomina');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            desactivarArea(id){
+            desactivarNomina(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -273,23 +266,22 @@
                 },
                 buttonsStyling: false
                 })
-
                 swalWithBootstrapButtons.fire({
                 title: 'Está seguro?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desactivar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/area/deactivate',{
+                    axios.put('/nomina/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarArea(1,'','area');
+                    me.listarNomina(1,'','nomina');
                     swalWithBootstrapButtons.fire(
-                    'Area desactivada!'
+                    'Nomina desactivada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -298,11 +290,11 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarArea();
+                    me.listarNomina();
                 }
                 })
             },
-            activarArea(id){
+            activarNomina(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -315,18 +307,18 @@
                 title: 'Quiere activar este registro?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Activar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/area/activate',{
+                    axios.put('/nomina/activate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarArea(1,'','area');
+                    me.listarNomina(1,'','nomina');
                     swalWithBootstrapButtons.fire(
-                    'Area activada!'
+                    'Nomina activada!'
                     )
                     }).catch(function (error) {
                         console.log(error);
@@ -335,47 +327,41 @@
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
-                    me.listarArea();
+                    me.listarNomina();
                 }
                 })
-            },
-            validarArea(){
-                this.errorArea=0;
-                this.errorMensaje=[];
-
-                if (!this.area) this.errorMensaje.push("El nombre del área no puede estar vacio");
-                if (this.errorMensaje.length) this.errorArea=1;
-
-                return this.errorArea;
             },
             cerrarModal(){
                 this.modal=0;
                 this.tituloModal='';
-                this.area='';
-                this.errorArea = 0,
+                this.fechaInicio='';
+                this.fechaFin='';
+                this.errorNomina = 0,
                 this.errorMensaje = [],
                 this.forceRerender();
             },
             abrirModal(modelo, accion, data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
-                case "area":
+                case "nomina":
                 {
                     switch (accion) {
                         case 'crear':{
                             this.modal=1;
-                            this.area='';
-                            this.tituloModal='Crear nueva área';
+                            this.fechaInicio='';
+                            this.tipoModal=1;
+                            this.tituloModal='Crear nueva nomina';
                             this.tipoAccion= 1;
                             break;
                         }
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tituloModal='Editar área';
+                            this.tituloModal='Editar nomina';
+                            this.tipoModal=2;
                             this.tipoAccion= 2;
-                            this.idArea=data['id'];
-                            this.area=data['area'];
+                            this.idNomina=data['id'];
+                            this.fechaFin=data['fechaFin'];
                             break;
                         }
                     }
@@ -384,7 +370,7 @@
             }
         },
         mounted() {
-            this.listarArea(1,this.buscar,this.criterio);
+            this.listarNomina(1,this.buscar,this.criterio);
         }
     }
 </script>
