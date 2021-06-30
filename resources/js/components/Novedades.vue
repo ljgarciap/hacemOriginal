@@ -41,6 +41,7 @@
                                         <th>Fecha novedad</th>
                                         <th>Concepto</th>
                                         <th>Valor</th>
+                                        <th>Observación</th>
                                         <th>Empleado</th>
                                     </tr>
                                 </thead>
@@ -48,8 +49,21 @@
 
                                     <tr v-for="novedad in arrayNovedades" :key="novedad.id">
                                         <td v-text="novedad.fechaNovedad"></td>
-                                        <td v-text="novedad.concepto"></td>
+
+                                        <td v-if="novedad.concepto==1">Ingreso por labor</td>
+                                        <td v-if="novedad.concepto==2">Horas extras y recargos</td>
+                                        <td v-if="novedad.concepto==3">Prima extralegal</td>
+                                        <td v-if="novedad.concepto==4">Bonificaciones</td>
+                                        <td v-if="novedad.concepto==5">Comisiones</td>
+                                        <td v-if="novedad.concepto==6">Viaticos</td>
+                                        <td v-if="novedad.concepto==7">Conceptos que no son factor salarial</td>
+                                        <td v-if="novedad.concepto==51">Sindicato</td>
+                                        <td v-if="novedad.concepto==52">Préstamos</td>
+                                        <td v-if="novedad.concepto==53">Embargos</td>
+                                        <td v-if="novedad.concepto==54">Descuento por libranza/otros</td>
+
                                         <td v-text="novedad.valor"></td>
+                                         <td v-text="novedad.observacion"></td>
                                         <td v-text="novedad.empleado"></td>
                                         <!--
                                         <td v-text="novedad.tipologia"></td>
@@ -344,13 +358,16 @@ import moment from 'moment';
                },
             crearNovedad(){
                 //valido con el metodo de validacion creado
-                console.log('Carga valores');
                 /*
+                console.log('Carga valores');
                 if(this.validarNovedad()){
                     console.log('Carga valores correcta');
                     return;
                 }
                 */
+                if (this.tipologiasalario==1){
+                    this.observacion="Dias laborados";
+                }
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 axios.post('/novedades/store',{
@@ -391,7 +408,7 @@ import moment from 'moment';
             ocultarDetalle(){
                 this.listado=0;
             },
-            validarnovedad(){
+            validarNovedad(){
                 this.errorNovedad=0;
                 this.errorMensaje=[];
 
@@ -408,6 +425,7 @@ import moment from 'moment';
                 this.mensajecantidad='';
                 this.valor='';
                 this.tipologia='';
+                this.observacion='';
                 this.flag=0;
                 this.tipologiasalario=0;
                 this.concepto=0;

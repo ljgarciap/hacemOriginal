@@ -16,7 +16,7 @@ class CreateTbNominaTable extends Migration
         Schema::create('tb_nomina', function (Blueprint $table) {
             $table->id();
             $table->date('fechaInicio');
-            $table->date('fechaFin');
+            $table->date('fechaFin')->nullable();
             $table->boolean('estado')->default(1);
         });
     }

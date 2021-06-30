@@ -15,7 +15,7 @@ class Tb_rolSeeder extends Seeder
         $data = json_decode(file_get_contents(__DIR__ . '/json/tb_roles.json'));
         foreach ($data as $item){
             Tb_rol::create(array(
-                //'id' => $item->IdRol,
+                'id' => $item->IdRol,
                 'rol' => $item->Rol,
             ));
             }

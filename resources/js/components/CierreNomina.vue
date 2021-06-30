@@ -103,14 +103,14 @@
                                     <div v-if="tipoModal==1"  class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Fecha Inicio</label>
                                         <div class="col-md-9">
-                                            <input type="datetime-local" v-model="fechaInicio" class="form-control" placeholder="Fecha de inicio">
+                                            <input type="date" v-model="fechaInicio" class="form-control" placeholder="Fecha de inicio">
                                             <span class="help-block">(*) Ingrese la fecha de inicio</span>
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==2"  class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Fecha Fin</label>
                                         <div class="col-md-9">
-                                            <input type="datetime-local" v-model="fechaFin" class="form-control" placeholder="Fecha de Fin">
+                                            <input type="date" v-model="fechaFin" class="form-control" placeholder="Fecha de Fin">
                                             <span class="help-block">(*) Ingrese la fecha de fin</span>
                                         </div>
                                     </div>

@@ -228,23 +228,23 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Tipo Contrato</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="tipoContrato">
-                                                <option value="0" disabled>Seleccione un tipo de contrato</option>
-                                                <option value="1">Termino Fijo</option>
-                                                <option value="2">Termino Indefinido</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tipo Salario</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="tipoSalario" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione un tipo de salario</option>
                                                 <option value="1">Fijo</option>
                                                 <option value="2">Destajo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" v-if="flag==1">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo Contrato</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="tipoContrato">
+                                                <option value="0" disabled>Seleccione un tipo de contrato</option>
+                                                <option value="1">Termino Fijo</option>
+                                                <option value="2">Termino Indefinido</option>
                                             </select>
                                         </div>
                                     </div>
@@ -396,6 +396,7 @@
                this.salarioBasicoMensual = '';
             } else
             this.salarioBasicoMensual = 0;
+            this.tipoContrato = 0;
             },
             listarVinculacion(page,buscar,criterio){
                 let me=this;
