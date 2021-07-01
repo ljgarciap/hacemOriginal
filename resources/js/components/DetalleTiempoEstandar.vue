@@ -19,7 +19,7 @@
                                         <th>Factor Valoración</th>
                                         <th>Tiempo Normal</th>
                                         <th>Factor Pds</th>
-                                        <th>Tiempo Estandar</th>
+                                        <th>Tiempo Estandar en Min</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -10,7 +10,7 @@
                         <th>Esfuerzo Fisico</th>
                         <th>Suplementarios</th>
                         <th>Personales</th>
-                        <th>Valor Espera</th>
+                        <th>Valor Espera en Sg</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,7 +37,7 @@
                     </select>
                     </td>
                     <td>
-                    <input type="number" id="valorEspera" v-model="valorEspera" class="form-control" placeholder="Valor Espera">
+                    <input type="number" id="valorEspera" v-model="valorEspera" class="form-control" placeholder="Valor Espera en Sg">
                     </td>
                     <input type="hidden" v-model="idTiempoEstandar" id="idTiempoEstandar">
                     </tr>

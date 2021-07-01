@@ -218,15 +218,16 @@ class Tb_detalle_tiempo_estandarController extends Controller
          $tb_pds->valorEspera=$request->valorEspera;
          $tb_pds->idTiempoEstandar=$request->idTiempoEstandar;
          $tb_pds->save();
-         
+
+         $tiempo_estandar= Tb_tiempo_estandar::find($request->idTiempoEstandar);
+         $valorEspera=intval(($request->valorEspera/$tiempo_estandar->tiempoElemental)*100);
          $esperap = Tb_espera::select('tb_espera.id')
-         ->where('rangoMin', '<=', $request->valorEspera)
-         ->where('rangoMax', '>=', $request->valorEspera)
+         ->where('rangoMin', '<=', $valorEspera)
+         ->where('rangoMax', '>=', $valorEspera)
          ->first();
          $tb_pds->idEspera=$esperap->id;   
          $tb_pds->save();
 
-         $tiempo_estandar= Tb_tiempo_estandar::find($request->idTiempoEstandar);
          $valor=$tiempo_estandar->tiempoPiezas*$tiempo_estandar->factorValoracion;
          if ($valor>16) {
              $valor=16;
@@ -238,6 +239,7 @@ class Tb_detalle_tiempo_estandarController extends Controller
          $tb_pds->idMonotonia=$monotonia->id;   
          $tb_pds->save();
           
+         //tiempo espera/tiempo ciclos= *100
 
          $esfuerzom=Tb_esfuerzo_mental::findOrFail($request->idEsfuerzoMental);
          $esfuerzof=Tb_esfuerzo_fisico::findOrFail($request->idEsfuerzoFisico);
