@@ -175,7 +175,43 @@
                                         </div>
 
                                     </div>
+<!--Inicio bloque extras-->
+                                    <div v-if="tipoModal==1 && flag==2 && tipologiasalario==1" class="form-group row">
 
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo de Horas Extras</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="extras" @change='extras($event)'>
+                                                <option value="0" disabled>Seleccione tipo de hora extra</option>
+                                                <option value="1">Extra Diurna</option>
+                                                <option value="2">Extra Nocturna</option>
+                                                <option value="3">Extra Dominical o Festiva</option>
+                                                <option value="4">Extra Dominical o Festiva Diurna</option>
+                                                <option value="5">Extra Dominical o Festiva Nocturna</option>
+                                                <option value="6">Recargos</option>
+                                            </select>
+                                            <span class="help-block">(*) Tipo de horas extras</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && flag==2 && tipologiasalario==1" class="form-group row">
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad de Horas Extras</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="extras" class="form-control" placeholder="Extras">
+                                            <span class="help-block">(*) Cantidad de horas extras</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && flag==2 && tipologiasalario==2" class="form-group row">
+
+                                        <label class="col-md-12 form-control-label">
+                                            <center><h5>No se pueden asignar extras a un trabajo por destajo</h5></center>
+                                        </label>
+
+                                    </div>
+<!--Fin bloque extras-->
                                     <div v-if="tipoModal==1 && flag>2" class="form-group row">
 
                                         <label class="col-md-3 form-control-label" for="text-input">Valor</label>
@@ -236,6 +272,7 @@ import moment from 'moment';
                 observacion:'',
                 identificador:'',
                 idEmpleado:0,
+                extras:0,
                 fecha : '',
                 flag : 0,
                 concepto : 0,
@@ -305,7 +342,8 @@ import moment from 'moment';
             },
             selectCaract(event) { //Busca el dato de la tipologia de sueldo
                 let me=this;
-                this.idEmpleado=event.target.value;
+                me.idEmpleado=event.target.value;
+
                 var url='/novedades/salario?identificador=' + this.idEmpleado;
                 console.log(url);
                 // Make a request for a user with a given ID
@@ -315,8 +353,11 @@ import moment from 'moment';
                 me.tipologiasalario=respuesta.tipologiasalario;
                     //console.log(response);
                     console.log("Tipo de salario");
-                    console.log(respuesta);
+                    console.log(me.flag);
                     console.log(me.tipologiasalario);
+                    if ((me.flag==1) && (me.tipologiasalario==1)) {
+                        me.observacion="Dias laborados";
+                        }
                 })
                 .catch(function (error) {
                     // handle error
@@ -365,9 +406,6 @@ import moment from 'moment';
                     return;
                 }
                 */
-                if (this.tipologiasalario==1){
-                    this.observacion="Dias laborados";
-                }
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 axios.post('/novedades/store',{

@@ -74,6 +74,7 @@ Vue.component('cif', require('./components/Cif.vue').default);
 Vue.component('clientes', require('./components/Clientes.vue').default);
 Vue.component('colecciones', require('./components/Colecciones.vue').default);
 Vue.component('conceptos', require('./components/Conceptos.vue').default);
+Vue.component('configuracion', require('./components/Configuracion.vue').default);
 Vue.component('cotizacion', require('./components/Cotizacion.vue').default);
 Vue.component('detallecotizacion', require('./components/DetalleCotizacion.vue').default);
 Vue.component('detallekardexalmacen', require('./components/DetalleKardexAlmacen.vue').default);
