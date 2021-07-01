@@ -6,8 +6,6 @@
                     <li class="breadcrumb-item active">Variables de Configuración</li>
                 </ol>
 
-                    <!-- Ejemplo de tabla Listado -->
-
                     <!-- Detalle -->
                     <template>
                         <div class="container-fluid">
@@ -18,7 +16,7 @@
                                 <vs-tab label="Variables Globales" icon="open_with" @click="colorx = '#CB3234'">
 
                                     <div class="card-body">
-
+                                        <financieras></financieras>
                                     </div>
 
                                 </vs-tab>
@@ -26,7 +24,7 @@
                                 <vs-tab label="Variables Empleado" icon="account_balance" @click="colorx = '#F84E13'">
 
                                     <div class="card-body">
-
+                                        <globales></globales>
                                     </div>
 
                                 </vs-tab>
@@ -52,7 +50,13 @@
 </template>
 
 <script>
+    import Financieras from './Financieras.vue';
+    import Globales from './Globales.vue';
     export default {
+        components: {
+            Financieras,
+            Globales
+        },
         data(){
             return{
                 colorx:'#8B0000',

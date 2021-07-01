@@ -83,6 +83,7 @@ Vue.component('detallekardexproduccion', require('./components/DetalleKardexProd
 Vue.component('empleados', require('./components/Empleados.vue').default);
 Vue.component('empresa', require('./components/Empresa.vue').default);
 Vue.component('financieras', require('./components/Financieras.vue').default);
+Vue.component('globales', require('./components/Globales.vue').default);
 Vue.component('gestionmaterias', require('./components/GestionMaterias.vue').default);
 Vue.component('hojadecostos', require('./components/HojaDeCostos.vue').default);
 Vue.component('hojadecostosdetalle', require('./components/HojaDeCostosDetalle.vue').default);

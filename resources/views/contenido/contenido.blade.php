@@ -70,7 +70,7 @@
     </template>
 
     <template v-if="menu==17">
-        <financieras></financieras>
+        <configuracion></configuracion>
     </template>
 
     <template v-if="menu==18">
