@@ -20,8 +20,8 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="unidadBase">Unidad</option>
                                         <option value="id">Id</option>
+                                        <option value="unidadBase">Unidad</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarUnidad(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarUnidad(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -39,7 +39,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     <tr v-for="unidad in arrayUnidades" :key="unidad.id">
                                         <td>
                                             <button type="button" @click="abrirModal('unidadBase','actualizar',unidad)" class="btn btn-warning btn-sm">
@@ -56,7 +55,6 @@
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
-
                                         </td>
                                         <td v-text="unidad.id"></td>
                                         <td v-text="unidad.unidadBase"></td>
@@ -69,7 +67,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                             </div>
@@ -155,7 +152,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'unidadBase',
+                criterio : 'id',
                 buscar : ''
             }
         },
@@ -165,7 +162,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -184,7 +181,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -192,13 +188,10 @@
             listarUnidad(page,buscar,criterio){
                 let me=this;
                 var url='/unidad?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
                 me.arrayUnidades=respuesta.unidades.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
@@ -219,12 +212,18 @@
             forceRerender() {
                 this.componentKey += 1;
                },
+            cambiarPagina(page,buscar,criterio){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.listarUnidad(page,buscar,criterio);
+            },
             crearUnidad(){
                 //valido con el metodo de validacion creado
                 if(this.validarUnidad()){
                     return;
                 }
-
                 let me=this;
                 axios.post('/unidad/store',{
                     'unidadBase': this.unidadBase
@@ -257,7 +256,7 @@
                     console.log(error);
                 });
             },
-            desactivarUnidad(id){
+             desactivarUnidad(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -270,8 +269,8 @@
                 title: 'Está seguro?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desactivar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
@@ -279,7 +278,7 @@
                     axios.put('/unidad/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarUnidad(1,'','unidadBase');//verif
+                    me.listarUnidad(1,'','unidadBase');
                     swalWithBootstrapButtons.fire(
                     'Unidad desactivada!'
                     )
@@ -307,8 +306,8 @@
                 title: 'Quiere activar esta unidad?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Activar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {

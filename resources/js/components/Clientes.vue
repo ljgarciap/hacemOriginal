@@ -1,5 +1,5 @@
 <template>
-        <main class="main">
+       <main class="main">
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
@@ -66,7 +66,6 @@
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
-
                                         </td>
                                         <td v-text="cliente.id"></td>
                                         <td v-text="cliente.documento"></td>
@@ -214,7 +213,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -233,7 +232,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -241,13 +239,10 @@
             listarCliente(page,buscar,criterio){
                 let me=this;
                 var url='/cliente?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
                 me.arrayClientes=respuesta.clientes.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
@@ -261,13 +256,20 @@
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarCliente(page,buscar,criterio);
             },
-             indexChange: function(args) {
+            indexChange: function(args) {
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)
                 },
             forceRerender() {
                 this.componentKey += 1;
                },
+            cambiarPagina(page,buscar,criterio){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.listarCliente(page,buscar,criterio);
+            },
             crearCliente(){
                 //valido con el metodo de validacion creado
                 if(this.validarCliente()){
@@ -312,7 +314,7 @@
                     console.log(error);
                 });
             },
-            desactivarCliente(id){
+             desactivarCliente(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -325,8 +327,8 @@
                 title: 'Está seguro?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desactivar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
@@ -359,11 +361,11 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este cliente?',
+                title: 'Quiere activar este Cliente?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Activar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {

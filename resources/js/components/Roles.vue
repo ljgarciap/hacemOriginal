@@ -20,8 +20,8 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="id">Id</option>    
                                         <option value="rol">Rol</option>
-                                        <option value="id">Id</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarRol(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarRol(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -164,7 +164,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'rol',
+                criterio : 'id',
                 buscar : ''
             }
         },
@@ -174,7 +174,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -193,7 +193,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -201,13 +200,10 @@
             listarRol(page,buscar,criterio){
                 let me=this;
                 var url='/rol?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
                 me.arrayRoles=respuesta.roles.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
@@ -228,7 +224,14 @@
             forceRerender() {
                 this.componentKey += 1;
                },
-            crearRol(){
+            cambiarPagina(page,buscar,criterio){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.listarRol(page,buscar,criterio);
+            },
+             crearRol(){
                 //valido con el metodo de validacion creado
                 if(this.validarRol()){
                     return;
@@ -266,7 +269,7 @@
                     console.log(error);
                 });
             },
-            desactivarRol(id){
+             desactivarRol(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -279,8 +282,8 @@
                 title: 'Está seguro?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desactivar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
@@ -313,11 +316,11 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este registro?',
+                title: 'Quiere activar este Rol?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Activar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
@@ -340,7 +343,7 @@
                 }
                 })
             },
-            validarRol(){
+           validarRol(){
                 this.errorRol=0;
                 this.errorMensaje=[];
 

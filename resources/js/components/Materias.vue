@@ -20,8 +20,8 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="id">Id</option>    
                                         <option value="tipoMateria">Materia</option>
-                                        <option value="id">Id</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarMateria(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarMateria(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -39,7 +39,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     <tr v-for="materia in arrayMaterias" :key="materia.id">
                                         <td>
                                             <button type="button" @click="abrirModal('tipoMateria','actualizar',materia)" class="btn btn-warning btn-sm">
@@ -56,7 +55,6 @@
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
-
                                         </td>
                                         <td v-text="materia.id"></td>
                                         <td v-text="materia.tipoMateria"></td>
@@ -69,7 +67,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                             </div>
@@ -155,7 +152,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'tipoMateria',
+                criterio : 'id',
                 buscar : ''
             }
         },
@@ -165,7 +162,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -184,7 +181,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -192,13 +188,10 @@
             listarMateria(page,buscar,criterio){
                 let me=this;
                 var url='/materia?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
                 me.arrayMaterias=respuesta.materias.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
@@ -219,6 +212,13 @@
             forceRerender() {
                 this.componentKey += 1;
                },
+            cambiarPagina(page,buscar,criterio){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.listarMateria(page,buscar,criterio);
+            },
             crearMateria(){
                 //valido con el metodo de validacion creado
                 if(this.validarMateria()){
@@ -253,7 +253,7 @@
                     console.log(error);
                 });
             },
-            desactivarMateria(id){
+             desactivarMateria(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -266,8 +266,8 @@
                 title: 'Está seguro?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desactivar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
@@ -275,7 +275,7 @@
                     axios.put('/materia/deactivate',{
                         'id': id
                     }).then(function (response) {
-                    me.listarMateria(1,'','tipoMateria');//verif
+                    me.listarMateria(1,'','tipoMateria');
                     swalWithBootstrapButtons.fire(
                     'Materia desactivada!'
                     )
@@ -300,11 +300,11 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                title: 'Quiere activar esta materia?',
+                title: 'Quiere activar esta Materia?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Activar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
@@ -327,7 +327,7 @@
                 }
                 })
             },
-            validarMateria(){
+           validarMateria(){
                 this.errorMateria=0;
                 this.errorMensaje=[];
 

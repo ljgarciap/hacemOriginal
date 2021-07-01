@@ -20,8 +20,8 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="area">Area</option>
                                         <option value="id">Id</option>
+                                        <option value="area">Area</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarArea(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarArea(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -56,7 +56,6 @@
                                                 <i class="icon-check"></i>
                                             </button>
                                         </template>
-
                                         </td>
                                         <td v-text="area.id"></td>
                                         <td v-text="area.area"></td>
@@ -69,7 +68,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                             </div>
@@ -109,16 +107,6 @@
                                             <span class="help-block">(*) Ingrese el nombre del área</span>
                                         </div>
                                     </div>
-
-                                    <!--
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Descripción</label>
-                                        <div class="col-md-9">
-                                            <input type="email" v-model="estado" class="form-control" placeholder="Enter Email">
-                                        </div>
-                                    </div>
-                                    -->
-
                                     <div class="form-group row div-error" v-show="errorArea">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
@@ -164,7 +152,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'area',
+                criterio : 'id',
                 buscar : ''
             }
         },
@@ -174,7 +162,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -193,7 +181,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -201,13 +188,10 @@
             listarArea(page,buscar,criterio){
                 let me=this;
                 var url='/area?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
-                    // handle success
                 var respuesta=response.data;
                 me.arrayAreas=respuesta.areas.data;
                 me.pagination=respuesta.pagination;
-                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
@@ -228,12 +212,18 @@
             forceRerender() {
                 this.componentKey += 1;
                },
+            cambiarPagina(page,buscar,criterio){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.listarArea(page,buscar,criterio);
+            },
             crearArea(){
                 //valido con el metodo de validacion creado
                 if(this.validarArea()){
                     return;
                 }
-
                 let me=this;
                 axios.post('/area/store',{
                     'area': this.area
@@ -266,7 +256,7 @@
                     console.log(error);
                 });
             },
-            desactivarArea(id){
+             desactivarArea(id){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -279,8 +269,8 @@
                 title: 'Está seguro?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desactivar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
@@ -313,11 +303,11 @@
                 })
 
                 swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este registro?',
+                title: 'Quiere activar esta areá?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Activar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
                 }).then((result) => {
                 if (result.value) {
