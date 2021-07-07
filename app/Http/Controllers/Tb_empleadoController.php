@@ -8,6 +8,7 @@ use App\Tb_area;
 use App\Tb_proceso;
 use App\Tb_empleado;
 use App\Tb_administradora_pensiones;
+use App\Tb_porcentaje_riesgo;
 use App\Tb_eps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -128,10 +129,11 @@ class Tb_empleadoController extends Controller
     public function vinculacionEmpleado(Request $request){
         $buscar= $request->id;
         $detalleempleados = Tb_empleado::join("tb_vinculaciones","tb_empleado.id","=","tb_vinculaciones.idEmpleado")
+        ->join("tb_porcentaje_riesgo","tb_vinculaciones.idNivelArl","=","tb_porcentaje_riesgo.id")
         ->where('tb_empleado.id','=',$buscar)
         ->where('tb_vinculaciones.estado','=','1')
         ->select('tb_empleado.id as id','tb_empleado.nombre','tb_empleado.apellido','tb_empleado.direccion','tb_vinculaciones.tipocontrato',
-        'tb_vinculaciones.tiposalario','tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio','tb_vinculaciones.idNivelArl')
+        'tb_vinculaciones.tiposalario','tb_vinculaciones.salarioBasicoMensual','tb_vinculaciones.fechainicio','tb_porcentaje_riesgo.nivel')
         ->orderBy('tb_empleado.id','asc')->get();
         return ['vinculacionempleados' => $detalleempleados];
     }

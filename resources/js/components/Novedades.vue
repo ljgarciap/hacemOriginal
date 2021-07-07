@@ -184,7 +184,7 @@
                                                 <option value="0" disabled>Seleccione tipo de hora extra</option>
                                                 <option value="1">Extra Diurna</option>
                                                 <option value="2">Extra Nocturna</option>
-                                                <option value="3">Extra Dominical o Festiva</option>
+                                                <option value="3">Hora Dominical o Festiva</option>
                                                 <option value="4">Extra Dominical o Festiva Diurna</option>
                                                 <option value="5">Extra Dominical o Festiva Nocturna</option>
                                                 <option value="6">Recargos</option>

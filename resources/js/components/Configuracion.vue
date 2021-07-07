@@ -13,15 +13,7 @@
 
                                 <vs-tabs :color="colorx">
 
-                                <vs-tab label="Variables Globales" icon="open_with" @click="colorx = '#CB3234'">
-
-                                    <div class="card-body">
-                                        <financieras></financieras>
-                                    </div>
-
-                                </vs-tab>
-
-                                <vs-tab label="Variables Empleado" icon="account_balance" @click="colorx = '#F84E13'">
+                                <vs-tab label="Configuración Básica" icon="open_with" @click="colorx = '#CB3234'">
 
                                     <div class="card-body">
                                         <globales></globales>
@@ -29,10 +21,18 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="Variables Adicionales" icon="pan_tool" @click="colorx = '#4611DC'">
+                                <vs-tab label="Variables Globales" icon="account_balance" @click="colorx = '#F84E13'">
 
                                     <div class="card-body">
+                                         <financieras></financieras>
+                                    </div>
 
+                                </vs-tab>
+
+                                <vs-tab label="Factores de Nómina" icon="pan_tool" @click="colorx = '#4611DC'">
+
+                                    <div class="card-body">
+                                         <factores></factores>
                                     </div>
 
                                 </vs-tab>

@@ -14,9 +14,14 @@ class Tb_niveles_riesgoSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('tb_niveles_riesgo')->insert([
-            'nivelArl' => '1',
-            'porcentajeNivelArl' => '0.1'
-        ]);
+        $data = json_decode(file_get_contents(__DIR__ . '/json/tb_niveles_riesgo.json'));
+        foreach ($data as $item){
+            Tb_niveles_riesgo::create(array(
+                //'id' => $item->IdRol,
+                'nivelArl' => $item->nivel,
+                'porcentajeNivelArl' => $item->porcentaje
+            ));
+        }
+
     }
 }

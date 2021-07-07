@@ -213,7 +213,7 @@
                                                         <td v-else-if="vinculacionempleado.tipocontrato==2">Término indefinido</td>
                                                         <td v-if="vinculacionempleado.tiposalario">Sueldo fijo</td>
                                                         <td v-else-if="vinculacionempleado.tiposalario==2">Destajo</td>
-                                                        <td v-text="vinculacionempleado.idNivelArl"></td>
+                                                        <td v-text="vinculacionempleado.nivel"></td>
                                                         <td v-text="vinculacionempleado.salarioBasicoMensual"></td>
                                                         <td v-text="vinculacionempleado.fechainicio"></td>
                                                     </tr>

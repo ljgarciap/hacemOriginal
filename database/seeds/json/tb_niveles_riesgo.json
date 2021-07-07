@@ -1,0 +1,7 @@
+[
+    {"id":"1","nivel":"Riesgo_I","porcentaje":"0.00522"},
+    {"id":"2","nivel":"Riesgo_II","porcentaje":"0.01044"},
+    {"id":"3","nivel":"Riesgo_III","porcentaje":"0.02436"},
+    {"id":"4","nivel":"Riesgo_IV","porcentaje":"0.04350"},
+    {"id":"5","nivel":"Riesgo_V","porcentaje":"0.06960"}
+]
