@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTbMultiplicadorHorasExtrasTable extends Migration
+class CreateTbPorcentajeRiesgoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateTbMultiplicadorHorasExtrasTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_multiplicador_horas_extras', function (Blueprint $table) {
+        Schema::create('tb_porcentaje_riesgo', function (Blueprint $table) {
             $table->id();
-            $table->string('tipoExtra',255);
-            $table->float('porcentajeExtra',10,2);
+            $table->string('nivel',255);
+            $table->float('porcentaje',8,5); 
+            //$table->timestamps();
         });
     }
 
@@ -27,6 +28,6 @@ class CreateTbMultiplicadorHorasExtrasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_multiplicador_horas_extras');
+        Schema::dropIfExists('tb_porcentaje_riesgo');
     }
 }

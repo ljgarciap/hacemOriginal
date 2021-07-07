@@ -138,13 +138,31 @@ class DatabaseSeeder extends Seeder
         $this->call(Tb_niveles_riesgoSeeder::class);
 //-------------------------------------------------------------------//
 //-------------------------------------------------------------------//
-       //primero vacia la tabla y luego la llena ojo
-       $this->truncateTables([
-        'tb_empleado'
-    ]);
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_empleado'
+        ]);
 
-    //funcion principal que llama cada seeder
-    $this->call(Tb_empleadoSeeder::class);
+        //funcion principal que llama cada seeder
+        $this->call(Tb_empleadoSeeder::class);
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_porcentaje_riesgo'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_porcentaje_riesgoSeeder::class);
+//-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_riesgo_adicionals'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_riesgo_adicionalSeeder::class);
 //-------------------------------------------------------------------//
 //----------------------------------------------------------------------------------------------//
 

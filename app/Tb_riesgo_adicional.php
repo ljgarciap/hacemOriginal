@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tb_riesgo_adicional extends Model
 {
     //
-    protected $fillable = ['sueldoMaximo','porcentajeAdicional'];
+    protected $fillable = ['rangoSalarioMin','rangoSalarioMax','porcentajeAdicional'];
 
     public $timestamps = false;
 }

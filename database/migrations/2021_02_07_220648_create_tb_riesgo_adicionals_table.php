@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTbRiesgoAdicionalTable extends Migration
+class CreateTbRiesgoAdicionalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateTbRiesgoAdicionalTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_riesgo_adicional', function (Blueprint $table) {
+        Schema::create('tb_riesgo_adicionals', function (Blueprint $table) {
             $table->id();
-            $table->integer('sueldoMaximo');
-            $table->float('porcentajeAdicional',10,2);
+            $table->float('rangoSalarioMin',8, 6);
+            $table->float('rangoSalarioMax',8, 2);
+            $table->float('porcentajeAdicional',8, 4);
+            //$table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ class CreateTbRiesgoAdicionalTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_riesgo_adicional');
+        Schema::dropIfExists('tb_riesgo_adicionals');
     }
 }
