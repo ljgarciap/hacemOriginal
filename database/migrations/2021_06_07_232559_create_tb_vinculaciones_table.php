@@ -19,6 +19,7 @@ class CreateTbVinculacionesTable extends Migration
             $table->integer('tipoSalario')->default(1);
             $table->integer('salarioBasicoMensual');
             $table->date('fechaInicio');
+            $table->integer('tiempoContrato');
             $table->date('fechaFin')->default('1900-01-01');
             $table->foreignId('idEmpleado')->constrained('tb_empleado');
             $table->foreignId('idNivelArl')->constrained('tb_niveles_riesgo');

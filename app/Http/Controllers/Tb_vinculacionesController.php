@@ -24,7 +24,7 @@ class Tb_vinculacionesController extends Controller
             ->join("tb_eps","tb_empleado.idEps","=","tb_eps.id")
             ->join("tb_administradora_pensiones","tb_empleado.idPensiones","=","tb_administradora_pensiones.id")
             ->select('tb_vinculaciones.id','tb_vinculaciones.tipoContrato','tb_vinculaciones.tipoSalario','tb_vinculaciones.salarioBasicoMensual',
-            'tb_vinculaciones.fechaInicio','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
+            'tb_vinculaciones.fechaInicio','tb_vinculaciones.tiempoContrato','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
             'tb_empleado.idEps','tb_empleado.idPensiones','tb_vinculaciones.estado','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones',
             DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_vinculaciones.id','desc')
@@ -35,7 +35,7 @@ class Tb_vinculacionesController extends Controller
             ->join("tb_eps","tb_empleado.idEps","=","tb_eps.id")
             ->join("tb_administradora_pensiones","tb_empleado.idPensiones","=","tb_administradora_pensiones.id")
             ->select('tb_vinculaciones.id','tb_vinculaciones.tipoContrato','tb_vinculaciones.tipoSalario','tb_vinculaciones.salarioBasicoMensual',
-            'tb_vinculaciones.fechaInicio','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
+            'tb_vinculaciones.fechaInicio','tb_vinculaciones.tiempoContrato','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
             'tb_empleado.idEps','tb_empleado.idPensiones','tb_vinculaciones.estado','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones',
             DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->where('tb_vinculaciones.estado','=','1')
@@ -66,7 +66,7 @@ class Tb_vinculacionesController extends Controller
             ->join("tb_eps","tb_empleado.idEps","=","tb_eps.id")
             ->join("tb_administradora_pensiones","tb_empleado.idPensiones","=","tb_administradora_pensiones.id")
             ->select('tb_vinculaciones.id','tb_vinculaciones.tipoContrato','tb_vinculaciones.tipoSalario','tb_vinculaciones.salarioBasicoMensual',
-            'tb_vinculaciones.fechaInicio','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
+            'tb_vinculaciones.fechaInicio','tb_vinculaciones.tiempoContrato','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
             'tb_empleado.idEps','tb_empleado.idPensiones','tb_vinculaciones.estado','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones',
             DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_vinculaciones.id','desc')
@@ -77,7 +77,7 @@ class Tb_vinculacionesController extends Controller
             ->join("tb_eps","tb_empleado.idEps","=","tb_eps.id")
             ->join("tb_administradora_pensiones","tb_empleado.idPensiones","=","tb_administradora_pensiones.id")
             ->select('tb_vinculaciones.id','tb_vinculaciones.tipoContrato','tb_vinculaciones.tipoSalario','tb_vinculaciones.salarioBasicoMensual',
-            'tb_vinculaciones.fechaInicio','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
+            'tb_vinculaciones.fechaInicio','tb_vinculaciones.tiempoContrato','tb_vinculaciones.fechaFin','tb_vinculaciones.idEmpleado','tb_vinculaciones.idNivelArl',
             'tb_empleado.idEps','tb_empleado.idPensiones','tb_vinculaciones.estado','tb_eps.nombreEps','tb_administradora_pensiones.nombrePensiones',
             DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->where('tb_vinculaciones.estado','=','0')
@@ -105,6 +105,7 @@ class Tb_vinculacionesController extends Controller
         $tb_vinculaciones->tipoSalario=$request->tipoSalario;
         $tb_vinculaciones->salarioBasicoMensual=$request->salarioBasicoMensual;
         $tb_vinculaciones->fechaInicio=$request->fechaInicio;
+        $tb_vinculaciones->tiempoContrato=$request->tiempoContrato;
         $tb_vinculaciones->idEmpleado=$request->idEmpleado;
         $tb_vinculaciones->idNivelArl=$request->idNivelArl;
         $tb_vinculaciones->save();
@@ -118,6 +119,7 @@ class Tb_vinculacionesController extends Controller
         $tb_vinculaciones->tipoSalario=$request->tipoSalario;
         $tb_vinculaciones->salarioBasicoMensual=$request->salarioBasicoMensual;
         $tb_vinculaciones->fechaInicio=$request->fechaInicio;
+        $tb_vinculaciones->tiempoContrato=$request->tiempoContrato;
         $tb_vinculaciones->idEmpleado=$request->idEmpleado;
         $tb_vinculaciones->idNivelArl=$request->idNivelArl;
         $tb_vinculaciones->estado='1';

@@ -241,11 +241,19 @@
                                     <div class="form-group row" v-if="flag==1">
                                         <label class="col-md-3 form-control-label" for="text-input">Tipo Contrato</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="tipoContrato">
+                                            <select class="form-control" v-model="tipoContrato" @change='tiempoPago($event)'>
                                                 <option value="0" disabled>Seleccione un tipo de contrato</option>
                                                 <option value="1">Termino Fijo</option>
                                                 <option value="2">Termino Indefinido</option>
                                             </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" v-if="flag==1 && tiempo==1">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tiempo contrato</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="tiempoPago" class="form-control" placeholder="Ingrese el tiempo en dias">
+                                            <span class="help-block">(*) Ingrese el tiempo del contrato</span>
                                         </div>
                                     </div>
 
@@ -326,7 +334,9 @@
                 colorx: '#8B0000',
                 listado: 1,
                 flag: 0,
+                tiempo: 0,
                 tipoContrato:0,
+                tiempoContrato:0,
                 tipoSalario:0,
                 idNivelArl:0,
                 idEps:0,
@@ -398,6 +408,14 @@
             this.salarioBasicoMensual = 0;
             this.tipoContrato = 0;
             },
+            tiempoPago(event) {
+            //console.log(event.target.value);
+            this.tiempo=event.target.value;
+            if (this.tiempo == 1) {
+               this.tiempoContrato = '';
+            } else
+            this.tiempoContrato = 0;
+            },
             listarVinculacion(page,buscar,criterio){
                 let me=this;
                 var url='/vinculacion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
@@ -466,6 +484,7 @@
                     'tipoSalario': this.tipoSalario,
                     'salarioBasicoMensual': this.salarioBasicoMensual,
                     'fechaInicio': this.fechaInicio,
+                    'tipoContrato':this.tipoContrato,
                     'idNivelArl': this.idNivelArl,
                     'idEps': this.idEps,
                     'idPensiones': this.idPensiones
@@ -655,6 +674,7 @@
             cerrarModal(){
                 this.modal=0;
                 this.flag=0;
+                this.tiempo=0;
                 this.tipoContrato=0;
                 this.tipoSalario=0;
                 this.tituloModal='';
