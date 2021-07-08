@@ -327,6 +327,8 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/configuracion/update", "Tb_configuracion_basicaController@update");
         Route::post("/configuracion/actualizar", "Tb_configuracion_basicaController@actualizar");
         Route::get("/configuracion/tiponomina", "Tb_configuracion_basicaController@tipoNomina");
+        Route::get("/configuracion/cajacompensacion", "Tb_configuracion_basicaController@CajaCompensacion");
+        Route::get("/configuracion/arl", "Tb_configuracion_basicaController@Arl");
 
         Route::get("/factores", "Tb_factoresController@index");
         Route::post("/factores/store", "Tb_factoresController@store");

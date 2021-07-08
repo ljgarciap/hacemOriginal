@@ -18,7 +18,7 @@
                                             Extra Diurna
                                         </td>
                                         <td>
-                                            <input type="number" v-model="extraDiurna" class="form-control" placeholder="Extra Diurna">
+                                            <input type="number" v-model="extraDiurna"  step="0.01" class="form-control" placeholder="Extra Diurna">
                                         </td>
                                     </tr>
                                     <tr>
@@ -26,7 +26,7 @@
                                             Extra Nocturna
                                         </td>
                                         <td>
-                                            <input type="number" v-model="extraNocturna" class="form-control" placeholder="Extra Nocturna">
+                                            <input type="number" v-model="extraNocturna" step="0.01" class="form-control" placeholder="Extra Nocturna">
                                         </td>
                                     </tr>
                                     <tr>
@@ -42,7 +42,7 @@
                                             Festiva Diurna
                                         </td>
                                         <td>
-                                            <input type="number" v-model="festivaDiurna" class="form-control" placeholder="Festiva Diurna">
+                                            <input type="number" v-model="festivaDiurna" step="0.01" class="form-control" placeholder="Festiva Diurna">
                                         </td>
                                     </tr>
                                     <tr>
@@ -50,12 +50,13 @@
                                             Festiva Nocturna
                                         </td>
                                         <td>
-                                            <input type="number" v-model="festivaNocturna" class="form-control" placeholder="Festiva Nocturna">
+                                            <input type="number" v-model="festivaNocturna" step="0.01" class="form-control" placeholder="Festiva Nocturna">
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                                <button type="button" class="btn btn-primary" @click="actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna)">Actualizar</button>
+                                <button type="button" class="btn btn-success" @click="guardarDatos()">Guardar</button>
+                                <button v-if="id==1" type="button" class="btn btn-primary" @click="actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna)">Actualizar</button>
                             </form>
                             </div>
                         </div>
@@ -70,9 +71,15 @@
 
 <script>
     export default {
+         props: {
+            identificador: {
+            type: Number
+            }
+         },
         data(){
             return{
                 id : 1,
+                identificador:0,
                 extraDiurna : '',
                 extraNocturna : '',
                 horaDominical : '',
@@ -97,6 +104,23 @@
                     // handle error
                     console.log(error);
                 })
+            },
+            guardarDatos(){
+                //valido con el metodo de validacion creado
+                let me=this;
+                axios.post('/factores/store',{
+                    'nombre' : this.nombre,
+                    'extraDiurna' : this.extraDiurna,
+                    'extraNocturna' : this.extraNocturna,
+                    'horaDominical' : this.horaDominical,
+                    'festivaDiurna' : this.festivaDiurna,
+                    'festivaNocturna' : this.festivaNocturna
+                }).then(function (response) {
+                me.listarFactorNomina();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna){
                 let me=this;

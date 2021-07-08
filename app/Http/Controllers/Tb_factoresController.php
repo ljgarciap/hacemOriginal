@@ -30,6 +30,16 @@ class Tb_factoresController extends Controller
                 'festivaNocturna' => $festivaNocturna
                 ];
     }
+    public function store(Request $request)
+    {
+        $tb_factores_nomina=new Tb_factores_nomina();
+        $tb_factores_nomina->extraDiurna=$request->extraDiurna;
+        $tb_factores_nomina->extraNocturna=$request->extraNocturna;
+        $tb_factores_nomina->horaDominical=$request->horaDominical;
+        $tb_factores_nomina->festivaDiurna=$request->festivaDiurna;
+        $tb_factores_nomina->festivaNocturna=$request->festivaNocturna;
+        $tb_factores_nomina->save();
+    }
 
     public function update(Request $request)
     {
