@@ -6,7 +6,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Variables &nbsp;
+                            <i class="fa fa-align-justify"></i> Configuración Basica Empresa&nbsp;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -15,71 +15,75 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            Vacaciones
+                                            Nombre Empresa
                                         </td>
                                         <td>
-                                            <input type="number" v-model="vacaciones" step="0.01">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Prima
-                                        </td>
-                                        <td>
-                                            <input type="number" v-model="prima" step="0.01">
+                                            <input type="text" v-model="nombre" class="form-control" placeholder="Nombre Empresa">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Cesantías
+                                            Dirección Empresa
                                         </td>
                                         <td>
-                                            <input type="number" v-model="cesantias" step="0.01">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Intereses a las cesantías
-                                        </td>
-                                        <td>
-                                            <input type="number" v-model="intereses" step="0.01">
+                                            <input type="text" v-model="direccion" class="form-control" placeholder="Dirección Empresa">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Salud
+                                            Telefono Empresa
                                         </td>
                                         <td>
-                                            <input type="number" v-model="salud" step="0.01">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Pensión
-                                        </td>
-                                        <td>
-                                            <input type="number" v-model="pension" step="0.01">
+                                            <input type="number" v-model="telefono" step="0.01" class="form-control" placeholder="Telefono Empresa">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            ARL
+                                            Caja de Compensación Empresa
                                         </td>
                                         <td>
-                                            <input type="number" v-model="arl" step="0.01">
+                                        <select class="form-control" v-model="cajaCompensacion">
+                                        <option value="0" disabled>Seleccione la caja de compensación</option>
+                                        <option v-for="caja in arrayCajas" :key="caja.id" :value="caja.id" v-text="caja.cajaCompensacion">
+                                        </option>
+                                       </select>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Caja de compensación
+                                            Arl Empresa
                                         </td>
                                         <td>
-                                            <input type="number" v-model="caja" step="0.01">
+                                        <select class="form-control" v-model="arl">
+                                        <option value="0" disabled>Seleccione la arl</option>
+                                        <option v-for="arl in arrayArl" :key="arl.id" :value="arl.id" v-text="arl.nombreArl">
+                                        </option>
+                                       </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Nivel de Riesgo Empresa
+                                        </td>
+                                        <td>
+                                            <input type="number" v-model="nivelRiesgo" class="form-control" placeholder="Nivel de Riesgo Empresa">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tipo Nomina Empresa
+                                        </td>
+                                        <td>
+                                        <select class="form-control" v-model="idTipoNomina">
+                                        <option value="0" disabled>Seleccione el tipo de nomina</option>
+                                        <option v-for="tiponomina in arrayTipoNomina" :key="tiponomina.id" :value="tiponomina.id" v-text="tiponomina.tipoNomina">
+                                        </option>
+                                       </select>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                                <button type="button" class="btn btn-primary" @click="actualizarDatos(vacaciones,prima,cesantias,intereses,salud,pension,arl,caja)">Actualizar</button>
+                                <button type="button" class="btn btn-primary" @click="actualizarDatos(nombre,direccion,telefono,cajaCompensacion,arl,nivelRiesgo,idTipoNomina)">Actualizar</button>
                             </form>
                             </div>
                         </div>
@@ -97,51 +101,65 @@
         data(){
             return{
                 id : 1,
-                vacaciones : '',
-                prima : '',
-                cesantias : '',
-                intereses : '',
-                salud : '',
-                pension : '',
+                nombre : '',
+                direccion : '',
+                telefono : '',
+                cajaCompensacion : '',
                 arl : '',
-                caja : ''
+                nivelRiesgo : '',
+                idTipoNomina : '',
+                arrayTipoNomina:[],
+                tipoNomina:''
             }
         },
         methods : {
-            listarVariables(){
+            listarConfiguracionBasica(){
                 let me=this;
-                var url='/financiera';
+                var url='/configuracion';
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.vacaciones=respuesta.vacaciones;
-                me.prima=respuesta.prima;
-                me.cesantias=respuesta.cesantias;
-                me.intereses=respuesta.intereses;
-                me.salud=respuesta.salud;
-                me.pension=respuesta.pension;
+                me.nombre=respuesta.nombre;
+                me.direccion=respuesta.direccion;
+                me.telefono=respuesta.telefono;
+                me.cajaCompensacion=respuesta.cajaCompensacion;
                 me.arl=respuesta.arl;
-                me.caja=respuesta.caja;
+                me.nivelRiesgo=respuesta.nivelRiesgo;
+                me.idTipoNomina=respuesta.idTipoNomina;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
-            actualizarDatos(vacaciones,prima,cesantias,intereses,salud,pension,arl,caja){
+            listarTipoNomina(){
                 let me=this;
-                axios.post('/financiera/actualizar',{
+                var url='/configuracion/tiponomina';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayTipoNomina=respuesta.tiponomina;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            actualizarDatos(nombre,direccion,telefono,cajaCompensacion,arl,nivelRiesgo){
+                let me=this;
+                axios.post('/configuracion/actualizar',{
                     'id': 1,
-                    'vacaciones' : this.vacaciones,
-                    'prima' : this.prima,
-                    'cesantias' : this.cesantias,
-                    'intereses' : this.intereses,
-                    'salud' : this.salud,
-                    'pension' : this.pension,
+                    'nombre' : this.nombre,
+                    'direccion' : this.direccion,
+                    'telefono' : this.telefono,
+                    'cajaCompensacion' : this.cajaCompensacion,
                     'arl' : this.arl,
-                    'caja' : this.caja
+                    'nivelRiesgo' : this.nivelRiesgo,
+                    'idTipoNomina' : this.idTipoNomina
                 }).then(function (response) {
-                me.listarVariables()
+                me.listarConfiguracionBasica()
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -149,7 +167,8 @@
             }
         },
         mounted() {
-            this.listarVariables()
+            this.listarConfiguracionBasica(),
+            this.listarTipoNomina();
         }
     }
 </script>

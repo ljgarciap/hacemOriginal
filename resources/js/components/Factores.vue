@@ -6,7 +6,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Variables &nbsp;
+                            <i class="fa fa-align-justify"></i> Factor Nomina &nbsp;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -15,71 +15,47 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            Vacaciones
+                                            Extra Diurna
                                         </td>
                                         <td>
-                                            <input type="number" v-model="vacaciones" step="0.01">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Prima
-                                        </td>
-                                        <td>
-                                            <input type="number" v-model="prima" step="0.01">
+                                            <input type="number" v-model="extraDiurna" class="form-control" placeholder="Extra Diurna">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Cesantías
+                                            Extra Nocturna
                                         </td>
                                         <td>
-                                            <input type="number" v-model="cesantias" step="0.01">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Intereses a las cesantías
-                                        </td>
-                                        <td>
-                                            <input type="number" v-model="intereses" step="0.01">
+                                            <input type="number" v-model="extraNocturna" class="form-control" placeholder="Extra Nocturna">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Salud
+                                            Hora Dominical
                                         </td>
                                         <td>
-                                            <input type="number" v-model="salud" step="0.01">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Pensión
-                                        </td>
-                                        <td>
-                                            <input type="number" v-model="pension" step="0.01">
+                                            <input type="number" v-model="horaDominical" step="0.01" class="form-control" placeholder="Hora Dominical">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            ARL
+                                            Festiva Diurna
                                         </td>
                                         <td>
-                                            <input type="number" v-model="arl" step="0.01">
+                                            <input type="number" v-model="festivaDiurna" class="form-control" placeholder="Festiva Diurna">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Caja de compensación
+                                            Festiva Nocturna
                                         </td>
                                         <td>
-                                            <input type="number" v-model="caja" step="0.01">
+                                            <input type="number" v-model="festivaNocturna" class="form-control" placeholder="Festiva Nocturna">
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                                <button type="button" class="btn btn-primary" @click="actualizarDatos(vacaciones,prima,cesantias,intereses,salud,pension,arl,caja)">Actualizar</button>
+                                <button type="button" class="btn btn-primary" @click="actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna)">Actualizar</button>
                             </form>
                             </div>
                         </div>
@@ -97,51 +73,42 @@
         data(){
             return{
                 id : 1,
-                vacaciones : '',
-                prima : '',
-                cesantias : '',
-                intereses : '',
-                salud : '',
-                pension : '',
-                arl : '',
-                caja : ''
+                extraDiurna : '',
+                extraNocturna : '',
+                horaDominical : '',
+                festivaDiurna : '',
+                festivaNocturna : ''
             }
         },
         methods : {
-            listarVariables(){
+            listarFactorNomina(){
                 let me=this;
-                var url='/financiera';
+                var url='/factores';
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.vacaciones=respuesta.vacaciones;
-                me.prima=respuesta.prima;
-                me.cesantias=respuesta.cesantias;
-                me.intereses=respuesta.intereses;
-                me.salud=respuesta.salud;
-                me.pension=respuesta.pension;
-                me.arl=respuesta.arl;
-                me.caja=respuesta.caja;
+                me.extraDiurna=respuesta.extraDiurna;
+                me.extraNocturna=respuesta.extraNocturna;
+                me.horaDominical=respuesta.horaDominical;
+                me.festivaDiurna=respuesta.festivaDiurna;
+                me.festivaNocturna=respuesta.festivaNocturna;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
-            actualizarDatos(vacaciones,prima,cesantias,intereses,salud,pension,arl,caja){
+            actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna){
                 let me=this;
-                axios.post('/financiera/actualizar',{
+                axios.post('/factores/actualizar',{
                     'id': 1,
-                    'vacaciones' : this.vacaciones,
-                    'prima' : this.prima,
-                    'cesantias' : this.cesantias,
-                    'intereses' : this.intereses,
-                    'salud' : this.salud,
-                    'pension' : this.pension,
-                    'arl' : this.arl,
-                    'caja' : this.caja
+                    'extraDiurna' : this.extraDiurna,
+                    'extraNocturna' : this.extraNocturna,
+                    'horaDominical' : this.horaDominical,
+                    'festivaDiurna' : this.festivaDiurna,
+                    'festivaNocturna' : this.festivaNocturna
                 }).then(function (response) {
-                me.listarVariables()
+                me.listarFactorNomina()
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -149,7 +116,7 @@
             }
         },
         mounted() {
-            this.listarVariables()
+            this.listarFactorNomina()
         }
     }
 </script>

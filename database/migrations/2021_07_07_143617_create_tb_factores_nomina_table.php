@@ -15,11 +15,11 @@ class CreateTbFactoresNominaTable extends Migration
     {
         Schema::create('tb_factores_nomina', function (Blueprint $table) {
             $table->id();
-            $table->string('extraDiurna',255);
-            $table->string('extraNocturna',255);
-            $table->float('horaDominical',8,3);
-            $table->string('festivaDiurna',255);
-            $table->string('festivaNocturna',255);
+            $table->float('extraDiurna',8,2);
+            $table->float('extraNocturna',8,2);
+            $table->float('horaDominical',8,2);
+            $table->float('festivaDiurna',8,2);
+            $table->float('festivaNocturna',8,2);
             //$table->timestamps();
         });
     }

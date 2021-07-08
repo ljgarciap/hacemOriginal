@@ -322,6 +322,17 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/novedades/salario", "Tb_novedadesController@selectSalario");
         Route::get("/novedades/selectempleado", "Tb_novedadesController@selectEmpleado");
 
+        Route::get("/configuracion", "Tb_configuracion_basicaController@index");
+        Route::post("/configuracion/store", "Tb_configuracion_basicaController@store");
+        Route::put("/configuracion/update", "Tb_configuracion_basicaController@update");
+        Route::post("/configuracion/actualizar", "Tb_configuracion_basicaController@actualizar");
+        Route::get("/configuracion/tiponomina", "Tb_configuracion_basicaController@tipoNomina");
+
+        Route::get("/factores", "Tb_factoresController@index");
+        Route::post("/factores/store", "Tb_factoresController@store");
+        Route::put("/factores/update", "Tb_factoresController@update");
+        Route::post("/factores/actualizar", "Tb_factoresController@actualizar");
+
     });
     /*Route::get('noBorrar',function(){
         $tiempos = DB::table('tb_ciclos')
