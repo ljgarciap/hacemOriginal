@@ -6,7 +6,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Configuración Basica Empresa&nbsp;
+                            <i class="fa fa-align-justify"></i> configuración Basica &nbsp;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -15,63 +15,55 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            Nombre Empresa
+                                            Nombre
                                         </td>
                                         <td>
-                                            <input type="text" v-model="nombre" class="form-control" placeholder="Nombre Empresa">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Dirección Empresa
-                                        </td>
-                                        <td>
-                                            <input type="text" v-model="direccion" class="form-control" placeholder="Dirección Empresa">
+                                            <input type="text" v-model="nombre" class="form-control" placeholder="Nombre">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Telefono Empresa
+                                            Dirección
                                         </td>
                                         <td>
-                                            <input type="number" v-model="telefono" step="0.01" class="form-control" placeholder="Telefono Empresa">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Caja de Compensación Empresa
-                                        </td>
-                                        <td>
-                                        <select class="form-control" v-model="cajaCompensacion">
-                                        <option value="0" disabled>Seleccione la caja de compensación</option>
-                                        <option v-for="caja in arrayCajas" :key="caja.id" :value="caja.id" v-text="caja.cajaCompensacion">
-                                        </option>
-                                       </select>
+                                            <input type="text" v-model="direccion" class="form-control" placeholder="Direccion">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Arl Empresa
+                                            Telefono
                                         </td>
                                         <td>
-                                        <select class="form-control" v-model="arl">
-                                        <option value="0" disabled>Seleccione la arl</option>
-                                        <option v-for="arl in arrayArl" :key="arl.id" :value="arl.id" v-text="arl.nombreArl">
-                                        </option>
-                                       </select>
+                                            <input type="number" v-model="telefono" step="0.01" class="form-control" placeholder="Telefono">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Nivel de Riesgo Empresa
+                                            Caja de Compensación
                                         </td>
                                         <td>
-                                            <input type="number" v-model="nivelRiesgo" class="form-control" placeholder="Nivel de Riesgo Empresa">
+                                            <input type="text" v-model="cajaCompensacion" class="form-control" placeholder="Caja de Compensación">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Tipo Nomina Empresa
+                                            Arl
+                                        </td>
+                                        <td>
+                                           <input type="text" v-model="arl" class="form-control" placeholder="Arl">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Nivel de Riesgo
+                                        </td>
+                                        <td>
+                                            <input type="number" v-model="nivelRiesgo" class="form-control" placeholder="Nivel de Riesgo">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tipo Nomina
                                         </td>
                                         <td>
                                         <select class="form-control" v-model="idTipoNomina">
