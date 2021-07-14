@@ -283,26 +283,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Eps</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idEps">
-                                                <option value="0" disabled>Seleccione una Eps</option>
-                                                <option v-for="eps in arrayEps" :key="eps.id" :value="eps.id" v-text="eps.nombreEps"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Pensiones</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idPensiones">
-                                                <option value="0" disabled>Seleccione un Fondo de Pensiones</option>
-                                                <option v-for="pension in arrayPensiones" :key="pension.id" :value="pension.id" v-text="pension.nombrePensiones"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-
                                     <div class="form-group row div-error" v-show="errorVinculacion">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
@@ -485,9 +465,8 @@
                     'salarioBasicoMensual': this.salarioBasicoMensual,
                     'fechaInicio': this.fechaInicio,
                     'tipoContrato':this.tipoContrato,
-                    'idNivelArl': this.idNivelArl,
-                    'idEps': this.idEps,
-                    'idPensiones': this.idPensiones
+                    'tiempoContrato':this.tiempoContrato,
+                    'idNivelArl': this.idNivelArl
                     //'estado': this.estado,
                     //'dato': this.dato
                 }).then(function (response) {

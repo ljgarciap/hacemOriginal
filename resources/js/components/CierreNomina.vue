@@ -100,6 +100,28 @@
                             </div>
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+
+                                    <div  class="form-group row">
+
+                                            <label v-if="tipoModal==1" class="col-md-3 form-control-label" for="text-input">TIpo de nómina</label>
+
+                                            <div v-if="tipoModal==1" class="col-md-3">
+                                                <input type="checkbox" true-value="1" false-value="0" v-model="liquidacion" checked>
+                                                <label for="liquidacion">Provisión Liquidación</label>
+                                            </div>
+
+                                            <div v-if="tipoModal==1" class="col-md-3">
+                                                <input type="checkbox" true-value="2" false-value="0" v-model="parafiscales" checked>
+                                                <label for="parafiscales">Seguridad Social</label>
+                                            </div>
+
+                                            <div v-if="tipoModal==1" class="col-md-3">
+                                                <input type="checkbox" true-value="3" false-value="0" v-model="parafiscales" checked>
+                                                <label for="parafiscales">Seguridad Social</label>
+                                            </div>
+
+                                        </div>
+
                                     <div v-if="tipoModal==1"  class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Fecha Inicio</label>
                                         <div class="col-md-9">

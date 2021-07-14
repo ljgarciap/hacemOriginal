@@ -20,6 +20,9 @@ class CreateTbFactoresNominaTable extends Migration
             $table->float('horaDominical',8,2);
             $table->float('festivaDiurna',8,2);
             $table->float('festivaNocturna',8,2);
+            $table->float('recargos',8,2);
+            $table->float('minimolegal',8,2);
+            $table->float('auxilio',8,2);
             //$table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ class Tb_factoresController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $factores = Tb_factores_nomina::where('id','=','1')
-        ->select('id','extraDiurna','extraNocturna','horaDominical','festivaDiurna','festivaNocturna')->get();
+        ->select('id','extraDiurna','extraNocturna','horaDominical','festivaDiurna','festivaNocturna','minimolegal','auxilio')->get();
 
         foreach($factores as $f){
             $extraDiurna = $f->extraDiurna;
@@ -21,13 +21,19 @@ class Tb_factoresController extends Controller
             $horaDominical = $f->horaDominical;
             $festivaDiurna = $f->festivaDiurna;
             $festivaNocturna = $f->festivaNocturna;
+            $recargos = $f->recargos;
+            $minimolegal = $f->minimolegal;
+            $auxilio = $f->auxilio;
         }
 
         return ['extraDiurna' => $extraDiurna,
                 'extraNocturna' => $extraNocturna,
                 'horaDominical' => $horaDominical,
                 'festivaDiurna' => $festivaDiurna,
-                'festivaNocturna' => $festivaNocturna
+                'festivaNocturna' => $festivaNocturna,
+                'recargos' => $recargos,
+                'minimolegal' => $minimolegal,
+                'auxilio' => $auxilio
                 ];
     }
     public function store(Request $request)
@@ -38,6 +44,9 @@ class Tb_factoresController extends Controller
         $tb_factores_nomina->horaDominical=$request->horaDominical;
         $tb_factores_nomina->festivaDiurna=$request->festivaDiurna;
         $tb_factores_nomina->festivaNocturna=$request->festivaNocturna;
+        $tb_factores_nomina->recargos=$request->recargos;
+        $tb_factores_nomina->minimolegal=$request->minimolegal;
+        $tb_factores_nomina->auxilio=$request->auxilio;
         $tb_factores_nomina->save();
     }
 
@@ -50,6 +59,9 @@ class Tb_factoresController extends Controller
         $tb_factores_nomina->horaDominical=$request->horaDominical;
         $tb_factores_nomina->festivaDiurna=$request->festivaDiurna;
         $tb_factores_nomina->festivaNocturna=$request->festivaNocturna;
+        $tb_factores_nomina->recargos=$request->recargos;
+        $tb_factores_nomina->minimolegal=$request->minimolegal;
+        $tb_factores_nomina->auxilio=$request->auxilio;
         $tb_factores_nomina->save();
     }
 
@@ -64,6 +76,9 @@ class Tb_factoresController extends Controller
         $tb_factores_nomina->horaDominical=$request->horaDominical;
         $tb_factores_nomina->festivaDiurna=$request->festivaDiurna;
         $tb_factores_nomina->festivaNocturna=$request->festivaNocturna;
+        $tb_factores_nomina->recargos=$request->recargos;
+        $tb_factores_nomina->minimolegal=$request->minimolegal;
+        $tb_factores_nomina->auxilio=$request->auxilio;
         $tb_factores_nomina->save();
     }
 }

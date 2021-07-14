@@ -164,6 +164,15 @@ class DatabaseSeeder extends Seeder
         //funcion principal que llama cada seeder
         $this->call(Tb_tipo_nominaSeeder::class);
 //-------------------------------------------------------------------//
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_factores_nomina'
+        ]);
+
+        //funcion principal que llama cada seeder
+        $this->call(Tb_factores_nominaSeeder::class);
+//-------------------------------------------------------------------//
 //----------------------------------------------------------------------------------------------//
 
 //-----------------------------Comento seeders de tiempos desde aca--------------------------------------//

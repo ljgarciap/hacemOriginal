@@ -53,10 +53,34 @@
                                             <input type="number" v-model="festivaNocturna" step="0.01" class="form-control" placeholder="Festiva Nocturna">
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            Recargos
+                                        </td>
+                                        <td>
+                                            <input type="number" v-model="recargos" step="0.01" class="form-control" placeholder="Recargos">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Salario mínimo mensual legal vigente
+                                        </td>
+                                        <td>
+                                            <input type="number" v-model="minimolegal" step="0.01" class="form-control" placeholder="SMMLV">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Auxilio de transporte
+                                        </td>
+                                        <td>
+                                            <input type="number" v-model="auxilio" step="0.01" class="form-control" placeholder="Auxilio">
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                                 <button type="button" class="btn btn-success" @click="guardarDatos()">Guardar</button>
-                                <button v-if="id==1" type="button" class="btn btn-primary" @click="actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna)">Actualizar</button>
+                                <button v-if="id==1" type="button" class="btn btn-primary" @click="actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna,recargos,minimolegal,auxilio)">Actualizar</button>
                             </form>
                             </div>
                         </div>
@@ -84,7 +108,10 @@
                 extraNocturna : '',
                 horaDominical : '',
                 festivaDiurna : '',
-                festivaNocturna : ''
+                festivaNocturna : '',
+                recargos : '',
+                minimolegal : '',
+                auxilio : ''
             }
         },
         methods : {
@@ -99,6 +126,9 @@
                 me.horaDominical=respuesta.horaDominical;
                 me.festivaDiurna=respuesta.festivaDiurna;
                 me.festivaNocturna=respuesta.festivaNocturna;
+                me.recargos=respuesta.recargos;
+                me.minimolegal=respuesta.minimolegal;
+                me.auxilio=respuesta.auxilio;
                 })
                 .catch(function (error) {
                     // handle error
@@ -114,7 +144,10 @@
                     'extraNocturna' : this.extraNocturna,
                     'horaDominical' : this.horaDominical,
                     'festivaDiurna' : this.festivaDiurna,
-                    'festivaNocturna' : this.festivaNocturna
+                    'festivaNocturna' : this.festivaNocturna,
+                    'recargos' : this.recargos,
+                    'minimolegal' : this.minimolegal,
+                    'auxilio' : this.auxilio
                 }).then(function (response) {
                 me.listarFactorNomina();
                 })
@@ -122,7 +155,7 @@
                     console.log(error);
                 });
             },
-            actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna){
+            actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna,recargos){
                 let me=this;
                 axios.post('/factores/actualizar',{
                     'id': 1,
@@ -130,7 +163,10 @@
                     'extraNocturna' : this.extraNocturna,
                     'horaDominical' : this.horaDominical,
                     'festivaDiurna' : this.festivaDiurna,
-                    'festivaNocturna' : this.festivaNocturna
+                    'festivaNocturna' : this.festivaNocturna,
+                    'recargos' : this.recargos,
+                    'minimolegal' : this.minimolegal,
+                    'auxilio' : this.auxilio
                 }).then(function (response) {
                 me.listarFactorNomina()
                 })
