@@ -88,6 +88,8 @@ class Tb_novedadesController extends Controller
         $tb_novedades=new Tb_novedades();
         $tb_novedades->fechaNovedad=$request->fechaNovedad;
         $tb_novedades->concepto=$request->concepto;
+        $tb_novedades->cantidad=$request->cantidad;
+        $tb_novedades->unitario=$request->unitario;
         $tb_novedades->valor=$request->valor;
         $tb_novedades->observacion=$request->observacion;
         $tb_novedades->tipologia=$tipologia;

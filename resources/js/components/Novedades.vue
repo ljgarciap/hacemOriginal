@@ -412,6 +412,8 @@ import moment from 'moment';
                     'fechaNovedad': this.fechaNovedad,
                     'concepto':this.concepto,
                     'valor':this.valor,
+                    'cantidad':this.cantidad,
+                    'unitario':this.unitario,
                     'observacion':this.observacion,
                     'tipologia':this.tipologia,
                     'idEmpleado':this.idEmpleado
@@ -461,6 +463,8 @@ import moment from 'moment';
                 this.detalle='';
                 this.idEmpleado=0;
                 this.mensajecantidad='';
+                this.cantidad='';
+                this.unitario='';
                 this.valor='';
                 this.tipologia='';
                 this.observacion='';

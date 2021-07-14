@@ -17,6 +17,8 @@ class CreateTbNovedadesTable extends Migration
             $table->id();
             $table->date('fechaNovedad');
             $table->string('concepto', 255);
+            $table->float('cantidad',10,2);
+            $table->float('unitario',10,2);
             $table->float('valor',10,2);
             $table->string('observacion', 255);
             $table->boolean('tipologia')->default(1);
