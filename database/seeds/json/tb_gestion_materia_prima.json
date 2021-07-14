@@ -32,7 +32,7 @@
     {"id":"31","gestionMateria":"Suela en expanso","idUnidadBase":"5","precioBase":"4850","idTipoMateria":"1","estado":"1"},
     {"id":"32","gestionMateria":"Hiladillo","idUnidadBase":"5","precioBase":"50","idTipoMateria":"2","estado":"1"},
     {"id":"33","gestionMateria":"Puntera de emplantillado","idUnidadBase":"5","precioBase":"150","idTipoMateria":"2","estado":"1"},
-    {"id":"34","gestionMateria":"Pegante blanco","idUnidadBase":"5","precioBase":"270","idTipoMateria":"1","estado":"1"},
+    {"id":"34","gestionMateria":"Pegante látex","idUnidadBase":"5","precioBase":"270","idTipoMateria":"1","estado":"1"},
     {"id":"35","gestionMateria":"Solución de caucho","idUnidadBase":"5","precioBase":"180","idTipoMateria":"1","estado":"1"},
     {"id":"36","gestionMateria":"Bolsa","idUnidadBase":"4","precioBase":"25","idTipoMateria":"2","estado":"1"}
 ]

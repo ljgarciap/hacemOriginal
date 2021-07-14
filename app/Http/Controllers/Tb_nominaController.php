@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Tb_nomina;
+use App\Tb_vinculaciones;
+use App\Tb_factores_nomina;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -81,6 +83,31 @@ class Tb_nominaController extends Controller
 
     public function calcularNomina(Request $request)
     {
+// recibo el id de nómina a calcular y saco los datos; de aca tomaré las fechas para revisar las novedades
+        $nomina = Tb_nomina::where('id','=',$request->id)
+        ->select('id','fechaInicio','fechaFin','tipo','estado')->get();
+
+        foreach($nomina as $guianomina){
+            $nominaid = $guianomina->id;
+            $nominafechaInicio = $guianomina->fechaInicio;
+            $nominafechaFin = $guianomina->fechaFin;
+            $nominatipo = $guianomina->tipo;
+            $nominaestado = $guianomina->estado;
+        }
+
+// basado en el rango de fechas entre inicio y fin verifico cuales vinculaciones están activas para trabajar con los empleados
+        $vinculaciones = Tb_vinculaciones::where('estado','=','1')
+        ->whereNull('fechaFin')
+        ->select('id','fechaInicio','fechaFin','tipo','estado')->get();
+
+        foreach($vinculaciones as $guiavinculaciones){
+            $vinculacionesid = $guiavinculaciones->id;
+            $vinculacionesfechaInicio = $guiavinculaciones->fechaInicio;
+            $vinculacionesfechaFin = $guiavinculaciones->fechaFin;
+            $vinculacionestipo = $guiavinculaciones->tipo;
+            $vinculacionesestado = $guiavinculaciones->estado;
+        }
+//dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
 
         $sueldobase=750000; //valor del empleado
 
@@ -99,14 +126,19 @@ class Tb_nominaController extends Controller
 //hasta aca vienen de la tabla novedades
 
 //estos vienen de la tabla factores nomina
-        $salariominimo=908526; //valor real
-        $auxilioley=106454; //valor real
-        $multextrasdiurnas=1.25;
-        $multextrasnocturnas=1.75;
-        $multhorasdominicales=1.75;
-        $multextrasdominicalesdiurnas=2;
-        $multextrasdominicalesnocturnas=2.5;
-        $multrecargos=0.35;
+    $factores = Tb_factores_nomina::where('id','=','1')
+    ->select('id','extraDiurna','extraNocturna','horaDominical','festivaDiurna','festivaNocturna','recargos','minimolegal','auxilio')->get();
+
+    foreach($factores as $totalg){
+        $multextrasdiurnas = $totalg->extraDiurna;
+        $multextrasnocturnas = $totalg->extraNocturna;
+        $multhorasdominicales = $totalg->horaDominical;
+        $multextrasdominicalesdiurnas = $totalg->festivaDiurna;
+        $multextrasdominicalesnocturnas = $totalg->festivaNocturna;
+        $multrecargos = $totalg->recargos;
+        $salariominimo = $totalg->minimolegal;
+        $auxilioley = $totalg->auxilio;
+    }
 //hasta aca vienen de la tabla factores nomina
 
         $topesalarios=(25*$salariominimo);
