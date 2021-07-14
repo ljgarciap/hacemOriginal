@@ -93,25 +93,50 @@ class Tb_nominaController extends Controller
             $nominafechaFin = $guianomina->fechaFin;
             $nominatipo = $guianomina->tipo;
             $nominaestado = $guianomina->estado;
-        }
 
-// basado en el rango de fechas entre inicio y fin verifico cuales vinculaciones están activas para trabajar con los empleados
+        // basado en el rango de fechas entre inicio y fin verifico cuales vinculaciones están activas para trabajar con los empleados
         $vinculaciones = Tb_vinculaciones::where('estado','=','1')
         ->whereNull('fechaFin')
-        ->select('id','fechaInicio','fechaFin','tipo','estado')->get();
+        ->orWhere([
+            ['tb_vinculaciones.fechaInicio', '>', $nominafechaInicio],
+            ['tb_vinculaciones.fechaFin', '<', $nominafechaFin],
+        ])
+        ->orWhere([
+            ['tb_vinculaciones.fechaInicio', '<', $nominafechaInicio],
+            ['tb_vinculaciones.fechaFin', '<', $nominafechaFin],
+        ])
+        ->select('id','tipoVinculacion','salarioBasicoMensual','fechaInicio','tiempoContrato','fechaFin','idEmpleado','idNivelArl','idEps','idPensiones','estado')->get();
 
+         //dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
         foreach($vinculaciones as $guiavinculaciones){
             $vinculacionesid = $guiavinculaciones->id;
+            $vinculacionestipoVinculacion = $guiavinculaciones->tipoVinculacion;
+            $vinculacionessalarioBasicoMensual = $guiavinculaciones->salarioBasicoMensual;
             $vinculacionesfechaInicio = $guiavinculaciones->fechaInicio;
+            $vinculacionestiempoContrato = $guiavinculaciones->tiempoContrato;
             $vinculacionesfechaFin = $guiavinculaciones->fechaFin;
-            $vinculacionestipo = $guiavinculaciones->tipo;
+            $vinculacionesidEmpleado = $guiavinculaciones->idEmpleado;
+            $vinculacionesidNivelArl = $guiavinculaciones->idNivelArl;
+            $vinculacionesidEps = $guiavinculaciones->idEps;
+            $vinculacionesidPensiones = $guiavinculaciones->idPensiones;
             $vinculacionesestado = $guiavinculaciones->estado;
-        }
-//dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
 
-        $sueldobase=750000; //valor del empleado
+        $sueldobase=$vinculacionessalarioBasicoMensual; //valor del empleado
 
-//estos vienen de la tabla novedades
+        //estos vienen de la tabla novedades
+
+        //debo evaluar primero el almacenamiento de novedades... en este punto que apenas voy a sacar la lista de novedades estoy haciendo un cambio
+        //en la estructura de la tabla para tomar en cuenta cantidades y unidades aun no se valida correctamente si voy a traer un solo espacio calculado
+        //de la tabla y validar contra ella al momento de ingresar o capturo datos y valido desde este punto.
+/*
+        <td v-if="novedad.concepto==1">Ingreso por labor</td>
+        <td v-if="novedad.concepto==2">Horas extras y recargos</td>
+        <td v-if="novedad.concepto==3">Prima extralegal</td>
+        <td v-if="novedad.concepto==4">Bonificaciones</td>
+        <td v-if="novedad.concepto==5">Comisiones</td>
+        <td v-if="novedad.concepto==6">Viaticos</td>
+        <td v-if="novedad.concepto==7">Conceptos que no son factor salarial</td>
+*/
         $diaslabor=30;
         $extrasdiurnas=0; // ejemplo
         $extrasnocturnas=0;
@@ -123,23 +148,23 @@ class Tb_nominaController extends Controller
         $comisiones=0; // valor comisiones
         $viaticos=0; // valor viaticos
         $nofactorsalarial=0;
-//hasta aca vienen de la tabla novedades
+        //hasta aca vienen de la tabla novedades
 
-//estos vienen de la tabla factores nomina
-    $factores = Tb_factores_nomina::where('id','=','1')
-    ->select('id','extraDiurna','extraNocturna','horaDominical','festivaDiurna','festivaNocturna','recargos','minimolegal','auxilio')->get();
+        //estos vienen de la tabla factores nomina
+        $factores = Tb_factores_nomina::where('id','=','1')
+        ->select('id','extraDiurna','extraNocturna','horaDominical','festivaDiurna','festivaNocturna','recargos','minimolegal','auxilio')->get();
 
-    foreach($factores as $totalg){
-        $multextrasdiurnas = $totalg->extraDiurna;
-        $multextrasnocturnas = $totalg->extraNocturna;
-        $multhorasdominicales = $totalg->horaDominical;
-        $multextrasdominicalesdiurnas = $totalg->festivaDiurna;
-        $multextrasdominicalesnocturnas = $totalg->festivaNocturna;
-        $multrecargos = $totalg->recargos;
-        $salariominimo = $totalg->minimolegal;
-        $auxilioley = $totalg->auxilio;
-    }
-//hasta aca vienen de la tabla factores nomina
+        foreach($factores as $totalg){
+            $multextrasdiurnas = $totalg->extraDiurna;
+            $multextrasnocturnas = $totalg->extraNocturna;
+            $multhorasdominicales = $totalg->horaDominical;
+            $multextrasdominicalesdiurnas = $totalg->festivaDiurna;
+            $multextrasdominicalesnocturnas = $totalg->festivaNocturna;
+            $multrecargos = $totalg->recargos;
+            $salariominimo = $totalg->minimolegal;
+            $auxilioley = $totalg->auxilio;
+        }
+        //hasta aca vienen de la tabla factores nomina
 
         $topesalarios=(25*$salariominimo);
         $diasbase=30; // total dias mes
@@ -205,6 +230,11 @@ class Tb_nominaController extends Controller
         /*
             Fin Validación ibc e ibc con tope
         */
+
+        }
+
+
+        }
 
     }
 
