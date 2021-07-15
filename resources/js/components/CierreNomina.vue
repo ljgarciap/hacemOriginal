@@ -106,18 +106,18 @@
                                             <label v-if="tipoModal==1" class="col-md-3 form-control-label" for="text-input">TIpo de nómina</label>
 
                                             <div v-if="tipoModal==1" class="col-md-3">
-                                                <input type="checkbox" true-value="1" false-value="0" v-model="liquidacion" checked>
-                                                <label for="liquidacion">Provisión Liquidación</label>
+                                                <input type="radio" id="1" value="1" v-model="tipoNomina" checked>
+                                                <label for="liquidacion">Nómina Fija</label>
                                             </div>
 
                                             <div v-if="tipoModal==1" class="col-md-3">
-                                                <input type="checkbox" true-value="2" false-value="0" v-model="parafiscales" checked>
-                                                <label for="parafiscales">Seguridad Social</label>
+                                                <input type="radio" id="1" value="1" v-model="tipoNomina" checked>
+                                                <label for="liquidacion">Nómina Destajo</label>
                                             </div>
 
                                             <div v-if="tipoModal==1" class="col-md-3">
-                                                <input type="checkbox" true-value="3" false-value="0" v-model="parafiscales" checked>
-                                                <label for="parafiscales">Seguridad Social</label>
+                                                <input type="radio" id="1" value="1" v-model="tipoNomina" checked>
+                                                <label for="liquidacion">Nómina Total (Fijos y destajo)</label>
                                             </div>
 
                                         </div>

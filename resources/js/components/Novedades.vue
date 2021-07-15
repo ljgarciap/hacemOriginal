@@ -160,8 +160,28 @@
 
                                         <label class="col-md-3 form-control-label" for="text-input">Dias laborados</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
+                                            <input type="number" v-model="cantidad" class="form-control" placeholder="Valor">
                                             <span class="help-block">(*) Dias de labor</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Detalle Tarea</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="observacion" class="form-control" placeholder="Valor">
+                                            <span class="help-block">(*) Detalle tarea entregada</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad Tareas</label>
+                                        <div class="col-md-9">
+                                            <input type="number" v-model="cantidad" class="form-control" placeholder="Valor">
+                                            <span class="help-block">(*) Cantidad tareas entregadas</span>
                                         </div>
 
                                     </div>
@@ -170,7 +190,7 @@
 
                                         <label class="col-md-3 form-control-label" for="text-input">Valor Tarea</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
+                                            <input type="number" v-model="unitario" class="form-control" placeholder="Valor">
                                             <span class="help-block">(*) Valor tarea entregada</span>
                                         </div>
 
@@ -198,7 +218,7 @@
 
                                         <label class="col-md-3 form-control-label" for="text-input">Cantidad de Horas Extras</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="extras" class="form-control" placeholder="Extras">
+                                            <input type="number" v-model="cantidad" class="form-control" placeholder="Extras">
                                             <span class="help-block">(*) Cantidad de horas extras</span>
                                         </div>
 
@@ -272,12 +292,14 @@ import moment from 'moment';
                 observacion:'',
                 identificador:'',
                 idEmpleado:0,
+                idExtra:0,
                 extras:0,
                 fecha : '',
                 flag : 0,
                 concepto : 0,
                 valor:'',
                 arrayNovedades : [],
+                arrayExtra : [],
                 arrayEmpleados : [],
                 mensajecantidad:'',
                 modal : 0,
@@ -351,12 +373,51 @@ import moment from 'moment';
                     // handle success
                 var respuesta=response.data;
                 me.tipologiasalario=respuesta.tipologiasalario;
+                me.baseSal=respuesta.baseSal;
+                me.baseDia=(me.baseSal/30);
                     //console.log(response);
                     console.log("Tipo de salario");
                     console.log(me.flag);
                     console.log(me.tipologiasalario);
-                    if ((me.flag==1) && (me.tipologiasalario==1)) {
+                    if ((me.flag==1) && (me.tipologiasalario==1)) { //si el tipo de sueldo es fijo
                         me.observacion="Dias laborados";
+                        me.unitario=me.baseDia;
+                        me.valor=(me.cantidad*me.unitario);
+                        }
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            selectExtra(event) { //Busca el dato de la tipologia de sueldo
+                let me=this;
+                me.idExtra=event.target.value;
+
+                var url='/novedades/selectextra';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayExtra=respuesta.extra;
+                    //console.log(response);
+                    if (me.idExtra==1) {
+                        me.observacion="Extra Diurna";
+                        }
+                    else if (me.idExtra==2) {
+                        me.observacion="Extra Nocturna";
+                        }
+                    else if (me.idExtra==3) {
+                        me.observacion="Hora Dominical o Festiva";
+                        }
+                    else if (me.idExtra==3) {
+                        me.observacion="Extra Dominical o Festiva Diurna";
+                        }
+                    else if (me.idExtra==3) {
+                        me.observacion="Extra Dominical o Festiva Nocturna";
+                        }
+                    else if (me.idExtra==3) {
+                        me.observacion="Recargos";
                         }
                 })
                 .catch(function (error) {

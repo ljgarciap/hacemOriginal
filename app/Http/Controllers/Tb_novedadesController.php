@@ -9,6 +9,7 @@ use App\Tb_niveles_riesgo;
 use App\Tb_nomina;
 use App\Tb_novedades;
 use App\Tb_vinculaciones;
+use App\Tb_factores_nomina;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,8 +63,13 @@ class Tb_novedadesController extends Controller
         return ['empleados' => $empleados];
     }
 
-    public function store(Request $request)
-    {
+    public function selectExtra(){
+        $extra = Tb_factores_nomina::where('tb_factores_nomina.id','=','1')->get();
+
+        return ['extra' => $extra];
+    }
+
+    public function store(Request $request){
         //if(!$request->ajax()) return redirect('/');
 
         $fechaValidacion=$request->fechaNovedad;
@@ -104,6 +110,7 @@ class Tb_novedadesController extends Controller
 
         $idEmpleado=$request->identificador;
         $tipoSal='';
+        $baseSal='';
 
         $salarios = Tb_vinculaciones::first()
         ->where('tb_vinculaciones.estado','=','1')
@@ -113,12 +120,14 @@ class Tb_novedadesController extends Controller
 
         foreach($salarios as $salario){
             $tipoSal = $salario->tipoSalario;
+            $baseSal = $salario->salarioBasicoMensual;
         }
 
         //var_dump($salarios);
 
         return [
-            'tipologiasalario' => $tipoSal
+            'tipologiasalario' => $tipoSal,
+            'baseSal' => $baseSal
         ];
     }
 }

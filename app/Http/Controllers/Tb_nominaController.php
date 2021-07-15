@@ -19,11 +19,13 @@ class Tb_nominaController extends Controller
         if ($buscar=='') {
             # Modelo::join('tablaqueseune',basicamente un on)
             $nomina = Tb_nomina::select('tb_nomina.id','tb_nomina.fechaInicio as fecha','tb_nomina.fechaFin','tb_nomina.tipo','tb_nomina.estado')
+            ->where('tb_nomina.id', '>', '1')
             ->orderBy('tb_nomina.id','desc')->paginate(5);
         }
         else {
             # code...
             $nomina = Tb_nomina::select('tb_nomina.id','tb_nomina.fechaInicio as fecha','tb_nomina.fechaFin','tb_nomina.tipo','tb_nomina.estado')
+            ->where('tb_nomina.id', '>', '1')
             ->where('tb_nomina.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_nomina.id','desc')->paginate(5);
 

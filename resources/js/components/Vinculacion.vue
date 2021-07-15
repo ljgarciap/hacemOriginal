@@ -252,7 +252,7 @@
                                     <div class="form-group row" v-if="flag==1 && tiempo==1">
                                         <label class="col-md-3 form-control-label" for="text-input">Tiempo contrato</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="tiempoPago" class="form-control" placeholder="Ingrese el tiempo en dias">
+                                            <input type="number" v-model="tiempoContrato" class="form-control" placeholder="Ingrese el tiempo en dias">
                                             <span class="help-block">(*) Ingrese el tiempo del contrato</span>
                                         </div>
                                     </div>
