@@ -19,3 +19,15 @@ Se añaden a los seeders los datos capturados en las experiencias con los empres
 
 Actualización módulos.
 Se añaden a los seeders los datos de empleados y los modulos actualizados.
+
+## 15-07-21
+
+Actualización módulo nómina, notas del autor.
+Se dimensiona nuevamente el alcance del módulo de nómina tomando las siguientes consideraciones:
+1-Se crea una nómina base fuera de los rangos con tipologia 0 y estado 1 para almacenar alli todas las novedades en el momento de ingresarlas; para el 
+momento del cierre se valida cuales pertenecen a ella y cumplen con los criterios de la nómina a cerrar.
+2-Se piensa en la implementación de una tabla de conceptos para poder consultar rápidamente el tipo
+3-Se toma en consideración para las novedades los campos de cantidad unitario y valor, de esta forma analizando la implementación y aplicando el cálculo 
+en el momento del ingreso podemos reducir la carga de la tarea de nómina; de igual manera se puede validar actualizaciones en caso de cambios de valor.
+4-Deberia tomar en consideración para el cierre de nómina el tipo para sumar o restar, el concepto para el cálculo y voy a dejar en inicio dos botones 
+uno para traer los datos estáticos y calcular sobre ellos y otro que calcule en el momento.
