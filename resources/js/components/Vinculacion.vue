@@ -66,8 +66,9 @@
                                         <td v-text="vinculacion.empleado"></td>
                                         <td v-if="vinculacion.tipoContrato==1">Término Fijo</td>
                                         <td v-if="vinculacion.tipoContrato==2">Término Indefinido</td>
+                                        <td v-if="vinculacion.tipoContrato==0">Destajo</td>
                                         <td v-if="vinculacion.tipoSalario==1">Sueldo Fijo</td>
-                                        <td v-if="vinculacion.tipoSalario==2">Destajo</td>
+                                        <td v-if="vinculacion.tipoSalario==2">Por tarea</td>
                                         <td v-text="vinculacion.salarioBasicoMensual"></td>
                                         <td v-text="vinculacion.fechaInicio"></td>
                                         <td v-text="vinculacion.idNivelArl"></td>
@@ -160,8 +161,9 @@
                                         <td v-text="vinculacion.empleado"></td>
                                         <td v-if="vinculacion.tipoContrato==1">Término Fijo</td>
                                         <td v-if="vinculacion.tipoContrato==2">Término Indefinido</td>
+                                        <td v-if="vinculacion.tipoContrato==0">Destajo</td>
                                         <td v-if="vinculacion.tipoSalario==1">Sueldo Fijo</td>
-                                        <td v-if="vinculacion.tipoSalario==2">Destajo</td>
+                                        <td v-if="vinculacion.tipoSalario==2">Por tarea</td>
                                         <td v-text="vinculacion.salarioBasicoMensual"></td>
                                         <td v-text="vinculacion.fechaFin"></td>
                                         <td v-text="vinculacion.idNivelArl"></td>

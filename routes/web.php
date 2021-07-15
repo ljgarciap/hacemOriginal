@@ -319,6 +319,7 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get("/novedades", "Tb_novedadesController@index");
         Route::post("/novedades/store", "Tb_novedadesController@store");
+        Route::post("/novedades/eliminar", "Tb_novedadesController@eliminar");
         Route::get("/novedades/salario", "Tb_novedadesController@selectSalario");
         Route::get("/novedades/selectempleado", "Tb_novedadesController@selectEmpleado");
         Route::get("/novedades/selectextra", "Tb_novedadesController@selectExtra");

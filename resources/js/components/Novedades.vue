@@ -38,16 +38,24 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
+                                        <th>Opciones</th>
                                         <th>Fecha novedad</th>
                                         <th>Concepto</th>
-                                        <th>Valor</th>
                                         <th>Observación</th>
+                                        <th>Cantidad</th>
+                                        <th>Valor</th>
                                         <th>Empleado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                     <tr v-for="novedad in arrayNovedades" :key="novedad.id">
+
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm" @click="eliminarNovedad(novedad.id)">
+                                                <i class="icon-trash"></i>
+                                            </button>
+                                        </td>
                                         <td v-text="novedad.fechaNovedad"></td>
 
                                         <td v-if="novedad.concepto==1">Ingreso por labor</td>
@@ -62,8 +70,9 @@
                                         <td v-if="novedad.concepto==53">Embargos</td>
                                         <td v-if="novedad.concepto==54">Descuento por libranza/otros</td>
 
+                                        <td v-text="novedad.observacion"></td>
+                                        <td v-text="novedad.cantidad"></td>
                                         <td v-text="novedad.valor"></td>
-                                         <td v-text="novedad.observacion"></td>
                                         <td v-text="novedad.empleado"></td>
                                         <!--
                                         <td v-text="novedad.tipologia"></td>
@@ -160,7 +169,7 @@
 
                                         <label class="col-md-3 form-control-label" for="text-input">Dias laborados</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="cantidad" class="form-control" placeholder="Valor">
+                                            <input type="number" v-model="cantidad" class="form-control" placeholder="Dias">
                                             <span class="help-block">(*) Dias de labor</span>
                                         </div>
 
@@ -200,7 +209,7 @@
 
                                         <label class="col-md-3 form-control-label" for="text-input">Tipo de Horas Extras</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="extras" @change='extras($event)'>
+                                            <select class="form-control" v-model="extras" @change='selectExtra($event)'>
                                                 <option value="0" disabled>Seleccione tipo de hora extra</option>
                                                 <option value="1">Extra Diurna</option>
                                                 <option value="2">Extra Nocturna</option>
@@ -236,7 +245,7 @@
 
                                         <label class="col-md-3 form-control-label" for="text-input">Valor</label>
                                         <div class="col-md-9">
-                                            <input type="number" v-model="valor" class="form-control" placeholder="Valor">
+                                            <input type="number" v-model="unitario" class="form-control" placeholder="Valor">
                                             <span class="help-block">(*) Ingrese el Valor</span>
                                         </div>
 
@@ -294,12 +303,14 @@ import moment from 'moment';
                 idEmpleado:0,
                 idExtra:0,
                 extras:0,
+                cantidad:1,
+                unitario:0,
+                valor:0,
                 fecha : '',
                 flag : 0,
                 concepto : 0,
-                valor:'',
+                valor: 0,
                 arrayNovedades : [],
-                arrayExtra : [],
                 arrayEmpleados : [],
                 mensajecantidad:'',
                 modal : 0,
@@ -312,6 +323,12 @@ import moment from 'moment';
                 tipoModal : 0,
                 tipoAccion : 0,
                 errorNovedad : 0,
+                extraDiurna: 0,
+                extraNocturna: 0,
+                horaDominical: 0,
+                festivaDiurna: 0,
+                festivaNocturna: 0,
+                recargos: 0,
                 errorMensaje : [],
                 pagination : {
                     'total' : 0,
@@ -374,7 +391,8 @@ import moment from 'moment';
                 var respuesta=response.data;
                 me.tipologiasalario=respuesta.tipologiasalario;
                 me.baseSal=respuesta.baseSal;
-                me.baseDia=(me.baseSal/30);
+                me.baseDia=respuesta.baseDia;
+                me.baseHora=respuesta.baseHora;
                     //console.log(response);
                     console.log("Tipo de salario");
                     console.log(me.flag);
@@ -382,8 +400,21 @@ import moment from 'moment';
                     if ((me.flag==1) && (me.tipologiasalario==1)) { //si el tipo de sueldo es fijo
                         me.observacion="Dias laborados";
                         me.unitario=me.baseDia;
-                        me.valor=(me.cantidad*me.unitario);
                         }
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            eliminarNovedad(idNovedad) { //Busca el dato de la tipologia de sueldo
+
+                var url='/novedades/eliminar?identificador=' + idNovedad;
+                // Make a request for a user with a given ID
+                axios.post(url).then(function (response) {
+                    // handle success
+                this.forceRerender();
+                    //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
@@ -399,25 +430,42 @@ import moment from 'moment';
                 axios.get(url).then(function (response) {
                     // handle success
                 var respuesta=response.data;
-                me.arrayExtra=respuesta.extra;
+                me.extraDiurna=respuesta.extraDiurna;
+                me.extraNocturna=respuesta.extraNocturna;
+                me.horaDominical=respuesta.horaDominical;
+                me.festivaDiurna=respuesta.festivaDiurna;
+                me.festivaNocturna=respuesta.festivaNocturna;
+                me.recargos=respuesta.recargos;
                     //console.log(response);
+                    console.log(me.extraDiurna);
+                    console.log(me.extraNocturna);
+                    console.log(me.horaDominical);
+                    console.log(me.festivaDiurna);
+                    console.log(me.festivaNocturna);
+                    console.log(me.recargos);
                     if (me.idExtra==1) {
                         me.observacion="Extra Diurna";
+                        me.unitario=(me.extraDiurna*me.baseHora);
                         }
                     else if (me.idExtra==2) {
                         me.observacion="Extra Nocturna";
+                        me.unitario=(me.extraNocturna*me.baseHora);
                         }
                     else if (me.idExtra==3) {
                         me.observacion="Hora Dominical o Festiva";
+                        me.unitario=(me.horaDominical*me.baseHora);
                         }
-                    else if (me.idExtra==3) {
+                    else if (me.idExtra==4) {
                         me.observacion="Extra Dominical o Festiva Diurna";
+                        me.unitario=(me.festivaDiurna*me.baseHora);
                         }
-                    else if (me.idExtra==3) {
+                    else if (me.idExtra==5) {
                         me.observacion="Extra Dominical o Festiva Nocturna";
+                        me.unitario=(me.festivaNocturna*me.baseHora);
                         }
-                    else if (me.idExtra==3) {
+                    else if (me.idExtra==6) {
                         me.observacion="Recargos";
+                        me.unitario=(me.recargos*me.baseHora);
                         }
                 })
                 .catch(function (error) {
@@ -469,6 +517,7 @@ import moment from 'moment';
                 */
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
+                this.valor=(this.cantidad*this.unitario);
                 axios.post('/novedades/store',{
                     'fechaNovedad': this.fechaNovedad,
                     'concepto':this.concepto,
@@ -524,7 +573,7 @@ import moment from 'moment';
                 this.detalle='';
                 this.idEmpleado=0;
                 this.mensajecantidad='';
-                this.cantidad='';
+                this.cantidad=1;
                 this.unitario='';
                 this.valor='';
                 this.tipologia='';

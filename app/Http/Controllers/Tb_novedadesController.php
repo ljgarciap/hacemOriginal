@@ -25,8 +25,8 @@ class Tb_novedadesController extends Controller
         if ($buscar=='') {
             $novedades = Tb_novedades::join("tb_empleado","tb_novedades.idEmpleado","=","tb_empleado.id")
             ->join("tb_nomina","tb_novedades.idNomina","=","tb_nomina.id")
-            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.observacion',
-            'tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
+            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.cantidad','tb_novedades.unitario',
+            'tb_novedades.observacion','tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
             'tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_novedades.id','desc')
             ->where('tb_nomina.estado','=','1')->paginate(5);
@@ -34,8 +34,8 @@ class Tb_novedadesController extends Controller
         else {
             $novedades = Tb_novedades::join("tb_empleado","tb_novedades.idEmpleado","=","tb_empleado.id")
             ->join("tb_nomina","tb_novedades.idNomina","=","tb_nomina.id")
-            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.observacion',
-            'tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
+            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.cantidad','tb_novedades.unitario',
+            'tb_novedades.observacion','tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
             'tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_novedades.id','desc')
             ->where('tb_nomina.estado','=','1')
@@ -66,7 +66,34 @@ class Tb_novedadesController extends Controller
     public function selectExtra(){
         $extra = Tb_factores_nomina::where('tb_factores_nomina.id','=','1')->get();
 
-        return ['extra' => $extra];
+        foreach($extra as $extrar){
+            $extraDiurna = $extrar->extraDiurna;
+            $extraNocturna = $extrar->extraNocturna;
+            $horaDominical = $extrar->horaDominical;
+            $festivaDiurna = $extrar->festivaDiurna;
+            $festivaNocturna = $extrar->festivaNocturna;
+            $recargos = $extrar->recargos;
+        }
+
+        //var_dump($salarios);
+
+        return [
+            'extraDiurna' => $extraDiurna,
+            'extraNocturna' => $extraNocturna,
+            'horaDominical' => $horaDominical,
+            'festivaDiurna' => $festivaDiurna,
+            'festivaNocturna' => $festivaNocturna,
+            'recargos' => $recargos
+        ];
+    }
+
+    public function eliminar(Request $request){
+        $buscar= $request->identificador;
+        DB::table('tb_novedades')->where('id', '=', $buscar)->delete();
+        return [
+            'mensaje' => "mensaje"
+        ];
+
     }
 
     public function store(Request $request){
@@ -121,13 +148,17 @@ class Tb_novedadesController extends Controller
         foreach($salarios as $salario){
             $tipoSal = $salario->tipoSalario;
             $baseSal = $salario->salarioBasicoMensual;
+            $baseDia=($baseSal/30);
+            $baseHora=($baseDia/8);
         }
 
         //var_dump($salarios);
 
         return [
             'tipologiasalario' => $tipoSal,
-            'baseSal' => $baseSal
+            'baseSal' => $baseSal,
+            'baseDia' => $baseDia,
+            'baseHora' => $baseHora
         ];
     }
 }
