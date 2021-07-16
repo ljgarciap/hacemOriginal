@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Tb_nomina;
 use App\Tb_vinculaciones;
+use App\Tb_novedades;
 use App\Tb_factores_nomina;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -84,12 +85,12 @@ class Tb_nominaController extends Controller
 //---------------------------------------------------------------------------------------------------//
 
     public function calcularNomina(Request $request)
-    {
+    { //abre función cálculo
 // recibo el id de nómina a calcular y saco los datos; de aca tomaré las fechas para revisar las novedades
         $nomina = Tb_nomina::where('id','=',$request->id)
         ->select('id','fechaInicio','fechaFin','tipo','estado')->get();
 
-        foreach($nomina as $guianomina){
+        foreach($nomina as $guianomina){ //apertura foreach nomina
             $nominaid = $guianomina->id;
             $nominafechaInicio = $guianomina->fechaInicio;
             $nominafechaFin = $guianomina->fechaFin;
@@ -110,7 +111,7 @@ class Tb_nominaController extends Controller
         ->select('id','tipoVinculacion','salarioBasicoMensual','fechaInicio','tiempoContrato','fechaFin','idEmpleado','idNivelArl','idEps','idPensiones','estado')->get();
 
          //dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
-        foreach($vinculaciones as $guiavinculaciones){
+        foreach($vinculaciones as $guiavinculaciones){ //abre foreach vinculaciones
             $vinculacionesid = $guiavinculaciones->id;
             $vinculacionestipoVinculacion = $guiavinculaciones->tipoVinculacion;
             $vinculacionessalarioBasicoMensual = $guiavinculaciones->salarioBasicoMensual;
@@ -130,27 +131,96 @@ class Tb_nominaController extends Controller
         //debo evaluar primero el almacenamiento de novedades... en este punto que apenas voy a sacar la lista de novedades estoy haciendo un cambio
         //en la estructura de la tabla para tomar en cuenta cantidades y unidades aun no se valida correctamente si voy a traer un solo espacio calculado
         //de la tabla y validar contra ella al momento de ingresar o capturo datos y valido desde este punto.
-/*
-        <td v-if="novedad.concepto==1">Ingreso por labor</td>
-        <td v-if="novedad.concepto==2">Horas extras y recargos</td>
-        <td v-if="novedad.concepto==3">Prima extralegal</td>
-        <td v-if="novedad.concepto==4">Bonificaciones</td>
-        <td v-if="novedad.concepto==5">Comisiones</td>
-        <td v-if="novedad.concepto==6">Viaticos</td>
-        <td v-if="novedad.concepto==7">Conceptos que no son factor salarial</td>
-*/
-        $diaslabor=30;
+
+        $novedades = Tb_novedades::where('tb_novedades.idEmpleado','=',$vinculacionesidEmpleado)
+        ->where('tb_novedades.idNomina','=','1')->get(); //De aca me voy a traer los de la nomina sin liquidar, ojo tengo que ir cambiando el valor de ella
+
+        $diaslabor=0;
+        $valordiaslabor=0;
         $extrasdiurnas=0; // ejemplo
+        $valorextrasdiurnas=0;
         $extrasnocturnas=0;
+        $valorextrasnocturnas=0;
         $horasdominicales=0;
+        $valorhorasdominicales=0;
         $extrasdominicalesdiurnas=0;
+        $valorextrasdominicalesdiurnas=0;
         $extrasdominicalesnocturnas=0;
+        $valorextrasdominicalesnocturnas=0;
         $horasrecargos=0;
+        $valorhorasrecargos=0;
+        $primaextralegal=0;
+        $valorprimaextralegal=0;
         $bonificaciones=0; // valor bonif
+        $valorbonificaciones=0;
         $comisiones=0; // valor comisiones
+        $valorcomisiones=0;
         $viaticos=0; // valor viaticos
+        $valorviaticos=0;
         $nofactorsalarial=0;
+        $valornofactorsalarial=0;
         //hasta aca vienen de la tabla novedades
+
+        foreach($novedades as $guianovedades){ //apertura calculo por empleado de novedades
+            $novedadesid = $guianovedades->id;
+            $novedadesfechaNovedad = $guianovedades->fechaNovedad;
+            $novedadesconcepto = $guianovedades->concepto;
+            $novedadescantidad = $guianovedades->cantidad;
+            $novedadesunitario = $guianovedades->unitario;
+            $novedadesvalor = $guianovedades->valor;
+            $novedadesobservacion = $guianovedades->observacion;
+            $novedadestipologia = $guianovedades->tipologia;
+            $novedadesidEmpleado = $guianovedades->idEmpleado;
+            $novedadesidNomina = $guianovedades->idNomina;
+
+            if($novedadesconcepto==1){
+                $diaslabor=$diaslabor+$novedadescantidad;
+                $valordiaslabor=$valordiaslabor+$novedadesvalor;
+            }
+            else if($novedadesconcepto==2 and $novedadesobservacion=='Extra Diurna'){
+                $extrasdiurnas=$extrasdiurnas+$novedadescantidad;
+                $valorextrasdiurnas=$valorextrasdiurnas+$novedadesvalor;
+            }
+            else if($novedadesconcepto==2 and $novedadesobservacion=='Extra Nocturna'){
+                $extrasnocturnas=$extrasnocturnas+$novedadescantidad;
+                $valorextrasnocturnas=$valorextrasnocturnas+$novedadesvalor;
+            }
+            else if($novedadesconcepto==2 and $novedadesobservacion=='Hora Dominical o Festiva'){
+                $horasdominicales=$horasdominicales+$novedadescantidad;
+                $valorhorasdominicales=$valorhorasdominicales+$novedadesvalor;
+            }
+            else if($novedadesconcepto==2 and $novedadesobservacion=='Extra Dominical o Festiva Diurna'){
+                $extrasdominicalesdiurnas=$extrasdominicalesdiurnas+$novedadescantidad;
+                $valorextrasdominicalesdiurnas=$valorextrasdominicalesdiurnas+$novedadesvalor;
+            }
+            else if($novedadesconcepto==2 and $novedadesobservacion=='Extra Dominical o Festiva Nocturna'){
+                $extrasdominicalesnocturnas=$extrasdominicalesnocturnas+$novedadescantidad;
+                $valorextrasdominicalesnocturnas=$valorextrasdominicalesnocturnas+$novedadesvalor;
+            }
+            else if($novedadesconcepto==2 and $novedadesobservacion=='Recargos'){
+                $horasrecargos=$horasrecargos+$novedadescantidad;
+                $valorhorasrecargos=$valorhorasrecargos+$novedadesvalor;
+            }
+            else if($novedadesconcepto==3){
+                $primaextralegal=$primaextralegal+$novedadescantidad;
+                $valorprimaextralegal=$valorprimaextralegal+$novedadesvalor;
+            }
+            else if($novedadesconcepto==4){
+                $bonificaciones=$bonificaciones+$novedadescantidad;
+                $valorbonificaciones=$valorbonificaciones+$novedadesvalor;
+            }
+            else if($novedadesconcepto==5){
+                $comisiones=$comisiones+$novedadescantidad;
+                $valorcomisiones=$valorcomisiones+$novedadesvalor;
+            }
+            else if($novedadesconcepto==6){
+                $viaticos=$viaticos+$novedadescantidad;
+                $valorviaticos=$valorviaticos+$novedadesvalor;
+            }
+            else if($novedadesconcepto==7){
+                $nofactorsalarial=$nofactorsalarial+$novedadescantidad;
+                $valornofactorsalarial=$valornofactorsalarial+$novedadesvalor;
+            }
 
         //estos vienen de la tabla factores nomina
         $factores = Tb_factores_nomina::where('id','=','1')
@@ -184,7 +254,8 @@ class Tb_nominaController extends Controller
 
         $recargos=intval($horasrecargos*$multrecargos); //valor de los recargos
 
-        $devengados=($sueldocalculado+$horasextras+$recargos+$bonificaciones+$comisiones+$viaticos+$nofactorsalarial); //suma de conceptos de horas extras y demás menos el auxilio de transporte
+        //Variante importante, toma en cuenta los valores para los conceptos que no son extras
+        $devengados=($sueldocalculado+$horasextras+$recargos+$valorbonificaciones+$valorcomisiones+$valorviaticos+$valornofactorsalarial); //suma de conceptos de horas extras y demás menos el auxilio de transporte
 
         if($sueldobase<=(2*$salariominimo)){
             $auxilio=intval(($auxilioley/$diasbase)*$diaslabor);
@@ -194,7 +265,7 @@ class Tb_nominaController extends Controller
         }
 
         $devengadoauxilio=($devengados+$auxilio);
-        $ibcsalario=($devengados-$nofactorsalarial);
+        $ibcsalario=($devengados-$valornofactorsalarial);
 
         /*
             Validación ibc e ibc con tope
@@ -233,12 +304,14 @@ class Tb_nominaController extends Controller
             Fin Validación ibc e ibc con tope
         */
 
-        }
+            } // cierre calculo por empleado de novedades
+
+        } //cierre foreach vinculaciones
 
 
-        }
+        }  //cierre foreach nomina
 
-    }
+    } //cierre función cálculo
 
 //---------------------------------------------------------------------------------------------------//
 // Cálculo de nómina

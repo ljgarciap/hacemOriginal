@@ -407,7 +407,7 @@ import moment from 'moment';
                     console.log(error);
                 })
             },
-            eliminarNovedad(idNovedad) { //Busca el dato de la tipologia de sueldo
+            eliminarNovedad(idNovedad) { //Para revisar
 
                 var url='/novedades/eliminar?identificador=' + idNovedad;
                 // Make a request for a user with a given ID
