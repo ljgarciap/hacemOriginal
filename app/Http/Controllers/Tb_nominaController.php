@@ -108,12 +108,12 @@ class Tb_nominaController extends Controller
             ['tb_vinculaciones.fechaInicio', '<', $nominafechaInicio],
             ['tb_vinculaciones.fechaFin', '<', $nominafechaFin],
         ])
-        ->select('id','tipoVinculacion','salarioBasicoMensual','fechaInicio','tiempoContrato','fechaFin','idEmpleado','idNivelArl','idEps','idPensiones','estado')->get();
+        ->select('id','tipoContrato','tipoSalario','salarioBasicoMensual','fechaInicio','tiempoContrato','fechaFin','idEmpleado','idNivelArl','estado')->get();
 
          //dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
         foreach($vinculaciones as $guiavinculaciones){ //abre foreach vinculaciones
             $vinculacionesid = $guiavinculaciones->id;
-            $vinculacionestipoVinculacion = $guiavinculaciones->tipoVinculacion;
+            $vinculacionestipoVinculacion = $guiavinculaciones->tipoContrato;
             $vinculacionessalarioBasicoMensual = $guiavinculaciones->salarioBasicoMensual;
             $vinculacionesfechaInicio = $guiavinculaciones->fechaInicio;
             $vinculacionestiempoContrato = $guiavinculaciones->tiempoContrato;
@@ -310,6 +310,25 @@ class Tb_nominaController extends Controller
 
 
         }  //cierre foreach nomina
+
+    // muestra temporal de salida
+
+echo "El sueldo basico es ".$sueldobase."<br>";
+echo "Valor extras es ".$horasextras."<br>";
+echo "Cantidad extras diurnas es ".$extrasdiurnas."<br>";
+echo "Cantidad extras nocturnas es ".$extrasnocturnas."<br>";
+echo "Cantidad horas dominicales es ".$horasdominicales."<br>";
+echo "Cantidad extras diurnas dominicales es ".$extrasdominicalesdiurnas."<br>";
+echo "Cantidad extras nocturnas dominicales es ".$extrasdominicalesnocturnas."<br>";
+echo "Valor extras diurnas es ".$totalextrasdiurnas."<br>";
+echo "Valor extras nocturnas es ".$totalextrasnocturnas."<br>";
+echo "Valor horas dominicales es ".$totalhorasdominicales."<br>";
+echo "Valor extras diurnas dominicales es ".$totalextrasdominicalesdiurnas."<br>";
+echo "Valor extras nocturnas dominicales es ".$totalextrasdominicalesnocturnas."<br>";
+echo "Valor devengados es ".$devengados."<br>";
+echo "Valor devengado con auxilio es ".$devengadoauxilio."<br>";
+echo "Valor ibc salario ".$ibcsalario."<br>";
+echo "Valor ibc tope ".$ibccontope."<br>";
 
     } //cierre función cálculo
 

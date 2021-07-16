@@ -312,6 +312,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/vinculacion/selectvinculacion", "Tb_vinculacionesController@selectvinculacion");
 
         Route::get("/nomina", "Tb_nominaController@index");
+        Route::get("/nomina/calcular", "Tb_nominaController@calcularNomina");
         Route::post("/nomina/store", "Tb_nominaController@store");
         Route::put("/nomina/update", "Tb_nominaController@update");
         Route::put("/nomina/deactivate", "Tb_nominaController@deactivate");
