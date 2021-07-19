@@ -29,7 +29,7 @@
                 <tbody>
                     <tr v-for="producto in arrayProductos" :key="producto.id">
                         <td>
-                            <button type="button" @click="$emit('abrirmodal','gestionMateria','actualizar',producto)" class="btn btn-warning btn-sm">
+                            <button type="button" @click="$emit('abrirmodal','rela','actualizar',producto.id)" class="btn btn-warning btn-sm">
                             <i class="icon-pencil"></i>
                             </button> &nbsp;
                             <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',producto.id)">

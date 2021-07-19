@@ -105,7 +105,7 @@
                             <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
-                            <productossimulacion v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productossimulacion>
+                            <productossimulacion v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarProducto"></productossimulacion>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -184,6 +184,13 @@
                                             <span class="help-block">(*) Ingrese la cantidad a producir</span>
                                         </div>
                                     </div>
+                                    <div v-if="tipoModal==4" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Unidades</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="unidades" class="form-control" placeholder="Unidades a producir">
+                                            <span class="help-block">(*) Ingrese la cantidad a producir</span>
+                                        </div>
+                                    </div>
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="email-input">Tiempo</label>
                                         <div class="col-md-9">
@@ -191,7 +198,13 @@
                                             <span class="help-block">(*) Ingrese el tiempo de mano de obra en horas</span>
                                         </div>
                                     </div>
-
+                                     <div v-if="tipoModal==4" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="email-input">Tiempo</label>
+                                        <div class="col-md-9">
+                                            <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
+                                            <span class="help-block">(*) Ingrese el tiempo de mano de obra en horas</span>
+                                        </div>
+                                    </div>
                                     <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorSimulacion">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
@@ -212,6 +225,10 @@
                             <div v-if="tipoModal==2" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearRelacion()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==4" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarRelacion()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -347,20 +364,6 @@
                     console.log(error);
                 })
             },
-            eliminarProducto(){
-                /*
-                let me=this;
-                axios.put('/materiaprimaproducto/deactivate',{
-                    'id': this.id
-                }).then(function (response) {
-                me.forceRerender();
-                me.listarProducto(1,'','materiaprima');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-                */
-            },
             crearSimulacion(){
                 //valido con el metodo de validacion creado
                  if(this.validarSimulación()){
@@ -396,6 +399,60 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+            editarRelacion(){
+                let me=this;
+                axios.put('/rela/update',{
+                   'id': this.id,
+                   'idProducto': this.idProducto,
+                   'unidades': this.unidades,
+                   'tiempo': this.tiempo,
+                   'idSimulacion':this.identificador
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarSimulacion(1,'','simulacion');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+             eliminarProducto(id){
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+                })
+                swalWithBootstrapButtons.fire({
+                title: 'Quiere eliminar este producto?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Eliminar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    let me=this;
+                    axios.put('/rela/delete',{
+                        'id': id
+                    }).then(function (response) {
+                    me.forceRerender();    
+                    me.listarSimulacion(1,'','simulacion');
+                    swalWithBootstrapButtons.fire(
+                    'Producto eliminado!'
+                    )
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    me.listarSimulacion();
+                }
+                })
             },
             mostrarProductos(id){
                 this.listado=1;
@@ -472,6 +529,19 @@
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 break;
                             }
+                           case 'actualizar':{
+                            //console.log(data);
+                            this.modal=1;
+                            this.tipoModal=4;
+                            this.tituloModal='Editar productos';
+                            this.tipoAccion= 2;
+                            this.id=data['id'];
+                            this.idProducto=data['idProducto'];
+                            this.unidades=data['unidades'];
+                            this.tiempo=data['tiempo'];
+                            this.idSimulacion=data['idSimulacion'];
+                            break;
+                           }
                         }
                         this.listarPosibles(this.identificador);
                         break;

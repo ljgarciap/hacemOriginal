@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Facades\Redis;
 use App\Tb_inventario;
 use App\Tb_detalle_inventario;
 
@@ -193,8 +195,9 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/rela/listar", "Tb_rela_simulacionController@listar");
         Route::get("/rela/posibles", "Tb_rela_simulacionController@posibles");
         Route::post("/rela/store", "Tb_rela_simulacionController@store");
-        Route::get("/rela/selectArea", "Tb_rela_simulacionController@selectArea");
         Route::put("/rela/update", "Tb_rela_simulacionController@update");
+        Route::put("/rela/delete", "Tb_rela_simulacionController@delete");
+        Route::get("/rela/selectArea", "Tb_rela_simulacionController@selectArea");
 
         Route::get("/empleado", "Tb_empleadoController@index");
         Route::post("/empleado/store", "Tb_empleadoController@store");
@@ -339,6 +342,21 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/factores/actualizar", "Tb_factoresController@actualizar");
 
     });
+    /*Route::get('pruebaColas',function(){
+        logger('Guardar usuario en la tabla');
+        logger('Enviar email de bienvenida');
+        dispatch(function(){
+            sleep(2);
+            logger('Guardar imagen de perfil en storage tabla');
+        });
+        dispatch(function(){
+            sleep(3);
+            logger('Optimizar imagen en la tabla');
+        });
+        // event(new UserRegistered('Sergio'));
+        Artisan::call('schedule:run');
+        return  'Se Completo Exitosamente.';
+    });*/
     /*Route::get('noBorrar',function(){
         $tiempos = DB::table('tb_ciclos')
          ->where('tb_ciclos.idTiempoEstandar','=',2)

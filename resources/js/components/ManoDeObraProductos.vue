@@ -33,10 +33,9 @@
                                             <button type="button" @click="$emit('abrirmodal','gestionManoDeObra','actualizar',manodeobraproducto)" class="btn btn-warning btn-sm">
                                             <i class="icon-pencil"></i>
                                             </button> &nbsp;
-
-                                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmanodeobra',manodeobraproducto.id)">
+                                            <!--<button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmanodeobra',manodeobraproducto.id)">
                                                 <i class="icon-trash"></i>
-                                            </button>
+                                            </button>-->
 
                                         </td>
                                         <td v-text="manodeobraproducto.perfil"></td>

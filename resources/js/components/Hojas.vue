@@ -52,9 +52,9 @@
                                             <button type="button" @click="mostrarDetalle(producto.idHojaDeCosto,producto.producto,producto.idArea)" class="btn btn-success btn-sm">
                                             <i class="icon-eye"></i>
                                             </button> &nbsp;
-                                            <button type="button" class="btn btn-warning btn-sm">
+                                            <!--<button type="button" class="btn btn-warning btn-sm">
                                             <i class="icon-docs" ></i>
-                                            </button> &nbsp;
+                                            </button> &nbsp;-->
                                         </td>
                                         <td v-text="producto.producto"></td>
                                         <td v-text="producto.referencia"></td>
@@ -225,7 +225,24 @@
                                         </div>
                                     </div>
 
+                                     <div v-if="tipoModal==3" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad <br>
+                                            <sub><i>( Cantidad medida en: {{unidadBase}} )</i></sub></label>
+                                        <div class="col-md-9">
+                                            <input type="number" step="0.01" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
+                                            <span class="help-block">(*) Ingrese la cantidad de material en: {{unidadBase}}</span>
+                                        </div>
+                                    </div>
+
                                     <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Precio <br>
+                                            <sub><i>( Precio base: $ {{valorPrecioBase}} por {{unidadBase}} )</i></sub></label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="precioBase" class="form-control">
+                                            <span class="help-block">(*) Ingrese el precio</span>
+                                        </div>
+                                    </div>
+                                    <div v-if="tipoModal==3" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Precio <br>
                                             <sub><i>( Precio base: $ {{valorPrecioBase}} por {{unidadBase}} )</i></sub></label>
                                         <div class="col-md-9">
@@ -235,6 +252,15 @@
                                     </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo de costo</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="tipoDeCosto">
+                                                <option value="Directo">Costo Directo</option>
+                                                <option value="Indirecto">Costo Indirecto</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div v-if="tipoModal==3" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Tipo de costo</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="tipoDeCosto">
@@ -341,6 +367,9 @@
                             <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearMateriaPrimaProducto()">Guardar</button>
+                            </div>
+                            <div v-if="tipoModal==3" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarMateriaPrimaProducto()">Editar</button>
                             </div>
 
@@ -592,7 +621,7 @@
                         case 'actualizar':{
                             //console.log(data);
                             this.modal=1;
-                            this.tipoModal=1;
+                            this.tipoModal=3;
                             this.id=data['id'];
                             this.idMateriaPrima=data['idGestionMateria'];
                             this.gestionMateria=data['gestionMateria'];
