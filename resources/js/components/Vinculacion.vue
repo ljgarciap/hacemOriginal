@@ -386,6 +386,7 @@
             this.flag=event.target.value;
             if (this.flag == 1) {
                this.salarioBasicoMensual = '';
+               this.tipoContrato = 1;
             } else
             this.salarioBasicoMensual = 0;
             this.tipoContrato = 0;
