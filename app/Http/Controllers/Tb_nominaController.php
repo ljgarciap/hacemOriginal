@@ -515,6 +515,28 @@ echo "Valor ibc tope ".$ibccontope."<br>";
 echo "<hr><br>";
 echo "Valor a pagar ".$totalapagar."<br>";
 echo "<hr><br>";
+echo "Aporte salud ".$aportesalud."<br>";
+echo "<hr><br>";
+echo "Aporte pension ".$aportepension."<br>";
+echo "<hr><br>";
+echo "Aporte arl ".$aportearl."<br>";
+echo "<hr><br>";
+echo "Aporte sena ".$aportesena."<br>";
+echo "<hr><br>";
+echo "Aporte caja compensacion ".$cajacompensacion."<br>";
+echo "<hr><br>";
+echo "Aporte cesantias ".$cesantias."<br>";
+echo "<hr><br>";
+echo "Intereses cesantias ".$interescesantias."<br>";
+echo "<hr><br>";
+echo "Prima servicios ".$primaservicios."<br>";
+echo "<hr><br>";
+echo "Vacaciones ".$vacaciones."<br>";
+echo "<hr><br>";
+echo "Valor total costos ".$costototalmensual."<br>";
+echo "<hr><br>";
+
+/*
 echo "Valor de tabla extras diurnas es ".$total1extrasdiurnas."<br>";
 echo "Valor de tabla extras nocturnas es ".$total1extrasnocturnas."<br>";
 echo "Valor de tabla horas dominicales es ".$total1horasdominicales."<br>";
@@ -537,7 +559,7 @@ echo "Valor a pagar de tabla ".$totalapagar1."<br>";
 echo "<hr><br>";
 echo "Valor de tabla ibc salario ".$ibcsalario1."<br>";
 echo "Valor de tabla ibc tope ".$ibccontope1."<br>";
-
+*/
     } //cierre función cálculo
 
 //---------------------------------------------------------------------------------------------------//
