@@ -16,7 +16,7 @@ class CreateTbNivelesRiesgoTable extends Migration
         Schema::create('tb_niveles_riesgo', function (Blueprint $table) {
             $table->id();
             $table->string('nivelArl', 255);
-            $table->float('porcentajeNivelArl',10,2);
+            $table->float('porcentajeNivelArl',10,5);
         });
     }
 

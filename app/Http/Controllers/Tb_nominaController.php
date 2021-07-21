@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Tb_nomina;
 use App\Tb_vinculaciones;
 use App\Tb_novedades;
+use App\Tb_niveles_riesgo;
 use App\Tb_factores_nomina;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -157,8 +158,19 @@ class Tb_nominaController extends Controller
         $valorcomisiones=0;
         $viaticos=0; // valor viaticos
         $valorviaticos=0;
-        $nofactorsalarial=0;
+        $nofactorsalarial=0; // valor no factor
         $valornofactorsalarial=0;
+        // seccion descuentos
+        $sindicato=0; // valor sindicato
+        $valorsindicato=0;
+        $prestamos=0; // valor prestamos
+        $valorprestamos=0;
+        $embargos=0; // valor embargos
+        $valorembargos=0;
+        $otros=0; // valor otros
+        $valorotros=0;
+        $descuentosalud=0;
+        $descuentopension=0;
         //hasta aca vienen de la tabla novedades
 
         foreach($novedades as $guianovedades){ //apertura calculo por empleado de novedades
@@ -221,6 +233,22 @@ class Tb_nominaController extends Controller
                 $nofactorsalarial=$nofactorsalarial+$novedadescantidad;
                 $valornofactorsalarial=$valornofactorsalarial+$novedadesvalor;
             }
+            else if($novedadesconcepto==51){
+                $sindicato=$sindicato+$novedadescantidad;
+                $valorsindicato=$valorsindicato+$novedadesvalor;
+            }
+            else if($novedadesconcepto==52){
+                $prestamos=$prestamos+$novedadescantidad;
+                $valorprestamos=$valorprestamos+$novedadesvalor;
+            }
+            else if($novedadesconcepto==53){
+                $embargos=$embargos+$novedadescantidad;
+                $valorembargos=$valorembargos+$novedadesvalor;
+            }
+            else if($novedadesconcepto==54){
+                $otros=$otros+$novedadescantidad;
+                $valorotros=$valorotros+$novedadesvalor;
+            }
 
         //estos vienen de la tabla factores nomina
         $factores = Tb_factores_nomina::where('id','=','1')
@@ -238,24 +266,48 @@ class Tb_nominaController extends Controller
         }
         //hasta aca vienen de la tabla factores nomina
 
+        //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
+        $multdescuentosalud=0.04;
+        $multdescuentopension=0.04;
+        //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
+
         $topesalarios=(25*$salariominimo);
         $diasbase=30; // total dias mes
         $horasbase=(8*$diasbase);
         $sueldobasehora=($sueldobase/$horasbase);
         $sueldocalculado=(($sueldobase/$diasbase)*$diaslabor);
 
-        $totalextrasdiurnas=intval($extrasdiurnas*$multextrasdiurnas*$sueldobasehora); // ejemplo
-        $totalextrasnocturnas=intval($extrasnocturnas*$multextrasnocturnas*$sueldobasehora);
-        $totalhorasdominicales=intval($horasdominicales*$multhorasdominicales*$sueldobasehora);
-        $totalextrasdominicalesdiurnas=intval($extrasdominicalesdiurnas*$multextrasdominicalesdiurnas*$sueldobasehora);
-        $totalextrasdominicalesnocturnas=intval($extrasdominicalesnocturnas*$multextrasdominicalesnocturnas*$sueldobasehora);
+        $totalextrasdiurnas=intval($extrasdiurnas*$multextrasdiurnas*$sueldobasehora); // ejemplo calculado
+        $totalextrasnocturnas=intval($extrasnocturnas*$multextrasnocturnas*$sueldobasehora); // ejemplo calculado
+        $totalhorasdominicales=intval($horasdominicales*$multhorasdominicales*$sueldobasehora); // ejemplo calculado
+        $totalextrasdominicalesdiurnas=intval($extrasdominicalesdiurnas*$multextrasdominicalesdiurnas*$sueldobasehora); // ejemplo calculado
+        $totalextrasdominicalesnocturnas=intval($extrasdominicalesnocturnas*$multextrasdominicalesnocturnas*$sueldobasehora); // ejemplo calculado
 
-        $horasextras=$totalextrasdiurnas+$totalextrasnocturnas+$totalhorasdominicales+$totalextrasdominicalesdiurnas+$totalextrasdominicalesnocturnas; //suma de todas las tipologias de horas extras
+        $horasextras=$totalextrasdiurnas+$totalextrasnocturnas+$totalhorasdominicales+$totalextrasdominicalesdiurnas+$totalextrasdominicalesnocturnas;
+        //suma de todas las tipologias de horas extras ejemplo calculado
 
-        $recargos=intval($horasrecargos*$multrecargos); //valor de los recargos
+        //-------------------------------------------------------------------------------------------------------------------------//
+        $total1extrasdiurnas=intval($valorextrasdiurnas); // ejemplo novedad
+        $total1extrasnocturnas=intval($valorextrasnocturnas); // ejemplo novedad
+        $total1horasdominicales=intval($valorhorasdominicales); // ejemplo novedad
+        $total1extrasdominicalesdiurnas=intval($valorextrasdominicalesdiurnas); // ejemplo novedad
+        $total1extrasdominicalesnocturnas=intval($valorextrasdominicalesnocturnas); // ejemplo novedad
+
+        $horas1extras=$total1extrasdiurnas+$total1extrasnocturnas+$total1horasdominicales+$total1extrasdominicalesdiurnas+$total1extrasdominicalesnocturnas;
+        //suma de todas las tipologias de horas extras ejemplo novedad
+        //-------------------------------------------------------------------------------------------------------------------------//
+
+        $recargos=intval($horasrecargos*$multrecargos*$sueldobasehora); //valor de los recargos ejemplo calculado
 
         //Variante importante, toma en cuenta los valores para los conceptos que no son extras
-        $devengados=($sueldocalculado+$horasextras+$recargos+$valorbonificaciones+$valorcomisiones+$valorviaticos+$valornofactorsalarial); //suma de conceptos de horas extras y demás menos el auxilio de transporte
+        $devengados=($sueldocalculado+$horasextras+$recargos+$valorbonificaciones+$valorcomisiones+$valorviaticos+$valornofactorsalarial);
+        //suma de conceptos de horas extras y demás menos el auxilio de transporte ejemplo calculado
+
+        //-------------------------------------------------------------------------------------------------------------------------//
+        //Variante importante, toma en cuenta los valores para los conceptos que no son extras
+        $devengados1=($valordiaslabor+$horas1extras+$recargos+$valorbonificaciones+$valorcomisiones+$valorviaticos+$valornofactorsalarial);
+        //suma de conceptos de horas extras y demás menos el auxilio de transporte ejemplo novedad
+        //-------------------------------------------------------------------------------------------------------------------------//
 
         if($sueldobase<=(2*$salariominimo)){
             $auxilio=intval(($auxilioley/$diasbase)*$diaslabor);
@@ -264,11 +316,14 @@ class Tb_nominaController extends Controller
             $auxilio=0;
         }
 
-        $devengadoauxilio=($devengados+$auxilio);
-        $ibcsalario=($devengados-$valornofactorsalarial);
+        $devengadoauxilio=($devengados+$auxilio); // calculado
+        $ibcsalario=($devengados-$valornofactorsalarial); // calculado
+
+        $devengado1auxilio=($devengados1+$auxilio); //de novedad
+        $ibcsalario1=($devengados1-$valornofactorsalarial); //de novedad
 
         /*
-            Validación ibc e ibc con tope
+            Validación ibc e ibc con tope calculado
         */
 
         if($ibcsalario>0){ //si el ibcsalario tiene valor
@@ -301,9 +356,119 @@ class Tb_nominaController extends Controller
         }
 
         /*
-            Fin Validación ibc e ibc con tope
+            Fin Validación ibc e ibc con tope calculado
         */
 
+        //-----------------------------------------------------------------------------------------------//
+        /*
+            Validación ibc e ibc con tope novedades
+        */
+
+        if($ibcsalario1>0){ //si el ibcsalario tiene valor
+            if($ibcsalario1>$topesalarios){ // si el ibcsalario tiene valor y es mayor que los 25 salarios
+                $ibccontope1=$topesalarios;
+            }
+            else{ // else si el ibcsalario tiene valor y es menor que los 25 salarios
+
+                if($diaslabor<$diasbase){ // si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes
+
+                    if(($ibcsalario1/$diaslabor)>($salariominimo/$diasbase)){ // si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes y el ibcsalario es mas que el minimo
+                        $ibccontope1=$ibcsalario1;
+                    }
+                    else{ // else si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes y el ibcsalario es menos que el minimo
+                        $ibccontope1=(($salariominimo/$diasbase)*$diaslabor);
+                    }
+                }
+                else{ // else si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son los del mes
+                    if($ibcsalario1<$salariominimo){
+                        $ibccontope1=$salariominimo;
+                    }
+                    else{
+                        $ibccontope1=$ibcsalario1;
+                    }
+                }
+            }
+        }
+        else{ //else si el ibcsalario no tiene valor
+            $ibccontope1=0;
+        }
+
+        /*
+            Fin Validación ibc e ibc con tope novedades
+        */
+        //-----------------------------------------------------------------------------------------------//
+
+        //-------------------------------------------------------------------------------------------------------------------------//
+        //---------------------------------------------------------DEDUCIDOS-------------------------------------------------------//
+        //-------------------------------------------------------------------------------------------------------------------------//
+
+        //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
+        $multdescuentosalud=0.04;
+        $multdescuentopension=0.04;
+        //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
+
+        $descuentosalud=$ibccontope*$multdescuentosalud;
+        $descuentopension=$ibccontope*$multdescuentopension;
+
+        $descuentosalud1=$ibccontope1*$multdescuentosalud;
+        $descuentopension1=$ibccontope1*$multdescuentopension;
+
+        $deducidos=$valorsindicato+$valorprestamos+$valorembargos+$valorotros+$descuentosalud+$descuentopension; // ejemplo calculado
+
+        $deducidos1=$valorsindicato+$valorprestamos+$valorembargos+$valorotros+$descuentosalud1+$descuentopension1; // ejemplo novedad
+
+        //-------------------------------------------------------------------------------------------------------------------------//
+
+        //-----------------------------------------------------TOTAL A PAGAR-------------------------------------------------------//
+        //-------------------------------------------------------------------------------------------------------------------------//
+
+        $totalapagar=$devengadoauxilio-$deducidos; // ejemplo calculado
+
+        $totalapagar1=$devengado1auxilio-$deducidos1; // ejemplo novedad
+
+        //-------------------------------------------------------------------------------------------------------------------------//
+
+        //-----------------------------------------------------PARAFISCALES--------------------------------------------------------//
+        //-------------------------------------------------------------------------------------------------------------------------//
+
+        if($ibccontope>(10*$salariominimo)){ // si el ibc con tope es mayor que los 10 salarios
+            $aportesalud=($ibccontope*8.5);
+        }
+        else{
+            $aportesalud=0;
+        }
+
+        $aportepension=($ibccontope*0.12);
+
+        $riesgos = Tb_niveles_riesgo::where('id','=',$vinculacionesidNivelArl)
+        ->select('id','nivelArl','porcentajeNivelArl')->get();
+        foreach($riesgos as $riesgo){
+            $porcentajeNivelArl = $riesgo->porcentajeNivelArl;
+            }
+
+        $aportearl=($ibccontope*$porcentajeNivelArl); //valor riesgo arl segun vinculacion
+
+        if($ibccontope>(10*$salariominimo)){ // si el ibc con tope es mayor que los 10 salarios hay que preguntar si esta bien
+            $aportesena=($ibccontope*0.03);
+        }
+        else{
+            $aportesena=($ibcsalario*0.02);
+        }
+
+        $cajacompensacion=($ibccontope*0.04);
+
+        $basecalculo=($ibcsalario+$auxilio);
+
+        $cesantias=($basecalculo*0.0833);
+
+        $interescesantias=($cesantias*0.12);
+
+        $primaservicios=($basecalculo*0.0833);
+
+        $vacaciones=($ibcsalario*0.0417);
+
+        $costototalmensual=$aportesalud+$aportepension+$aportearl+$aportesena+$cajacompensacion+$cesantias+$interescesantias+$primaservicios+$vacaciones+$devengadoauxilio;
+        //-------------------------------------------------------------------------------------------------------------------------//
             } // cierre calculo por empleado de novedades
 
         } //cierre foreach vinculaciones
@@ -311,24 +476,67 @@ class Tb_nominaController extends Controller
 
         }  //cierre foreach nomina
 
-    // muestra temporal de salida
-
+// muestra temporal de salida
 echo "El sueldo basico es ".$sueldobase."<br>";
-echo "Valor extras es ".$horasextras."<br>";
+echo "<hr><br>";
 echo "Cantidad extras diurnas es ".$extrasdiurnas."<br>";
 echo "Cantidad extras nocturnas es ".$extrasnocturnas."<br>";
 echo "Cantidad horas dominicales es ".$horasdominicales."<br>";
 echo "Cantidad extras diurnas dominicales es ".$extrasdominicalesdiurnas."<br>";
 echo "Cantidad extras nocturnas dominicales es ".$extrasdominicalesnocturnas."<br>";
+echo "<hr><br>";
 echo "Valor extras diurnas es ".$totalextrasdiurnas."<br>";
 echo "Valor extras nocturnas es ".$totalextrasnocturnas."<br>";
 echo "Valor horas dominicales es ".$totalhorasdominicales."<br>";
 echo "Valor extras diurnas dominicales es ".$totalextrasdominicalesdiurnas."<br>";
 echo "Valor extras nocturnas dominicales es ".$totalextrasdominicalesnocturnas."<br>";
+echo "<hr><br>";
+echo "Valor extras es ".$horasextras."<br>";
+echo "<hr><br>";
+echo "Valor recargos es ".$recargos."<br>";
+echo "Valor bonificaciones es ".$valorbonificaciones."<br>";
+echo "Valor comisiones es ".$valorcomisiones."<br>";
+echo "Valor viaticos es ".$valorviaticos."<br>";
+echo "<hr><br>";
+echo "Valor descuentosalud es ".$descuentosalud."<br>";
+echo "<hr><br>";
+echo "Valor descuentopension es ".$descuentopension."<br>";
+echo "<hr><br>";
 echo "Valor devengados es ".$devengados."<br>";
+echo "<hr><br>";
+echo "Valor no factor salarial es ".$valornofactorsalarial."<br>";
+echo "<hr><br>";
 echo "Valor devengado con auxilio es ".$devengadoauxilio."<br>";
+echo "<hr><br>";
+echo "Valor deducidos es ".$deducidos."<br>";
+echo "<hr><br>";
 echo "Valor ibc salario ".$ibcsalario."<br>";
 echo "Valor ibc tope ".$ibccontope."<br>";
+echo "<hr><br>";
+echo "Valor a pagar ".$totalapagar."<br>";
+echo "<hr><br>";
+echo "Valor de tabla extras diurnas es ".$total1extrasdiurnas."<br>";
+echo "Valor de tabla extras nocturnas es ".$total1extrasnocturnas."<br>";
+echo "Valor de tabla horas dominicales es ".$total1horasdominicales."<br>";
+echo "Valor de tabla extras diurnas dominicales es ".$total1extrasdominicalesdiurnas."<br>";
+echo "Valor de tabla extras nocturnas dominicales es ".$total1extrasdominicalesnocturnas."<br>";
+echo "<hr><br>";
+echo "Valor de tabla extras es ".$horas1extras."<br>";
+echo "<hr><br>";
+echo "Valor devengados de tabla es ".$devengados1."<br>";
+echo "<hr><br>";
+echo "Valor devengado de tabla con auxilio es ".$devengadoauxilio."<br>";
+echo "<hr><br>";
+echo "Valor descuentosalud de tabla es ".$descuentosalud1."<br>";
+echo "<hr><br>";
+echo "Valor descuentopension de tabla es ".$descuentopension1."<br>";
+echo "<hr><br>";
+echo "Valor deducidos de tabla es ".$deducidos1."<br>";
+echo "<hr><br>";
+echo "Valor a pagar de tabla ".$totalapagar1."<br>";
+echo "<hr><br>";
+echo "Valor de tabla ibc salario ".$ibcsalario1."<br>";
+echo "Valor de tabla ibc tope ".$ibccontope1."<br>";
 
     } //cierre función cálculo
 
