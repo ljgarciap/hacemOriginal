@@ -101,26 +101,17 @@
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
-                                    <div  class="form-group row">
-
-                                            <label v-if="tipoModal==1" class="col-md-3 form-control-label" for="text-input">TIpo de nómina</label>
-
-                                            <div v-if="tipoModal==1" class="col-md-3">
-                                                <input type="radio" id="1" value="1" v-model="tipoNomina" checked>
-                                                <label for="liquidacion">Nómina Fija</label>
-                                            </div>
-
-                                            <div v-if="tipoModal==1" class="col-md-3">
-                                                <input type="radio" id="1" value="1" v-model="tipoNomina" checked>
-                                                <label for="liquidacion">Nómina Destajo</label>
-                                            </div>
-
-                                            <div v-if="tipoModal==1" class="col-md-3">
-                                                <input type="radio" id="1" value="1" v-model="tipoNomina" checked>
-                                                <label for="liquidacion">Nómina Total (Fijos y destajo)</label>
-                                            </div>
-
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo Salario</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="tipoNomina">
+                                                <option value="0" disabled>Seleccione un tipo de nómina</option>
+                                                <option value="1">Nómina Fija</option>
+                                                <option value="2">Nómina Destajo</option>
+                                                <option value="3">Nómina Total (Fijos y destajo)</option>
+                                            </select>
                                         </div>
+                                    </div>
 
                                     <div v-if="tipoModal==1"  class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Fecha Inicio</label>
@@ -129,12 +120,21 @@
                                             <span class="help-block">(*) Ingrese la fecha de inicio</span>
                                         </div>
                                     </div>
-                                    <div v-if="tipoModal==2"  class="form-group row">
+                                    <div v-if="tipoModal==1"  class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Fecha Fin</label>
                                         <div class="col-md-9">
                                             <input type="date" v-model="fechaFin" class="form-control" placeholder="Fecha de Fin">
                                             <span class="help-block">(*) Ingrese la fecha de fin</span>
                                         </div>
+                                    </div>
+                                    <div v-if="tipoModal==1" class="form-group row">
+
+                                        <label class="col-md-3 form-control-label" for="text-input">Observación</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="observacion" class="form-control" placeholder="Observación">
+                                            <span class="help-block">(*) Ingrese detalle de la nómina</span>
+                                        </div>
+
                                     </div>
                                     <div class="form-group row div-error" v-show="errorNomina">
                                         <div class="text-center text-error">
@@ -166,7 +166,9 @@
         data(){
             return{
                 idNomina:0,
+                tipoNomina:0,
                 id:'',
+                observacion:'Ninguna',
                 fechaInicio:'',
                 fechaFin:'',
                 estado:'',
@@ -254,9 +256,10 @@
                 //valido con el metodo de validacion creado
                 let me=this;
                 axios.post('/nomina/store',{
-                    'fechaInicio': this.fechaInicio
-                    //'estado': this.estado,
-                    //'dato': this.dato
+                    'fechaInicio': this.fechaInicio,
+                    'fechaFin': this.fechaFin,
+                    'tipoNomina': this.fechaFin,
+                    'observacion': this.observacion
                 }).then(function (response) {
                 me.cerrarModal();
                 me.listarNomina(1,'','nomina');

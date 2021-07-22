@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Tb_nomina;
 use App\Tb_vinculaciones;
 use App\Tb_novedades;
+use App\Tb_resumen_nomina;
 use App\Tb_niveles_riesgo;
 use App\Tb_factores_nomina;
 use Illuminate\Http\Request;
@@ -470,6 +471,58 @@ class Tb_nominaController extends Controller
         $costototalmensual=$aportesalud+$aportepension+$aportearl+$aportesena+$cajacompensacion+$cesantias+$interescesantias+$primaservicios+$vacaciones+$devengadoauxilio;
         //-------------------------------------------------------------------------------------------------------------------------//
             } // cierre calculo por empleado de novedades
+
+            $tb_resumen_nomina=new Tb_resumen_nomina();
+            $tb_resumen_nomina->fechaVinculacion=$vinculacionesfechaInicio;
+            $tb_resumen_nomina->tipoContrato=$vinculacionestipoVinculacion;
+            $tb_resumen_nomina->diasLaborados=$diaslabor;
+            $tb_resumen_nomina->valordiasLaborados=$valordiaslabor;
+            $tb_resumen_nomina->extrasDiurnas=$extrasdiurnas;
+            $tb_resumen_nomina->valorextrasDiurnas=$valorextrasdiurnas;
+            $tb_resumen_nomina->extrasNocturnas=$extrasnocturnas;
+            $tb_resumen_nomina->valorextrasNocturnas=$valorextrasnocturnas;
+            $tb_resumen_nomina->horasDominicales=$horasdominicales;
+            $tb_resumen_nomina->valorhorasDominicales=$valorhorasdominicales;
+            $tb_resumen_nomina->extrasDominicalesDiurnas=$extrasdominicalesdiurnas;
+            $tb_resumen_nomina->valorextrasDominicalesDiurnas=$valorextrasdominicalesdiurnas;
+            $tb_resumen_nomina->extrasDominicalesNocturnas=$extrasdominicalesnocturnas;
+            $tb_resumen_nomina->valorextrasDominicalesNocturnas=$valorextrasdominicalesnocturnas;
+            $tb_resumen_nomina->recargos=$horasrecargos;
+            $tb_resumen_nomina->valorrecargos=$recargos;
+            $tb_resumen_nomina->totalhorasExtras=$horasextras;
+            $tb_resumen_nomina->totalrecargos=$valorhorasrecargos;
+            $tb_resumen_nomina->totalExtrasyRecargos=$valorhorasrecargos+$horasextras;
+            $tb_resumen_nomina->primaExtralegal=$valorprimaextralegal;
+            $tb_resumen_nomina->bonificaciones=$valorbonificaciones;
+            $tb_resumen_nomina->comisiones=$valorcomisiones;
+            $tb_resumen_nomina->viaticos=$valorviaticos;
+            $tb_resumen_nomina->noFactorSalarial=$valornofactorsalarial;
+            $tb_resumen_nomina->devengadoSinAuxilio=$devengados;
+            $tb_resumen_nomina->auxilio=$auxilio;
+            $tb_resumen_nomina->devengadoConAuxilio=$devengadoauxilio;
+            $tb_resumen_nomina->ibcSalario=$ibcsalario;
+            $tb_resumen_nomina->ibcConTope=$ibccontope;
+            $tb_resumen_nomina->descuentoSalud=$descuentosalud;
+            $tb_resumen_nomina->descuentoPension=$descuentopension;
+            $tb_resumen_nomina->sindicato=$valorsindicato;
+            $tb_resumen_nomina->prestamos=$valorprestamos;
+            $tb_resumen_nomina->otros=$valorotros;
+            $tb_resumen_nomina->totalDeducido=$deducidos;
+            $tb_resumen_nomina->totalPagar=$totalapagar;
+            $tb_resumen_nomina->aporteSalud=$aportesalud;
+            $tb_resumen_nomina->aportePension=$aportepension;
+            $tb_resumen_nomina->aporteArl=$aportearl;
+            $tb_resumen_nomina->aporteSena=$aportesena;
+            $tb_resumen_nomina->aporteCaja=$cajacompensacion;
+            $tb_resumen_nomina->cesantias=$cesantias;
+            $tb_resumen_nomina->interesesCesantias=$interescesantias;
+            $tb_resumen_nomina->primaServicios=$primaservicios;
+            $tb_resumen_nomina->vacaciones=$vacaciones;
+            $tb_resumen_nomina->costoTotalMensual=$costototalmensual;
+            $tb_resumen_nomina->sueldoBasicoMensual=$sueldobase;
+            $tb_resumen_nomina->idEmpleado=$vinculacionesidEmpleado;
+            $tb_resumen_nomina->idNomina=$nominaid;
+            $tb_resumen_nomina->save();
 
         } //cierre foreach vinculaciones
 

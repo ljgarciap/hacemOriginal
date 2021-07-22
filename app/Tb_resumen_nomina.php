@@ -9,7 +9,19 @@ class Tb_resumen_nomina extends Model
     //
     protected $table = 'tb_resumen_nomina';
 
-    protected $fillable = ['sueldoBasicoMensual','idEmpleado','idNomina'];
+    protected $fillable = [
+        'fechaVinculacion','tipoContrato','diasLaborados','valordiasLaborados','extrasDiurnas',
+        'valorextrasDiurnas','extrasNocturnas','valorextrasNocturnas','horasDominicales',
+        'valorhorasDominicales','extrasDominicalesDiurnas','valorextrasDominicalesDiurnas',
+        'extrasDominicalesNocturnas','valorextrasDominicalesNocturnas','extrasDominicalesNocturnas',
+        'valorextrasDominicalesNocturnas','recargos','valorrecargos','totalhorasExtras','totalrecargos',
+        'totalExtrasyRecargos','primaExtralegal','bonificaciones','comisiones','viaticos',
+        'noFactorSalarial','devengadoSinAuxilio','auxilio','devengadoConAuxilio','ibcSalario',
+        'ibcConTope','descuentoSalud','descuentoPension','sindicato','prestamos','otros',
+        'totalDeducido','totalPagar','aporteSalud','aportePension','aporteArl','aporteSena',
+        'aporteCaja','cesantias','interesesCesantias','primaServicios','vacaciones',
+        'costoTotalMensual','sueldoBasicoMensual','idEmpleado','idNomina'
+    ];
 
     public $timestamps = false;
 }

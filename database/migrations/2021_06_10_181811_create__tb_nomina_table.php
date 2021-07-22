@@ -18,6 +18,7 @@ class CreateTbNominaTable extends Migration
             $table->date('fechaInicio');
             $table->date('fechaFin')->nullable();
             $table->char('tipo');
+            $table->string('observacion',255);
             $table->boolean('estado')->default(1);
         });
     }

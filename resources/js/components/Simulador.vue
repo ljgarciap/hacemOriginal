@@ -438,7 +438,7 @@
                     axios.put('/rela/delete',{
                         'id': id
                     }).then(function (response) {
-                    me.forceRerender();    
+                    me.forceRerender();
                     me.listarSimulacion(1,'','simulacion');
                     swalWithBootstrapButtons.fire(
                     'Producto eliminado!'

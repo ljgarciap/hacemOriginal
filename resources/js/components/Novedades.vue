@@ -407,6 +407,7 @@ import moment from 'moment';
                     console.log(error);
                 })
             },
+            /*
             eliminarNovedad(idNovedad) { //Para revisar
 
                 var url='/novedades/eliminar?identificador=' + idNovedad;
@@ -419,6 +420,44 @@ import moment from 'moment';
                 .catch(function (error) {
                     // handle error
                     console.log(error);
+                })
+            },
+            */
+            eliminarNovedad(idNovedad){
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+                })
+                swalWithBootstrapButtons.fire({
+                title: 'Quiere eliminar esta novedad?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Eliminar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    let me=this;
+                    axios.put('/novedades/eliminar',{
+                        'identificador': idNovedad
+                    }).then(function (response) {
+                    me.forceRerender();
+                    me.listarNovedades(1,'','fechaNovedad');
+                    swalWithBootstrapButtons.fire(
+                    'Novedad eliminada!'
+                    )
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    me.listarNovedades();
+                }
                 })
             },
             selectExtra(event) { //Busca el dato de la tipologia de sueldo

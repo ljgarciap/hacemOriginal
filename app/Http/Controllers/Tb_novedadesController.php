@@ -87,13 +87,12 @@ class Tb_novedadesController extends Controller
         ];
     }
 
-    public function eliminar(Request $request){
-        $buscar= $request->identificador;
-        DB::table('tb_novedades')->where('id', '=', $buscar)->delete();
-        return [
-            'mensaje' => "mensaje"
-        ];
-
+    public function eliminar(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $tb_novedades = Tb_novedades::findOrFail($request->identificador);
+        $tb_novedades->delete();
+        //return ['productos' => $productos];
     }
 
     public function store(Request $request){
