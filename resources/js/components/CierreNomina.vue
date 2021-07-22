@@ -32,8 +32,10 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
-                                        <th>Id</th>
-                                        <th>Fecha</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Fin</th>
+                                        <th>Observación</th>
+                                        <th>Tipo Nómina</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
@@ -57,8 +59,12 @@
                                         </template>
 
                                         </td>
-                                        <td v-text="nomina.id"></td>
                                         <td v-text="nomina.fecha"></td>
+                                        <td v-text="nomina.fechaFin"></td>
+                                        <td v-text="nomina.observacion"></td>
+                                        <td v-if="nomina.tipo==1">Nómina Fija</td>
+                                        <td v-if="nomina.tipo==2">Nómina Destajo</td>
+                                        <td v-if="nomina.tipo==3">Nómina Total (Fijos y destajo)</td>
                                         <td>
                                             <div v-if="nomina.estado">
                                             <span class="badge badge-success">Activo</span>
@@ -101,8 +107,8 @@
                             <div class="modal-body">
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Tipo Salario</label>
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo Nómina</label>
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="tipoNomina">
                                                 <option value="0" disabled>Seleccione un tipo de nómina</option>
@@ -255,10 +261,11 @@
             crearNomina(){
                 //valido con el metodo de validacion creado
                 let me=this;
+                console.log(this.tipoNomina);
                 axios.post('/nomina/store',{
                     'fechaInicio': this.fechaInicio,
                     'fechaFin': this.fechaFin,
-                    'tipoNomina': this.fechaFin,
+                    'tipo': this.tipoNomina,
                     'observacion': this.observacion
                 }).then(function (response) {
                 me.cerrarModal();

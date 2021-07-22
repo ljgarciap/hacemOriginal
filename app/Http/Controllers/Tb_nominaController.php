@@ -21,14 +21,14 @@ class Tb_nominaController extends Controller
 
         if ($buscar=='') {
             # Modelo::join('tablaqueseune',basicamente un on)
-            $nomina = Tb_nomina::select('tb_nomina.id','tb_nomina.fechaInicio as fecha','tb_nomina.fechaFin','tb_nomina.tipo','tb_nomina.estado')
-            ->where('tb_nomina.id', '>', '1')
+            $nomina = Tb_nomina::select('tb_nomina.id','tb_nomina.fechaInicio as fecha','tb_nomina.fechaFin','tb_nomina.tipo','tb_nomina.observacion','tb_nomina.estado')
+            ->where('tb_nomina.estado', '=', '1')
             ->orderBy('tb_nomina.id','desc')->paginate(5);
         }
         else {
             # code...
-            $nomina = Tb_nomina::select('tb_nomina.id','tb_nomina.fechaInicio as fecha','tb_nomina.fechaFin','tb_nomina.tipo','tb_nomina.estado')
-            ->where('tb_nomina.id', '>', '1')
+            $nomina = Tb_nomina::select('tb_nomina.id','tb_nomina.fechaInicio as fecha','tb_nomina.fechaFin','tb_nomina.tipo','tb_nomina.observacion','tb_nomina.estado')
+            ->where('tb_nomina.estado', '=', '1')
             ->where('tb_nomina.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_nomina.id','desc')->paginate(5);
 
@@ -52,6 +52,10 @@ class Tb_nominaController extends Controller
         if(!$request->ajax()) return redirect('/');
         $tb_nomina=new Tb_nomina();
         $tb_nomina->fechaInicio=$request->fechaInicio;
+        $tb_nomina->fechaFin=$request->fechaFin;
+        $tb_nomina->tipo=$request->tipo;
+        $tb_nomina->observacion=$request->observacion;
+        $tb_nomina->estado=1;
         //$tb_nomina->fechaFin=$request->fechaFin;
         $tb_nomina->save();
     }
@@ -471,7 +475,7 @@ class Tb_nominaController extends Controller
         $costototalmensual=$aportesalud+$aportepension+$aportearl+$aportesena+$cajacompensacion+$cesantias+$interescesantias+$primaservicios+$vacaciones+$devengadoauxilio;
         //-------------------------------------------------------------------------------------------------------------------------//
             } // cierre calculo por empleado de novedades
-
+/**/
             $tb_resumen_nomina=new Tb_resumen_nomina();
             $tb_resumen_nomina->fechaVinculacion=$vinculacionesfechaInicio;
             $tb_resumen_nomina->tipoContrato=$vinculacionestipoVinculacion;
