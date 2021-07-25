@@ -5,6 +5,7 @@
                     <li class="breadcrumb-item">Home</li>
                     <li class="breadcrumb-item active">Gestionar Nómina</li>
                 </ol>
+                <template v-if="listado==0">
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
 
@@ -43,21 +44,19 @@
 
                                     <tr v-for="nomina in arrayNomina" :key="nomina.id">
                                         <td>
-                                            <button type="button" @click="abrirModal('nomina','actualizar',nomina)" class="btn btn-warning btn-sm">
-                                            <i class="icon-pencil"></i>
-                                            </button> &nbsp;
-
-                                        <template v-if="nomina.estado">
-                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarNomina(nomina.id)">
+                                          <template v-if="nomina.estado==1">
+                                        <button type="button" @click="abrirModal('detalle','crear',nomina.id)" class="btn btn-warning btn-sm">
+                                            <i class="icon-cloud-upload"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" @click="eliminarNomina(nomina.id)">
                                                 <i class="icon-trash"></i>
+                                        </button>
+                                        </template>
+                                        <template v-if="nomina.estado==0">
+                                            <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(nomina.id)">
+                                                <i class="icon-magnifier"></i><span> Detalle</span>
                                             </button>
                                         </template>
-                                        <template v-else>
-                                            <button type="button" class="btn btn-success btn-sm" @click="activarNomina(nomina.id)">
-                                                <i class="icon-check"></i>
-                                            </button>
-                                        </template>
-
                                         </td>
                                         <td v-text="nomina.fecha"></td>
                                         <td v-text="nomina.fechaFin"></td>
@@ -94,6 +93,18 @@
                     </div>
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
+                </template>
+                <!-- Template para mostrar el detalle luego de generar -->
+                <template v-if="listado==2">
+                    <div class="container-fluid">
+                        <div class="card">
+                            <detallenomina v-bind:identificador="identificador" :key="componentKey"></detallenomina>
+                            <p align="right">
+                                <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
+                            </p>
+                        </div>
+                    </div>
+                </template>
                 <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -148,15 +159,17 @@
                                         </div>
                                     </div>
 
+                                    <!-- Si el tipo es 3 solo es modal para mostrar carga -->
+
+                                    <div v-if="tipoModal==3" class="carga">
+                                        <p><hr><h1>Generando, por favor espere...</h1><hr></p>
+                                    </div>
+
                                 </form>
                             </div>
                             <div v-if="tipoModal==1" class="modal-footer">
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearNomina()">Guardar</button>
-                            </div>
-                            <div v-if="tipoModal==2" class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                            <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarNomina()">Editar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -168,17 +181,23 @@
 </template>
 
 <script>
+    import detallenomina from '../components/DetalleNomina';
     export default {
+        components: {
+            detallenomina
+        },
         data(){
             return{
                 idNomina:0,
-                tipoNomina:0,
+                identificador:0,
                 id:'',
+                tipoNomina:0,
                 observacion:'Ninguna',
                 fechaInicio:'',
                 fechaFin:'',
                 estado:'',
                 arrayNomina : [],
+                listado:0,
                 modal : 0,
                 tituloModal : '',
                 tipoModal : 0,
@@ -195,7 +214,8 @@
                 },
                 offset : 3,
                 criterio : 'fecha',
-                buscar : ''
+                buscar : '',
+                componentKey:0
             }
         },
         computed:{
@@ -275,93 +295,63 @@
                     console.log(error);
                 });
             },
-            editarNomina(){
+            eliminarNomina(id){
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+                })
+                swalWithBootstrapButtons.fire({
+                title: 'Al eliminar esta nomina se eliminaran las novedades asociadas a esta?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desea eliminar esta nomina!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    let me=this;
+                    axios.put('/nomina/delete',{
+                        'id': id
+                    }).then(function (response) {
+                    me.forceRerender();
+                    me.listarNomina(1,'','nomina');
+                    swalWithBootstrapButtons.fire(
+                    'La nomina y las novedades asociadas han sido eliminadas!'
+                    )
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    me.listarNomina();
+                }
+                })
+            },
+            mostrarDetalle(id){
+                this.listado=2;
+                this.identificador=id;
+            },
+            generarDetalle(id){
+                this.identificador=id;
                 let me=this;
-                axios.put('/nomina/update',{
-                    'id': this.idNomina,
-                     'fechaFin': this.fechaFin
-                    //'estado': this.estado,
-                    //'dato': this.dato
+                axios.post('/nomina/estado',{
+                    'id': this.identificador
                 }).then(function (response) {
-                me.cerrarModal();
-                me.listarNomina(1,'','nomina');
+                me.cerrarModal('0');
+                me.forceRerender();
+                me.listarNomina(1,'','');
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            desactivarNomina(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-                swalWithBootstrapButtons.fire({
-                title: 'Está seguro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desactivar!',
-                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/nomina/deactivate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarNomina(1,'','nomina');
-                    swalWithBootstrapButtons.fire(
-                    'Nomina desactivada!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarNomina();
-                }
-                })
-            },
-            activarNomina(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este registro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Activar!',
-                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/nomina/activate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarNomina(1,'','nomina');
-                    swalWithBootstrapButtons.fire(
-                    'Nomina activada!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarNomina();
-                }
-                })
+            ocultarDetalle(){
+                this.listado=0;
             },
             cerrarModal(){
                 this.modal=0;
@@ -372,7 +362,7 @@
                 this.errorMensaje = [],
                 this.forceRerender();
             },
-            abrirModal(modelo, accion, data=[]){
+            abrirModal(modelo, accion,identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
                 case "nomina":
@@ -386,19 +376,24 @@
                             this.tipoAccion= 1;
                             break;
                         }
-                        case 'actualizar':{
-                            //console.log(data);
-                            this.modal=1;
-                            this.tituloModal='Editar nomina';
-                            this.tipoModal=2;
-                            this.tipoAccion= 2;
-                            this.idNomina=data['id'];
-                            this.fechaFin=data['fechaFin'];
-                            break;
-                        }
                     }
+                    break;
                 }
-            }
+                case "detalle":
+                    {
+                        switch (accion) {
+                            case 'crear':{
+                                this.modal=1;
+                                this.tipoModal=3; //carga tipos de campos y footers
+                                this.tituloModal='Generando, por favor espere...';
+                                this.identificador=identificador;
+                                break;
+                            }
+                        }
+                        this.generarDetalle(this.identificador);
+                        break;
+                    }
+                 }
             }
         },
         mounted() {

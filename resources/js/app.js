@@ -130,6 +130,7 @@ Vue.component('ciclos', require('./components/Ciclos.vue').default);
 Vue.component('vinculacion', require('./components/Vinculacion.vue').default);
 Vue.component('novedades', require('./components/Novedades.vue').default);
 Vue.component('cierrenomina', require('./components/CierreNomina.vue').default);
+Vue.component('detallenomina', require('./components/DetalleNomina.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

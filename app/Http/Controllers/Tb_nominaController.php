@@ -69,8 +69,27 @@ class Tb_nominaController extends Controller
         $tb_nomina->estado=1;
         $tb_nomina->save();
     }
-
-    public function deactivate(Request $request)
+    public function delete(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        // busco el padre
+        $tb_nomina=Tb_nomina::findOrFail($request->id);
+        // busco el hijo y lo borro
+        $tb_novedades=Tb_novedades::findOrFail($request->id);
+        $tb_novedades->idNomina=$request->idNomina;
+        $tb_novedades->delete();
+        // borro el padre
+        $tb_nomina->delete();
+        //return ['nomina' => $nomina];
+    }
+    public function estado(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $tb_nomina=Tb_nomina::findOrFail($request->id);
+        $tb_nomina->estado=0;
+        $tb_nomina->save();
+    }
+    /*public function deactivate(Request $request)
     {
         if(!$request->ajax()) return redirect('/');
         $tb_nomina=Tb_nomina::findOrFail($request->id);
@@ -84,7 +103,7 @@ class Tb_nominaController extends Controller
         $tb_nomina=Tb_nomina::findOrFail($request->id);
         $tb_nomina->estado=1;
         $tb_nomina->save();
-    }
+    }*/
 
 //---------------------------------------------------------------------------------------------------//
 // Cálculo de nómina

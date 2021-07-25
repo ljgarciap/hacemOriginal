@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Redis;
+use App\Jobs\Prueba;
 use App\Tb_inventario;
 use App\Tb_detalle_inventario;
 
@@ -319,7 +320,10 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/nomina/store", "Tb_nominaController@store");
         Route::put("/nomina/update", "Tb_nominaController@update");
         Route::put("/nomina/deactivate", "Tb_nominaController@deactivate");
+        Route::put("/nomina/delete", "Tb_nominaController@delete");
         Route::put("/nomina/activate", "Tb_nominaController@activate");
+        Route::post("/nomina/estado", "Tb_nominaController@estado");
+        Route::get("/nomina/listardetalle", "Tb_detalle_nominaController@listardetalle");
 
         Route::get("/novedades", "Tb_novedadesController@index");
         Route::post("/novedades/store", "Tb_novedadesController@store");
@@ -342,8 +346,8 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/factores/actualizar", "Tb_factoresController@actualizar");
 
     });
-    /*Route::get('pruebaColas',function(){
-        logger('Guardar usuario en la tabla');
+    Route::get('pruebaColas',function(){
+        /*logger('Guardar usuario en la tabla');
         logger('Enviar email de bienvenida');
         dispatch(function(){
             sleep(2);
@@ -352,11 +356,11 @@ Route::group(['middleware' => ['guest']], function () {
         dispatch(function(){
             sleep(3);
             logger('Optimizar imagen en la tabla');
-        });
-        // event(new UserRegistered('Sergio'));
-        Artisan::call('schedule:run');
+        });*/
+        /*Artisan::call('prueba:cola');*/
+        Prueba::dispatch('Esto es una cola de prueba');
         return  'Se Completo Exitosamente.';
-    });*/
+    });
     /*Route::get('noBorrar',function(){
         $tiempos = DB::table('tb_ciclos')
          ->where('tb_ciclos.idTiempoEstandar','=',2)
