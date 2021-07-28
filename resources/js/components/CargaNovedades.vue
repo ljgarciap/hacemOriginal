@@ -1,8 +1,7 @@
 <template>
     <main class="minimo">
-
+                
                     <!-- Ejemplo de tabla Listado -->
-
                     <div class="card">
                        <div class="card-header">
                             <i class="fa fa-align-justify"></i> Novedades
@@ -281,6 +280,7 @@
                 <!--Fin del modal-->
     </main>
 </template>
+
 <script>
 import moment from 'moment';
     export default {

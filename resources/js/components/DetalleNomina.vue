@@ -20,6 +20,8 @@
                                 <thead>
                                     <tr>
                                         <th>Empleado</th>
+                                        <th>Proceso</th>
+                                        <th>Perfil</th>
                                         <th>Salario Basico</th>
                                         <th>Total de Ingreso</th>
                                         <th>Total deducido</th>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Tb_nomina;
 use App\Tb_resumen_nomina;
 use App\Tb_empleado;
+use App\proceso;
+use App\Perfil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

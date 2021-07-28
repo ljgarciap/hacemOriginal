@@ -105,12 +105,10 @@
                 <!-- Template para mostrar la carga de novedades -->
                 <template v-if="listado==1">
                     <div class="container-fluid">
-                        <div class="card">
                             <carganovedades v-bind:identificador="identificador" :key="componentKey"></carganovedades>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
-                        </div>
                     </div>
                 </template>
                 <!-- Template para mostrar el detalle luego de generar -->
