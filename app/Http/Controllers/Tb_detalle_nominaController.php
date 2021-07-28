@@ -37,5 +37,4 @@ class Tb_detalle_nominaController extends Controller
             'detalles' =>  $detalles
         ];
     }
-    // Aca termina el detalle del tiempo estandar
 }

@@ -125,7 +125,7 @@
                 console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayDetalles=respuesta.detalles;
+                me.arrayDetalles=respuesta.detalles.data;
                 })
                 .catch(function (error) {
                     // handle error
