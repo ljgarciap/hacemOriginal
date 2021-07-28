@@ -1,6 +1,6 @@
 <template>
     <main class="minimo">
-                <div class="container-fluid">
+
                     <!-- Ejemplo de tabla Listado -->
 
                     <div class="card">
@@ -92,7 +92,6 @@
                         </div>
                     </div>
                     <!-- Fin ejemplo de tabla Listado -->
-                </div>
 
                 <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
