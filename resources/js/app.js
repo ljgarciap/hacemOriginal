@@ -129,6 +129,7 @@ Vue.component('pds', require('./components/Pds.vue').default);
 Vue.component('ciclos', require('./components/Ciclos.vue').default);
 Vue.component('vinculacion', require('./components/Vinculacion.vue').default);
 Vue.component('novedades', require('./components/Novedades.vue').default);
+Vue.component('carganovedades', require('./components/CargaNovedades.vue').default);
 Vue.component('cierrenomina', require('./components/CierreNomina.vue').default);
 Vue.component('detallenomina', require('./components/DetalleNomina.vue').default);
 /**

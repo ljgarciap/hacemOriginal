@@ -22,13 +22,11 @@ class Tb_nominaController extends Controller
         if ($buscar=='') {
             # Modelo::join('tablaqueseune',basicamente un on)
             $nomina = Tb_nomina::select('tb_nomina.id','tb_nomina.fechaInicio as fecha','tb_nomina.fechaFin','tb_nomina.tipo','tb_nomina.observacion','tb_nomina.estado')
-            ->where('tb_nomina.estado', '=', '1')
             ->orderBy('tb_nomina.id','desc')->paginate(5);
         }
         else {
             # code...
             $nomina = Tb_nomina::select('tb_nomina.id','tb_nomina.fechaInicio as fecha','tb_nomina.fechaFin','tb_nomina.tipo','tb_nomina.observacion','tb_nomina.estado')
-            ->where('tb_nomina.estado', '=', '1')
             ->where('tb_nomina.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('tb_nomina.id','desc')->paginate(5);
 
@@ -89,21 +87,6 @@ class Tb_nominaController extends Controller
         $tb_nomina->estado=0;
         $tb_nomina->save();
     }
-    /*public function deactivate(Request $request)
-    {
-        if(!$request->ajax()) return redirect('/');
-        $tb_nomina=Tb_nomina::findOrFail($request->id);
-        $tb_nomina->estado=0;
-        $tb_nomina->save();
-    }
-
-    public function activate(Request $request)
-    {
-        if(!$request->ajax()) return redirect('/');
-        $tb_nomina=Tb_nomina::findOrFail($request->id);
-        $tb_nomina->estado=1;
-        $tb_nomina->save();
-    }*/
 
 //---------------------------------------------------------------------------------------------------//
 // Cálculo de nómina
@@ -137,6 +120,7 @@ class Tb_nominaController extends Controller
 
          //dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
         foreach($vinculaciones as $guiavinculaciones){ //abre foreach vinculaciones
+
             $vinculacionesid = $guiavinculaciones->id;
             $vinculacionestipoVinculacion = $guiavinculaciones->tipoContrato;
             $vinculacionessalarioBasicoMensual = $guiavinculaciones->salarioBasicoMensual;
@@ -153,12 +137,8 @@ class Tb_nominaController extends Controller
 
         //estos vienen de la tabla novedades
 
-        //debo evaluar primero el almacenamiento de novedades... en este punto que apenas voy a sacar la lista de novedades estoy haciendo un cambio
-        //en la estructura de la tabla para tomar en cuenta cantidades y unidades aun no se valida correctamente si voy a traer un solo espacio calculado
-        //de la tabla y validar contra ella al momento de ingresar o capturo datos y valido desde este punto.
-
         $novedades = Tb_novedades::where('tb_novedades.idEmpleado','=',$vinculacionesidEmpleado)
-        ->where('tb_novedades.idNomina','=','1')->get(); //De aca me voy a traer los de la nomina sin liquidar, ojo tengo que ir cambiando el valor de ella
+        ->where('tb_novedades.idNomina','=',$nominaid)->get(); //De aca me voy a traer los de la nomina sin liquidar, ojo tengo que ir cambiando el valor de ella
 
         $diaslabor=0;
         $valordiaslabor=0;
@@ -636,6 +616,11 @@ echo "<hr><br>";
 echo "Valor de tabla ibc salario ".$ibcsalario1."<br>";
 echo "Valor de tabla ibc tope ".$ibccontope1."<br>";
 */
+
+        $tb_cierre_nomina=Tb_nomina::findOrFail($nominaid);
+        $tb_cierre_nomina->estado=0;
+        $tb_cierre_nomina->save();
+
     } //cierre función cálculo
 
 //---------------------------------------------------------------------------------------------------//

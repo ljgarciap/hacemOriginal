@@ -44,13 +44,21 @@
 
                                     <tr v-for="nomina in arrayNomina" :key="nomina.id">
                                         <td>
-                                          <template v-if="nomina.estado==1">
+                                        <template v-if="nomina.estado==1">
+                                        <button type="button" class="btn btn-success btn-sm" @click="cargaNovedad(nomina.id)">
+                                                <i class="icon-plus"></i><span> Novedades</span>
+                                        </button>
                                         <button type="button" @click="abrirModal('detalle','crear',nomina.id)" class="btn btn-warning btn-sm">
                                             <i class="icon-cloud-upload"></i>
                                         </button>
                                         <button type="button" class="btn btn-danger btn-sm" @click="eliminarNomina(nomina.id)">
                                                 <i class="icon-trash"></i>
                                         </button>
+                                        <!--este boton va en el if, esta aca solo para probar-->
+                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(nomina.id)">
+                                                <i class="icon-magnifier"></i><span> Detalle</span>
+                                        </button>
+                                        <!--este boton va en el if, esta aca solo para probar-->
                                         </template>
                                         <template v-if="nomina.estado==0">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(nomina.id)">
@@ -66,10 +74,10 @@
                                         <td v-if="nomina.tipo==3">Nómina Total (Fijos y destajo)</td>
                                         <td>
                                             <div v-if="nomina.estado">
-                                            <span class="badge badge-success">Activo</span>
+                                            <span class="badge badge-success">Activa</span>
                                             </div>
                                             <div v-else>
-                                            <span class="badge badge-danger">Desactivado</span>
+                                            <span class="badge badge-danger">Cerrada</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -93,6 +101,17 @@
                     </div>
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
+                </template>
+                <!-- Template para mostrar la carga de novedades -->
+                <template v-if="listado==1">
+                    <div class="container-fluid">
+                        <div class="card">
+                            <carganovedades v-bind:identificador="identificador" :key="componentKey"></carganovedades>
+                            <p align="right">
+                                <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
+                            </p>
+                        </div>
+                    </div>
                 </template>
                 <!-- Template para mostrar el detalle luego de generar -->
                 <template v-if="listado==2">
@@ -182,10 +201,13 @@
 
 <script>
     import detallenomina from '../components/DetalleNomina';
+    import carganovedades from '../components/CargaNovedades';
     export default {
         components: {
-            detallenomina
+            detallenomina,
+            carganovedades
         },
+
         data(){
             return{
                 idNomina:0,
@@ -304,7 +326,7 @@
                 buttonsStyling: false
                 })
                 swalWithBootstrapButtons.fire({
-                title: 'Al eliminar esta nomina se eliminaran las novedades asociadas a esta?',
+                title: 'Al eliminar esta nomina se eliminaran las novedades asociadas a esta, está seguro?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desea eliminar esta nomina!',
@@ -332,6 +354,10 @@
                 }
                 })
             },
+            cargaNovedad(id){
+                this.listado=1;
+                this.identificador=id;
+            },
             mostrarDetalle(id){
                 this.listado=2;
                 this.identificador=id;
@@ -339,7 +365,7 @@
             generarDetalle(id){
                 this.identificador=id;
                 let me=this;
-                axios.post('/nomina/estado',{
+                axios.post('/nomina/calcular',{
                     'id': this.identificador
                 }).then(function (response) {
                 me.cerrarModal('0');
