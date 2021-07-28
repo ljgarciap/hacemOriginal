@@ -1,6 +1,6 @@
 <template>
     <main class="minimo">
-                
+
                     <!-- Ejemplo de tabla Listado -->
                     <div class="card">
                        <div class="card-header">
@@ -21,8 +21,8 @@
                                         <option value="fechaNovedad">Fecha</option>
                                         <option value="empleado">Fecha</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarNovedades(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarNovedades(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarNovedades(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarNovedades(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -78,13 +78,13 @@
                             <nav>
                                 <ul class="pagination">
                                     <li class="page-item" v-if="pagination.current_page > 1">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio,identificador)">Ant</a>
                                     </li>
                                     <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio,identificador)" v-text="page"></a>
                                     </li>
                                     <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio,identificador)">Sig</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -401,22 +401,6 @@ import moment from 'moment';
                     console.log(error);
                 })
             },
-            /*
-            eliminarNovedad(idNovedad) { //Para revisar
-
-                var url='/novedades/eliminar?identificador=' + idNovedad;
-                // Make a request for a user with a given ID
-                axios.post(url).then(function (response) {
-                    // handle success
-                this.forceRerender();
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            */
             eliminarNovedad(idNovedad){
                 const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
@@ -439,7 +423,7 @@ import moment from 'moment';
                         'identificador': idNovedad
                     }).then(function (response) {
                     me.forceRerender();
-                    me.listarNovedades(1,'','fechaNovedad');
+                    me.listarNovedades(1,'','fechaNovedad',this.identificador);
                     swalWithBootstrapButtons.fire(
                     'Novedad eliminada!'
                     )
@@ -506,9 +490,9 @@ import moment from 'moment';
                     console.log(error);
                 })
             },
-            listarNovedades(page,buscar,criterio){
+            listarNovedades(page,buscar,criterio,identificador){
                 let me=this;
-                var url='/novedades?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/novedades/gen?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + this.identificador;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -525,12 +509,12 @@ import moment from 'moment';
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
             },
-            cambiarPagina(page,buscar,criterio){
+            cambiarPagina(page,buscar,criterio,identificador){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarNovedades(page,buscar,criterio);
+                me.listarNovedades(page,buscar,criterio,this.identificador);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -559,8 +543,8 @@ import moment from 'moment';
                     'unitario':this.unitario,
                     'observacion':this.observacion,
                     'tipologia':this.tipologia,
-                    'idEmpleado':this.idEmpleado
-                    //'idNomina':this.idNomina
+                    'idEmpleado':this.idEmpleado,
+                    'idNomina':this.identificador
                 }).then(function (response) {
                 console.log('Enviados valores');
                 me.cerrarModal('0');
@@ -618,7 +602,7 @@ import moment from 'moment';
                 this.errorMensaje=[];
                 this.tituloModal='';
 
-                this.listarNovedades(1,'','fechaNovedad');
+                this.listarNovedades(1,'','fechaNovedad',this.identificador);
             },
             abrirModal(modelo, accion, identificador){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
@@ -634,7 +618,7 @@ import moment from 'moment';
                                 this.desplegable= 1; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fechaNovedad= moment().format('YYYY-MM-DD');
-                                this.listarNovedades(1,'','fechaNovedad');
+                                this.listarNovedades(1,'','fechaNovedad',this.identificador);
                                 break;
                             }
                             case 'crears':{
@@ -645,7 +629,7 @@ import moment from 'moment';
                                 this.desplegable= 2; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fechaNovedad= moment().format('YYYY-MM-DD');
-                                this.listarNovedades(1,'','fechaNovedad');
+                                this.listarNovedades(1,'','fechaNovedad',this.identificador);
                                 break;
                             }
                         }
@@ -656,8 +640,10 @@ import moment from 'moment';
             }
         },
         mounted() {
-            this.listarNovedades(1,'','fechaNovedad');
+            this.listarNovedades(1,'','fechaNovedad',this.identificador);
             this.listarEmpleados();
+            console.log('Valor identificador recibido');
+            console.log(this.identificador);
         }
     }
 </script>

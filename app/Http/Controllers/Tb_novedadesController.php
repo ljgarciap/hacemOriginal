@@ -21,6 +21,7 @@ class Tb_novedadesController extends Controller
         //if(!$request->ajax()) return redirect('/');
         $buscar= $request->buscar;
         $criterio= $request->criterio;
+        $identificador= $request->identificador;
 
         if ($buscar=='') {
             $novedades = Tb_novedades::join("tb_empleado","tb_novedades.idEmpleado","=","tb_empleado.id")
@@ -39,6 +40,45 @@ class Tb_novedadesController extends Controller
             'tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
             ->orderBy('tb_novedades.id','desc')
             ->where('tb_nomina.estado','=','1')
+            ->where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
+        }
+
+        return [
+            'pagination' => [
+                'total'         =>$novedades->total(),
+                'current_page'  =>$novedades->currentPage(),
+                'per_page'      =>$novedades->perPage(),
+                'last_page'     =>$novedades->lastPage(),
+                'from'          =>$novedades->firstItem(),
+                'to'            =>$novedades->lastItem(),
+            ],
+                'novedades' => $novedades
+        ];
+    }
+    public function index2(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $buscar= $request->buscar;
+        $criterio= $request->criterio;
+        $identificador= $request->identificador;
+
+        if ($buscar=='') {
+            $novedades = Tb_novedades::join("tb_empleado","tb_novedades.idEmpleado","=","tb_empleado.id")
+            ->join("tb_nomina","tb_novedades.idNomina","=","tb_nomina.id")
+            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.cantidad','tb_novedades.unitario',
+            'tb_novedades.observacion','tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
+            'tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+            ->orderBy('tb_novedades.id','desc')
+            ->where('tb_nomina.id','=',$identificador)->paginate(5);
+        }
+        else {
+            $novedades = Tb_novedades::join("tb_empleado","tb_novedades.idEmpleado","=","tb_empleado.id")
+            ->join("tb_nomina","tb_novedades.idNomina","=","tb_nomina.id")
+            ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.cantidad','tb_novedades.unitario',
+            'tb_novedades.observacion','tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
+            'tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+            ->orderBy('tb_novedades.id','desc')
+            ->where('tb_nomina.id','=',$identificador)
             ->where($criterio, 'like', '%'. $buscar . '%')->orderBy('id','desc')->paginate(5);
         }
 
