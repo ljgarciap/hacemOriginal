@@ -71,13 +71,17 @@ class Tb_nominaController extends Controller
     {
         if(!$request->ajax()) return redirect('/');
         // busco el padre
-        $tb_nomina=Tb_nomina::findOrFail($request->id);
+        $tb_nomina=Tb_nomina::find($request->id);
         // busco el hijo y lo borro
-        $tb_novedades=Tb_novedades::findOrFail($request->id);
+        if($tb_nomina){
+        $tb_novedades=Tb_novedades::where('idNomina',$request->id);
+        if($tb_novedades){
         $tb_novedades->idNomina=$request->idNomina;
         $tb_novedades->delete();
+        }
         // borro el padre
         $tb_nomina->delete();
+        }
         //return ['nomina' => $nomina];
     }
     public function estado(Request $request)

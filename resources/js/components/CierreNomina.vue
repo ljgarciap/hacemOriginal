@@ -339,7 +339,7 @@
                     buttonsStyling: false
                      })
                     swalWithBootstrapButtons1.fire({
-                    title: 'Esta seguro de eliminar la nomina y las novedades asociadas no se podran restaurar los cambios?',
+                    title: 'Esta seguro de eliminar la nomina y las novedades asociadas? no se podran restaurar los cambios!',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: '<i class="fa fa-check fa-2x"></i> Esta seguro de eliminar la nomina!',
@@ -347,7 +347,8 @@
                     reverseButtons: true
                 })
                 .then((result1)=>{
-                 if(result1.value){
+                   //alert(result1.value);
+                 if(result1.value && result.value) {
                     let me=this;
                     axios.put('/nomina/delete',{
                         'id': id
