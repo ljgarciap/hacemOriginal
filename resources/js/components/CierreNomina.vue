@@ -330,8 +330,24 @@
                 confirmButtonText: '<i class="fa fa-check fa-2x"></i> Desea eliminar esta nomina!',
                 cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
                 reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
+                }).then((result) =>{
+                    const swalWithBootstrapButtons1 = Swal.mixin({
+                    customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                     })
+                    swalWithBootstrapButtons1.fire({
+                    title: 'Esta seguro de eliminar la nomina y las novedades asociadas no se podran restaurar los cambios?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fa fa-check fa-2x"></i> Esta seguro de eliminar la nomina!',
+                    cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
+                    reverseButtons: true
+                })
+                .then((result1)=>{
+                 if(result1.value){
                     let me=this;
                     axios.put('/nomina/delete',{
                         'id': id
@@ -346,10 +362,11 @@
                     });
                 } else if (
                     /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
+                    result1.dismiss === Swal.DismissReason.cancel
                 ) {
                     me.listarNomina();
                 }
+                })
                 })
             },
             cargaNovedad(id){
