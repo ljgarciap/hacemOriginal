@@ -99,6 +99,8 @@ class Tb_nominaController extends Controller
     public function calcularNomina(Request $request)
     { //abre función cálculo
 // recibo el id de nómina a calcular y saco los datos; de aca tomaré las fechas para revisar las novedades
+        $nominaid = $request->id;
+
         $nomina = Tb_nomina::where('id','=',$request->id)
         ->select('id','fechaInicio','fechaFin','tipo','estado')->get();
 
@@ -108,78 +110,90 @@ class Tb_nominaController extends Controller
             $nominafechaFin = $guianomina->fechaFin;
             $nominatipo = $guianomina->tipo;
             $nominaestado = $guianomina->estado;
+            }
 
-        // basado en el rango de fechas entre inicio y fin verifico cuales vinculaciones están activas para trabajar con los empleados
-        $vinculaciones = Tb_vinculaciones::where('estado','=','1')
-        ->whereNull('fechaFin')
-        ->orWhere([
-            ['tb_vinculaciones.fechaInicio', '>', $nominafechaInicio],
-            ['tb_vinculaciones.fechaFin', '<', $nominafechaFin],
-        ])
-        ->orWhere([
-            ['tb_vinculaciones.fechaInicio', '<', $nominafechaInicio],
-            ['tb_vinculaciones.fechaFin', '<', $nominafechaFin],
-        ])
-        ->select('id','tipoContrato','tipoSalario','salarioBasicoMensual','fechaInicio','tiempoContrato','fechaFin','idEmpleado','idNivelArl','estado')->get();
+        //Distinct de novedades para sacar los empleados involucrados
+
+        $empleadonovedades = Tb_novedades::where('idNomina','=',$nominaid)->groupby('idEmpleado')->distinct()->select('idEmpleado')->get();
 
          //dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
-        foreach($vinculaciones as $guiavinculaciones){ //abre foreach vinculaciones
+        foreach($empleadonovedades as $empleadonovedad){ //abre foreach vinculaciones
 
-            $vinculacionesid = $guiavinculaciones->id;
-            $vinculacionestipoVinculacion = $guiavinculaciones->tipoContrato;
-            $vinculacionessalarioBasicoMensual = $guiavinculaciones->salarioBasicoMensual;
-            $vinculacionesfechaInicio = $guiavinculaciones->fechaInicio;
-            $vinculacionestiempoContrato = $guiavinculaciones->tiempoContrato;
-            $vinculacionesfechaFin = $guiavinculaciones->fechaFin;
-            $vinculacionesidEmpleado = $guiavinculaciones->idEmpleado;
-            $vinculacionesidNivelArl = $guiavinculaciones->idNivelArl;
-            $vinculacionesidEps = $guiavinculaciones->idEps;
-            $vinculacionesidPensiones = $guiavinculaciones->idPensiones;
-            $vinculacionesestado = $guiavinculaciones->estado;
+            $empleadonovedadid = $empleadonovedad->idEmpleado;
 
-        $sueldobase=$vinculacionessalarioBasicoMensual; //valor del empleado
+            // basado en el rango de fechas entre inicio y fin verifico cuales vinculaciones están activas para trabajar con los empleados
+            $vinculaciones = Tb_vinculaciones::where('idEmpleado','=',$empleadonovedadid)
+            ->whereNull('fechaFin')
+            ->orWhere([
+                ['tb_vinculaciones.fechaInicio', '>', $nominafechaInicio],
+                ['tb_vinculaciones.fechaFin', '<', $nominafechaFin],
+            ])
+            ->orWhere([
+                ['tb_vinculaciones.fechaInicio', '<', $nominafechaInicio],
+                ['tb_vinculaciones.fechaFin', '<', $nominafechaFin],
+            ])
+            ->select('id','tipoContrato','tipoSalario','salarioBasicoMensual','fechaInicio','tiempoContrato','fechaFin','idEmpleado','idNivelArl','estado')->get();
 
-        //estos vienen de la tabla novedades
+             //dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
+            foreach($vinculaciones as $guiavinculaciones){ //abre foreach vinculaciones
 
-        $novedades = Tb_novedades::where('tb_novedades.idEmpleado','=',$vinculacionesidEmpleado)
+                $vinculacionesid = $guiavinculaciones->id;
+                $vinculacionestipoVinculacion = $guiavinculaciones->tipoContrato;
+                $vinculacionessalarioBasicoMensual = $guiavinculaciones->salarioBasicoMensual;
+                $vinculacionesfechaInicio = $guiavinculaciones->fechaInicio;
+                $vinculacionestiempoContrato = $guiavinculaciones->tiempoContrato;
+                $vinculacionesfechaFin = $guiavinculaciones->fechaFin;
+                $vinculacionesidEmpleado = $guiavinculaciones->idEmpleado;
+                $vinculacionesidNivelArl = $guiavinculaciones->idNivelArl;
+                $vinculacionesidEps = $guiavinculaciones->idEps;
+                $vinculacionesidPensiones = $guiavinculaciones->idPensiones;
+                $vinculacionesestado = $guiavinculaciones->estado;
+
+                $sueldobase=$vinculacionessalarioBasicoMensual; //valor del empleado
+            }
+
+
+            $diaslabor=0;
+            $valordiaslabor=0;
+            $extrasdiurnas=0; // ejemplo
+            $valorextrasdiurnas=0;
+            $extrasnocturnas=0;
+            $valorextrasnocturnas=0;
+            $horasdominicales=0;
+            $valorhorasdominicales=0;
+            $extrasdominicalesdiurnas=0;
+            $valorextrasdominicalesdiurnas=0;
+            $extrasdominicalesnocturnas=0;
+            $valorextrasdominicalesnocturnas=0;
+            $horasrecargos=0;
+            $valorhorasrecargos=0;
+            $primaextralegal=0;
+            $valorprimaextralegal=0;
+            $bonificaciones=0; // valor bonif
+            $valorbonificaciones=0;
+            $comisiones=0; // valor comisiones
+            $valorcomisiones=0;
+            $viaticos=0; // valor viaticos
+            $valorviaticos=0;
+            $nofactorsalarial=0; // valor no factor
+            $valornofactorsalarial=0;
+            // seccion descuentos
+            $sindicato=0; // valor sindicato
+            $valorsindicato=0;
+            $prestamos=0; // valor prestamos
+            $valorprestamos=0;
+            $embargos=0; // valor embargos
+            $valorembargos=0;
+            $otros=0; // valor otros
+            $valorotros=0;
+            $descuentosalud=0;
+            $descuentopension=0;
+            //hasta aca vienen de la tabla novedades
+
+            //estos vienen de la tabla novedades
+
+        $novedades = Tb_novedades::where('tb_novedades.idEmpleado','=',$empleadonovedadid)
         ->where('tb_novedades.idNomina','=',$nominaid)->get(); //De aca me voy a traer los de la nomina sin liquidar, ojo tengo que ir cambiando el valor de ella
-
-        $diaslabor=0;
-        $valordiaslabor=0;
-        $extrasdiurnas=0; // ejemplo
-        $valorextrasdiurnas=0;
-        $extrasnocturnas=0;
-        $valorextrasnocturnas=0;
-        $horasdominicales=0;
-        $valorhorasdominicales=0;
-        $extrasdominicalesdiurnas=0;
-        $valorextrasdominicalesdiurnas=0;
-        $extrasdominicalesnocturnas=0;
-        $valorextrasdominicalesnocturnas=0;
-        $horasrecargos=0;
-        $valorhorasrecargos=0;
-        $primaextralegal=0;
-        $valorprimaextralegal=0;
-        $bonificaciones=0; // valor bonif
-        $valorbonificaciones=0;
-        $comisiones=0; // valor comisiones
-        $valorcomisiones=0;
-        $viaticos=0; // valor viaticos
-        $valorviaticos=0;
-        $nofactorsalarial=0; // valor no factor
-        $valornofactorsalarial=0;
-        // seccion descuentos
-        $sindicato=0; // valor sindicato
-        $valorsindicato=0;
-        $prestamos=0; // valor prestamos
-        $valorprestamos=0;
-        $embargos=0; // valor embargos
-        $valorembargos=0;
-        $otros=0; // valor otros
-        $valorotros=0;
-        $descuentosalud=0;
-        $descuentopension=0;
-        //hasta aca vienen de la tabla novedades
 
         foreach($novedades as $guianovedades){ //apertura calculo por empleado de novedades
             $novedadesid = $guianovedades->id;
@@ -342,7 +356,14 @@ class Tb_nominaController extends Controller
 
                 if($diaslabor<$diasbase){ // si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes
 
-                    if(($ibcsalario/$diaslabor)>($salariominimo/$diasbase)){ // si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes y el ibcsalario es mas que el minimo
+                    if($diaslabor==0){
+                        $ibcsadi=0;
+                    }
+                    else{
+                        $ibcsadi=($ibcsalario/$diaslabor);
+                    }
+
+                    if(($ibcsadi)>($salariominimo/$diasbase)){ // si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes y el ibcsalario es mas que el minimo
                         $ibccontope=$ibcsalario;
                     }
                     else{ // else si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes y el ibcsalario es menos que el minimo
@@ -380,7 +401,14 @@ class Tb_nominaController extends Controller
 
                 if($diaslabor<$diasbase){ // si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes
 
-                    if(($ibcsalario1/$diaslabor)>($salariominimo/$diasbase)){ // si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes y el ibcsalario es mas que el minimo
+                    if($diaslabor==0){
+                        $ibcsadi=0;
+                    }
+                    else{
+                        $ibcsadi=($ibcsalario1/$diaslabor);
+                    }
+
+                    if(($ibcsadi)>($salariominimo/$diasbase)){ // si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes y el ibcsalario es mas que el minimo
                         $ibccontope1=$ibcsalario1;
                     }
                     else{ // else si el ibcsalario tiene valor y es menor que los 25 salarios y dias laborados son menos que los del mes y el ibcsalario es menos que el minimo
@@ -527,14 +555,11 @@ class Tb_nominaController extends Controller
             $tb_resumen_nomina->vacaciones=$vacaciones;
             $tb_resumen_nomina->costoTotalMensual=$costototalmensual;
             $tb_resumen_nomina->sueldoBasicoMensual=$sueldobase;
-            $tb_resumen_nomina->idEmpleado=$vinculacionesidEmpleado;
+            $tb_resumen_nomina->idEmpleado=$empleadonovedadid;
             $tb_resumen_nomina->idNomina=$nominaid;
             $tb_resumen_nomina->save();
 
         } //cierre foreach vinculaciones
-
-
-        }  //cierre foreach nomina
 
 // muestra temporal de salida
 echo "El sueldo basico es ".$sueldobase."<br>";
@@ -596,31 +621,6 @@ echo "<hr><br>";
 echo "Valor total costos ".$costototalmensual."<br>";
 echo "<hr><br>";
 
-/*
-echo "Valor de tabla extras diurnas es ".$total1extrasdiurnas."<br>";
-echo "Valor de tabla extras nocturnas es ".$total1extrasnocturnas."<br>";
-echo "Valor de tabla horas dominicales es ".$total1horasdominicales."<br>";
-echo "Valor de tabla extras diurnas dominicales es ".$total1extrasdominicalesdiurnas."<br>";
-echo "Valor de tabla extras nocturnas dominicales es ".$total1extrasdominicalesnocturnas."<br>";
-echo "<hr><br>";
-echo "Valor de tabla extras es ".$horas1extras."<br>";
-echo "<hr><br>";
-echo "Valor devengados de tabla es ".$devengados1."<br>";
-echo "<hr><br>";
-echo "Valor devengado de tabla con auxilio es ".$devengadoauxilio."<br>";
-echo "<hr><br>";
-echo "Valor descuentosalud de tabla es ".$descuentosalud1."<br>";
-echo "<hr><br>";
-echo "Valor descuentopension de tabla es ".$descuentopension1."<br>";
-echo "<hr><br>";
-echo "Valor deducidos de tabla es ".$deducidos1."<br>";
-echo "<hr><br>";
-echo "Valor a pagar de tabla ".$totalapagar1."<br>";
-echo "<hr><br>";
-echo "Valor de tabla ibc salario ".$ibcsalario1."<br>";
-echo "Valor de tabla ibc tope ".$ibccontope1."<br>";
-*/
-
         $tb_cierre_nomina=Tb_nomina::findOrFail($nominaid);
         $tb_cierre_nomina->estado=0;
         $tb_cierre_nomina->save();
@@ -630,5 +630,23 @@ echo "Valor de tabla ibc tope ".$ibccontope1."<br>";
 //---------------------------------------------------------------------------------------------------//
 // Cálculo de nómina
 //---------------------------------------------------------------------------------------------------//
+
+    public function prueba(Request $request)
+    {
+        $signal=$request->id;
+
+        $empleadonovedades = Tb_novedades::where('idNomina','=',$signal)->groupby('idEmpleado')->distinct()->select('idEmpleado')->get();
+
+         //dentro de este foreach voy a sacar los datos de los empleados que hacen parte de la nómina para buscar sus novedades
+        foreach($empleadonovedades as $empleadonovedad){ //abre foreach vinculaciones
+
+            $empleadonovedadid = $empleadonovedad->idEmpleado;
+
+            }
+
+            return [
+                    'empleadonovedades' => $empleadonovedades
+            ];
+    }
 
 }
