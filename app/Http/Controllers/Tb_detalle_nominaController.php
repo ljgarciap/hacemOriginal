@@ -6,8 +6,10 @@ use App\Tb_resumen_nomina;
 use App\Tb_empleado;
 use App\proceso;
 use App\Perfil;
+use App\DetalleNominaExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Tb_detalle_nominaController extends Controller
 {
@@ -36,5 +38,8 @@ class Tb_detalle_nominaController extends Controller
             ],
             'detalles' =>  $detalles
         ];
+    }
+    public function export(){
+        return Excel::download(new DetalleNominaExport, 'detalle_nomina.xlsx');
     }
 }

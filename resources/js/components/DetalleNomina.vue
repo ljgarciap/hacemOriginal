@@ -13,6 +13,9 @@
                                         <button type="submit" @click="listarDetalleNomina(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
+                                 <p align="right">
+                                     <a href="/nomina/exportar"><img src="img/avatars/microsoft-excel.png" style="max-height:40px; max-width:40px; ">Exportar a excel</a>
+                                 </p>
                             </div>
                             <div class="table-responsive">
                             <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
