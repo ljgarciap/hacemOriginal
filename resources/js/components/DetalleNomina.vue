@@ -25,7 +25,7 @@
                                         <th>Empleado</th>
                                         <th>Proceso</th>
                                         <th>Perfil</th>
-                                        <th>Salario Basico</th>
+                                        <th>Salario Basico Mensual</th>
                                         <th>Total de Ingreso</th>
                                         <th>Total deducido</th>
                                         <th>Total a pagar</th>

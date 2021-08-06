@@ -45,14 +45,14 @@
                                     <tr v-for="nomina in arrayNomina" :key="nomina.id">
                                         <td>
                                         <template v-if="nomina.estado==1">
-                                        <button type="button" class="btn btn-success btn-sm" @click="cargaNovedad(nomina.id)">
+                                        <button type="button" class="btn btn-primary btn-sm" @click="cargaNovedad(nomina.id)">
                                                 <i class="icon-plus"></i><span> Novedades</span>
-                                        </button>
-                                        <button type="button" @click="abrirModal('detalle','crear',nomina.id)" class="btn btn-warning btn-sm">
-                                            <i class="icon-cloud-upload"></i>
                                         </button>
                                         <button type="button" class="btn btn-danger btn-sm" @click="eliminarNomina(nomina.id)">
                                                 <i class="icon-trash"></i>
+                                        </button>
+                                        <button type="button" @click="abrirModal('detalle','crear',nomina.id)" class="btn btn-warning btn-sm">
+                                            <i class="icon-cloud-upload"></i>
                                         </button>
                                         </template>
                                         <template v-if="nomina.estado==0">
@@ -272,6 +272,7 @@
                 var respuesta=response.data;
                 me.arrayNomina=respuesta.nomina.data;
                 me.pagination=respuesta.pagination;
+                me.forceRerender();
                     //console.log(response);
                 })
                 .catch(function (error) {

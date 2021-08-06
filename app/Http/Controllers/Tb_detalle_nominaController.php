@@ -6,7 +6,7 @@ use App\Tb_resumen_nomina;
 use App\Tb_empleado;
 use App\proceso;
 use App\Perfil;
-use App\DetalleNominaExport;
+use App\Exports\DetalleNominaExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
