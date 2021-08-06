@@ -66,11 +66,7 @@
                                         <td v-text="novedad.cantidad"></td>
                                         <td v-text="novedad.valor"></td>
                                         <td v-text="novedad.empleado"></td>
-                                        <!--
-                                        <td v-text="novedad.tipologia"></td>
-                                        <td v-text="novedad.idEmpleado"></td>
-                                        <td v-text="novedad.idNomina"></td>
-                                        -->
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -107,7 +103,7 @@
 
                                     <div v-if="tipoModal==1" class="form-group row"> <!-- Si es una entrada -->
                                         <label class="col-md-3 form-control-label" for="email-input">Novedad</label>
-                                        <div v-if="desplegable==1" class="col-md-9">
+                                        <div v-if="desplegable==1 && tipologiaNomina==1" class="col-md-9">
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
                                                 <option value="1">Detalle Ingresos</option>
@@ -117,6 +113,12 @@
                                                 <option value="5">Comisiones</option>
                                                 <option value="6">Viaticos</option>
                                                 <option value="7">Conceptos que no son factor salarial</option>
+                                            </select>
+                                        </div>
+                                        <div v-if="desplegable==1 && tipologiaNomina==2" class="col-md-9">
+                                            <select class="form-control" v-model="concepto" @change='onChange($event)'>
+                                                <option value="0" disabled>Seleccione tipo de novedad</option>
+                                                <option value="1">Detalle Ingresos</option>
                                             </select>
                                         </div>
                                         <!-- Si es una salida -->
@@ -300,6 +302,7 @@ import moment from 'moment';
                 cantidad:1,
                 unitario:0,
                 valor:0,
+                tipologiaNomina:1,
                 fecha : '',
                 flag : 0,
                 concepto : 0,
@@ -492,7 +495,7 @@ import moment from 'moment';
             },
             listarNovedades(page,buscar,criterio,identificador){
                 let me=this;
-                var url='/novedades/gen?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + this.identificador;
+                var url='/novedades?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + this.identificador;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -553,14 +556,29 @@ import moment from 'moment';
                     console.log(error);
                 });
             },
-            listarEmpleados(){
+            listarEmpleados(identificador){
                 let me=this;
-                var url='/novedades/selectempleado';
+                var url='/novedades/selectempleado?identificador='+this.identificador;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
                 var respuesta=response.data;
                 me.arrayEmpleados=respuesta.empleados;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            listarTipologia(identificador){
+                let me=this;
+                var url='/novedades/selecttipologia?identificador='+this.identificador;
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.tipologiaNomina=respuesta.tipoNomina;
                     //console.log(response);
                 })
                 .catch(function (error) {
@@ -640,8 +658,9 @@ import moment from 'moment';
             }
         },
         mounted() {
+            this.listarTipologia(this.identificador);
             this.listarNovedades(1,'','fechaNovedad',this.identificador);
-            this.listarEmpleados();
+            this.listarEmpleados(this.identificador);
             console.log('Valor identificador recibido');
             console.log(this.identificador);
         }

@@ -134,10 +134,6 @@
     </template>
 
     <template v-if="menu==33">
-        <novedades></novedades>
-    </template>
-
-    <template v-if="menu==34">
         <cierrenomina></cierrenomina>
     </template>
 

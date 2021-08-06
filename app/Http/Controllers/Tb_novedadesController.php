@@ -94,13 +94,34 @@ class Tb_novedadesController extends Controller
                 'novedades' => $novedades
         ];
     }
-    public function selectEmpleado(){
+    public function selectEmpleado(Request $request){
+        $identificador= $request->identificador;
+
+        $extra = Tb_nomina::where('tb_nomina.id','=',$identificador)->get();
+
+        foreach($extra as $extrar){
+            $tipoNomina = $extrar->tipo;
+        }
+
         $empleados = Tb_vinculaciones::join("tb_empleado","tb_vinculaciones.idEmpleado","=","tb_empleado.id")
         ->where('tb_vinculaciones.estado','=','1')
-        ->select('tb_empleado.id as idEmpleado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
+        ->where('tb_vinculaciones.tipoSalario','=',$tipoNomina)
+        ->select('tb_empleado.id as idEmpleado','tb_vinculaciones.tipoSalario as tipoSalario',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
         ->orderBy('empleado','asc')->get();
 
         return ['empleados' => $empleados];
+    }
+
+    public function selectTipologia(Request $request){
+        $identificador= $request->identificador;
+
+        $extra = Tb_nomina::where('tb_nomina.id','=',$identificador)->get();
+
+        foreach($extra as $extrar){
+            $tipoNomina = $extrar->tipo;
+        }
+
+        return ['tipoNomina' => $tipoNomina];
     }
 
     public function selectExtra(){

@@ -54,11 +54,6 @@
                                         <button type="button" class="btn btn-danger btn-sm" @click="eliminarNomina(nomina.id)">
                                                 <i class="icon-trash"></i>
                                         </button>
-                                        <!--este boton va en el if, esta aca solo para probar-->
-                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(nomina.id)">
-                                                <i class="icon-magnifier"></i><span> Detalle</span>
-                                        </button>
-                                        <!--este boton va en el if, esta aca solo para probar-->
                                         </template>
                                         <template v-if="nomina.estado==0">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(nomina.id)">
@@ -142,7 +137,7 @@
                                                 <option value="0" disabled>Seleccione un tipo de nómina</option>
                                                 <option value="1">Nómina Fija</option>
                                                 <option value="2">Nómina Destajo</option>
-                                                <option value="3">Nómina Total (Fijos y destajo)</option>
+                                                <!-- <option value="3">Nómina Total (Fijos y destajo)</option> -->
                                             </select>
                                         </div>
                                     </div>

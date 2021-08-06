@@ -93,7 +93,7 @@ class Tb_nominaController extends Controller
     }
 
 //---------------------------------------------------------------------------------------------------//
-// Cálculo de nómina
+// Cálculo de nómina fija
 //---------------------------------------------------------------------------------------------------//
 
     public function calcularNomina(Request $request)
@@ -485,10 +485,12 @@ class Tb_nominaController extends Controller
         $aportearl=($ibccontope*$porcentajeNivelArl); //valor riesgo arl segun vinculacion
 
         if($ibccontope>(10*$salariominimo)){ // si el ibc con tope es mayor que los 10 salarios hay que preguntar si esta bien
-            $aportesena=($ibccontope*0.03);
+            $aporteicbf=($ibccontope*0.03);
+            $aportesena=($ibcsalario*0.02);
         }
         else{
-            $aportesena=($ibcsalario*0.02);
+            $aporteicbf=0;
+            $aportesena=0;
         }
 
         $cajacompensacion=($ibccontope*0.04);
@@ -503,7 +505,7 @@ class Tb_nominaController extends Controller
 
         $vacaciones=($ibcsalario*0.0417);
 
-        $costototalmensual=$aportesalud+$aportepension+$aportearl+$aportesena+$cajacompensacion+$cesantias+$interescesantias+$primaservicios+$vacaciones+$devengadoauxilio;
+        $costototalmensual=$aportesalud+$aportepension+$aportearl+$aportesena+$aporteicbf+$cajacompensacion+$cesantias+$interescesantias+$primaservicios+$vacaciones+$devengadoauxilio;
         //-------------------------------------------------------------------------------------------------------------------------//
             } // cierre calculo por empleado de novedades
 /**/
@@ -607,6 +609,8 @@ echo "<hr><br>";
 echo "Aporte arl ".$aportearl."<br>";
 echo "<hr><br>";
 echo "Aporte sena ".$aportesena."<br>";
+echo "<hr><br>";
+echo "Aporte icbf ".$aporteicbf."<br>";
 echo "<hr><br>";
 echo "Aporte caja compensacion ".$cajacompensacion."<br>";
 echo "<hr><br>";

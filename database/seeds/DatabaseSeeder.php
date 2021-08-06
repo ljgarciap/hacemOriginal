@@ -268,7 +268,15 @@ class DatabaseSeeder extends Seeder
 //-------------------------------------------------------------------//
 
 //-------------------------------------------Hasta acá---------------------------------------------------//
+//-------------------------------------------------------------------//
+        //primero vacia la tabla y luego la llena ojo
+        $this->truncateTables([
+            'tb_vinculaciones'
+        ]);
 
+        //funcion principal que llama cada seeder
+        $this->call(Tb_vinculacionesSeeder::class);
+//-------------------------------------------------------------------//
 
 //--Seeders de base de muestra, se puede comentar si se requiere la base con lo inicial solamente--//
         $this->truncateTables([
