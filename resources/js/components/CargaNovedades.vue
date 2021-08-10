@@ -57,6 +57,7 @@
                                         <td v-if="novedad.concepto==5">Comisiones</td>
                                         <td v-if="novedad.concepto==6">Viaticos</td>
                                         <td v-if="novedad.concepto==7">Conceptos que no son factor salarial</td>
+                                        <td v-if="novedad.concepto==50">Retención</td>
                                         <td v-if="novedad.concepto==51">Sindicato</td>
                                         <td v-if="novedad.concepto==52">Préstamos</td>
                                         <td v-if="novedad.concepto==53">Embargos</td>
@@ -125,6 +126,7 @@
                                         <div v-else-if="desplegable==2" class="col-md-9">
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
+                                                <option value="50">Retención</option>
                                                 <option value="51">Sindicato</option>
                                                 <option value="52">Préstamos</option>
                                                 <option value="53">Embargos</option>
@@ -495,7 +497,7 @@ import moment from 'moment';
             },
             listarNovedades(page,buscar,criterio,identificador){
                 let me=this;
-                var url='/novedades?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + this.identificador;
+                var url='/novedades/gen?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -585,13 +587,6 @@ import moment from 'moment';
                     // handle error
                     console.log(error);
                 })
-            },
-            mostrarDetalle(id){
-                this.listado=2;
-                this.identificador=id;
-            },
-            ocultarDetalle(){
-                this.listado=0;
             },
             validarNovedad(){
                 this.errorNovedad=0;

@@ -400,7 +400,7 @@
                 this.errorMensaje = [],
                 this.forceRerender();
             },
-            abrirModal(modelo, accion,identificador){
+            abrirModal(modelo, accion,identificadornomina){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
                 case "nomina":
@@ -424,12 +424,12 @@
                                 this.modal=1;
                                 this.tipoModal=3; //carga tipos de campos y footers
                                 this.tituloModal='Generando, por favor espere...';
-                                this.identificador=identificador;
+                                this.identificador=identificadornomina;
+                                this.generarDetalle(this.identificador);
                                 break;
                             }
                         }
-                        this.generarDetalle(this.identificador);
-                        break;
+
                     }
                  }
             }

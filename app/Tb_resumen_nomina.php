@@ -17,8 +17,8 @@ class Tb_resumen_nomina extends Model
         'valorextrasDominicalesNocturnas','recargos','valorrecargos','totalhorasExtras','totalrecargos',
         'totalExtrasyRecargos','primaExtralegal','bonificaciones','comisiones','viaticos',
         'noFactorSalarial','devengadoSinAuxilio','auxilio','devengadoConAuxilio','ibcSalario',
-        'ibcConTope','descuentoSalud','descuentoPension','sindicato','prestamos','otros',
-        'totalDeducido','totalPagar','aporteSalud','aportePension','aporteArl','aporteSena',
+        'ibcConTope','descuentoSalud','descuentoPension','fondoSolidaridad','retencion','sindicato','prestamos','otros',
+        'totalDeducido','totalPagar','aporteSalud','aportePension','aporteArl','aporteIcbf','aporteSena',
         'aporteCaja','cesantias','interesesCesantias','primaServicios','vacaciones',
         'costoTotalMensual','sueldoBasicoMensual','idEmpleado','idNomina'
     ];

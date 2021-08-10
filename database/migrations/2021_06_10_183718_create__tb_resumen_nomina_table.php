@@ -46,6 +46,8 @@ class CreateTbResumenNominaTable extends Migration
             $table->integer('ibcConTope')->nullable();
             $table->integer('descuentoSalud')->nullable();
             $table->integer('descuentoPension')->nullable();
+            $table->integer('fondoSolidaridad')->nullable();
+            $table->integer('retencion')->nullable();
             $table->integer('sindicato')->nullable();
             $table->integer('prestamos')->nullable();
             $table->integer('otros')->nullable();
@@ -54,6 +56,7 @@ class CreateTbResumenNominaTable extends Migration
             $table->integer('aporteSalud')->nullable();
             $table->integer('aportePension')->nullable();
             $table->integer('aporteArl')->nullable();
+            $table->integer('aporteIcbf')->nullable();
             $table->integer('aporteSena')->nullable();
             $table->integer('aporteCaja')->nullable();
             $table->integer('cesantias')->nullable();

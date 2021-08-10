@@ -23,7 +23,7 @@ class Tb_detalle_nominaController extends Controller
         ->select('tb_resumen_nomina.sueldoBasicoMensual','tb_resumen_nomina.idEmpleado','tb_resumen_nomina.devengadoConAuxilio',
         'tb_resumen_nomina.totalDeducido','tb_resumen_nomina.totalPagar','tb_resumen_nomina.costoTotalMensual','tb_empleado.nombre as idEmpleado',
         'tb_perfil.perfil','tb_proceso.proceso')
-        ->where('tb_resumen_nomina.id','=',$id)
+        ->where('tb_resumen_nomina.idNomina','=',$id)
         ->orderBy('tb_resumen_nomina.idEmpleado','asc')
         ->paginate(5);
 

@@ -16,7 +16,7 @@ class CreateTbRiesgoAdicionalTable extends Migration
         Schema::create('tb_riesgo_adicional', function (Blueprint $table) {
             $table->id();
             $table->float('rangoSalarioMin',8, 6);
-            $table->float('rangoSalarioMax',8, 2);
+            $table->float('rangoSalarioMax',8, 6);
             $table->float('porcentajeAdicional',8, 4);
             //$table->timestamps();
         });

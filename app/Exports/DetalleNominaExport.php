@@ -59,6 +59,8 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
             'Ibc Con Tope',
             'Descuento Salud',
             'Descuento Pensión',
+            'Fondo Solidaridad',
+            'Retención',
             'Sindicato',
             'Prestamos',
             'Otros',
@@ -68,6 +70,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
             'Aporte Pensión',
             'Aporte Arl',
             'Aporte Sena',
+            'Aporte ICBF',
             'Aporte Caja',
             'Cesantias',
             'Intereses Cesantias',
@@ -90,8 +93,8 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
          'tb_resumen_nomina.valorextrasDominicalesNocturnas','tb_resumen_nomina.recargos','tb_resumen_nomina.valorrecargos','tb_resumen_nomina.totalhorasExtras','tb_resumen_nomina.totalrecargos',
          'tb_resumen_nomina.totalExtrasyRecargos','tb_resumen_nomina.primaExtralegal','tb_resumen_nomina.bonificaciones','tb_resumen_nomina.comisiones','tb_resumen_nomina.viaticos','tb_resumen_nomina.noFactorSalarial',
          'tb_resumen_nomina.devengadoSinAuxilio','tb_resumen_nomina.auxilio','tb_resumen_nomina.devengadoConAuxilio','tb_resumen_nomina.ibcSalario','tb_resumen_nomina.ibcConTope','tb_resumen_nomina.descuentoSalud',
-         'tb_resumen_nomina.descuentoPension','tb_resumen_nomina.sindicato','tb_resumen_nomina.prestamos','tb_resumen_nomina.otros','tb_resumen_nomina.totalDeducido','tb_resumen_nomina.totalPagar','tb_resumen_nomina.aporteSalud',
-         'tb_resumen_nomina.aportePension','tb_resumen_nomina.aporteArl','tb_resumen_nomina.aporteSena','tb_resumen_nomina.aporteCaja','tb_resumen_nomina.cesantias','tb_resumen_nomina.interesesCesantias','tb_resumen_nomina.primaServicios',
+         'tb_resumen_nomina.descuentoPension','tb_resumen_nomina.fondoSolidaridad','tb_resumen_nomina.retencion','tb_resumen_nomina.sindicato','tb_resumen_nomina.prestamos','tb_resumen_nomina.otros','tb_resumen_nomina.totalDeducido','tb_resumen_nomina.totalPagar','tb_resumen_nomina.aporteSalud',
+         'tb_resumen_nomina.aportePension','tb_resumen_nomina.aporteArl','tb_resumen_nomina.aporteSena','tb_resumen_nomina.aporteIcbf','tb_resumen_nomina.aporteCaja','tb_resumen_nomina.cesantias','tb_resumen_nomina.interesesCesantias','tb_resumen_nomina.primaServicios',
          'tb_resumen_nomina.vacaciones','tb_resumen_nomina.costoTotalMensual',
          DB::raw('CONCAT(tb_empleado.nombre," ",tb_empleado.apellido) as nombreEmpleado'))
          ->orderBy('id','asc')
