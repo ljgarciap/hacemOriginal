@@ -105,7 +105,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
     {
         return [
             AfterSheet::class    => function(AfterSheet $event) {
-                $cellRange = 'A1:BA1'; // All headers
+                $cellRange = 'A1:BZ1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(11);
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(true);
             },
