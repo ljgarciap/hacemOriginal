@@ -13,13 +13,14 @@ use App\Tb_vinculaciones;
 use App\Tb_novedades;
 use App\Tb_resumen_nomina;
 use App\Tb_niveles_riesgo;
+use App\Tb_riesgo_adicional;
 use App\Tb_factores_nomina;
 use Storage;
 
 class CalcularNomina implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    
+
     protected $nominaid;
     /**
      * Create a new job instance.
@@ -95,7 +96,6 @@ foreach($empleadonovedades as $empleadonovedad){ //abre foreach vinculaciones
         $sueldobase=$vinculacionessalarioBasicoMensual; //valor del empleado
     }
 
-
     $diaslabor=0;
     $valordiaslabor=0;
     $extrasdiurnas=0; // ejemplo
@@ -121,6 +121,9 @@ foreach($empleadonovedades as $empleadonovedad){ //abre foreach vinculaciones
     $nofactorsalarial=0; // valor no factor
     $valornofactorsalarial=0;
     // seccion descuentos
+    $porcentajeAdicional=0;
+    $retencion=0; // valor retencion
+    $valorretencion=0;
     $sindicato=0; // valor sindicato
     $valorsindicato=0;
     $prestamos=0; // valor prestamos
@@ -131,6 +134,8 @@ foreach($empleadonovedades as $empleadonovedad){ //abre foreach vinculaciones
     $valorotros=0;
     $descuentosalud=0;
     $descuentopension=0;
+    $fondoSolidaridad=0;
+    $retencion=0;
     //hasta aca vienen de la tabla novedades
 
     //estos vienen de la tabla novedades
@@ -197,6 +202,10 @@ foreach($novedades as $guianovedades){ //apertura calculo por empleado de noveda
     else if($novedadesconcepto==7){
         $nofactorsalarial=$nofactorsalarial+$novedadescantidad;
         $valornofactorsalarial=$valornofactorsalarial+$novedadesvalor;
+    }
+    else if($novedadesconcepto==50){
+        $retencion=$retencion+$novedadescantidad;
+        $valorretencion=$valorretencion+$novedadesvalor;
     }
     else if($novedadesconcepto==51){
         $sindicato=$sindicato+$novedadescantidad;
@@ -386,15 +395,30 @@ $multdescuentosalud=0.04;
 $multdescuentopension=0.04;
 //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
 
+$riesgosadicional = Tb_riesgo_adicional::select('rangoSalarioMin','rangoSalarioMax','porcentajeAdicional')->get();
+foreach($riesgosadicional as $riesgoadicional){
+    $rangoSalarioMin = $riesgoadicional->rangoSalarioMin;
+    $rangoSalarioMax = $riesgoadicional->rangoSalarioMax;
+
+    $salarioMin=$rangoSalarioMin*$salariominimo;
+    $salarioMax=$rangoSalarioMax*$salariominimo;
+
+    if(($ibccontope>=$salarioMin) && ($ibccontope<=$salarioMax)){
+        $porcentajeAdicional = $riesgoadicional->porcentajeAdicional;
+    }
+}
+
+$fondoSolidaridad=$ibccontope*$porcentajeAdicional;
+
 $descuentosalud=$ibccontope*$multdescuentosalud;
 $descuentopension=$ibccontope*$multdescuentopension;
 
 $descuentosalud1=$ibccontope1*$multdescuentosalud;
 $descuentopension1=$ibccontope1*$multdescuentopension;
 
-$deducidos=$valorsindicato+$valorprestamos+$valorembargos+$valorotros+$descuentosalud+$descuentopension; // ejemplo calculado
+$deducidos=$valorsindicato+$valorprestamos+$valorembargos+$valorotros+$descuentosalud+$descuentopension+$fondoSolidaridad+$valorretencion; // ejemplo calculado
 
-$deducidos1=$valorsindicato+$valorprestamos+$valorembargos+$valorotros+$descuentosalud1+$descuentopension1; // ejemplo novedad
+$deducidos1=$valorsindicato+$valorprestamos+$valorembargos+$valorotros+$descuentosalud1+$descuentopension1+$fondoSolidaridad+$valorretencion; // ejemplo novedad
 
 //-------------------------------------------------------------------------------------------------------------------------//
 
@@ -411,7 +435,7 @@ $totalapagar1=$devengado1auxilio-$deducidos1; // ejemplo novedad
 //-------------------------------------------------------------------------------------------------------------------------//
 
 if($ibccontope>(10*$salariominimo)){ // si el ibc con tope es mayor que los 10 salarios
-    $aportesalud=($ibccontope*8.5);
+    $aportesalud=($ibccontope*0.085);
 }
 else{
     $aportesalud=0;
@@ -429,7 +453,7 @@ $aportearl=($ibccontope*$porcentajeNivelArl); //valor riesgo arl segun vinculaci
 
 if($ibccontope>(10*$salariominimo)){ // si el ibc con tope es mayor que los 10 salarios hay que preguntar si esta bien
     $aporteicbf=($ibccontope*0.03);
-    $aportesena=($ibcsalario*0.02);
+    $aportesena=($ibccontope*0.02);
 }
 else{
     $aporteicbf=0;
@@ -484,6 +508,10 @@ $costototalmensual=$aportesalud+$aportepension+$aportearl+$aportesena+$aporteicb
     $tb_resumen_nomina->ibcConTope=$ibccontope;
     $tb_resumen_nomina->descuentoSalud=$descuentosalud;
     $tb_resumen_nomina->descuentoPension=$descuentopension;
+
+    $tb_resumen_nomina->fondoSolidaridad=$fondoSolidaridad;
+    $tb_resumen_nomina->retencion=$valorretencion;
+
     $tb_resumen_nomina->sindicato=$valorsindicato;
     $tb_resumen_nomina->prestamos=$valorprestamos;
     $tb_resumen_nomina->otros=$valorotros;
@@ -492,6 +520,7 @@ $costototalmensual=$aportesalud+$aportepension+$aportearl+$aportesena+$aporteicb
     $tb_resumen_nomina->aporteSalud=$aportesalud;
     $tb_resumen_nomina->aportePension=$aportepension;
     $tb_resumen_nomina->aporteArl=$aportearl;
+    $tb_resumen_nomina->aporteIcbf=$aporteicbf;
     $tb_resumen_nomina->aporteSena=$aportesena;
     $tb_resumen_nomina->aporteCaja=$cajacompensacion;
     $tb_resumen_nomina->cesantias=$cesantias;
@@ -506,72 +535,11 @@ $costototalmensual=$aportesalud+$aportepension+$aportearl+$aportesena+$aporteicb
 
 } //cierre foreach vinculaciones
 
-// muestra temporal de salida
-/*echo "El sueldo basico es ".$sueldobase."<br>";
-echo "<hr><br>";
-echo "Cantidad extras diurnas es ".$extrasdiurnas."<br>";
-echo "Cantidad extras nocturnas es ".$extrasnocturnas."<br>";
-echo "Cantidad horas dominicales es ".$horasdominicales."<br>";
-echo "Cantidad extras diurnas dominicales es ".$extrasdominicalesdiurnas."<br>";
-echo "Cantidad extras nocturnas dominicales es ".$extrasdominicalesnocturnas."<br>";
-echo "<hr><br>";
-echo "Valor extras diurnas es ".$totalextrasdiurnas."<br>";
-echo "Valor extras nocturnas es ".$totalextrasnocturnas."<br>";
-echo "Valor horas dominicales es ".$totalhorasdominicales."<br>";
-echo "Valor extras diurnas dominicales es ".$totalextrasdominicalesdiurnas."<br>";
-echo "Valor extras nocturnas dominicales es ".$totalextrasdominicalesnocturnas."<br>";
-echo "<hr><br>";
-echo "Valor extras es ".$horasextras."<br>";
-echo "<hr><br>";
-echo "Valor recargos es ".$recargos."<br>";
-echo "Valor bonificaciones es ".$valorbonificaciones."<br>";
-echo "Valor comisiones es ".$valorcomisiones."<br>";
-echo "Valor viaticos es ".$valorviaticos."<br>";
-echo "<hr><br>";
-echo "Valor descuentosalud es ".$descuentosalud."<br>";
-echo "<hr><br>";
-echo "Valor descuentopension es ".$descuentopension."<br>";
-echo "<hr><br>";
-echo "Valor devengados es ".$devengados."<br>";
-echo "<hr><br>";
-echo "Valor no factor salarial es ".$valornofactorsalarial."<br>";
-echo "<hr><br>";
-echo "Valor devengado con auxilio es ".$devengadoauxilio."<br>";
-echo "<hr><br>";
-echo "Valor deducidos es ".$deducidos."<br>";
-echo "<hr><br>";
-echo "Valor ibc salario ".$ibcsalario."<br>";
-echo "Valor ibc tope ".$ibccontope."<br>";
-echo "<hr><br>";
-echo "Valor a pagar ".$totalapagar."<br>";
-echo "<hr><br>";
-echo "Aporte salud ".$aportesalud."<br>";
-echo "<hr><br>";
-echo "Aporte pension ".$aportepension."<br>";
-echo "<hr><br>";
-echo "Aporte arl ".$aportearl."<br>";
-echo "<hr><br>";
-echo "Aporte sena ".$aportesena."<br>";
-echo "<hr><br>";
-echo "Aporte icbf ".$aporteicbf."<br>";
-echo "<hr><br>";
-echo "Aporte caja compensacion ".$cajacompensacion."<br>";
-echo "<hr><br>";
-echo "Aporte cesantias ".$cesantias."<br>";
-echo "<hr><br>";
-echo "Intereses cesantias ".$interescesantias."<br>";
-echo "<hr><br>";
-echo "Prima servicios ".$primaservicios."<br>";
-echo "<hr><br>";
-echo "Vacaciones ".$vacaciones."<br>";
-echo "<hr><br>";
-echo "Valor total costos ".$costototalmensual."<br>";
-echo "<hr><br>";*/
-
 $tb_cierre_nomina=Tb_nomina::findOrFail($nominaid);
 $tb_cierre_nomina->estado=0;
 $tb_cierre_nomina->save();
-     Log::info($nominaid);
-     
-    } 
+
+ Log::info($nominaid);
+
+    }
 }

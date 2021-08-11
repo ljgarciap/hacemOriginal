@@ -5,10 +5,10 @@
                     <div class="card">
                        <div class="card-header">
                             <i class="fa fa-align-justify"></i> Novedades
-                            <button type="button" @click="abrirModal('novedad','crear')" class="btn btn-secondary">
+                            <button type="button" @click="abrirModal('novedad','crear',identificadornomina)" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Novedad
                             </button>
-                            <button type="button" @click="abrirModal('novedad','crears')" class="btn btn-secondary">
+                            <button type="button" @click="abrirModal('novedad','crears',identificadornomina)" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Deducible
                             </button>
                         </div>
@@ -21,8 +21,8 @@
                                         <option value="fechaNovedad">Fecha</option>
                                         <option value="empleado">Fecha</option>
                                         </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarNovedades(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarNovedades(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarNovedades(1,buscar,criterio,identificadornomina)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarNovedades(1,buscar,criterio,identificadornomina)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -75,13 +75,13 @@
                             <nav>
                                 <ul class="pagination">
                                     <li class="page-item" v-if="pagination.current_page > 1">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio,identificador)">Ant</a>
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio,identificadornomina)">Ant</a>
                                     </li>
                                     <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio,identificador)" v-text="page"></a>
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio,identificadornomina)" v-text="page"></a>
                                     </li>
                                     <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio,identificador)">Sig</a>
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio,identificadornomina)">Sig</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -289,7 +289,7 @@
 import moment from 'moment';
     export default {
         props: {
-            identificador: {
+            identificadornomina: {
             type: Number
             }
          },
@@ -428,7 +428,7 @@ import moment from 'moment';
                         'identificador': idNovedad
                     }).then(function (response) {
                     me.forceRerender();
-                    me.listarNovedades(1,'','fechaNovedad',this.identificador);
+                    me.listarNovedades(1,'','fechaNovedad',this.identificadornomina);
                     swalWithBootstrapButtons.fire(
                     'Novedad eliminada!'
                     )
@@ -495,9 +495,9 @@ import moment from 'moment';
                     console.log(error);
                 })
             },
-            listarNovedades(page,buscar,criterio,identificador){
+            listarNovedades(page,buscar,criterio,identificadornomina){
                 let me=this;
-                var url='/novedades/gen?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                var url='/novedades/gen?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificadornomina;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -514,12 +514,12 @@ import moment from 'moment';
             currentDateTime() {
                 return moment().format('YYYY-MM-DD')
             },
-            cambiarPagina(page,buscar,criterio,identificador){
+            cambiarPagina(page,buscar,criterio,identificadornomina){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarNovedades(page,buscar,criterio,this.identificador);
+                me.listarNovedades(page,buscar,criterio,this.identificadornomina);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -549,7 +549,7 @@ import moment from 'moment';
                     'observacion':this.observacion,
                     'tipologia':this.tipologia,
                     'idEmpleado':this.idEmpleado,
-                    'idNomina':this.identificador
+                    'idNomina':this.identificadornomina
                 }).then(function (response) {
                 console.log('Enviados valores');
                 me.cerrarModal('0');
@@ -558,9 +558,9 @@ import moment from 'moment';
                     console.log(error);
                 });
             },
-            listarEmpleados(identificador){
+            listarEmpleados(identificadornomina){
                 let me=this;
-                var url='/novedades/selectempleado?identificador='+this.identificador;
+                var url='/novedades/selectempleado?identificador='+this.identificadornomina;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -573,9 +573,9 @@ import moment from 'moment';
                     console.log(error);
                 })
             },
-            listarTipologia(identificador){
+            listarTipologia(identificadornomina){
                 let me=this;
-                var url='/novedades/selecttipologia?identificador='+this.identificador;
+                var url='/novedades/selecttipologia?identificador='+this.identificadornomina;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -615,9 +615,9 @@ import moment from 'moment';
                 this.errorMensaje=[];
                 this.tituloModal='';
 
-                this.listarNovedades(1,'','fechaNovedad',this.identificador);
+                this.listarNovedades(1,'','fechaNovedad',this.identificadornomina);
             },
-            abrirModal(modelo, accion, identificador){
+            abrirModal(modelo, accion, identificadornomina){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
                     case "novedad":
@@ -631,7 +631,10 @@ import moment from 'moment';
                                 this.desplegable= 1; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fechaNovedad= moment().format('YYYY-MM-DD');
-                                this.listarNovedades(1,'','fechaNovedad',this.identificador);
+                                this.identificadornomina=identificadornomina;
+                                console.log('Valores');
+                                console.log(identificadornomina);
+                                this.listarNovedades(1,'','fechaNovedad',this.identificadornomina);
                                 break;
                             }
                             case 'crears':{
@@ -642,7 +645,7 @@ import moment from 'moment';
                                 this.desplegable= 2; //carga tipos de botón en el footer
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fechaNovedad= moment().format('YYYY-MM-DD');
-                                this.listarNovedades(1,'','fechaNovedad',this.identificador);
+                                this.listarNovedades(1,'','fechaNovedad',this.identificadornomina);
                                 break;
                             }
                         }
@@ -653,11 +656,11 @@ import moment from 'moment';
             }
         },
         mounted() {
-            this.listarTipologia(this.identificador);
-            this.listarNovedades(1,'','fechaNovedad',this.identificador);
-            this.listarEmpleados(this.identificador);
+            this.listarTipologia(this.identificadornomina);
+            this.listarNovedades(1,'','fechaNovedad',this.identificadornomina);
+            this.listarEmpleados(this.identificadornomina);
             console.log('Valor identificador recibido');
-            console.log(this.identificador);
+            console.log(this.identificadornomina);
         }
     }
 </script>

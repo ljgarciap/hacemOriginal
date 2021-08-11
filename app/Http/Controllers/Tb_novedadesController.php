@@ -187,7 +187,7 @@ class Tb_novedadesController extends Controller
         $tb_novedades->observacion=$request->observacion;
         $tb_novedades->tipologia=$tipologia;
         $tb_novedades->idEmpleado=$request->idEmpleado;
-        $tb_novedades->idNomina=$idNomina;
+        $tb_novedades->idNomina=$request->idNomina;
         //$tb_novedades->idNomina=$request->idNomina;
         $tb_novedades->save();
     }

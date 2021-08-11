@@ -100,7 +100,7 @@
                 <!-- Template para mostrar la carga de novedades -->
                 <template v-if="listado==1">
                     <div class="container-fluid">
-                            <carganovedades v-bind:identificador="identificador" :key="componentKey"></carganovedades>
+                            <carganovedades v-bind:identificadornomina="identificador" :key="componentKey"></carganovedades>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
