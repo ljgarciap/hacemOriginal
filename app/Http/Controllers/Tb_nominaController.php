@@ -105,7 +105,7 @@ class Tb_nominaController extends Controller
         $nominaid=$request->id;
         $tb_nomina=Tb_nomina::findOrFail($nominaid);
         $tb_nomina->estado=2;
-        $tb_nomina->save();  
+        $tb_nomina->save();
 
         CalcularNomina::dispatch($nominaid);
     } //cierre función cálculo
@@ -770,10 +770,12 @@ echo "<hr><br>";
                     $valorpension=0;
                     $valorarl=0;
                     $valorcaja=0;
+                    $valoreps=0;
+                    $valorpension=0;
+                    $acumuladovaloreps=0;
+                    $acumuladovalorpension=0;
                     $prestamos=0; // valor prestamos
                     $valorprestamos=0;
-                    $embargos=0; // valor embargos
-                    $valorembargos=0;
                     $otros=0; // valor otros
                     $valorotros=0;
                     $descuentosalud=0;
@@ -808,6 +810,12 @@ echo "<hr><br>";
                     $novedadesidEmpleado = $guianovedades->idEmpleado;
                     $novedadesidNomina = $guianovedades->idNomina;
 
+
+                //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
+                $multdescuentosalud=0.04;
+                $multdescuentopension=0.04;
+                //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
+
         //para destajo tengo en cuenta tipologias de entradas: 3- sin provision 4- solo liquidacion 5- solo parafiscales 6-con todo
         //para destajo tengo en cuenta tipologias de salidas: 2- salida
 
@@ -817,17 +825,17 @@ echo "<hr><br>";
                     }
                     else if($novedadesconcepto==1 && $novedadestipologia==4){
 
-                        $valortareas=$valortareas+$novedadesvalor;
+                        $valoreps=$novedadesvalor*$multdescuentosalud;
+                        $valorpension=$novedadesvalor*$multdescuentopension;
 
+                        $valortareas=$valortareas+$novedadesvalor;
+                        $acumuladovaloreps=$acumuladovaloreps+$valoreps;
+                        $acumuladovalorpension=$acumuladovalorpension+$valorpension;
                         $cantidadtareas=$cantidadtareas+$novedadescantidad;
                     }
                     else if($novedadesconcepto==52){
                         $prestamos=$prestamos+$novedadescantidad;
                         $valorprestamos=$valorprestamos+$novedadesvalor;
-                    }
-                    else if($novedadesconcepto==53){
-                        $embargos=$embargos+$novedadescantidad;
-                        $valorembargos=$valorembargos+$novedadesvalor;
                     }
                     else if($novedadesconcepto==54){
                         $otros=$otros+$novedadescantidad;
@@ -876,18 +884,11 @@ echo "<hr><br>";
                 //---------------------------------------------------------DEDUCIDOS-------------------------------------------------------//
                 //-------------------------------------------------------------------------------------------------------------------------//
 
-                //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
-                $multdescuentosalud=0.04;
-                $multdescuentopension=0.04;
-                //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
 
                 $descuentosalud=$ibccontope*$multdescuentosalud;
                 $descuentopension=$ibccontope*$multdescuentopension;
 
-                $descuentosalud1=$ibccontope1*$multdescuentosalud;
-                $descuentopension1=$ibccontope1*$multdescuentopension;
-
-                $deducidos=$valorprestamos+$valorembargos+$valorotros+$descuentosalud+$descuentopension; // ejemplo calculado
+                $deducidos=$valorprestamos+$valorotros+$descuentosalud+$descuentopension; // ejemplo calculado
                 //-------------------------------------------------------------------------------------------------------------------------//
 
                 //-----------------------------------------------------TOTAL A PAGAR-------------------------------------------------------//
@@ -945,7 +946,7 @@ echo "<hr><br>";
                     $tb_resumen_nomina->fechaVinculacion=$vinculacionesfechaInicio;
                     $tb_resumen_nomina->tipoContrato=$vinculacionestipoVinculacion;
                     $tb_resumen_nomina->diasLaborados=0;
-                    $tb_resumen_nomina->valordiasLaborados=$valordiaslabor;
+                    $tb_resumen_nomina->valordiasLaborados=$devengados;
                     $tb_resumen_nomina->extrasDiurnas=0;
                     $tb_resumen_nomina->valorextrasDiurnas=0;
                     $tb_resumen_nomina->extrasNocturnas=0;
@@ -988,7 +989,7 @@ echo "<hr><br>";
                     $tb_resumen_nomina->primaServicios=$primaservicios;
                     $tb_resumen_nomina->vacaciones=$vacaciones;
                     $tb_resumen_nomina->costoTotalMensual=$costototalmensual;
-                    $tb_resumen_nomina->sueldoBasicoMensual=$sueldobase;
+                    $tb_resumen_nomina->sueldoBasicoMensual=$sueldobasico;
                     $tb_resumen_nomina->idEmpleado=$empleadonovedadid;
                     $tb_resumen_nomina->idNomina=$nominaid;
                     $tb_resumen_nomina->save();
@@ -996,7 +997,7 @@ echo "<hr><br>";
                 } //cierre foreach novedades
 
         // muestra temporal de salida
-        echo "El sueldo basico es ".$sueldobase."<br>";
+        echo "El sueldo basico es ".$sueldobasico."<br>";
         echo "<hr><br>";
         echo "<hr><br>";
         echo "Valor descuentosalud es ".$descuentosalud."<br>";
