@@ -55,6 +55,11 @@
                                             <i class="icon-cloud-upload"></i>
                                         </button>
                                         </template>
+                                        <template v-if="nomina.estado==2">
+                                            <button type="button" class="btn btn-warning btn-sm" @click="calcular(nomina.id)">
+                                                <i class="fa fa-spinner" aria-hidden="true"></i><span> Favor espere calculando proceso</span>
+                                            </button>
+                                        </template>
                                         <template v-if="nomina.estado==0">
                                             <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalle(nomina.id)">
                                                 <i class="icon-magnifier"></i><span> Detalle</span>
@@ -373,6 +378,20 @@
             mostrarDetalle(id){
                 this.listado=2;
                 this.identificador=id;
+            },
+            calcular(id){
+                this.identificador=id;
+                let me=this;
+                axios.post('/nomina/calcular',{
+                    'id': this.identificador
+                }).then(function (response) {
+                me.cerrarModal('0');
+                me.forceRerender();
+                me.listarNomina(1,'','');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             generarDetalle(id){
                 this.identificador=id;

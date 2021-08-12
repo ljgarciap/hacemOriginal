@@ -103,6 +103,10 @@ class Tb_nominaController extends Controller
     {
         if(!$request->ajax()) return redirect('/');
         $nominaid=$request->id;
+        $tb_nomina=Tb_nomina::findOrFail($nominaid);
+        $tb_nomina->estado=2;
+        $tb_nomina->save();  
+
         CalcularNomina::dispatch($nominaid);
     } //cierre función cálculo
 

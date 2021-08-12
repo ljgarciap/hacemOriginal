@@ -14,13 +14,29 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 
-class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,ShouldAutoSize
+class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,ShouldAutoSize,WithDrawings
 {
     public function headings(): array
     {
         return [
+            [' '],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [''],
+            [
             'Codigo',
             'Documento',
             'Nombres y Apellidos',
@@ -77,7 +93,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
             'Prima Servicios',
             'Vacaciones',
             'Costo Total Mensual',
-
+            ]
         ];
     }
     public function collection()
@@ -104,11 +120,195 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class    => function(AfterSheet $event) {
-                $cellRange = 'A1:BZ1'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(11);
+            AfterSheet::class => function(AfterSheet $event) {
+
+                $cellRange = 'C2';
+                $event->sheet->getDelegate()->setCellValue('C2', 'AÑO')->getStyle($cellRange)->getFont()->setSize(11);
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(true);
+
+                $cellRange2 = 'D2';
+                $event->sheet->getDelegate()->setCellValue('D2', '2021')->getStyle($cellRange2)->getFont()->setSize(11);
+                $event->sheet->getDelegate()->getStyle($cellRange2)->getFont()->setBold(true);
+
+                $cellRange3 = 'A7:H10';
+                $event->sheet->getDelegate()->mergeCells('A7:H10');
+                $event->sheet->getDelegate()->getStyle('A7')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('A7', '')->getStyle($cellRange3)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange3)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FFFFFF');
+                
+                $cellRange4 = 'I7:BD7';
+                $event->sheet->getDelegate()->mergeCells('I7:BD7');
+                $event->sheet->getDelegate()->getStyle('I7')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('I7', 'SERVICIO NACIONAL DE APRENDIZAJE - SENA')->getStyle($cellRange4)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange4)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FFFFFF');
+
+                $cellRange5 = 'I8:BD8';
+                $event->sheet->getDelegate()->mergeCells('I8:BD8');
+                $event->sheet->getDelegate()->getStyle('I8')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('I8', 'REGIONAL SANTANDER')->getStyle($cellRange5)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange5)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FFFFFF');
+
+                $cellRange6 = 'I9:BD9';
+                $event->sheet->getDelegate()->mergeCells('I9:BD9');
+                $event->sheet->getDelegate()->getStyle('I9')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('I9', 'CENTRO INDUSTRIAL DEL DISEÑO Y LA MANUFACTURA - CIDM')->getStyle($cellRange6)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange6)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FFFFFF');
+
+                $cellRange7 = 'I10:BD10';
+                $event->sheet->getDelegate()->mergeCells('I10:BD10');
+                $event->sheet->getDelegate()->getStyle('I10')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('I10', 'PROYECTO SENNOVA "ESTRATEGIA INTEGRAL PARA EL APRENDIZAJE DEL CÁLCULO DE COSTOS DE PRODUCCIÓN APLICADO A LAS MICROEMPRESAS DEL SISTEMA MODA EN FLORIDABLANCA" - 2020')->getStyle($cellRange7)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange7)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FFFFFF');
+
+
+                $cellRange8 = 'A11:H13';
+                $event->sheet->getDelegate()->mergeCells('A11:H13');
+                $event->sheet->getDelegate()->getStyle('A11')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('A11', 'INFORMACIÓN')->getStyle($cellRange8)->getFont()->setSize(14)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange8)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('63F5FA');
+
+                $cellRange9 = 'A14:H14'; // All headers
+                $event->sheet->getDelegate()->getStyle($cellRange9)->getFont()->setSize(11);
+                $event->sheet->getDelegate()->getStyle($cellRange9)->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange9)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('63F5FA');
+                
+                
+                $cellRange10 = 'I11:BD13';
+                $event->sheet->getDelegate()->mergeCells('I11:BD13');
+                $event->sheet->getDelegate()->getStyle('I11')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('I11', 'NOVEDADES')->getStyle($cellRange10)->getFont()->setSize(14)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange10)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FD8043');
+
+                $cellRange11 = 'I14:BD14'; // All headers
+                $event->sheet->getDelegate()->getStyle($cellRange11)->getFont()->setSize(11);
+                $event->sheet->getDelegate()->getStyle($cellRange11)->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange11)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('F6AE48');
+
+                
+                $styleArray = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('A7:H10')->applyFromArray($styleArray);
+
+                $styleArray1 = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('I7:BD10')->applyFromArray($styleArray1);
+
+                $styleArray2 = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('A11:H13')->applyFromArray($styleArray2);
+
+                $styleArray3 = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('I11:BD13')->applyFromArray($styleArray3);
+
+                $styleArray4 = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('A14:H14')->applyFromArray($styleArray4);
+
+                $styleArray5 = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('I14:BD14')->applyFromArray($styleArray5);
+
+                $styleArray5 = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('C2:D2')->applyFromArray($styleArray5);
+
+                $styleArray6 = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('C4:E5')->applyFromArray($styleArray6);
             },
         ];
+    }
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('Logo Naranja SENA');
+        $drawing->setPath(public_path('/img/favicon.png'));
+        $drawing->setHeight(65);
+        $drawing->setCoordinates('E7');
+
+        return $drawing;
     }
 }
