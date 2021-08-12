@@ -173,7 +173,7 @@
 
                                         <label class="col-md-3 form-control-label" for="text-input">Detalle Tarea</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="observacion" class="form-control" placeholder="Valor">
+                                            <input type="text" v-model="observacion" class="form-control" placeholder="Detalle tarea">
                                             <span class="help-block">(*) Detalle tarea entregada</span>
                                         </div>
 
@@ -198,6 +198,27 @@
                                         </div>
 
                                     </div>
+
+                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
+
+                                            <label class="col-md-3 form-control-label" for="text-input">Porcentajes adicionales</label>
+
+                                            <div class="col-md-3">
+                                                <input type="checkbox" true-value="3" false-value="0" v-model="liquidacion" checked>
+                                                <label for="liquidacion">Provisión Liquidación</label>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <input type="checkbox" true-value="4" false-value="0" v-model="parafiscales" checked>
+                                                <label for="parafiscales">Seguridad Social</label>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label for="prueba">Total: {{parseInt((unitario*liquidacion*liqui)+(unitario*parafiscales*paraf)+parseInt(unitario))}}</label>
+                                            </div>
+
+                                    </div>
+
 <!--Inicio bloque extras-->
                                     <div v-if="tipoModal==1 && flag==2 && tipologiasalario==1" class="form-group row">
 
@@ -245,15 +266,6 @@
 
                                     </div>
                                 <!-- -->
-                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Observación</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="observacion" class="form-control" placeholder="Observación">
-                                            <span class="help-block">(*) Ingrese detalle de tarea</span>
-                                        </div>
-
-                                    </div>
 
                                     <div v-if="tipoModal==1 && flag>2" class="form-group row">
 
@@ -302,19 +314,24 @@ import moment from 'moment';
                 idExtra:0,
                 extras:0,
                 cantidad:1,
-                unitario:0,
                 valor:0,
                 tipologiaNomina:1,
                 fecha : '',
                 flag : 0,
                 concepto : 0,
                 valor: 0,
+                unitario:0,
+                liquidacion:3,
+                parafiscales:4,
+                liqui:0.073,
+                paraf:0.046,
                 arrayNovedades : [],
                 arrayEmpleados : [],
                 mensajecantidad:'',
                 modal : 0,
                 desplegable : 0,
                 listado : 0,
+                seguimiento:0,
                 tituloModal : '',
                 variable : '',
                 hoy : '',
@@ -537,6 +554,19 @@ import moment from 'moment';
                     return;
                 }
                 */
+                    if(this.liquidacion==0 && this.parafiscales==0) {
+                        this.seguimiento=3;
+                    }
+                    else if(this.liquidacion==3 && this.parafiscales==0) {
+                        this.seguimiento=4;
+                    }
+                    else if(this.liquidacion==0 && this.parafiscales==4) {
+                        this.seguimiento=5;
+                    }
+                     else if(this.liquidacion==3 && this.parafiscales==4) {
+                        this.seguimiento=6;
+                    }
+
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 this.valor=(this.cantidad*this.unitario);
@@ -549,6 +579,7 @@ import moment from 'moment';
                     'observacion':this.observacion,
                     'tipologia':this.tipologia,
                     'idEmpleado':this.idEmpleado,
+                    'seguimiento':this.seguimiento,
                     'idNomina':this.identificadornomina
                 }).then(function (response) {
                 console.log('Enviados valores');

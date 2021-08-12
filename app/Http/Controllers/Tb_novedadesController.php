@@ -161,21 +161,32 @@ class Tb_novedadesController extends Controller
 
         $fechaValidacion=$request->fechaNovedad;
 
-        if($request->concepto<50){ //Margen de 50 conceptos para tipologia 1 -> Entradas
-            $tipologia=1;
-        }
-        else{//Margen superior a 50 conceptos para tipologia 0 -> Deducciones
-            $tipologia=0;
-        }
-
-        $nominas = Tb_nomina::select('tb_nomina.id')
-        ->where('tb_nomina.fechaInicio','<=',$fechaValidacion)
-        ->where('tb_nomina.estado','=','1')->get();
+        $nominas = Tb_nomina::select('tb_nomina.id','tb_nomina.tipo')
+        ->where('tb_nomina.id','=',$request->idNomina)->get();
 
 
         foreach($nominas as $nomina){
             $idNominax = $nomina->id;
+            $tiponomina = $nomina->tipo;
             $idNomina=$idNominax;
+        }
+
+        //para destajo tengo en cuenta tipologias de entradas: 3- sin provision 4- solo liquidacion 5- solo parafiscales 6-con todo
+        //para destajo tengo en cuenta tipologias de salidas: 2- salida
+        //para fija solo tengo en cuenta tipologias 1- entrada 2- salida
+
+        if($request->concepto<50){ //Margen de 50 conceptos para tipologia 1 -> Entradas
+
+            if(($request->concepto==1) && ($tiponomina==2)){
+                $tipologia=$request->seguimiento;
+            }
+            else{
+                $tipologia=1;
+            }
+
+        }
+        else{//Margen superior a 50 conceptos para tipologia 0 -> Deducciones
+            $tipologia=0;
         }
 
         $tb_novedades=new Tb_novedades();
