@@ -119,15 +119,24 @@
                                         <div v-if="desplegable==1 && tipologiaNomina==2" class="col-md-9">
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
-                                                <option value="1">Detalle Ingresos</option>
+                                                <option value="1">Tareas realizadas</option>
                                             </select>
                                         </div>
                                         <!-- Si es una salida -->
-                                        <div v-else-if="desplegable==2" class="col-md-9">
+                                        <div v-else-if="desplegable==2 && tipologiaNomina==1" class="col-md-9">
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
                                                 <option value="50">Retención</option>
                                                 <option value="51">Sindicato</option>
+                                                <option value="52">Préstamos</option>
+                                                <option value="53">Embargos</option>
+                                                <option value="54">Descuento por libranza/otros</option>
+                                            </select>
+                                        </div>
+
+                                        <div v-else-if="desplegable==2 && tipologiaNomina==2" class="col-md-9">
+                                            <select class="form-control" v-model="concepto" @change='onChange($event)'>
+                                                <option value="0" disabled>Seleccione tipo de novedad</option>
                                                 <option value="52">Préstamos</option>
                                                 <option value="53">Embargos</option>
                                                 <option value="54">Descuento por libranza/otros</option>
@@ -204,17 +213,8 @@
                                             <label class="col-md-3 form-control-label" for="text-input">Porcentajes adicionales</label>
 
                                             <div class="col-md-3">
-                                                <input type="checkbox" true-value="3" false-value="0" v-model="liquidacion" checked>
-                                                <label for="liquidacion">Provisión Liquidación</label>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <input type="checkbox" true-value="4" false-value="0" v-model="parafiscales" checked>
-                                                <label for="parafiscales">Seguridad Social</label>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label for="prueba">Total: {{parseInt((unitario*liquidacion*liqui)+(unitario*parafiscales*paraf)+parseInt(unitario))}}</label>
+                                                <input type="checkbox" true-value="4" false-value="3" v-model="seguimiento" checked>
+                                                <label for="liquidacion">Calcular salud y pensión</label>
                                             </div>
 
                                     </div>
@@ -331,7 +331,7 @@ import moment from 'moment';
                 modal : 0,
                 desplegable : 0,
                 listado : 0,
-                seguimiento:0,
+                seguimiento:4,
                 tituloModal : '',
                 variable : '',
                 hoy : '',
@@ -547,26 +547,6 @@ import moment from 'moment';
                },
             crearNovedad(){
                 //valido con el metodo de validacion creado
-                /*
-                console.log('Carga valores');
-                if(this.validarNovedad()){
-                    console.log('Carga valores correcta');
-                    return;
-                }
-                */
-                    if(this.liquidacion==0 && this.parafiscales==0) {
-                        this.seguimiento=3;
-                    }
-                    else if(this.liquidacion==3 && this.parafiscales==0) {
-                        this.seguimiento=4;
-                    }
-                    else if(this.liquidacion==0 && this.parafiscales==4) {
-                        this.seguimiento=5;
-                    }
-                     else if(this.liquidacion==3 && this.parafiscales==4) {
-                        this.seguimiento=6;
-                    }
-
                 let me=this;
                 this.fecha= moment().format('YYYY-MM-DD');
                 this.valor=(this.cantidad*this.unitario);
