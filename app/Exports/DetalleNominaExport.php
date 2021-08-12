@@ -16,9 +16,10 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
 
-class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,ShouldAutoSize,WithDrawings
+class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,ShouldAutoSize,WithDrawings,WithStrictNullComparison
 {
     public function headings(): array
     {
