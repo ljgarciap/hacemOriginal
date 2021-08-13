@@ -201,6 +201,7 @@
 <script>
     import detallenomina from '../components/DetalleNomina';
     import carganovedades from '../components/CargaNovedades';
+    import novedades from '../components/Novedades';
     export default {
         components: {
             detallenomina,

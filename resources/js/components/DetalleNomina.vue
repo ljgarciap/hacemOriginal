@@ -70,7 +70,7 @@
         </div>
         </template>
 
-                                <!-- Template para mostrar la carga de novedades -->
+                                <!-- Template para mostrar la carga de novedades
                 <template v-if="listado==3">
                     <div class="container-fluid">
                             <div class="table-responsive">
@@ -101,6 +101,7 @@
                             </p>
                     </div>
                 </template>
+                -->
 
     </main>
 </template>
@@ -109,6 +110,12 @@
     export default {
         props: {
             identificador: {
+            type: Number
+            },
+            identificadorEmpleado: {
+            type: Number
+            },
+            identificadorNomina: {
             type: Number
             }
          },

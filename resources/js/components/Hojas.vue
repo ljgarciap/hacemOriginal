@@ -218,25 +218,27 @@
 
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Cantidad <br>
-                                            <sub><i>( Cantidad medida en: {{unidadBase}} )</i></sub></label>
+                                            <span style="color:red;"><sub><b><i>( Cantidad medida en: {{unidadBase}} )</i></b></sub></span>
+                                        </label>
                                         <div class="col-md-9">
                                             <input type="number" step="0.01" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
-                                            <span class="help-block">(*) Ingrese la cantidad de material en: {{unidadBase}}</span>
+                                            <span class="help-block"><b>(*) Ingrese la cantidad de material en: <span style="color:red;">{{unidadBase}}</span></b></span>
                                         </div>
                                     </div>
 
                                      <div v-if="tipoModal==3" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Cantidad <br>
-                                            <sub><i>( Cantidad medida en: {{unidadBase}} )</i></sub></label>
+                                            <span style="color:red;"><sub><b><i>( Cantidad medida en: {{unidadBase}} )</i></b></sub></span>
+                                        </label>
                                         <div class="col-md-9">
                                             <input type="number" step="0.01" v-model="cantidad" class="form-control" placeholder="Cantidad de material">
-                                            <span class="help-block">(*) Ingrese la cantidad de material en: {{unidadBase}}</span>
+                                            <span class="help-block"><b>(*) Ingrese la cantidad de material en: <span style="color:red;">{{unidadBase}}</span></b></span>
                                         </div>
                                     </div>
 
                                     <div v-if="tipoModal==1" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Precio <br>
-                                            <sub><i>( Precio base: $ {{valorPrecioBase}} por {{unidadBase}} )</i></sub></label>
+                                            <sub><b><i>( Precio base: $ {{valorPrecioBase}} por {{unidadBase}} )</i></b></sub></label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="precioBase" class="form-control">
                                             <span class="help-block">(*) Ingrese el precio</span>
@@ -244,7 +246,7 @@
                                     </div>
                                     <div v-if="tipoModal==3" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Precio <br>
-                                            <sub><i>( Precio base: $ {{valorPrecioBase}} por {{unidadBase}} )</i></sub></label>
+                                            <sub><b><i>( Precio base: $ {{valorPrecioBase}} por {{unidadBase}} )</i></b></sub></label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="precioBase" class="form-control">
                                             <span class="help-block">(*) Ingrese el precio</span>

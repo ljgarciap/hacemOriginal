@@ -41,7 +41,7 @@
                                         <td v-text="manodeobraproducto.perfil"></td>
                                         <td v-text="manodeobraproducto.proceso"></td>
                                         <td v-if="manodeobraproducto.tipoPago==1" v-text="manodeobraproducto.tiempo"></td>
-                                        <td v-if="manodeobraproducto.tipoPago>1"><span class="badge badge-secondary">Por tarea</span></td>
+                                        <td v-if="manodeobraproducto.tipoPago>1"><span class="badge badge-secondary">Por par</span></td>
                                         <td v-text="manodeobraproducto.precio"></td>
                                         <td v-text="manodeobraproducto.subtotal"></td>
                                         <td v-if="manodeobraproducto.tipoPago==1"><span class="badge badge-success">Sueldo Fijo</span></td>
