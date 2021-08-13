@@ -105,9 +105,18 @@ class Tb_nominaController extends Controller
         $nominaid=$request->id;
         $tb_nomina=Tb_nomina::findOrFail($nominaid);
         $tb_nomina->estado=2;
+        $flag=$tb_nomina->tipo;
         $tb_nomina->save();
 
-        CalcularNomina::dispatch($nominaid);
+        if($flag==1){
+            CalcularNomina::dispatch($nominaid);
+        }
+        else{
+            CalcularNomina::dispatch($nominaid);
+            //aca iria la otra funcion
+        }
+
+
     } //cierre función cálculo
 
 //---------------------------------------------------------------------------------------------------//
