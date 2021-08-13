@@ -36,7 +36,6 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
             [''],
             [''],
             [''],
-            [''],
             [
             'Codigo',
             'Documento',
@@ -128,11 +127,27 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(true);
 
                 $cellRange2 = 'D2';
-                $event->sheet->getDelegate()->setCellValue('D2', '2021')->getStyle($cellRange2)->getFont()->setSize(11);
+                $event->sheet->getDelegate()->setCellValue('D2', '2020')->getStyle($cellRange2)->getFont()->setSize(11);
                 $event->sheet->getDelegate()->getStyle($cellRange2)->getFont()->setBold(true);
+                
+                $cellRange_1 = 'C4';
+                $event->sheet->getDelegate()->setCellValue('C4', 'SALARIO MINIMO')->getStyle($cellRange_1)->getFont()->setSize(11);
+                $event->sheet->getDelegate()->getStyle($cellRange_1)->getFont()->setBold(true);
 
-                $cellRange3 = 'A7:H10';
-                $event->sheet->getDelegate()->mergeCells('A7:H10');
+                $cellRange_2 = 'D4';
+                $event->sheet->getDelegate()->setCellValue('D4', '$ 908,526')->getStyle($cellRange_2)->getFont()->setSize(11);
+                $event->sheet->getDelegate()->getStyle($cellRange_2)->getFont()->setBold(true);
+
+                $cellRange_3 = 'C5';
+                $event->sheet->getDelegate()->setCellValue('C5', 'AUXILIO DE TRANSPORTE')->getStyle($cellRange_3)->getFont()->setSize(11);
+                $event->sheet->getDelegate()->getStyle($cellRange_3)->getFont()->setBold(true);
+
+                $cellRange_4 = 'D5';
+                $event->sheet->getDelegate()->setCellValue('D5', '$ 106,454')->getStyle($cellRange_4)->getFont()->setSize(11);
+                $event->sheet->getDelegate()->getStyle($cellRange_4)->getFont()->setBold(true);
+
+                $cellRange3 = 'A7:G10';
+                $event->sheet->getDelegate()->mergeCells('A7:G10');
                 $event->sheet->getDelegate()->getStyle('A7')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getDelegate()->setCellValue('A7', '')->getStyle($cellRange3)->getFont()->setSize(10)->setBold(true);
@@ -140,75 +155,75 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
                 
-                $cellRange4 = 'I7:BD7';
-                $event->sheet->getDelegate()->mergeCells('I7:BD7');
-                $event->sheet->getDelegate()->getStyle('I7')->getAlignment()
+                $cellRange4 = 'H7:BD7';
+                $event->sheet->getDelegate()->mergeCells('H7:BD7');
+                $event->sheet->getDelegate()->getStyle('H7')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('I7', 'SERVICIO NACIONAL DE APRENDIZAJE - SENA')->getStyle($cellRange4)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('H7', 'SERVICIO NACIONAL DE APRENDIZAJE - SENA')->getStyle($cellRange4)->getFont()->setSize(10)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange4)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
 
-                $cellRange5 = 'I8:BD8';
-                $event->sheet->getDelegate()->mergeCells('I8:BD8');
-                $event->sheet->getDelegate()->getStyle('I8')->getAlignment()
+                $cellRange5 = 'H8:BD8';
+                $event->sheet->getDelegate()->mergeCells('H8:BD8');
+                $event->sheet->getDelegate()->getStyle('H8')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('I8', 'REGIONAL SANTANDER')->getStyle($cellRange5)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('H8', 'REGIONAL SANTANDER')->getStyle($cellRange5)->getFont()->setSize(10)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange5)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
 
-                $cellRange6 = 'I9:BD9';
-                $event->sheet->getDelegate()->mergeCells('I9:BD9');
-                $event->sheet->getDelegate()->getStyle('I9')->getAlignment()
+                $cellRange6 = 'H9:BD9';
+                $event->sheet->getDelegate()->mergeCells('H9:BD9');
+                $event->sheet->getDelegate()->getStyle('H9')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('I9', 'CENTRO INDUSTRIAL DEL DISEÑO Y LA MANUFACTURA - CIDM')->getStyle($cellRange6)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('H9', 'CENTRO INDUSTRIAL DEL DISEÑO Y LA MANUFACTURA - CIDM')->getStyle($cellRange6)->getFont()->setSize(10)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange6)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
 
-                $cellRange7 = 'I10:BD10';
-                $event->sheet->getDelegate()->mergeCells('I10:BD10');
-                $event->sheet->getDelegate()->getStyle('I10')->getAlignment()
+                $cellRange7 = 'H10:BD10';
+                $event->sheet->getDelegate()->mergeCells('H10:BD10');
+                $event->sheet->getDelegate()->getStyle('H10')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('I10', 'PROYECTO SENNOVA "ESTRATEGIA INTEGRAL PARA EL APRENDIZAJE DEL CÁLCULO DE COSTOS DE PRODUCCIÓN APLICADO A LAS MICROEMPRESAS DEL SISTEMA MODA EN FLORIDABLANCA" - 2020')->getStyle($cellRange7)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('H10', 'PROYECTO SENNOVA "ESTRATEGIA INTEGRAL PARA EL APRENDIZAJE DEL CÁLCULO DE COSTOS DE PRODUCCIÓN APLICADO A LAS MICROEMPRESAS DEL SISTEMA MODA EN FLORIDABLANCA" - 2020')->getStyle($cellRange7)->getFont()->setSize(10)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange7)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
 
 
-                $cellRange8 = 'A11:H13';
-                $event->sheet->getDelegate()->mergeCells('A11:H13');
+                $cellRange8 = 'A11:H12';
+                $event->sheet->getDelegate()->mergeCells('A11:H12');
                 $event->sheet->getDelegate()->getStyle('A11')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getDelegate()->setCellValue('A11', 'INFORMACIÓN')->getStyle($cellRange8)->getFont()->setSize(14)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange8)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('63F5FA');
+                ->getStartColor()->setARGB('CBF4F1');
 
-                $cellRange9 = 'A14:H14'; // All headers
+                $cellRange9 = 'A13:H13'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange9)->getFont()->setSize(11);
                 $event->sheet->getDelegate()->getStyle($cellRange9)->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange9)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('63F5FA');
+                ->getStartColor()->setARGB('CBF4F1');
                 
                 
-                $cellRange10 = 'I11:BD13';
-                $event->sheet->getDelegate()->mergeCells('I11:BD13');
+                $cellRange10 = 'I11:BD12';
+                $event->sheet->getDelegate()->mergeCells('I11:BD12');
                 $event->sheet->getDelegate()->getStyle('I11')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getDelegate()->setCellValue('I11', 'NOVEDADES')->getStyle($cellRange10)->getFont()->setSize(14)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange10)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('FD8043');
+                ->getStartColor()->setARGB('FF6502');
 
-                $cellRange11 = 'I14:BD14'; // All headers
+                $cellRange11 = 'I13:BD13'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange11)->getFont()->setSize(11);
                 $event->sheet->getDelegate()->getStyle($cellRange11)->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange11)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('F6AE48');
+                ->getStartColor()->setARGB('F2E1B8');
 
                 
                 $styleArray = [
@@ -220,7 +235,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('A7:H10')->applyFromArray($styleArray);
+                $event->sheet->getStyle('A7:G10')->applyFromArray($styleArray);
 
                 $styleArray1 = [
                     'borders' => [
@@ -231,7 +246,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('I7:BD10')->applyFromArray($styleArray1);
+                $event->sheet->getStyle('H7:BD10')->applyFromArray($styleArray1);
 
                 $styleArray2 = [
                     'borders' => [
@@ -242,7 +257,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('A11:H13')->applyFromArray($styleArray2);
+                $event->sheet->getStyle('A11:H12')->applyFromArray($styleArray2);
 
                 $styleArray3 = [
                     'borders' => [
@@ -253,7 +268,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('I11:BD13')->applyFromArray($styleArray3);
+                $event->sheet->getStyle('I11:BD12')->applyFromArray($styleArray3);
 
                 $styleArray4 = [
                     'borders' => [
@@ -264,7 +279,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('A14:H14')->applyFromArray($styleArray4);
+                $event->sheet->getStyle('A13:H13')->applyFromArray($styleArray4);
 
                 $styleArray5 = [
                     'borders' => [
@@ -275,18 +290,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('I14:BD14')->applyFromArray($styleArray5);
-
-                $styleArray5 = [
-                    'borders' => [
-                        'outline' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
-                            'color' => ['argb' => '000000'],
-                        ],
-                    ],
-                ];
-                
-                $event->sheet->getStyle('C2:D2')->applyFromArray($styleArray5);
+                $event->sheet->getStyle('H13:BD13')->applyFromArray($styleArray5);
 
                 $styleArray6 = [
                     'borders' => [
@@ -297,7 +301,18 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('C4:E5')->applyFromArray($styleArray6);
+                $event->sheet->getStyle('C2:D2')->applyFromArray($styleArray6);
+
+                $styleArray7 = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ];
+                
+                $event->sheet->getStyle('C4:E5')->applyFromArray($styleArray7);
             },
         ];
     }
@@ -306,9 +321,9 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
         $drawing = new Drawing();
         $drawing->setName('Logo');
         $drawing->setDescription('Logo Naranja SENA');
-        $drawing->setPath(public_path('/img/favicon.png'));
+        $drawing->setPath(public_path('/img/logosena.png'));
         $drawing->setHeight(65);
-        $drawing->setCoordinates('E7');
+        $drawing->setCoordinates('D7');
 
         return $drawing;
     }
