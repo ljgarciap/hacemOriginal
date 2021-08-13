@@ -321,6 +321,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/nomina/delete", "Tb_nominaController@delete");
         Route::post("/nomina/estado", "Tb_nominaController@estado");
         Route::get("/nomina/listardetalle", "Tb_detalle_nominaController@listardetalle");
+        Route::get("/nomina/detalles", "Tb_detalle_nominaController@detalles");
         Route::get('/nomina/exportar', 'Tb_detalle_nominaController@export');
         Route::get("/nomina/prueba", "Tb_nominaController@prueba");
         Route::get("/nomina/prueba2", "Tb_nominaController@prueba2");

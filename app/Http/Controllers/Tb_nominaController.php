@@ -770,6 +770,7 @@ echo "<hr><br>";
                     $valorpension=0;
                     $valorarl=0;
                     $valorcaja=0;
+                    $valorauxilio=0;
                     $valoreps=0;
                     $valorpension=0;
                     $acumuladovaloreps=0;
@@ -833,6 +834,9 @@ echo "<hr><br>";
                         $acumuladovalorpension=$acumuladovalorpension+$valorpension;
                         $cantidadtareas=$cantidadtareas+$novedadescantidad;
                     }
+                    else if($novedadesconcepto==8){
+                        $valorauxilio=$novedadesvalor;
+                    }
                     else if($novedadesconcepto==52){
                         $prestamos=$prestamos+$novedadescantidad;
                         $valorprestamos=$valorprestamos+$novedadesvalor;
@@ -846,11 +850,16 @@ echo "<hr><br>";
                 $devengados=($sueldobasico);
                 //-------------------------------------------------------------------------------------------------------------------------//
 
-                if(($sueldobasico<=(2*$salariominimo)) && ($sueldobasico>=$salariominimo)){
-                    $auxilio=intval($auxilioley);
+                if($valorauxilio==0){
+                    if(($sueldobasico<=(2*$salariominimo)) && ($sueldobasico>=$salariominimo)){
+                        $auxilio=intval($auxilioley);
+                    }
+                    else{
+                        $auxilio=0;
+                    }
                 }
                 else{
-                    $auxilio=0;
+                    $auxilio=$valorauxilio;
                 }
 
                 $devengadoauxilio=($devengados+$auxilio); // calculado

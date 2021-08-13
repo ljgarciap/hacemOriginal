@@ -22,6 +22,7 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
+                                        <th>Opciones</th>
                                         <th>Empleado</th>
                                         <th>Proceso</th>
                                         <th>Perfil</th>
@@ -34,7 +35,12 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="total in arrayDetalles" :key="total.id">
-                                        <td>{{total.idEmpleado}}</td>
+                                        <td>
+                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalleNovedades(total.idEmpleado,total.idNomina)">
+                                                <i class="icon-magnifier"></i><span> Detalle</span>
+                                        </button>
+                                        </td>
+                                        <td>{{total.nombreEmpleado}}</td>
                                         <td>{{total.proceso}}</td>
                                         <td>{{total.perfil}}</td>
                                         <td>{{total.sueldoBasicoMensual}}</td>
@@ -63,6 +69,39 @@
                     <!-- Fin ejemplo de tabla Listado -->
         </div>
         </template>
+
+                <!-- Template para mostrar la carga de novedades -->
+                <template v-if="listado==1">
+                    <div class="container-fluid">
+                            <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Empleado</th>
+                                        <th>Perfil</th>
+                                        <th>Salario Basico Mensual</th>
+                                        <th>Documento</th>
+                                        <th>Riesgo Arl</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="valor in arrayDetallesNomina" :key="valor.id">
+                                        <td>{{valor.nombreEmpleado}}</td>
+                                        <td>{{valor.perfil}}</td>
+                                        <td>{{valor.sueldoBasicoMensual}}</td>
+                                        <td>{{valor.documento}}</td>
+                                        <td>{{valor.nivelArl}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+
+                            <p align="right">
+                                <button class="btn btn-danger" @click="ocultarDetalleNovedades()" aria-label="Close">Cerrar</button>
+                            </p>
+                    </div>
+                </template>
+
     </main>
 </template>
 
@@ -77,6 +116,7 @@
             return{
                 listado : 0,
                 arrayDetalles:[],
+                arrayDetallesNomina:[],
                 modal : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
@@ -143,6 +183,29 @@
                 me.listarDetalleNomina(page,this.identificador);
             }
         },
+        mostrarDetalleNovedades(identificadorEmpleado,identificadorNomina){
+                let me=this;
+
+                me.listado=1;
+                me.identificadorEmpleado=identificadorEmpleado;
+                me.identificadorNomina=identificadorNomina;
+
+                console.log(me.listado);
+
+                var url='/nomina/detalles?idEmpleado=' + identificadorEmpleado + '&idNomina='+ identificadorNomina;
+                console.log(url);
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayDetallesNomina=respuesta.detalles.data;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+        ocultarDetalleNovedades(){
+                this.listado=0;
+            },
         mounted() {
             this.listarDetalleNomina(1,this.identificador)
         }

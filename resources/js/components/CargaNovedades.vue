@@ -57,6 +57,7 @@
                                         <td v-if="novedad.concepto==5">Comisiones</td>
                                         <td v-if="novedad.concepto==6">Viaticos</td>
                                         <td v-if="novedad.concepto==7">Conceptos que no son factor salarial</td>
+                                        <td v-if="novedad.concepto==8">Auxilio de transporte destajo</td>
                                         <td v-if="novedad.concepto==50">Retención</td>
                                         <td v-if="novedad.concepto==51">Sindicato</td>
                                         <td v-if="novedad.concepto==52">Préstamos</td>
@@ -120,6 +121,7 @@
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
                                                 <option value="1">Tareas realizadas</option>
+                                                <option value="8">Auxilio de transporte</option>
                                             </select>
                                         </div>
                                         <!-- Si es una salida -->
@@ -138,8 +140,7 @@
                                             <select class="form-control" v-model="concepto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione tipo de novedad</option>
                                                 <option value="52">Préstamos</option>
-                                                <option value="53">Embargos</option>
-                                                <option value="54">Descuento por libranza/otros</option>
+                                                <option value="54">Otros descuentos</option>
                                             </select>
                                         </div>
 
