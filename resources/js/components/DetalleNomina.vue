@@ -36,7 +36,7 @@
                                 <tbody>
                                     <tr v-for="total in arrayDetalles" :key="total.id">
                                         <td>
-                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarDetalleNovedades(total.idEmpleado,total.idNomina)">
+                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarNovedades(total.idEmpleado,total.idNomina)">
                                                 <i class="icon-magnifier"></i><span> Detalle</span>
                                         </button>
                                         </td>
@@ -70,8 +70,8 @@
         </div>
         </template>
 
-                <!-- Template para mostrar la carga de novedades -->
-                <template v-if="listado==1">
+                                <!-- Template para mostrar la carga de novedades -->
+                <template v-if="listado==3">
                     <div class="container-fluid">
                             <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
@@ -97,7 +97,7 @@
                             </div>
 
                             <p align="right">
-                                <button class="btn btn-danger" @click="ocultarDetalleNovedades()" aria-label="Close">Cerrar</button>
+                                <button class="btn btn-danger" @click="ocultarNovedades()" aria-label="Close">Cerrar</button>
                             </p>
                     </div>
                 </template>
@@ -183,16 +183,10 @@
                 me.listarDetalleNomina(page,this.identificador);
             }
         },
-        mostrarDetalleNovedades(identificadorEmpleado,identificadorNomina){
-                let me=this;
+        mostrarNovedades(identificadorEmpleado,identificadorNomina){
+            this.listado=3;
 
-                me.listado=1;
-                me.identificadorEmpleado=identificadorEmpleado;
-                me.identificadorNomina=identificadorNomina;
-
-                console.log(me.listado);
-
-                var url='/nomina/detalles?idEmpleado=' + identificadorEmpleado + '&idNomina='+ identificadorNomina;
+            var url='/nomina/detalles?idEmpleado=' + identificadorEmpleado + '&idNomina='+ identificadorNomina;
                 console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
@@ -202,10 +196,10 @@
                     // handle error
                     console.log(error);
                 })
-            },
-        ocultarDetalleNovedades(){
+        },
+        ocultarNovedades(){
                 this.listado=0;
-            },
+        },
         mounted() {
             this.listarDetalleNomina(1,this.identificador)
         }

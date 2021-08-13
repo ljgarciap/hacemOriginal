@@ -115,13 +115,14 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <detallenomina v-bind:identificador="identificador" :key="componentKey"></detallenomina>
+                            <detallenomina v-bind:identificador="identificador" :key="componentKey" @click="mostrarNovedades"></detallenomina>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
                         </div>
                     </div>
                 </template>
+
                 <!--Inicio del modal agregar/actualizar-->
                 <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-primary modal-lg" role="document">

@@ -13,32 +13,14 @@
                     <div class="card">
                        <div class="card-header">
                             <i class="fa fa-align-justify"></i> Novedades
-                            <button type="button" @click="abrirModal('novedad','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Novedad
-                            </button>
-                            <button type="button" @click="abrirModal('novedad','crears')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Deducible
-                            </button>
                         </div>
 
                         <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <select class="form-control col-md-3" v-model="criterio">
-                                        <option value="fechaNovedad">Fecha</option>
-                                        <option value="empleado">Fecha</option>
-                                        </select>
-                                        <input type="text" v-model="buscar" @keyup.enter="listarNovedades(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarNovedades(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Opciones</th>
                                         <th>Fecha novedad</th>
                                         <th>Concepto</th>
                                         <th>Observación</th>
@@ -50,12 +32,6 @@
                                 <tbody>
 
                                     <tr v-for="novedad in arrayNovedades" :key="novedad.id">
-
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm" @click="eliminarNovedad(novedad.id)">
-                                                <i class="icon-trash"></i>
-                                            </button>
-                                        </td>
                                         <td v-text="novedad.fechaNovedad"></td>
 
                                         <td v-if="novedad.concepto==1">Ingreso por labor</td>
@@ -101,193 +77,6 @@
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
                 </template>
-
-                <!--Inicio del modal agregar/actualizar-->
-                <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-                    <div class="modal-dialog modal-primary modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header" v-if="tipoModal!=3">
-                                <h4 class="modal-title" v-text="tituloModal"></h4>
-                                <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-
-                                    <div v-if="tipoModal==1" class="form-group row"> <!-- Si es una entrada -->
-                                        <label class="col-md-3 form-control-label" for="email-input">Novedad</label>
-                                        <div v-if="desplegable==1" class="col-md-9">
-                                            <select class="form-control" v-model="concepto" @change='onChange($event)'>
-                                                <option value="0" disabled>Seleccione tipo de novedad</option>
-                                                <option value="1">Detalle Ingresos</option>
-                                                <option value="2">Horas extras y recargos</option>
-                                                <option value="3">Prima extralegal</option>
-                                                <option value="4">Bonificaciones</option>
-                                                <option value="5">Comisiones</option>
-                                                <option value="6">Viaticos</option>
-                                                <option value="7">Conceptos que no son factor salarial</option>
-                                            </select>
-                                        </div>
-                                        <!-- Si es una salida -->
-                                        <div v-else-if="desplegable==2" class="col-md-9">
-                                            <select class="form-control" v-model="concepto" @change='onChange($event)'>
-                                                <option value="0" disabled>Seleccione tipo de novedad</option>
-                                                <option value="51">Sindicato</option>
-                                                <option value="52">Préstamos</option>
-                                                <option value="53">Embargos</option>
-                                                <option value="54">Descuento por libranza/otros</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Fecha de Novedad</label>
-                                        <div class="col-md-9">
-                                            <input type="date" v-model="fechaNovedad" class="form-control" placeholder="Ingrese la fecha de la novedad">
-                                            <span class="help-block">(*) Ingrese fecha de novedad</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Empleado</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idEmpleado" @change='selectCaract($event)'>
-                                                <option value="0" disabled>Seleccione empleado</option>
-                                                <option v-for="empleado in arrayEmpleados" :key="empleado.idEmpleado" :value="empleado.idEmpleado" v-text="empleado.empleado"></option>
-                                            </select>
-                                            <span class="help-block">(*) Empleado</span>
-                                        </div>
-
-                                    </div>
-                                <!-- -->
-                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==1" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Dias laborados</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="cantidad" class="form-control" placeholder="Dias">
-                                            <span class="help-block">(*) Dias de labor</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Detalle Tarea</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="observacion" class="form-control" placeholder="Valor">
-                                            <span class="help-block">(*) Detalle tarea entregada</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad Tareas</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="cantidad" class="form-control" placeholder="Valor">
-                                            <span class="help-block">(*) Cantidad tareas entregadas</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Valor Tarea</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="unitario" class="form-control" placeholder="Valor">
-                                            <span class="help-block">(*) Valor tarea entregada</span>
-                                        </div>
-
-                                    </div>
-<!--Inicio bloque extras-->
-                                    <div v-if="tipoModal==1 && flag==2 && tipologiasalario==1" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Tipo de Horas Extras</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="extras" @change='selectExtra($event)'>
-                                                <option value="0" disabled>Seleccione tipo de hora extra</option>
-                                                <option value="1">Extra Diurna</option>
-                                                <option value="2">Extra Nocturna</option>
-                                                <option value="3">Hora Dominical o Festiva</option>
-                                                <option value="4">Extra Dominical o Festiva Diurna</option>
-                                                <option value="5">Extra Dominical o Festiva Nocturna</option>
-                                                <option value="6">Recargos</option>
-                                            </select>
-                                            <span class="help-block">(*) Tipo de horas extras</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1 && flag==2 && tipologiasalario==1" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Cantidad de Horas Extras</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="cantidad" class="form-control" placeholder="Extras">
-                                            <span class="help-block">(*) Cantidad de horas extras</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1 && flag==2 && tipologiasalario==2" class="form-group row">
-
-                                        <label class="col-md-12 form-control-label">
-                                            <center><h5>No se pueden asignar extras a un trabajo por destajo</h5></center>
-                                        </label>
-
-                                    </div>
-<!--Fin bloque extras-->
-                                    <div v-if="tipoModal==1 && flag>2" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Valor</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="unitario" class="form-control" placeholder="Valor">
-                                            <span class="help-block">(*) Ingrese el Valor</span>
-                                        </div>
-
-                                    </div>
-                                <!-- -->
-                                    <div v-if="tipoModal==1 && flag==1 && tipologiasalario==2" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Observación</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="observacion" class="form-control" placeholder="Observación">
-                                            <span class="help-block">(*) Ingrese detalle de tarea</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1 && flag>2" class="form-group row">
-
-                                        <label class="col-md-3 form-control-label" for="text-input">Observación</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="observacion" class="form-control" placeholder="Observación">
-                                            <span class="help-block">(*) Ingrese observación</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div v-if="tipoModal==1" class="form-group row div-error" v-show="errorNovedad">
-                                        <div class="text-center text-error">
-                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div v-if="tipoModal==1" class="modal-footer">
-                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearNovedad()">Guardar</button>
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                </div>
-                <!--Fin del modal-->
         </main>
 </template>
 
@@ -311,7 +100,6 @@ import moment from 'moment';
                 concepto : 0,
                 valor: 0,
                 arrayNovedades : [],
-                arrayEmpleados : [],
                 mensajecantidad:'',
                 modal : 0,
                 desplegable : 0,
@@ -339,8 +127,6 @@ import moment from 'moment';
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'fechaNovedad',
-                buscar : '',
                 componentKey:0
             }
         },
@@ -379,142 +165,9 @@ import moment from 'moment';
             console.log('Valor flag:');
             console.log(this.flag);
             },
-            selectCaract(event) { //Busca el dato de la tipologia de sueldo
+            listarNovedades(idEmpleado,idNomina){
                 let me=this;
-                me.idEmpleado=event.target.value;
-
-                var url='/novedades/salario?identificador=' + this.idEmpleado;
-                console.log(url);
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.tipologiasalario=respuesta.tipologiasalario;
-                me.baseSal=respuesta.baseSal;
-                me.baseDia=respuesta.baseDia;
-                me.baseHora=respuesta.baseHora;
-                    //console.log(response);
-                    console.log("Tipo de salario");
-                    console.log(me.flag);
-                    console.log(me.tipologiasalario);
-                    if ((me.flag==1) && (me.tipologiasalario==1)) { //si el tipo de sueldo es fijo
-                        me.observacion="Dias laborados";
-                        me.unitario=me.baseDia;
-                        }
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            /*
-            eliminarNovedad(idNovedad) { //Para revisar
-
-                var url='/novedades/eliminar?identificador=' + idNovedad;
-                // Make a request for a user with a given ID
-                axios.post(url).then(function (response) {
-                    // handle success
-                this.forceRerender();
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            */
-            eliminarNovedad(idNovedad){
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-                swalWithBootstrapButtons.fire({
-                title: 'Quiere eliminar esta novedad?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Eliminar!',
-                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/novedades/eliminar',{
-                        'identificador': idNovedad
-                    }).then(function (response) {
-                    me.forceRerender();
-                    me.listarNovedades(1,'','fechaNovedad');
-                    swalWithBootstrapButtons.fire(
-                    'Novedad eliminada!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarNovedades();
-                }
-                })
-            },
-            selectExtra(event) { //Busca el dato de la tipologia de sueldo
-                let me=this;
-                me.idExtra=event.target.value;
-
-                var url='/novedades/selectextra';
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.extraDiurna=respuesta.extraDiurna;
-                me.extraNocturna=respuesta.extraNocturna;
-                me.horaDominical=respuesta.horaDominical;
-                me.festivaDiurna=respuesta.festivaDiurna;
-                me.festivaNocturna=respuesta.festivaNocturna;
-                me.recargos=respuesta.recargos;
-                    //console.log(response);
-                    console.log(me.extraDiurna);
-                    console.log(me.extraNocturna);
-                    console.log(me.horaDominical);
-                    console.log(me.festivaDiurna);
-                    console.log(me.festivaNocturna);
-                    console.log(me.recargos);
-                    if (me.idExtra==1) {
-                        me.observacion="Extra Diurna";
-                        me.unitario=(me.extraDiurna*me.baseHora);
-                        }
-                    else if (me.idExtra==2) {
-                        me.observacion="Extra Nocturna";
-                        me.unitario=(me.extraNocturna*me.baseHora);
-                        }
-                    else if (me.idExtra==3) {
-                        me.observacion="Hora Dominical o Festiva";
-                        me.unitario=(me.horaDominical*me.baseHora);
-                        }
-                    else if (me.idExtra==4) {
-                        me.observacion="Extra Dominical o Festiva Diurna";
-                        me.unitario=(me.festivaDiurna*me.baseHora);
-                        }
-                    else if (me.idExtra==5) {
-                        me.observacion="Extra Dominical o Festiva Nocturna";
-                        me.unitario=(me.festivaNocturna*me.baseHora);
-                        }
-                    else if (me.idExtra==6) {
-                        me.observacion="Recargos";
-                        me.unitario=(me.recargos*me.baseHora);
-                        }
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            listarNovedades(page,buscar,criterio){
-                let me=this;
-                var url='/novedades?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/novedades/detallado?idEmpleado=' + idEmpleado + '&idNomina=' + idNomina;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -527,9 +180,6 @@ import moment from 'moment';
                     // handle error
                     console.log(error);
                 })
-            },
-            currentDateTime() {
-                return moment().format('YYYY-MM-DD')
             },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
@@ -545,51 +195,6 @@ import moment from 'moment';
             forceRerender() {
                 this.componentKey += 1;
                },
-            crearNovedad(){
-                //valido con el metodo de validacion creado
-                /*
-                console.log('Carga valores');
-                if(this.validarNovedad()){
-                    console.log('Carga valores correcta');
-                    return;
-                }
-                */
-                let me=this;
-                this.fecha= moment().format('YYYY-MM-DD');
-                this.valor=(this.cantidad*this.unitario);
-                axios.post('/novedades/store',{
-                    'fechaNovedad': this.fechaNovedad,
-                    'concepto':this.concepto,
-                    'valor':this.valor,
-                    'cantidad':this.cantidad,
-                    'unitario':this.unitario,
-                    'observacion':this.observacion,
-                    'tipologia':this.tipologia,
-                    'idEmpleado':this.idEmpleado
-                    //'idNomina':this.idNomina
-                }).then(function (response) {
-                console.log('Enviados valores');
-                me.cerrarModal('0');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            listarEmpleados(){
-                let me=this;
-                var url='/novedades/selectempleado';
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayEmpleados=respuesta.empleados;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
             mostrarDetalle(id){
                 this.listado=2;
                 this.identificador=id;
@@ -597,75 +202,11 @@ import moment from 'moment';
             ocultarDetalle(){
                 this.listado=0;
             },
-            validarNovedad(){
-                this.errorNovedad=0;
-                this.errorMensaje=[];
-
-                if (!this.idEmpleado) this.errorMensaje.push("El empleado no puede estar vacio");
-                if (this.errorMensaje.length) this.errorNovedad=1;
-
-                return this.errorNovedad;
-            },
-            cerrarModal(variable){
-                this.modal=this.variable;
-                this.tituloModal='';
-                this.detalle='';
-                this.idEmpleado=0;
-                this.mensajecantidad='';
-                this.cantidad=1;
-                this.unitario='';
-                this.valor='';
-                this.tipologia='';
-                this.observacion='';
-                this.flag=0;
-                this.tipologiasalario=0;
-                this.concepto=0;
-                this.errorNovedad=0;
-                this.errorMensaje=[];
-                this.tituloModal='';
-
-                this.listarNovedades(1,'','fechaNovedad');
-            },
-            abrirModal(modelo, accion, identificador){
-            //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
-            switch(modelo){
-                    case "novedad":
-                    {
-                        switch (accion) {
-                            case 'crear':{
-                                this.modal=1;
-                                this.tipologia=1;
-                                this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Ingreso de novedades';
-                                this.desplegable= 1; //carga tipos de botón en el footer
-                                this.tipoAccion= 1; //carga tipos de botón en el footer
-                                this.fechaNovedad= moment().format('YYYY-MM-DD');
-                                this.listarNovedades(1,'','fechaNovedad');
-                                break;
-                            }
-                            case 'crears':{
-                                this.modal=1;
-                                this.tipologia=2;
-                                this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Ingreso de novedades deducibles';
-                                this.desplegable= 2; //carga tipos de botón en el footer
-                                this.tipoAccion= 1; //carga tipos de botón en el footer
-                                this.fechaNovedad= moment().format('YYYY-MM-DD');
-                                this.listarNovedades(1,'','fechaNovedad');
-                                break;
-                            }
-                        }
-                        break;
-                    }
-
-                }
-            }
-        },
         mounted() {
             this.listarNovedades(1,'','fechaNovedad');
-            this.listarEmpleados();
         }
     }
+}
 </script>
 
 <style>
