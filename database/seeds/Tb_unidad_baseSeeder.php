@@ -27,7 +27,7 @@ class Tb_unidad_baseSeeder extends Seeder
         ]);
 
         DB::table('tb_unidad_base')->insert([
-            'unidadBase' => 'm',
+            'unidadBase' => 'metro',
         ]);
 
         DB::table('tb_unidad_base')->insert([
