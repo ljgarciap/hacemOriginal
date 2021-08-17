@@ -5,6 +5,8 @@ namespace App\Exports;
 use App\Tb_resumen_nomina;
 use App\Tb_vinculaciones;
 use App\Tb_niveles_riesgo;
+use App\Tb_novedades;
+use App\Tb_nomina;
 use App\Empleado;
 use App\perfil;
 use App\proceso;
@@ -16,11 +18,16 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
+class DetalleNominaDestajo implements WithHeadings,WithEvents,ShouldAutoSize,WithDrawings,WithStrictNullComparison,WithTitle
+{   
+    use Exportable;
+    
+    private $date;
 
-class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,ShouldAutoSize,WithDrawings,WithStrictNullComparison
-{
     public function headings(): array
     {
         return [
@@ -35,74 +42,47 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
             [''],
             [''],
             [''],
-            [''],
             [
-            'Codigo',
-            'Documento',
-            'Nombres y Apellidos',
-            'Cargo',
-            'Nivel Arl',
-            'Porcentaje Arl',
-            'Fecha Vinculación',
-            'Tipo Contrato',
-            'Sueldo Basico Mensual',
-            'Dias Laborados',
-            'Valor Dias Laborados',
-            'Hora Extra Diurna',
-            'Valor Extra Diurna',
-            'Hora Extra Nocturna',
-            'Valor Extra Nocturna',
-            'Hora Dominical',
-            'Valor Hora Dominical',
-            'Hora Extra Dominical Diurna',
-            'Valor Extra Dominical Diurno',
-            'Hora Extra Dominical Nocturno',
-            'Valor Extra Dominical Nocturno',
-            'Recargos',
-            'Valor Recargos',
-            'Total Horas Extras',
-            'Total Recargos',
-            'Total Extra y Recargos',
-            'Prima Extra Legal',
-            'Bonificaciones',
-            'Comisiones',
-            'Viaticos',
-            'No Factor Salarial',
-            'Devengado Sin Auxilio',
-            'Auxilio',
-            'Devengado Con Auxilio',
-            'Ibc Salario',
-            'Ibc Con Tope',
-            'Descuento Salud',
-            'Descuento Pensión',
-            'Fondo Solidaridad',
-            'Retención',
-            'Sindicato',
-            'Prestamos',
-            'Otros',
-            'Total Deducido',
-            'Total a Pagar',
+            'Operarios',
+            'Procesos',
+            'Pares',
+            'Valor',
+            'Básico',
+            'Aux. transporte',
+            'Total devengado',
+            'IB SALARIO',
+            'IBC CON TOPE',
+            'Descuento salud empleado',
+            'Descuento pensión empleado',
+            'Total deducidos',
+            'Neto a pagar',
             'Aporte Salud',
             'Aporte Pensión',
-            'Aporte Arl',
-            'Aporte Sena',
-            'Aporte ICBF',
-            'Aporte Caja',
+            'Aporte ARL',
+            'Cajas de compensación',
             'Cesantias',
             'Intereses Cesantias',
-            'Prima Servicios',
             'Vacaciones',
-            'Costo Total Mensual',
+            'Prima',
+            'Costo total',
+            'Costo unitario',
             ]
         ];
     }
-    public function collection()
+    public function forDate($date){
+        $this->date = $date;
+        return $this;
+    }
+    public function title(): string{
+        return "Nomina Destajo";
+    }
+    /*public function collection()
     {
        $detalles = Tb_resumen_nomina::join('tb_empleado','tb_resumen_nomina.idEmpleado','=','tb_empleado.id')
-         ->join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
+         ->join('tb_proceso','tb_perfil.idProceso','=','tb_proceso.id')
          ->join("tb_vinculaciones","tb_empleado.id","=","tb_vinculaciones.idEmpleado")
          ->join("tb_niveles_riesgo","tb_vinculaciones.idNivelArl",'=',"tb_niveles_riesgo.id")
-         ->select('tb_resumen_nomina.id','tb_empleado.documento','tb_empleado.nombre as nombreEmpleado','tb_perfil.perfil','tb_niveles_riesgo.nivelArl','tb_niveles_riesgo.porcentajeNivelArl',
+         ->select('tb_empleado.nombre as nombreEmpleado','tb_proceso.proceso','','tb_novedades.valor','tb_niveles_riesgo.porcentajeNivelArl',
          'tb_resumen_nomina.fechaVinculacion','tb_resumen_nomina.tipoContrato','tb_resumen_nomina.sueldoBasicoMensual','tb_resumen_nomina.diasLaborados','tb_resumen_nomina.valorDiasLaborados',
          'tb_resumen_nomina.extrasDiurnas','tb_resumen_nomina.valorextrasDiurnas','tb_resumen_nomina.extrasNocturnas','tb_resumen_nomina.valorextrasNocturnas','tb_resumen_nomina.horasDominicales',
          'tb_resumen_nomina.valorhorasDominicales','tb_resumen_nomina.extrasDominicalesDiurnas','tb_resumen_nomina.valorextrasDominicalesDiurnas','tb_resumen_nomina.extrasDominicalesNocturnas',
@@ -116,115 +96,90 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
          ->orderBy('id','asc')
          ->get();
          return $detalles;
-    }
+    }*/
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
 
-                $cellRange = 'C2';
-                $event->sheet->getDelegate()->setCellValue('C2', 'AÑO')->getStyle($cellRange)->getFont()->setSize(11);
-                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(true);
-
-                $cellRange2 = 'D2';
-                $event->sheet->getDelegate()->setCellValue('D2', '2020')->getStyle($cellRange2)->getFont()->setSize(11);
-                $event->sheet->getDelegate()->getStyle($cellRange2)->getFont()->setBold(true);
-                
-                $cellRange_1 = 'C4';
-                $event->sheet->getDelegate()->setCellValue('C4', 'SALARIO MINIMO')->getStyle($cellRange_1)->getFont()->setSize(11);
-                $event->sheet->getDelegate()->getStyle($cellRange_1)->getFont()->setBold(true);
-
-                $cellRange_2 = 'D4';
-                $event->sheet->getDelegate()->setCellValue('D4', '$ 908,526')->getStyle($cellRange_2)->getFont()->setSize(11);
-                $event->sheet->getDelegate()->getStyle($cellRange_2)->getFont()->setBold(true);
-
-                $cellRange_3 = 'C5';
-                $event->sheet->getDelegate()->setCellValue('C5', 'AUXILIO DE TRANSPORTE')->getStyle($cellRange_3)->getFont()->setSize(11);
-                $event->sheet->getDelegate()->getStyle($cellRange_3)->getFont()->setBold(true);
-
-                $cellRange_4 = 'D5';
-                $event->sheet->getDelegate()->setCellValue('D5', '$ 106,454')->getStyle($cellRange_4)->getFont()->setSize(11);
-                $event->sheet->getDelegate()->getStyle($cellRange_4)->getFont()->setBold(true);
-
-                $cellRange3 = 'A7:G10';
-                $event->sheet->getDelegate()->mergeCells('A7:G10');
-                $event->sheet->getDelegate()->getStyle('A7')->getAlignment()
+                $cellRange = 'A2:W4';
+                $event->sheet->getDelegate()->mergeCells('A2:W4');
+                $event->sheet->getDelegate()->getStyle('A2')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('A7', '')->getStyle($cellRange3)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('A2', '')->getStyle($cellRange)->getFont()->setSize(12)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FF6502');
+                
+                $cellRange2 = 'A5:W5';
+                $event->sheet->getDelegate()->mergeCells('A5:W5');
+                $event->sheet->getDelegate()->getStyle('A5')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('A5', 'CALZADO Y MARROQUINERÍA LA  BONITA SAS')->getStyle($cellRange2)->getFont()->setSize(12)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange2)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FF6502');
+
+                $cellRange3 = 'A6:A7';
+                $event->sheet->getDelegate()->mergeCells('A6:A7');
+                $event->sheet->getDelegate()->getStyle('A6')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('A6', 'REFERENCIA')->getStyle($cellRange3)->getFont()->setSize(14)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange3)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
-                
-                $cellRange4 = 'H7:BD7';
-                $event->sheet->getDelegate()->mergeCells('H7:BD7');
-                $event->sheet->getDelegate()->getStyle('H7')->getAlignment()
+
+                $cellRange3 = 'B6:W7';
+                $event->sheet->getDelegate()->mergeCells('B6:W7');
+                $event->sheet->getDelegate()->getStyle('B6')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('H7', 'SERVICIO NACIONAL DE APRENDIZAJE - SENA')->getStyle($cellRange4)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('B6', '')->getStyle($cellRange3)->getFont()->setSize(14)->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange3)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB('FFFFFF');
+
+                $cellRange4 = 'A8:A9';
+                $event->sheet->getDelegate()->mergeCells('A8:A9');
+                $event->sheet->getDelegate()->getStyle('A8')->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->setCellValue('A8', 'CANTIDAD')->getStyle($cellRange4)->getFont()->setSize(14)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange4)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
 
-                $cellRange5 = 'H8:BD8';
-                $event->sheet->getDelegate()->mergeCells('H8:BD8');
-                $event->sheet->getDelegate()->getStyle('H8')->getAlignment()
+                $cellRange5 = 'B8:W9';
+                $event->sheet->getDelegate()->mergeCells('B8:W9');
+                $event->sheet->getDelegate()->getStyle('B8')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('H8', 'REGIONAL SANTANDER')->getStyle($cellRange5)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('B8', '')->getStyle($cellRange5)->getFont()->setSize(14)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange5)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
 
-                $cellRange6 = 'H9:BD9';
-                $event->sheet->getDelegate()->mergeCells('H9:BD9');
-                $event->sheet->getDelegate()->getStyle('H9')->getAlignment()
+                $cellRange6 = 'A10:A11';
+                $event->sheet->getDelegate()->mergeCells('A10:A11');
+                $event->sheet->getDelegate()->getStyle('A10')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('H9', 'CENTRO INDUSTRIAL DEL DISEÑO Y LA MANUFACTURA - CIDM')->getStyle($cellRange6)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('A10', 'ORDEN DE PRODUCCIÓN')->getStyle($cellRange6)->getFont()->setSize(14)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange6)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
 
-                $cellRange7 = 'H10:BD10';
-                $event->sheet->getDelegate()->mergeCells('H10:BD10');
-                $event->sheet->getDelegate()->getStyle('H10')->getAlignment()
+                $cellRange7 = 'B10:W11';
+                $event->sheet->getDelegate()->mergeCells('B10:W11');
+                $event->sheet->getDelegate()->getStyle('B10')->getAlignment()
                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('H10', 'PROYECTO SENNOVA "ESTRATEGIA INTEGRAL PARA EL APRENDIZAJE DEL CÁLCULO DE COSTOS DE PRODUCCIÓN APLICADO A LAS MICROEMPRESAS DEL SISTEMA MODA EN FLORIDABLANCA" - 2020')->getStyle($cellRange7)->getFont()->setSize(10)->setBold(true);
+                $event->sheet->getDelegate()->setCellValue('B10', '')->getStyle($cellRange7)->getFont()->setSize(14)->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange7)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setARGB('FFFFFF');
 
-
-                $cellRange8 = 'A11:H12';
-                $event->sheet->getDelegate()->mergeCells('A11:H12');
-                $event->sheet->getDelegate()->getStyle('A11')->getAlignment()
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('A11', 'INFORMACIÓN')->getStyle($cellRange8)->getFont()->setSize(14)->setBold(true);
+                $cellRange8 = 'A12:W12'; // All headers
+                $event->sheet->getDelegate()->getStyle($cellRange8)->getFont()->setSize(14);
+                $event->sheet->getDelegate()->getStyle($cellRange8)->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle($cellRange8)->getFill()
                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('CBF4F1');
-
-                $cellRange9 = 'A13:H13'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange9)->getFont()->setSize(11);
-                $event->sheet->getDelegate()->getStyle($cellRange9)->getFont()->setBold(true);
-                $event->sheet->getDelegate()->getStyle($cellRange9)->getFill()
-                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('CBF4F1');
-                
-                
-                $cellRange10 = 'I11:BD12';
-                $event->sheet->getDelegate()->mergeCells('I11:BD12');
-                $event->sheet->getDelegate()->getStyle('I11')->getAlignment()
-                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getDelegate()->setCellValue('I11', 'NOVEDADES')->getStyle($cellRange10)->getFont()->setSize(14)->setBold(true);
-                $event->sheet->getDelegate()->getStyle($cellRange10)->getFill()
-                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('FF6502');
-
-                $cellRange11 = 'I13:BD13'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange11)->getFont()->setSize(11);
-                $event->sheet->getDelegate()->getStyle($cellRange11)->getFont()->setBold(true);
-                $event->sheet->getDelegate()->getStyle($cellRange11)->getFill()
-                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()->setARGB('F2E1B8');
-
+                ->getStartColor()->setARGB('FDE9D9');
                 
                 $styleArray = [
                     'borders' => [
@@ -235,7 +190,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('A7:G10')->applyFromArray($styleArray);
+                $event->sheet->getStyle('A2:W5')->applyFromArray($styleArray);
 
                 $styleArray1 = [
                     'borders' => [
@@ -246,7 +201,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('H7:BD10')->applyFromArray($styleArray1);
+                $event->sheet->getStyle('A6:A7')->applyFromArray($styleArray1);
 
                 $styleArray2 = [
                     'borders' => [
@@ -257,7 +212,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('A11:H12')->applyFromArray($styleArray2);
+                $event->sheet->getStyle('B6:W7')->applyFromArray($styleArray2);
 
                 $styleArray3 = [
                     'borders' => [
@@ -268,7 +223,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('I11:BD12')->applyFromArray($styleArray3);
+                $event->sheet->getStyle('A8:A9')->applyFromArray($styleArray3);
 
                 $styleArray4 = [
                     'borders' => [
@@ -279,7 +234,8 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('A13:H13')->applyFromArray($styleArray4);
+                $event->sheet->getStyle('B8:W9')->applyFromArray($styleArray4);
+
 
                 $styleArray5 = [
                     'borders' => [
@@ -290,7 +246,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('H13:BD13')->applyFromArray($styleArray5);
+                $event->sheet->getStyle('A10:A11')->applyFromArray($styleArray5);
 
                 $styleArray6 = [
                     'borders' => [
@@ -301,7 +257,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('C2:D2')->applyFromArray($styleArray6);
+                $event->sheet->getStyle('B10:W11')->applyFromArray($styleArray6);
 
                 $styleArray7 = [
                     'borders' => [
@@ -312,7 +268,7 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
                     ],
                 ];
                 
-                $event->sheet->getStyle('C4:E5')->applyFromArray($styleArray7);
+                $event->sheet->getStyle('A12:W12')->applyFromArray($styleArray7);
             },
         ];
     }
@@ -322,8 +278,8 @@ class DetalleNominaExport implements FromCollection,WithHeadings,WithEvents,Shou
         $drawing->setName('Logo');
         $drawing->setDescription('Logo Naranja SENA');
         $drawing->setPath(public_path('/img/logosena.png'));
-        $drawing->setHeight(65);
-        $drawing->setCoordinates('D7');
+        $drawing->setHeight(70);
+        $drawing->setCoordinates('A2');
 
         return $drawing;
     }

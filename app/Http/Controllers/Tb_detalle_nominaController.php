@@ -6,7 +6,8 @@ use App\Tb_resumen_nomina;
 use App\Tb_empleado;
 use App\proceso;
 use App\Perfil;
-use App\Exports\DetalleNominaExport;
+use App\Exports\DetalleNominaFija;
+use App\Exports\DetalleNominaDestajo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -40,8 +41,17 @@ class Tb_detalle_nominaController extends Controller
             'detalles' =>  $detalles
         ];
     }
-    public function export(){
-        return Excel::download(new DetalleNominaExport, 'detalle_nomina.xlsx');
+    public function export(Request $request){
+            $nominaid=$request->id;
+            $tb_nomina=Tb_nomina::find($nominaid);
+            $flag=$request->tipo;
+            if($flag==1){
+                return (new DetalleNominaFija)->forDate(request('date'))->download('detalle_nomina_fija.xlsx');
+            }
+            else{
+                return (new DetalleNominaDestajo)->forDate(request('date'))->download('detalle_nomina_destajo.xlsx');
+            }
+        
     }
     public function detalles(Request $request){
         $idEmpleado=$request->idEmpleado;
