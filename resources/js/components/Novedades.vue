@@ -83,6 +83,14 @@
 <script>
 import moment from 'moment';
     export default {
+        props: {
+            identificadorEmpleado: {
+            type: Number
+            },
+            identificadorNomina: {
+            type: Number
+            }
+         },
         data(){
             return{
                 id:'',

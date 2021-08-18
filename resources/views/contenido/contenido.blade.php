@@ -137,4 +137,8 @@
         <cierrenomina></cierrenomina>
     </template>
 
+    <template v-if="menu==34">
+        <pruebas></pruebas>
+    </template>
+
     @endsection

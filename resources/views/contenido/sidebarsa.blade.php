@@ -11,6 +11,9 @@
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-settings"></i> <b>Documentación</b></a>
                 <ul class="nav-dropdown-items">
+                    <li @click="menu=34" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Componente pruebas</a>
+                    </li>
                     <li @click="menu=27" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-book-open"></i> Manual de usuario versión pdf</a>
                     </li>

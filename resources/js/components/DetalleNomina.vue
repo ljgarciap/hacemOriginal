@@ -36,7 +36,7 @@
                                 <tbody>
                                     <tr v-for="total in arrayDetalles" :key="total.id">
                                         <td>
-                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarNovedades(total.idEmpleado,total.idNomina)">
+                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarNovedades()">
                                                 <i class="icon-magnifier"></i><span> Detalle</span>
                                         </button>
                                         </td>
@@ -70,52 +70,59 @@
         </div>
         </template>
 
-                                <!-- Template para mostrar la carga de novedades
-                <template v-if="listado==3">
+        <template v-if="listado==1">
+
                     <div class="container-fluid">
-                            <div class="table-responsive">
+                            <!--
+                            <novedades identificadornomina="identificadornomina" identificadorEmpleado="identificadorEmpleado" :key="componentKey"></novedades>
+                            -->
+                        <!--
+                        <div class="table-responsive">
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
                                         <th>Empleado</th>
-                                        <th>Perfil</th>
-                                        <th>Salario Basico Mensual</th>
-                                        <th>Documento</th>
-                                        <th>Riesgo Arl</th>
+                                        <th>Sueldo básico</th>
+                                        <th>Vlor base</th>
+                                        <th>Total extras y recargos</th>
+                                        <th>Descuento salud</th>
+                                        <th>Descuento pensión</th>
+                                        <th>Total deducido</th>
+                                        <th>Costo Total Mensual</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="valor in arrayDetallesNomina" :key="valor.id">
-                                        <td>{{valor.nombreEmpleado}}</td>
-                                        <td>{{valor.perfil}}</td>
-                                        <td>{{valor.sueldoBasicoMensual}}</td>
-                                        <td>{{valor.documento}}</td>
-                                        <td>{{valor.nivelArl}}</td>
+                                    <tr v-for="totalNomina in arrayDetallesNomina" :key="totalNomina.id">
+                                        <td>{{totalNomina.nombreEmpleado}}</td>
+                                        <td>{{totalNomina.sueldoBasicoMensual}}</td>
+                                        <td>{{totalNomina.valorDiasLaborados}}</td>
+                                        <td>{{totalNomina.totalExtrasyRecargos}}</td>
+                                        <td>{{totalNomina.descuentoSalud}}</td>
+                                        <td>{{totalNomina.descuentoPension}}</td>
+                                        <td>{{totalNomina.totalDeducido}}</td>
+                                        <td>{{totalNomina.costoTotalMensual}}</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            </div>
-
+                        </div>
+                        -->
                             <p align="right">
-                                <button class="btn btn-danger" @click="ocultarNovedades()" aria-label="Close">Cerrar</button>
+                                <button class="btn btn-danger" @click="ocultarDNovedades()" aria-label="Close">Cerrar</button>
                             </p>
                     </div>
-                </template>
-                -->
 
-    </main>
+        </template>
+        </main>
 </template>
 
 <script>
+    import novedades from '../components/Novedades';
     export default {
+        components: {
+            novedades
+        },
         props: {
             identificador: {
-            type: Number
-            },
-            identificadorEmpleado: {
-            type: Number
-            },
-            identificadorNomina: {
             type: Number
             }
          },
@@ -190,9 +197,9 @@
                 me.listarDetalleNomina(page,this.identificador);
             }
         },
-        mostrarNovedades(identificadorEmpleado,identificadorNomina){
-            this.listado=3;
-
+        mostrarNovedades(){
+            this.listado=1;
+            /*
             var url='/nomina/detalles?idEmpleado=' + identificadorEmpleado + '&idNomina='+ identificadorNomina;
                 console.log(url);
                 axios.get(url).then(function (response) {
@@ -203,6 +210,7 @@
                     // handle error
                     console.log(error);
                 })
+            */
         },
         ocultarNovedades(){
                 this.listado=0;

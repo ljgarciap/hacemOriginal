@@ -16,6 +16,7 @@
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
+
                         <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-9">
@@ -201,7 +202,6 @@
 <script>
     import detallenomina from '../components/DetalleNomina';
     import carganovedades from '../components/CargaNovedades';
-    import novedades from '../components/Novedades';
     export default {
         components: {
             detallenomina,
