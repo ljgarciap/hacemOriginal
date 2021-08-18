@@ -23,6 +23,7 @@
                                 <thead>
                                     <tr>
                                         <th>Opciones</th>
+                                        <th>id</th>
                                         <th>Empleado</th>
                                         <th>Proceso</th>
                                         <th>Perfil</th>
@@ -36,10 +37,14 @@
                                 <tbody>
                                     <tr v-for="total in arrayDetalles" :key="total.id">
                                         <td>
-                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarNovedades()">
-                                                <i class="icon-magnifier"></i><span> Detalle</span>
+                                        <button type="button" class="btn btn-info btn-sm" @click="mostrarDetallado(total)">
+                                                <i class="icon-eye"></i><span> Detalle</span>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" @click="mostrarNovedades(total)">
+                                                <i class="icon-magnifier"></i><span> Novedades</span>
                                         </button>
                                         </td>
+                                        <td>{{total.idEmpleado}}</td>
                                         <td>{{total.nombreEmpleado}}</td>
                                         <td>{{total.proceso}}</td>
                                         <td>{{total.perfil}}</td>
@@ -73,11 +78,8 @@
         <template v-if="listado==1">
 
                     <div class="container-fluid">
-                            <!--
-                            <novedades identificadornomina="identificadornomina" identificadorEmpleado="identificadorEmpleado" :key="componentKey"></novedades>
-                            -->
-                        <!--
                         <div class="table-responsive">
+                        <br>
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
@@ -105,22 +107,76 @@
                                 </tbody>
                             </table>
                         </div>
-                        -->
-                            <p align="right">
-                                <button class="btn btn-danger" @click="ocultarDNovedades()" aria-label="Close">Cerrar</button>
-                            </p>
+
                     </div>
 
+            <p align="right">
+                <button class="btn btn-secondary" @click="ocultarDetalle()" aria-label="Close">Regresar</button>
+            </p>
+
         </template>
-        </main>
+
+        <template v-if="listado==2">
+
+                    <div class="container-fluid">
+                            <div class="table-responsive">
+                            <br>
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha novedad</th>
+                                        <th>Concepto</th>
+                                        <th>Observación</th>
+                                        <th>Cantidad</th>
+                                        <th>Valor</th>
+                                        <th>Empleado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr v-for="novedad in arrayNovedades" :key="novedad.id">
+                                        <td v-text="novedad.fechaNovedad"></td>
+
+                                        <td v-if="novedad.concepto==1">Ingreso por labor</td>
+                                        <td v-if="novedad.concepto==2">Horas extras y recargos</td>
+                                        <td v-if="novedad.concepto==3">Prima extralegal</td>
+                                        <td v-if="novedad.concepto==4">Bonificaciones</td>
+                                        <td v-if="novedad.concepto==5">Comisiones</td>
+                                        <td v-if="novedad.concepto==6">Viaticos</td>
+                                        <td v-if="novedad.concepto==7">Conceptos que no son factor salarial</td>
+                                        <td v-if="novedad.concepto==50">Retención</td>
+                                        <td v-if="novedad.concepto==51">Sindicato</td>
+                                        <td v-if="novedad.concepto==52">Préstamos</td>
+                                        <td v-if="novedad.concepto==53">Embargos</td>
+                                        <td v-if="novedad.concepto==54">Descuento por libranza/otros</td>
+
+                                        <td v-text="novedad.observacion"></td>
+                                        <td v-text="novedad.cantidad"></td>
+                                        <td v-text="novedad.valor"></td>
+                                        <td v-text="novedad.empleado"></td>
+                                        <!--
+                                        <td v-text="novedad.tipologia"></td>
+                                        <td v-text="novedad.idEmpleado"></td>
+                                        <td v-text="novedad.idNomina"></td>
+                                        -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+
+                    </div>
+
+            <p align="right">
+                <button class="btn btn-secondary" @click="ocultarDetalle()" aria-label="Close">Regresar</button>
+            </p>
+
+        </template>
+
+    </main>
 </template>
 
 <script>
-    import novedades from '../components/Novedades';
     export default {
-        components: {
-            novedades
-        },
         props: {
             identificador: {
             type: Number
@@ -131,7 +187,9 @@
                 listado : 0,
                 arrayDetalles:[],
                 arrayDetallesNomina:[],
+                arrayNovedades:[],
                 modal : 0,
+                idEmpleado : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
                 pagination : {
@@ -147,7 +205,7 @@
                 buscar : ''
             }
         },
-         computed:{
+        computed:{
             isActived: function(){
                 return this.pagination.current_page;
             },
@@ -195,30 +253,55 @@
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
                 me.listarDetalleNomina(page,this.identificador);
-            }
-        },
-        mostrarNovedades(){
+            },
+        mostrarDetallado(data=[]){
+            let me=this;
             this.listado=1;
-            /*
-            var url='/nomina/detalles?idEmpleado=' + identificadorEmpleado + '&idNomina='+ identificadorNomina;
+            this.idEmpleado=data['idEmpleado'];
+            /**/
+            var url='/nomina/detalles?idEmpleado=' + this.idEmpleado + '&idNomina='+ this.identificador;
                 console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayDetallesNomina=respuesta.detalles.data;
+                console.log('Respuesta');
+                console.log(respuesta);
+                me.arrayDetallesNomina=respuesta.detalles;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
-            */
-        },
-        ocultarNovedades(){
+            },
+        mostrarNovedades(data=[]){
+            let me=this;
+            this.listado=2;
+            this.idEmpleado=data['idEmpleado'];
+            /**/
+                var url='/novedades/detallado?idEmpleado=' + this.idEmpleado + '&idNomina='+ this.identificador;
+                console.log(url);
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                console.log('Respuesta2');
+                console.log(respuesta);
+                me.arrayNovedades=respuesta.novedades;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+        ocultarDetalle(){
                 this.listado=0;
+            }
         },
         mounted() {
             this.listarDetalleNomina(1,this.identificador)
         }
     }
+
 </script>
 
 <style>
@@ -226,4 +309,3 @@
 	min-height: 150px;
     }
 </style>
-

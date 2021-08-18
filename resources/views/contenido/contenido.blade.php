@@ -137,7 +137,7 @@
         <cierrenomina></cierrenomina>
     </template>
 
-    <template v-if="menu==34">
+    <template v-if="menu==99">
         <pruebas></pruebas>
     </template>
 

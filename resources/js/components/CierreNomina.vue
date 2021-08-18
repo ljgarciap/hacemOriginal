@@ -116,7 +116,8 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <detallenomina v-bind:identificador="identificador" :key="componentKey" @click="mostrarNovedades"></detallenomina>
+                            <!--<detallenomina v-bind:identificador="identificador" :key="componentKey" @click="mostrarNovedades"></detallenomina>-->
+                            <detallenomina v-bind:identificador="identificador" :key="componentKey"></detallenomina>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>

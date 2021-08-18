@@ -134,8 +134,6 @@ Vue.component('cierrenomina', require('./components/CierreNomina.vue').default);
 Vue.component('detallenomina', require('./components/DetalleNomina.vue').default);
 
 Vue.component('pruebas', require('./components/Pruebas.vue').default);
-Vue.component('pruebas1', require('./components/Pruebas1.vue').default);
-Vue.component('pruebas2', require('./components/Pruebas2.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

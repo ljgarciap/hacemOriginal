@@ -117,7 +117,7 @@
                     <div class="container-fluid">
                         <div class="card">
                             <!--<detallenomina v-bind:identificador="identificador" :key="componentKey" @click="mostrarNovedades"></detallenomina>-->
-                            <pruebas1 v-bind:identificador="identificador" :key="componentKey" @click="mostrarNovedades"></pruebas1>
+                            <pruebas1 v-bind:identificador="identificador" :key="componentKey"></pruebas1>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -203,12 +203,10 @@
 <script>
     import detallenomina from '../components/DetalleNomina';
     import carganovedades from '../components/CargaNovedades';
-    import pruebas1 from '../components/Pruebas1';
     export default {
         components: {
             detallenomina,
-            carganovedades,
-            pruebas1
+            carganovedades
         },
 
         data(){

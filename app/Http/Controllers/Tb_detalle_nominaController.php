@@ -51,7 +51,7 @@ class Tb_detalle_nominaController extends Controller
             else{
                 return (new DetalleNominaDestajo)->forDate(request('date'))->download('detalle_nomina_destajo.xlsx');
             }
-        
+
     }
     public function detalles(Request $request){
         $idEmpleado=$request->idEmpleado;
@@ -81,6 +81,8 @@ class Tb_detalle_nominaController extends Controller
         ->where('tb_resumen_nomina.idNomina','=',$idNomina)
         ->orderBy('id','asc')
         ->get();
-        return $detalles;
+        return [
+            'detalles' =>  $detalles
+        ];
     }
 }

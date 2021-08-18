@@ -105,21 +105,13 @@ class Tb_novedadesController extends Controller
             ->select('tb_novedades.id','tb_novedades.fechaNovedad','tb_novedades.concepto','tb_novedades.valor','tb_novedades.cantidad','tb_novedades.unitario',
             'tb_novedades.observacion','tb_novedades.tipologia','tb_novedades.idEmpleado','tb_novedades.idNomina','tb_nomina.fechaInicio','tb_nomina.fechaFin',
             'tb_nomina.estado',DB::raw("CONCAT(tb_empleado.nombre,'  ',tb_empleado.apellido) AS empleado"))
-            ->orderBy('tb_novedades.id','desc')
+            ->orderBy('tb_novedades.id','asc')
             ->where('tb_novedades.idNomina','=',$idNomina)
-            ->where('tb_novedades.idEmpleado','=',$idEmpleado)->paginate(5);
+            ->where('tb_novedades.idEmpleado','=',$idEmpleado)->get();
 
         return [
-            'pagination' => [
-                'total'         =>$novedades->total(),
-                'current_page'  =>$novedades->currentPage(),
-                'per_page'      =>$novedades->perPage(),
-                'last_page'     =>$novedades->lastPage(),
-                'from'          =>$novedades->firstItem(),
-                'to'            =>$novedades->lastItem(),
-            ],
                 'novedades' => $novedades
-        ];
+             ];
     }
     public function selectEmpleado(Request $request){
         $identificador= $request->identificador;
