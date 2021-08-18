@@ -43,13 +43,16 @@ class Tb_detalle_nominaController extends Controller
     }
     public function export(Request $request){
             $nominaid=$request->id;
-            $tb_nomina=Tb_nomina::find($nominaid);
+            $tb_nomina=Tb_nomina::findOrFail($nominaid);
             $flag=$request->tipo;
+            $nominaFija='detalle_nomina_fija.xlsx';
+            $nominaDestajo='detalle_nomina_destajo.xlsx';
+            $tb_nomina->save();
             if($flag==1){
-                return (new DetalleNominaFija)->forDate(request('date'))->download('detalle_nomina_fija.xlsx');
+                return (new DetalleNominaFija)->forDate(request('date'))->download($nominaFija);
             }
             else{
-                return (new DetalleNominaDestajo)->forDate(request('date'))->download('detalle_nomina_destajo.xlsx');
+                return (new DetalleNominaDestajo)->forDate(request('date'))->download($nominaDestajo);
             }
 
     }

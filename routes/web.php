@@ -352,19 +352,17 @@ Route::group(['middleware' => ['guest']], function () {
 
     });
     Route::get('pruebaColas',function(){
-        /*logger('Guardar usuario en la tabla');
-        logger('Enviar email de bienvenida');
-        dispatch(function(){
-            sleep(2);
-            logger('Guardar imagen de perfil en storage tabla');
-        });
-        dispatch(function(){
-            sleep(3);
-            logger('Optimizar imagen en la tabla');
-        });*/
-        /*Artisan::call('prueba:cola');*/
-        Prueba::dispatch('Esto es una cola de prueba');
-        return  'Se Completo Exitosamente.';
+        $nominaid=1;
+        $tb_nomina=Tb_nomina::findOrFail($nominaid);
+        $flag=$tb_nomina->tipo;
+        $tb_nomina->save();
+        if ($flag==1){
+            return (new DetalleNominaFija)->forDate(request('date'))->download('detalle_nomina_fija.xlsx');
+            /*echo var_dump($nominaid);*/
+            }
+        else{
+            return (new DetalleNominaDestajo)->forDate(request('date'))->download('detalle_nomina_destajo.xlsx');
+        }
     });
     /*Route::get('noBorrar',function(){
         $tiempos = DB::table('tb_ciclos')

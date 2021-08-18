@@ -5,9 +5,9 @@ namespace App\Exports;
 use App\Tb_resumen_nomina;
 use App\Tb_vinculaciones;
 use App\Tb_niveles_riesgo;
-use App\Empleado;
-use App\perfil;
-use App\proceso;
+use App\Tb_Empleado;
+use App\Tb_perfil;
+use App\Tb_proceso;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -25,7 +25,7 @@ class DetalleNominaFija implements FromCollection,WithHeadings,WithEvents,Should
     use Exportable;
     
     private $date;
-    
+
     public function headings(): array
     {
         return [
