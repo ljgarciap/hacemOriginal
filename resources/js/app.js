@@ -133,6 +133,10 @@ Vue.component('carganovedades', require('./components/CargaNovedades.vue').defau
 Vue.component('cierrenomina', require('./components/CierreNomina.vue').default);
 Vue.component('detallenomina', require('./components/DetalleNomina.vue').default);
 
+Vue.component('hojadecostossimuladorfinanciero', require('./components/HojaDeCostosSimuladorFinanciero.vue').default);
+Vue.component('simuladorfinanciero', require('./components/SimuladorFinanciero.vue').default);
+Vue.component('productossimuladorfinanciero', require('./components/ProductosSimuladorFinanciero.vue').default);
+
 Vue.component('pruebas', require('./components/Pruebas.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to

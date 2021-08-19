@@ -137,6 +137,10 @@
         <cierrenomina></cierrenomina>
     </template>
 
+    <template v-if="menu==34">
+        <simuladorfinanciero></simuladorfinanciero>
+    </template>
+
     <template v-if="menu==99">
         <pruebas></pruebas>
     </template>

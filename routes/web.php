@@ -6,6 +6,7 @@ use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Redis;
 use App\Jobs\Prueba;
 use App\Tb_inventario;
+use App\Tb_nomina;
 use App\Tb_detalle_inventario;
 
 /*
@@ -317,14 +318,15 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get("/nomina", "Tb_nominaController@index");
         Route::post("/nomina/calcular", "Tb_nominaController@calcularNomina");
+        Route::get("/nomina/calcular", "Tb_nominaController@calcularNomina");
         Route::post("/nomina/store", "Tb_nominaController@store");
         Route::put("/nomina/delete", "Tb_nominaController@delete");
         Route::post("/nomina/estado", "Tb_nominaController@estado");
         Route::get("/nomina/listardetalle", "Tb_detalle_nominaController@listardetalle");
         Route::get("/nomina/detalles", "Tb_detalle_nominaController@detalles");
         Route::get('/nomina/exportar', 'Tb_detalle_nominaController@export');
+        Route::get("/nomina/pruebadestajo", "Tb_nominaController@pruebadestajo");
         Route::get("/nomina/prueba", "Tb_nominaController@prueba");
-        Route::get("/nomina/prueba2", "Tb_nominaController@prueba2");
         Route::get("/nomina/pruebacalculo", "Tb_nominaController@pruebacalculo");
 
         Route::get("/novedades", "Tb_novedadesController@index");
@@ -351,6 +353,10 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/factores/actualizar", "Tb_factoresController@actualizar");
 
     });
+
+// comentario de funcion para compilar
+
+/*
     Route::get('pruebaColas',function(){
         $nominaid=1;
         $tb_nomina=Tb_nomina::findOrFail($nominaid);
@@ -358,12 +364,13 @@ Route::group(['middleware' => ['guest']], function () {
         $tb_nomina->save();
         if ($flag==1){
             return (new DetalleNominaFija)->forDate(request('date'))->download('detalle_nomina_fija.xlsx');
-            /*echo var_dump($nominaid);*/
+            //echo var_dump($nominaid);
             }
         else{
             return (new DetalleNominaDestajo)->forDate(request('date'))->download('detalle_nomina_destajo.xlsx');
         }
     });
+*/
     /*Route::get('noBorrar',function(){
         $tiempos = DB::table('tb_ciclos')
          ->where('tb_ciclos.idTiempoEstandar','=',2)
