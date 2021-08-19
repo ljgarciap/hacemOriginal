@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 use App\Tb_nomina;
 use App\Tb_resumen_nomina;
 use App\Tb_empleado;
-use App\proceso;
-use App\Perfil;
+use App\Tb_proceso;
+use App\Tb_Perfil;
 use App\Exports\DetalleNominaFija;
 use App\Exports\DetalleNominaDestajo;
 use Illuminate\Http\Request;
@@ -41,20 +41,17 @@ class Tb_detalle_nominaController extends Controller
             'detalles' =>  $detalles
         ];
     }
-    public function export(Request $request){
-            $nominaid=$request->id;
-            $tb_nomina=Tb_nomina::findOrFail($nominaid);
-            $flag=$request->tipo;
-            $nominaFija='detalle_nomina_fija.xlsx';
-            $nominaDestajo='detalle_nomina_destajo.xlsx';
-            $tb_nomina->save();
-            if($flag==1){
-                return (new DetalleNominaFija)->forDate(request('date'))->download($nominaFija);
+    public function export($idNomina){
+        $nominaid=$idNomina;
+        $tb_nomina=Tb_nomina::findOrFail($nominaid);
+        $flag=$tb_nomina->tipo;
+        if ($flag==1){
+            return (new DetalleNominaFija($idNomina))->download('Nomina_Fija_'.date('Y-m-d_H_i_s').'.xlsx');
+            /*echo var_dump($nominaid);*/
             }
-            else{
-                return (new DetalleNominaDestajo)->forDate(request('date'))->download($nominaDestajo);
-            }
-
+        else{
+            return (new DetalleNominaDestajo($idNomina))->download('Nomina_Destajo_'.date('Y-m-d_H_i_s').'.xlsx');
+        }
     }
     public function detalles(Request $request){
         $idEmpleado=$request->idEmpleado;

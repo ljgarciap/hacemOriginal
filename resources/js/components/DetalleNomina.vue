@@ -14,7 +14,7 @@
                                     </div>
                                 </div>
                                  <p align="right">
-                                     <a href="/nomina/exportar"><img src="img/avatars/microsoft-excel.png" style="max-height:40px; max-width:40px; ">Exportar a excel</a>
+                                     <button type="submit" @click="exportarExcel(identificador)"><img src="img/avatars/microsoft-excel.png" style="max-height:40px; max-width:40px; ">Exportar a excel</button>
                                  </p>
                             </div>
                             <div class="table-responsive">
@@ -287,6 +287,20 @@
                 console.log(respuesta);
                 me.arrayNovedades=respuesta.novedades;
                     //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            exportarExcel(identificador){
+            let me=this;
+            var url='/nomina/exportar/'+ this.identificador;
+                console.log(url);
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                console.log('Respuesta');
+                console.log(respuesta);
                 })
                 .catch(function (error) {
                     // handle error

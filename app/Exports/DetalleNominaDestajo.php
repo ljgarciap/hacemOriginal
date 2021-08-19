@@ -25,6 +25,7 @@ class DetalleNominaDestajo implements FromCollection,WithHeadings,WithEvents,Sho
     use Exportable;
     
     private $date;
+    private $idNomina;
 
     public function headings(): array
     {
@@ -67,15 +68,18 @@ class DetalleNominaDestajo implements FromCollection,WithHeadings,WithEvents,Sho
             ]
         ];
     }
-    public function forDate($date){
-        $this->date = $date;
-        return $this;
-    }
     public function title(): string{
-        return "Nomina Destajo";
+        return "Destajo";
     }
+
+    public function __construct($idNomina=NULL){
+        $this->idNomina=$idNomina;
+    }
+
     public function collection()
     {
+
+        if(is_null($this->idNomina)){
         $detalles = Tb_resumen_nomina::join('tb_empleado','tb_resumen_nomina.idEmpleado','=','tb_empleado.id')
         ->join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
         ->select('tb_empleado.nombre as nombreEmpleado','tb_perfil.perfil','tb_resumen_nomina.tipoContrato','tb_resumen_nomina.valordiasLaborados','tb_resumen_nomina.sueldoBasicoMensual',
@@ -86,6 +90,20 @@ class DetalleNominaDestajo implements FromCollection,WithHeadings,WithEvents,Sho
          DB::raw('CONCAT(tb_empleado.nombre," ",tb_empleado.apellido) as nombreEmpleado'))
         ->orderBy('tb_resumen_nomina.id','asc')
         ->get();
+        }
+        else{
+            $detalles = Tb_resumen_nomina::join('tb_empleado','tb_resumen_nomina.idEmpleado','=','tb_empleado.id')
+            ->join('tb_perfil','tb_empleado.idPerfil','=','tb_perfil.id')
+            ->select('tb_empleado.nombre as nombreEmpleado','tb_perfil.perfil','tb_resumen_nomina.tipoContrato','tb_resumen_nomina.valordiasLaborados','tb_resumen_nomina.sueldoBasicoMensual',
+            'tb_resumen_nomina.auxilio','tb_resumen_nomina.devengadoConAuxilio','tb_resumen_nomina.ibcSalario','tb_resumen_nomina.ibcConTope','tb_resumen_nomina.descuentoSalud',
+            'tb_resumen_nomina.descuentoPension','tb_resumen_nomina.totalDeducido','tb_resumen_nomina.totalPagar','tb_resumen_nomina.aporteSalud',
+            'tb_resumen_nomina.aportePension','tb_resumen_nomina.aporteArl','tb_resumen_nomina.aporteCaja','tb_resumen_nomina.cesantias','tb_resumen_nomina.interesesCesantias',
+            'tb_resumen_nomina.vacaciones','tb_resumen_nomina.primaExtraLegal','tb_resumen_nomina.costoTotalMensual','tb_resumen_nomina.idNomina',
+             DB::raw('CONCAT(tb_empleado.nombre," ",tb_empleado.apellido) as nombreEmpleado'))
+            ->orderBy('tb_resumen_nomina.id','asc')
+            ->where('tb_resumen_nomina.idNomina','=',$this->idNomina)
+            ->get();
+        }
         return $detalles;
     }
     public function registerEvents(): array

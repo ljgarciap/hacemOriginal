@@ -8,6 +8,8 @@ use App\Jobs\Prueba;
 use App\Tb_inventario;
 use App\Tb_nomina;
 use App\Tb_detalle_inventario;
+use App\Exports\DetalleNominaFija;
+use App\Exports\DetalleNominaDestajo;
 
 /*
 |--------------------------------------------------------------------------
@@ -345,7 +347,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/nomina/estado", "Tb_nominaController@estado");
         Route::get("/nomina/listardetalle", "Tb_detalle_nominaController@listardetalle");
         Route::get("/nomina/detalles", "Tb_detalle_nominaController@detalles");
-        Route::get('/nomina/exportar', 'Tb_detalle_nominaController@export');
+        Route::get('/nomina/exportar/{idNomina}', 'Tb_detalle_nominaController@export');
         Route::get("/nomina/pruebadestajo", "Tb_nominaController@pruebadestajo");
         Route::get("/nomina/prueba", "Tb_nominaController@prueba");
         Route::get("/nomina/pruebacalculo", "Tb_nominaController@pruebacalculo");
@@ -377,21 +379,26 @@ Route::group(['middleware' => ['guest']], function () {
 
 // comentario de funcion para compilar
 
-/*
-    Route::get('pruebaColas',function(){
-        $nominaid=1;
+    /*Route::get('pruebaColas',function(){
+        $nominaid=2;
         $tb_nomina=Tb_nomina::findOrFail($nominaid);
         $flag=$tb_nomina->tipo;
+        
+        $nominaFija='detalle_nomina_fija_';
+        $nominaDestajo='detalle_nomina_destajo_';
+        $xls='.xls';
+        $fecha=date('Y-m-d_H_i_s');
+        
         $tb_nomina->save();
         if ($flag==1){
-            return (new DetalleNominaFija)->forDate(request('date'))->download('detalle_nomina_fija.xlsx');
-            //echo var_dump($nominaid);
+            return (new DetalleNominaFija)->download('Nomina_Fija_'.date('Y-m-d_H_i_s').'.xlsx');
+            echo var_dump($nominaid);
             }
         else{
-            return (new DetalleNominaDestajo)->forDate(request('date'))->download('detalle_nomina_destajo.xlsx');
+            return (new DetalleNominaDestajo)->download('Nomina_Destajo_'.date('Y-m-d_H_i_s').'.xlsx');
         }
-    });
-*/
+    });*/
+
     /*Route::get('noBorrar',function(){
         $tiempos = DB::table('tb_ciclos')
          ->where('tb_ciclos.idTiempoEstandar','=',2)
