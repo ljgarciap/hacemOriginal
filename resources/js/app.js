@@ -137,6 +137,8 @@ Vue.component('hojadecostossimuladorfinanciero', require('./components/HojaDeCos
 Vue.component('simuladorfinanciero', require('./components/SimuladorFinanciero.vue').default);
 Vue.component('productossimuladorfinanciero', require('./components/ProductosSimuladorFinanciero.vue').default);
 
+Vue.component('utilidades', require('./components/Utilidades.vue').default);
+
 Vue.component('pruebas', require('./components/Pruebas.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to

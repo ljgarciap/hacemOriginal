@@ -166,16 +166,26 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/hojadecosto/unitariogen/", "Hoja_De_CostosController@unitarioTotalGen");
         Route::get("/hojadecosto/detallegen/", "Hoja_De_CostosController@hojaDetalleGen");
 
-        Route::get("/simulacion", "Tb_simulacionController@index");
-        Route::post("/simulacion/store", "Tb_simulacionController@store");
-        Route::post("/simulacion/estado", "Tb_simulacionController@estado");
-        Route::get("/simulacion/selectArea", "Tb_simulacionController@selectArea");
-        Route::put("/simulacion/update", "Tb_simulacionController@update");
-        Route::get("/simulacion/ciftiempos/{identificador}", "Tb_simulacionController@cifTiempos");
-        Route::get("/simulacion/unitario/", "Tb_simulacionController@unitarioTotal");
-        Route::get("/simulacion/detalle/", "Tb_simulacionController@hojaDetalle");
-        Route::get("/simulacion/unitariogen/", "Tb_simulacionController@unitarioTotalGen");
-        Route::get("/simulacion/detallegen/", "Tb_simulacionController@hojaDetalleGen");
+        Route::get("/simulador", "Tb_simuladorController@index");
+        Route::post("/simulador/store", "Tb_simuladorController@store");
+        Route::post("/simulador/estado", "Tb_simuladorController@estado");
+        Route::get("/simulador/selectArea", "Tb_simuladorController@selectArea");
+        Route::put("/simulador/update", "Tb_simuladorController@update");
+        Route::get("/simulador/ciftiempos/{identificador}", "Tb_simuladorController@cifTiempos");
+        Route::get("/simulador/unitario/", "Tb_simuladorController@unitarioTotal");
+        Route::get("/simulador/detalle/", "Tb_simuladorController@hojaDetalle");
+        Route::get("/simulador/unitariogen/", "Tb_simuladorController@unitarioTotalGen");
+        Route::get("/simulador/detallegen/", "Tb_simuladorController@hojaDetalleGen");
+
+        Route::get("/relaf", "Tb_rela_simuladorController@index");
+        Route::get("/relaf/listar", "Tb_rela_simuladorController@listar");
+        Route::get("/relaf/posibles", "Tb_rela_simuladorController@posibles");
+        Route::post("/relaf/store", "Tb_rela_simuladorController@store");
+        Route::put("/relaf/update", "Tb_rela_simuladorController@update");
+        Route::put("/relaf/delete", "Tb_rela_simuladorController@delete");
+        Route::get("/relaf/selectArea", "Tb_rela_simuladorController@selectArea");
+
+        Route::get("/utilidades/calculomargen", "Tb_utilidadesController@calculomargen");
 
         Route::get("/ordenpedido", "Tb_orden_pedido_clienteController@index");
         Route::post("/ordenpedido/store", "Tb_orden_pedido_clienteController@store");
@@ -192,6 +202,17 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/ordenpedidocliente/posibles", "Tb_orden_pedido_cliente_detalleController@posibles");
         Route::get("/ordenpedidocliente/costo", "Tb_orden_pedido_cliente_detalleController@costo");
         Route::post("/ordenpedidocliente/store", "Tb_orden_pedido_cliente_detalleController@store");
+
+        Route::get("/simulacion", "Tb_simulacionController@index");
+        Route::post("/simulacion/store", "Tb_simulacionController@store");
+        Route::post("/simulacion/estado", "Tb_simulacionController@estado");
+        Route::get("/simulacion/selectArea", "Tb_simulacionController@selectArea");
+        Route::put("/simulacion/update", "Tb_simulacionController@update");
+        Route::get("/simulacion/ciftiempos/{identificador}", "Tb_simulacionController@cifTiempos");
+        Route::get("/simulacion/unitario/", "Tb_simulacionController@unitarioTotal");
+        Route::get("/simulacion/detalle/", "Tb_simulacionController@hojaDetalle");
+        Route::get("/simulacion/unitariogen/", "Tb_simulacionController@unitarioTotalGen");
+        Route::get("/simulacion/detallegen/", "Tb_simulacionController@hojaDetalleGen");
 
         Route::get("/rela", "Tb_rela_simulacionController@index");
         Route::get("/rela/listar", "Tb_rela_simulacionController@listar");

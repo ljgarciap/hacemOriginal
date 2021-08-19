@@ -125,7 +125,7 @@
         methods : {
                 listarProductoSimulacion(page,buscar,criterio,identificador){
                 let me=this;
-                var url='/rela/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
+                var url='/relaf/listar?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio + '&identificador=' + identificador;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.arrayProductos=respuesta.productos.data;

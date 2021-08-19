@@ -105,7 +105,7 @@
                             <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
-                            <productossimulacion v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarProducto"></productossimulacion>
+                            <productossimuladorfinanciero v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarProducto"></productossimuladorfinanciero>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -119,7 +119,7 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <hojadecostossimulador v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></hojadecostossimulador>
+                            <hojadecostossimuladorfinanciero v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></hojadecostossimuladorfinanciero>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -241,12 +241,12 @@
 
 <script>
     import moment from 'moment';
-    import productossimulacion from '../components/ProductosSimulacion';
-    import hojadecostossimulador from '../components/HojaDeCostosSimulador';
+    import productossimuladorfinanciero from '../components/ProductosSimuladorFinanciero';
+    import hojadecostossimuladorfinanciero from '../components/HojaDeCostosSimuladorFinanciero';
     export default {
         components: {
-            productossimulacion,
-            hojadecostossimulador
+            productossimuladorfinanciero,
+            hojadecostossimuladorfinanciero
         },
         data(){
             return{
@@ -320,7 +320,7 @@
             },
             listarSimulacion(page,buscar,criterio){
                 let me=this;
-                var url='/simulacion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                var url='/simulador?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
                 //console.log(url);
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
@@ -351,7 +351,7 @@
                },
             listarPosibles(id){
                 let me=this;
-                var url='/rela/posibles?id=' + this.identificador;
+                var url='/relaf/posibles?id=' + this.identificador;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -371,7 +371,7 @@
                 }
 
                 let me=this;
-                axios.post('/simulacion/store',{
+                axios.post('/simulador/store',{
                     'detalle': this.detalle,
                     'fecha': this.fecha,
                     'tipoCif': this.tipocif
@@ -386,7 +386,7 @@
             crearRelacion(){
                 //valido con el metodo de validacion creado
                 let me=this;
-                axios.post('/rela/store',{
+                axios.post('/relaf/store',{
                     'idProducto': this.idProducto,
                     'unidades': this.unidades,
                     'tiempo': this.tiempo,
@@ -402,7 +402,7 @@
             },
             editarRelacion(){
                 let me=this;
-                axios.put('/rela/update',{
+                axios.put('/relaf/update',{
                    'id': this.id,
                    'idProducto': this.idProducto,
                    'unidades': this.unidades,
@@ -465,7 +465,7 @@
             generarDetalle(id){
                 this.identificador=id;
                 let me=this;
-                axios.post('/simulacion/estado',{
+                axios.post('/simulador/estado',{
                     'id': this.identificador
                 }).then(function (response) {
                 me.cerrarModal('0');

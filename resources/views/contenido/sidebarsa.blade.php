@@ -154,6 +154,9 @@
                     <li @click="menu=34" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-wallet"></i> Simulador</a>
                     </li>
+                    <li @click="menu=35" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Utilidades</a>
+                    </li>
                 </ul>
             </li>
         </ul>
