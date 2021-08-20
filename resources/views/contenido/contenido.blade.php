@@ -141,7 +141,7 @@
         <simuladorfinanciero></simuladorfinanciero>
     </template>
 
-    <template v-if="menu==34">
+    <template v-if="menu==35">
         <utilidades></utilidades>
     </template>
 

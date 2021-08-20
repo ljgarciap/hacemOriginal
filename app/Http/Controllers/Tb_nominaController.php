@@ -108,14 +108,15 @@ class Tb_nominaController extends Controller
         $flag=$tb_nomina->tipo;
         $tb_nomina->estado=2;
         $tb_nomina->save();
-
         //echo "El valor del id es $nominaid <br>";
         if($flag==1){
             //echo "El flag es 1";
+            //
             CalcularNomina::dispatch($nominaid);
         }
         else{
             //echo "El flag es 2";
+            //
             CalculaNominaDestajo::dispatch($nominaid);
             //aca iria la otra funcion
         }
@@ -221,7 +222,6 @@ public function pruebacalculo(Request $request)
         $descuentosalud=0;
         $descuentopension=0;
         $fondoSolidaridad=0;
-        $retencion=0;
         //hasta aca vienen de la tabla novedades
 
         //estos vienen de la tabla novedades
@@ -792,6 +792,9 @@ public function pruebadestajo(Request $request)
                 $valorotros=0;
                 $descuentosalud=0;
                 $descuentopension=0;
+                $fondoSolidaridad=0;
+                $retencion=0;
+                $valorretencion=0;
                 //hasta aca vienen de la tabla novedades
 
                 //estos vienen de la tabla novedades
@@ -832,8 +835,13 @@ public function pruebadestajo(Request $request)
     //para destajo tengo en cuenta tipologias de salidas: 2- salida
 
                 if($novedadesconcepto==1 && $novedadestipologia==3){
+                    $valoreps=0;
+                    $valorpension=0;
+
                     $valortareas=$valortareas+$novedadesvalor;
                     $cantidadtareas=$cantidadtareas+$novedadescantidad;
+                    $acumuladovaloreps=$acumuladovaloreps+$valoreps;
+                    $acumuladovalorpension=$acumuladovalorpension+$valorpension;
                 }
                 else if($novedadesconcepto==1 && $novedadestipologia==4){
 
@@ -841,9 +849,13 @@ public function pruebadestajo(Request $request)
                     $valorpension=$novedadesvalor*$multdescuentopension;
 
                     $valortareas=$valortareas+$novedadesvalor;
+                    $cantidadtareas=$cantidadtareas+$novedadescantidad;
                     $acumuladovaloreps=$acumuladovaloreps+$valoreps;
                     $acumuladovalorpension=$acumuladovalorpension+$valorpension;
-                    $cantidadtareas=$cantidadtareas+$novedadescantidad;
+                }
+                else if($novedadesconcepto==50){
+                    $retencion=$retencion+$novedadescantidad;
+                    $valorretencion=$valorretencion+$novedadesvalor;
                 }
                 else if($novedadesconcepto==52){
                     $prestamos=$prestamos+$novedadescantidad;
@@ -896,9 +908,28 @@ public function pruebadestajo(Request $request)
             //---------------------------------------------------------DEDUCIDOS-------------------------------------------------------//
             //-------------------------------------------------------------------------------------------------------------------------//
 
+            //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
 
-            $descuentosalud=$ibccontope*$multdescuentosalud;
-            $descuentopension=$ibccontope*$multdescuentopension;
+            $riesgosadicional = Tb_riesgo_adicional::select('rangoSalarioMin','rangoSalarioMax','porcentajeAdicional')->get();
+            foreach($riesgosadicional as $riesgoadicional){
+                $rangoSalarioMin = $riesgoadicional->rangoSalarioMin;
+                $rangoSalarioMax = $riesgoadicional->rangoSalarioMax;
+
+                $salarioMin=$rangoSalarioMin*$salariominimo;
+                $salarioMax=$rangoSalarioMax*$salariominimo;
+
+                if(($ibccontope>=$salarioMin) && ($ibccontope<=$salarioMax)){
+                    $porcentajeAdicional = $riesgoadicional->porcentajeAdicional;
+                }
+            }
+
+            $fondoSolidaridad=$ibccontope*$porcentajeAdicional;
+
+            //$descuentosalud=$ibccontope*$multdescuentosalud;
+            //$descuentopension=$ibccontope*$multdescuentopension;
+
+            $descuentosalud=$acumuladovaloreps;
+            $descuentopension=$acumuladovalorpension;
 
             $deducidos=$valorprestamos+$valorotros+$descuentosalud+$descuentopension; // ejemplo calculado
             //-------------------------------------------------------------------------------------------------------------------------//
@@ -986,6 +1017,10 @@ public function pruebadestajo(Request $request)
                 $tb_resumen_nomina->ibcConTope=$ibccontope;
                 $tb_resumen_nomina->descuentoSalud=$descuentosalud;
                 $tb_resumen_nomina->descuentoPension=$descuentopension;
+
+                $tb_resumen_nomina->fondoSolidaridad=$fondoSolidaridad;
+                $tb_resumen_nomina->retencion=$valorretencion;
+
                 $tb_resumen_nomina->sindicato=0;
                 $tb_resumen_nomina->prestamos=$valorprestamos;
                 $tb_resumen_nomina->otros=$valorotros;

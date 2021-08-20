@@ -20,7 +20,7 @@ use Storage;
 class CalculaNominaDestajo implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    
+
     protected $nominaid;
     /**
      * Create a new job instance.
@@ -139,6 +139,9 @@ class CalculaNominaDestajo implements ShouldQueue
             $valorotros=0;
             $descuentosalud=0;
             $descuentopension=0;
+            $fondoSolidaridad=0;
+            $valorretencion=0;
+            $retencion=0;
             //hasta aca vienen de la tabla novedades
 
             //estos vienen de la tabla novedades
@@ -175,12 +178,17 @@ class CalculaNominaDestajo implements ShouldQueue
         $multdescuentopension=0.04;
         //ojo aca, estos valores están estáticos, pero deberían estar almacenados no se donde
 
-//para destajo tengo en cuenta tipologias de entradas: 3- sin provision 4- solo liquidacion 5- solo parafiscales 6-con todo
-//para destajo tengo en cuenta tipologias de salidas: 2- salida
+            //para destajo tengo en cuenta tipologias de entradas: 3- sin provision 4- solo liquidacion 5- solo parafiscales 6-con todo
+            //para destajo tengo en cuenta tipologias de salidas: 2- salida
 
             if($novedadesconcepto==1 && $novedadestipologia==3){
+                $valoreps=0;
+                $valorpension=0;
+
                 $valortareas=$valortareas+$novedadesvalor;
                 $cantidadtareas=$cantidadtareas+$novedadescantidad;
+                $acumuladovaloreps=$acumuladovaloreps+$valoreps;
+                $acumuladovalorpension=$acumuladovalorpension+$valorpension;
             }
             else if($novedadesconcepto==1 && $novedadestipologia==4){
 
@@ -188,12 +196,16 @@ class CalculaNominaDestajo implements ShouldQueue
                 $valorpension=$novedadesvalor*$multdescuentopension;
 
                 $valortareas=$valortareas+$novedadesvalor;
+                $cantidadtareas=$cantidadtareas+$novedadescantidad;
                 $acumuladovaloreps=$acumuladovaloreps+$valoreps;
                 $acumuladovalorpension=$acumuladovalorpension+$valorpension;
-                $cantidadtareas=$cantidadtareas+$novedadescantidad;
             }
             else if($novedadesconcepto==8){
                 $valorauxilio=$novedadesvalor;
+            }
+            else if($novedadesconcepto==50){
+                $retencion=$retencion+$novedadescantidad;
+                $valorretencion=$valorretencion+$novedadesvalor;
             }
             else if($novedadesconcepto==52){
                 $prestamos=$prestamos+$novedadescantidad;
@@ -251,9 +263,26 @@ class CalculaNominaDestajo implements ShouldQueue
         //---------------------------------------------------------DEDUCIDOS-------------------------------------------------------//
         //-------------------------------------------------------------------------------------------------------------------------//
 
+        $riesgosadicional = Tb_riesgo_adicional::select('rangoSalarioMin','rangoSalarioMax','porcentajeAdicional')->get();
+        foreach($riesgosadicional as $riesgoadicional){
+            $rangoSalarioMin = $riesgoadicional->rangoSalarioMin;
+            $rangoSalarioMax = $riesgoadicional->rangoSalarioMax;
 
-        $descuentosalud=$ibccontope*$multdescuentosalud;
-        $descuentopension=$ibccontope*$multdescuentopension;
+            $salarioMin=$rangoSalarioMin*$salariominimo;
+            $salarioMax=$rangoSalarioMax*$salariominimo;
+
+            if(($ibccontope>=$salarioMin) && ($ibccontope<=$salarioMax)){
+                $porcentajeAdicional = $riesgoadicional->porcentajeAdicional;
+            }
+        }
+
+        $fondoSolidaridad=$ibccontope*$porcentajeAdicional;
+
+        //$descuentosalud=$ibccontope*$multdescuentosalud;
+        //$descuentopension=$ibccontope*$multdescuentopension;
+
+        $descuentosalud=$acumuladovaloreps;
+        $descuentopension=$acumuladovalorpension;
 
         $deducidos=$valorprestamos+$valorotros+$descuentosalud+$descuentopension; // ejemplo calculado
         //-------------------------------------------------------------------------------------------------------------------------//
@@ -341,6 +370,10 @@ class CalculaNominaDestajo implements ShouldQueue
             $tb_resumen_nomina->ibcConTope=$ibccontope;
             $tb_resumen_nomina->descuentoSalud=$descuentosalud;
             $tb_resumen_nomina->descuentoPension=$descuentopension;
+
+            $tb_resumen_nomina->fondoSolidaridad=$fondoSolidaridad;
+            $tb_resumen_nomina->retencion=$valorretencion;
+
             $tb_resumen_nomina->sindicato=0;
             $tb_resumen_nomina->prestamos=$valorprestamos;
             $tb_resumen_nomina->otros=$valorotros;

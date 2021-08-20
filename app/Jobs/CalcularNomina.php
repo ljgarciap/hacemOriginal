@@ -135,7 +135,6 @@ foreach($empleadonovedades as $empleadonovedad){ //abre foreach vinculaciones
     $descuentosalud=0;
     $descuentopension=0;
     $fondoSolidaridad=0;
-    $retencion=0;
     //hasta aca vienen de la tabla novedades
 
     //estos vienen de la tabla novedades

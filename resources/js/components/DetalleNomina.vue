@@ -83,25 +83,163 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead>
                                     <tr>
+                                        <th>Documento</th>
                                         <th>Empleado</th>
+                                        <th>Perfil</th>
+                                        <th>Nivel Arl</th>
+                                        <th>Fecha Vinculación</th>
+                                        <th>Contrato</th>
                                         <th>Sueldo básico</th>
-                                        <th>Vlor base</th>
+                                        <th>Dias labor</th>
+                                        <th>Valor base</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="totalNomina in arrayDetallesNomina" :key="totalNomina.id">
+                                        <td>{{totalNomina.documento}}</td>
+                                        <td>{{totalNomina.nombreEmpleado}}</td>
+                                        <td>{{totalNomina.perfil}}</td>
+                                        <td>{{totalNomina.nivelArl}}</td>
+                                        <td>{{totalNomina.fechaVinculacion}}</td>
+                                        <td v-if="totalNomina.tipoContrato==1">Fijo</td>
+                                        <td v-else-if="totalNomina.tipoContrato==2">Indefinido</td>
+                                        <td v-else-if="totalNomina.tipoContrato==0">A destajo</td>
+                                        <td>{{totalNomina.sueldoBasicoMensual}}</td>
+                                        <td>{{totalNomina.diasLaborados}}</td>
+                                        <td>{{totalNomina.valorDiasLaborados}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <br>
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Extras diurnas</th>
+                                        <th>Valor diurnas</th>
+                                        <th>Extras nocturnas</th>
+                                        <th>Valor nocturnas</th>
+                                        <th>Horas dominicales</th>
+                                        <th>Valor dominicales</th>
+                                        <th>Extras dominicales diurnas</th>
+                                        <th>Valor dominicales diurnas</th>
+                                        <th>Extras dominicales nocturnas</th>
+                                        <th>Valor dominicales nocturnas</th>
+                                        <th>Horas recargos</th>
+                                        <th>Valor recargos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="totalNomina in arrayDetallesNomina" :key="totalNomina.id">
+                                        <td>{{totalNomina.extrasDiurnas}}</td>
+                                        <td>{{totalNomina.valorextrasDiurnas}}</td>
+                                        <td>{{totalNomina.extrasNocturnas}}</td>
+                                        <td>{{totalNomina.valorextrasNocturnas}}</td>
+                                        <td>{{totalNomina.horasDominicales}}</td>
+                                        <td>{{totalNomina.valorhorasDominicales}}</td>
+                                        <td>{{totalNomina.extrasDominicalesDiurnas}}</td>
+                                        <td>{{totalNomina.valorextrasDominicalesDiurnas}}</td>
+                                        <td>{{totalNomina.extrasDominicalesNocturnas}}</td>
+                                        <td>{{totalNomina.valorextrasDominicalesNocturnas}}</td>
+                                        <td>{{totalNomina.recargos}}</td>
+                                        <td>{{totalNomina.valorrecargos}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <br>
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Total extras</th>
+                                        <th>Total recargos</th>
                                         <th>Total extras y recargos</th>
+                                        <th>Prima extralegal</th>
+                                        <th>Bonificaciones</th>
+                                        <th>Comisiones</th>
+                                        <th>Viaticos</th>
+                                        <th>No factor salarial</th>
+                                        <th>Devengado sin auxilio</th>
+                                        <th>Auxilio</th>
+                                        <th>Devengado con auxilio</th>
+                                        <th>IBC salario</th>
+                                        <th>IBC con tope</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="totalNomina in arrayDetallesNomina" :key="totalNomina.id">
+                                        <td>{{totalNomina.totalhorasExtras}}</td>
+                                        <td>{{totalNomina.totalrecargos}}</td>
+                                        <td>{{totalNomina.totalExtrasyRecargos}}</td>
+                                        <td>{{totalNomina.primaExtralegal}}</td>
+                                        <td>{{totalNomina.bonificaciones}}</td>
+                                        <td>{{totalNomina.comisiones}}</td>
+                                        <td>{{totalNomina.viaticos}}</td>
+                                        <td>{{totalNomina.noFactorSalarial}}</td>
+                                        <td>{{totalNomina.devengadoSinAuxilio}}</td>
+                                        <td>{{totalNomina.auxilio}}</td>
+                                        <td>{{totalNomina.devengadoConAuxilio}}</td>
+                                        <td>{{totalNomina.ibcSalario}}</td>
+                                        <td>{{totalNomina.ibcConTope}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <br>
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Fondo solidaridad</th>
+                                        <th>Retención</th>
+                                        <th>Sindicato</th>
+                                        <th>Prestamos</th>
+                                        <th>Otros</th>
                                         <th>Descuento salud</th>
                                         <th>Descuento pensión</th>
                                         <th>Total deducido</th>
+                                        <th>Total a pagar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="totalNomina in arrayDetallesNomina" :key="totalNomina.id">
+                                        <td>{{totalNomina.fondoSolidaridad}}</td>
+                                        <td>{{totalNomina.retencion}}</td>
+                                        <td>{{totalNomina.sindicato}}</td>
+                                        <td>{{totalNomina.prestamos}}</td>
+                                        <td>{{totalNomina.otros}}</td>
+                                        <td>{{totalNomina.descuentoSalud}}</td>
+                                        <td>{{totalNomina.descuentoPension}}</td>
+                                        <td>{{totalNomina.totalDeducido}}</td>
+                                        <td>{{totalNomina.totalPagar}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <br>
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Aporte salud</th>
+                                        <th>Aporte pensión</th>
+                                        <th>Aporte ARL</th>
+                                        <th>Aporte SENA</th>
+                                        <th>Aporte ICBF</th>
+                                        <th>Aporte caja compensación</th>
+                                        <th>Cesantias</th>
+                                        <th>Intereses cesantías</th>
+                                        <th>Prima de servicios</th>
+                                        <th>Vacaciones</th>
                                         <th>Costo Total Mensual</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="totalNomina in arrayDetallesNomina" :key="totalNomina.id">
-                                        <td>{{totalNomina.nombreEmpleado}}</td>
-                                        <td>{{totalNomina.sueldoBasicoMensual}}</td>
-                                        <td>{{totalNomina.valorDiasLaborados}}</td>
-                                        <td>{{totalNomina.totalExtrasyRecargos}}</td>
-                                        <td>{{totalNomina.descuentoSalud}}</td>
-                                        <td>{{totalNomina.descuentoPension}}</td>
-                                        <td>{{totalNomina.totalDeducido}}</td>
+                                        <td>{{totalNomina.aporteSalud}}</td>
+                                        <td>{{totalNomina.aportePension}}</td>
+                                        <td>{{totalNomina.aporteArl}}</td>
+                                        <td>{{totalNomina.aporteSena}}</td>
+                                        <td>{{totalNomina.aporteIcbf}}</td>
+                                        <td>{{totalNomina.aporteCaja}}</td>
+                                        <td>{{totalNomina.cesantias}}</td>
+                                        <td>{{totalNomina.interesesCesantias}}</td>
+                                        <td>{{totalNomina.primaServicios}}</td>
+                                        <td>{{totalNomina.vacaciones}}</td>
                                         <td>{{totalNomina.costoTotalMensual}}</td>
                                     </tr>
                                 </tbody>
