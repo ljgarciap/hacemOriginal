@@ -43,7 +43,6 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label for="precioventa">Precio de venta: {{precioventa}}</label><br>
                                             <label for="precioventa">Precio de venta: {{parseInt((this.costo)/((100-this.porcentaje)/100))}}</label>
                                         </div>
                                     </div>
@@ -90,28 +89,28 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label for="puntoequilibriounidad">Punto de equilibrio: {{(parseInt(costosfijos)+parseInt(gastosfijos))/
-                                            ( ( parseInt(costo)/parseInt((100-porcentaje)/100) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)) )}}</label>
+                                            <label for="puntoequilibriounidad">Punto de equilibrio: {{parseFloat((parseInt(costosfijos)+parseInt(gastosfijos))/
+                                            (( parseInt((this.costo)/((100-this.porcentaje)/100)) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)))).toFixed(3)}}</label>
                                             <span class="help-block">(*) Costos fijos + Gastos fijos / el resto</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label for="puntoequilibriopesos">Costos + gastos: {{costosygastos}}</label>
+                                            <label for="puntoequilibriopesos">Costos + gastos: {{parseInt(costosfijos)+parseInt(gastosfijos)}}</label>
                                             <span class="help-block">(*) Costos fijos + Gastos fijos</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label for="puntoequilibriopesos">Precio venta: {{precioventa}}</label>
+                                            <label for="puntoequilibriopesos">Precio venta: {{parseInt((this.costo)/((100-this.porcentaje)/100))}}</label>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label for="puntoequilibriopesos">Costo unitario: {{costounitario}}</label>
+                                            <label for="puntoequilibriopesos">Costo unitario: {{ parseInt(materiaprima)+parseInt(manodeobradirecta)}}</label>
                                         </div>
                                     </div>
 
@@ -123,6 +122,26 @@
                     <div class="card">
                         <div class="card-body">
 
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Activo corriente</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="activocorriente" class="form-control" placeholder="Costos fijos">
+                                            <span class="help-block">(*) Ingrese el activo corriente</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo corriente</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="pasivocorriente" class="form-control" placeholder="Gastos fijos">
+                                            <span class="help-block">(*) Ingrese el pasivo corriente</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Razón Corriente: {{ parseInt(activocorriente)/parseInt(pasivocorriente)}}</label>
+                                    </div>
+
                         </div>
                     </div>
                     </vs-tab>
@@ -130,7 +149,15 @@
                     <vs-tab label="Capital de trabajo" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
                         <div class="card-body">
-
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Activo corriente: {{ parseInt(activocorriente) }}</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Pasivo Corriente: {{ parseInt(pasivocorriente) }}</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Capital de trabajo: {{ parseInt(activocorriente)-parseInt(pasivocorriente) }}</label>
+                                    </div>
                         </div>
                     </div>
                     </vs-tab>
@@ -139,6 +166,22 @@
                     <div class="card">
                         <div class="card-body">
 
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Inventario</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="inventario" class="form-control" placeholder="Gastos fijos">
+                                            <span class="help-block">(*) Ingrese el valor del inventario</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Activo corriente: {{ parseInt(activocorriente) }}</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Pasivo Corriente: {{ parseInt(pasivocorriente) }}</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Prueba ácida: {{ ((parseInt(activocorriente)-parseInt(inventario))/parseInt(pasivocorriente)) }}</label>
+                                    </div>
                         </div>
                     </div>
                     </vs-tab>
@@ -173,10 +216,9 @@
                 materiaprima:0,
                 manodeobradirecta:0,
                 gastosfijos:0,
-                costovariable:0,
-                precioventa:0,
-                costosygastos:0,
-                costounitario:0,
+                activocorriente:0,
+                pasivocorriente:0,
+                inventario:0,
                 arrayPosibles : [],
                 errorVinculacion : 0,
                 errorMensaje : [],
@@ -194,15 +236,6 @@
             }
         },
         computed:{
-            precioventa: function () {
-                return parseInt((this.costo)/((100-this.porcentaje)/100));
-            },
-            costosygastos: function(){
-                return parseInt(costosfijos)+parseInt(gastosfijos);
-            },
-            costounitario: function(){
-                return parseInt(materiaprima)+parseInt(manodeobradirecta);
-            },
             isActived: function(){
                 return this.pagination.current_page;
             },
