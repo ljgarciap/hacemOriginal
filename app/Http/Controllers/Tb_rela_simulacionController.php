@@ -103,7 +103,6 @@ class Tb_rela_simulacionController extends Controller
     {
         if(!$request->ajax()) return redirect('/');
         $tb_rela_simulacion = Tb_rela_simulacion::findOrFail($request->id);
-        $tb_rela_simulacion->idProducto=$request->idProducto;
         $tb_rela_simulacion->unidades=$request->unidades;
         $tb_rela_simulacion->tiempo=$request->tiempo;
         $tb_rela_simulacion->idSimulacion=$request->idSimulacion;
