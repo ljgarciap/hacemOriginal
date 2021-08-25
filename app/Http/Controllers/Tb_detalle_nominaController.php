@@ -47,7 +47,6 @@ class Tb_detalle_nominaController extends Controller
         $flag=$tb_nomina->tipo;
         if ($flag==1){
             return (new DetalleNominaFija($idNomina))->download('Nomina_Fija_'.date('Y-m-d_H_i_s').'.xlsx');
-            /*echo var_dump($nominaid);*/
             }
         else{
             return (new DetalleNominaDestajo($idNomina))->download('Nomina_Destajo_'.date('Y-m-d_H_i_s').'.xlsx');

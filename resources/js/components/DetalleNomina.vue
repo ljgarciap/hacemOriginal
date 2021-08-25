@@ -14,7 +14,7 @@
                                     </div>
                                 </div>
                                  <p align="right">
-                                     <button type="submit" @click="exportarExcel(identificador)"><img src="img/avatars/microsoft-excel.png" style="max-height:40px; max-width:40px; ">Exportar a excel</button>
+                                     <a :href="url" type="button" @click="exportarExcel(identificador)"><img src="img/avatars/microsoft-excel.png" style="max-height:40px; max-width:40px; ">Exportar a excel</a>
                                  </p>
                             </div>
                             <div class="table-responsive">
@@ -330,6 +330,7 @@
                 idEmpleado : 0,
                 tipoModal : 0,
                 tipoAccion : 0,
+                url:'',
                 pagination : {
                     'total' : 0,
                     'current_page' : 0,
@@ -432,18 +433,7 @@
                 })
             },
             exportarExcel(identificador){
-            let me=this;
-            var url='/nomina/exportar/'+ this.identificador;
-                console.log(url);
-                axios.get(url).then(function (response) {
-                var respuesta=response.data;
-                //console.log('Respuesta');
-                //console.log(respuesta);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
+            this.url="/nomina/exportar/"+ this.identificador;
             },
         ocultarDetalle(){
                 this.listado=0;
