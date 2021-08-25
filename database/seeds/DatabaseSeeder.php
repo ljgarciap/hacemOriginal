@@ -319,6 +319,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call(Tb_materia_prima_productoSeeder::class);
 
+        /*
         $this->truncateTables([
             'tb_simulacion'
         ]);
@@ -328,6 +329,7 @@ class DatabaseSeeder extends Seeder
             'tb_rela_simulacion'
         ]);
         $this->call(Tb_rela_simulacionSeeder::class);
+        */
 //--Hasta aca se comentan los seeders de base de muestra para iniciar con lo básico--//
 
 //----------------------------------------------------------------------------------------------//
