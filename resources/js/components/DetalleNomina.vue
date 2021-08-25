@@ -437,8 +437,8 @@
                 console.log(url);
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                console.log('Respuesta');
-                console.log(respuesta);
+                //console.log('Respuesta');
+                //console.log(respuesta);
                 })
                 .catch(function (error) {
                     // handle error

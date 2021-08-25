@@ -3,7 +3,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Vinculacion</li>
+                    <li class="breadcrumb-item active">Utilidades</li>
                 </ol>
 
                 <template v-if="listado">
@@ -13,13 +13,40 @@
                 <vs-tabs :color="colorx">
                     <vs-tab label="Precio de venta" icon="open_with" @click="colorx = '#8B0000'">
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Vinculación &nbsp;
-                            <button type="button" @click="abrirModal('vinculacion','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
-                            </button>
-                        </div>
                         <div class="card-body">
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Producto</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" v-model="idProducto">
+                                                <option value="0" disabled>Seleccione un producto</option>
+                                                <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Costo producción</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="costo" class="form-control" placeholder="Costo producto">
+                                            <span class="help-block">(*) Ingrese el costo de producción</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Margen</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="porcentaje" class="form-control" placeholder="Porcentaje">
+                                            <span class="help-block">(*) Ingrese el porcentaje a aplicar</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label for="precioventa">Precio de venta: {{precioventa}}</label><br>
+                                            <label for="precioventa">Precio de venta: {{parseInt((this.costo)/((100-this.porcentaje)/100))}}</label>
+                                        </div>
+                                    </div>
 
                         </div>
                     </div>
@@ -27,13 +54,66 @@
 
                     <vs-tab label="Punto de equilibrio" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Vinculación &nbsp;
-                            <button type="button" @click="abrirModal('vinculacion','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
-                            </button>
-                        </div>
                         <div class="card-body">
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Costos fijos</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="costosfijos" class="form-control" placeholder="Costos fijos">
+                                            <span class="help-block">(*) Ingrese los costos fijos</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Gastos fijos</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="gastosfijos" class="form-control" placeholder="Gastos fijos">
+                                            <span class="help-block">(*) Ingrese los gastos fijos</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor materia prima</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="materiaprima" class="form-control" placeholder="Materia prima">
+                                            <span class="help-block">(*) Ingrese el valor de materia prima</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor mano de obra</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="manodeobradirecta" class="form-control" placeholder="Mano de obra directa">
+                                            <span class="help-block">(*) Ingrese el valor de mano de obra directa</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label for="puntoequilibriounidad">Punto de equilibrio: {{(parseInt(costosfijos)+parseInt(gastosfijos))/
+                                            ( ( parseInt(costo)/parseInt((100-porcentaje)/100) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)) )}}</label>
+                                            <span class="help-block">(*) Costos fijos + Gastos fijos / el resto</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label for="puntoequilibriopesos">Costos + gastos: {{costosygastos}}</label>
+                                            <span class="help-block">(*) Costos fijos + Gastos fijos</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label for="puntoequilibriopesos">Precio venta: {{precioventa}}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label for="puntoequilibriopesos">Costo unitario: {{costounitario}}</label>
+                                        </div>
+                                    </div>
 
                         </div>
                     </div>
@@ -41,12 +121,6 @@
 
                     <vs-tab label="Razón corriente" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Vinculación &nbsp;
-                            <button type="button" @click="abrirModal('vinculacion','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
-                            </button>
-                        </div>
                         <div class="card-body">
 
                         </div>
@@ -55,12 +129,6 @@
 
                     <vs-tab label="Capital de trabajo" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Vinculación &nbsp;
-                            <button type="button" @click="abrirModal('vinculacion','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
-                            </button>
-                        </div>
                         <div class="card-body">
 
                         </div>
@@ -69,12 +137,6 @@
 
                     <vs-tab label="Prueba ácida" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Vinculación &nbsp;
-                            <button type="button" @click="abrirModal('vinculacion','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
-                            </button>
-                        </div>
                         <div class="card-body">
 
                         </div>
@@ -83,12 +145,6 @@
 
                     <vs-tab label="Endeudamiento total" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Vinculación &nbsp;
-                            <button type="button" @click="abrirModal('vinculacion','crear')" class="btn btn-secondary">
-                                <i class="icon-plus"></i>&nbsp;Nuevo
-                            </button>
-                        </div>
                         <div class="card-body">
 
                         </div>
@@ -99,105 +155,6 @@
                 </div>
 
                 </template>
-
-                <!--Inicio del modal agregar/actualizar-->
-                <div class="modal fade" tabindex="-1" :class="{'mostrar':modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-                    <div class="modal-dialog modal-primary modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" v-text="tituloModal"></h4>
-                                <button type="button" class="close" @click="cerrarModal()" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Empleado</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idEmpleado">
-                                                <option value="0" disabled>Seleccione un Empleado</option>
-                                                <option v-for="empleado in arrayEmpleados" :key="empleado.idEmpleado" :value="empleado.idEmpleado" v-text="empleado.empleado"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Tipo Salario</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="tipoSalario" @change='onChange($event)'>
-                                                <option value="0" disabled>Seleccione un tipo de salario</option>
-                                                <option value="1">Fijo</option>
-                                                <option value="2">Destajo</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row" v-if="flag==1">
-                                        <label class="col-md-3 form-control-label" for="text-input">Tipo Contrato</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="tipoContrato" @change='tiempoPago($event)'>
-                                                <option value="0" disabled>Seleccione un tipo de contrato</option>
-                                                <option value="1">Termino Fijo</option>
-                                                <option value="2">Termino Indefinido</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row" v-if="flag==1 && tiempo==1">
-                                        <label class="col-md-3 form-control-label" for="text-input">Tiempo contrato</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="tiempoContrato" class="form-control" placeholder="Ingrese el tiempo en dias">
-                                            <span class="help-block">(*) Ingrese el tiempo del contrato</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row" v-if="flag==1">
-                                        <label class="col-md-3 form-control-label" for="text-input">Salario Base</label>
-                                        <div class="col-md-9">
-                                            <input type="number" v-model="salarioBasicoMensual" class="form-control" placeholder="Ingrese el salario básico mensual">
-                                            <span class="help-block">(*) Ingrese el salario básico mensual</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Fecha de Inicio</label>
-                                        <div class="col-md-9">
-                                            <input type="date" v-model="fechaInicio" class="form-control" placeholder="Ingrese la fecha de inicio">
-                                            <span class="help-block">(*) Ingrese fecha de inicio</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Nivel Arl</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="idNivelArl">
-                                                <option value="0" disabled>Seleccione un nivel de riesgo</option>
-                                                <option v-for="nivel in arrayNiveles" :key="nivel.id" :value="nivel.id" v-text="nivel.nivelArl"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row div-error" v-show="errorVinculacion">
-                                        <div class="text-center text-error">
-                                            <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                                <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearVinculacion()">Guardar</button>
-                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarVinculacion()">Editar</button>
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                </div>
-                <!--Fin del modal-->
         </main>
 </template>
 
@@ -206,30 +163,21 @@
     export default {
         data(){
             return{
-                idEmpleado:0,
                 colorx: '#8B0000',
                 listado: 1,
+                idProducto:0,
                 flag: 0,
-                tiempo: 0,
-                tipoContrato:0,
-                tiempoContrato:0,
-                tipoSalario:0,
-                idNivelArl:0,
-                idEps:0,
-                idPensiones:0,
-                salarioBasicoMensual:0,
-                id:'',
-                fechaInicio:'',
-                estado:'',
-                arrayVinculaciones : [],
-                arrayVinculacionesInactivas : [],
-                arrayEps : [],
-                arrayNiveles : [],
-                arrayPensiones : [],
-                arrayEmpleados : [],
-                modal : 0,
-                tituloModal : '',
-                tipoAccion : 0,
+                costo:0,
+                porcentaje:0,
+                costosfijos:0,
+                materiaprima:0,
+                manodeobradirecta:0,
+                gastosfijos:0,
+                costovariable:0,
+                precioventa:0,
+                costosygastos:0,
+                costounitario:0,
+                arrayPosibles : [],
                 errorVinculacion : 0,
                 errorMensaje : [],
                 pagination : {
@@ -246,6 +194,15 @@
             }
         },
         computed:{
+            precioventa: function () {
+                return parseInt((this.costo)/((100-this.porcentaje)/100));
+            },
+            costosygastos: function(){
+                return parseInt(costosfijos)+parseInt(gastosfijos);
+            },
+            costounitario: function(){
+                return parseInt(materiaprima)+parseInt(manodeobradirecta);
+            },
             isActived: function(){
                 return this.pagination.current_page;
             },
@@ -275,56 +232,6 @@
             }
         },
         methods : {
-            onChange(event) {
-            //console.log(event.target.value);
-            this.flag=event.target.value;
-            if (this.flag == 1) {
-               this.salarioBasicoMensual = '';
-               this.tipoContrato = 1;
-            } else
-            this.salarioBasicoMensual = 0;
-            this.tipoContrato = 0;
-            },
-            tiempoPago(event) {
-            //console.log(event.target.value);
-            this.tiempo=event.target.value;
-            if (this.tiempo == 1) {
-               this.tiempoContrato = '';
-            } else
-            this.tiempoContrato = 0;
-            },
-            listarVinculacion(page,buscar,criterio){
-                let me=this;
-                var url='/vinculacion?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayVinculaciones=respuesta.vinculaciones.data;
-                me.pagination=respuesta.pagination;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            listarVinculacionInactiva(page,buscar,criterio){
-                let me=this;
-                var url='/vinculacioninactiva?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayVinculacionesInactivas=respuesta.vinculaciones.data;
-                me.pagination=respuesta.pagination;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
@@ -342,141 +249,11 @@
                },
             mostrarDetalle(id,producto,area){
                 this.listado=0;
-                this.identificador=id;
+                this.identificador=0;
             },
             ocultarDetalle(){
                 this.listado=1;
                 this.identificador=0;
-            },
-            crearVinculacion(){
-                //valido con el metodo de validacion creado
-                if(this.validarVinculacion()){
-                    return;
-                }
-
-                let me=this;
-                axios.post('/vinculacion/store',{
-                    'idEmpleado': this.idEmpleado,
-                    'tipoContrato': this.tipoContrato,
-                    'tipoSalario': this.tipoSalario,
-                    'salarioBasicoMensual': this.salarioBasicoMensual,
-                    'fechaInicio': this.fechaInicio,
-                    'tipoContrato':this.tipoContrato,
-                    'tiempoContrato':this.tiempoContrato,
-                    'idNivelArl': this.idNivelArl
-                    //'estado': this.estado,
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarVinculacion(1,'','Vinculacion');
-                this.listarVinculacionInactiva(1,'','');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            editarVinculacion(){
-                if(this.validarVinculacion()){
-                    return;
-                }
-
-                let me=this;
-                axios.put('/vinculacion/update',{
-                    'vinculacion': this.vinculacion,
-                    'id': this.idVinculacion
-                    //'estado': this.estado,
-                    //'dato': this.dato
-                }).then(function (response) {
-                me.cerrarModal();
-                me.listarVinculacion(1,'','vinculacion');
-                this.listarVinculacionInactiva(1,'','');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            desactivarVinculacion(id){
-                this.fechaFin= moment().format('YYYY-MM-DD');
-
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Está seguro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Desactivar!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/vinculacion/deactivate',{
-                        'id': id,
-                        'fechaFin': fechaFin
-                    }).then(function (response) {
-                    me.listarVinculacion(1,'','vinculacion');
-                    this.listarVinculacionInactiva(1,'','');
-                    swalWithBootstrapButtons.fire(
-                    'Vinculacion desactivada!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarVinculacion();
-                    this.listarVinculacionInactiva(1,'','');
-                }
-                })
-            },
-            activarVinculacion(id){
-                this.fechaInicio= moment().format('YYYY-MM-DD');
-
-                const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                title: 'Quiere activar este registro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Activar!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-                }).then((result) => {
-                if (result.value) {
-                    let me=this;
-                    axios.put('/vinculacion/activate',{
-                        'id': id
-                    }).then(function (response) {
-                    me.listarVinculacion(1,'','vinculacion');
-                    this.listarVinculacionInactiva(1,'','');
-                    swalWithBootstrapButtons.fire(
-                    'Vinculacion activada!'
-                    )
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    me.listarVinculacion();
-                    this.listarVinculacionInactiva(1,'','');
-                }
-                })
             },
             validarVinculacion(){
                 this.errorVinculacion=0;
@@ -487,112 +264,24 @@
 
                 return this.errorVinculacion;
             },
-            listarEmpleados(){
+            listarPosibles(id){
                 let me=this;
-                var url='/vinculacion/selectempleado';
+                var url='/relaf/posibles?id=' + this.identificador;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
                 var respuesta=response.data;
-                me.arrayEmpleados=respuesta.empleados;
+                me.arrayPosibles=respuesta.posibles;
                     //console.log(response);
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
-            },
-            listarEps(){
-                let me=this;
-                var url='/vinculacion/selecteps';
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayEps=respuesta.eps;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            listarNivel(){
-                let me=this;
-                var url='/vinculacion/selectnivel';
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayNiveles=respuesta.niveles;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            listarPensiones(){
-                let me=this;
-                var url='/vinculacion/selectpensiones';
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayPensiones=respuesta.pensiones;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-            },
-            cerrarModal(){
-                this.modal=0;
-                this.flag=0;
-                this.tiempo=0;
-                this.tipoContrato=0;
-                this.tipoSalario=0;
-                this.tituloModal='';
-                this.vinculacion='';
-                this.errorVinculacion = 0,
-                this.errorMensaje = [],
-                this.forceRerender();
-            },
-            abrirModal(modelo, accion, data=[]){
-            //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
-            switch(modelo){
-                case "vinculacion":
-                {
-                    switch (accion) {
-                        case 'crear':{
-                            this.modal=1;
-                            this.vinculacion='';
-                            this.tituloModal='Crear nueva vinculacion';
-                            this.tipoAccion= 1;
-                            break;
-                        }
-                        case 'actualizar':{
-                            //console.log(data);
-                            this.modal=1;
-                            this.tituloModal='Editar área';
-                            this.tipoAccion= 2;
-                            this.idVinculacion=data['id'];
-                            this.vinculacion=data['vinculacion'];
-                            break;
-                        }
-                    }
-                }
-            }
             }
         },
         mounted() {
-            this.listarEmpleados();
-            this.listarNivel();
-            this.listarEps();
-            this.listarPensiones();
-            this.listarVinculacion(1,'','');
-            this.listarVinculacionInactiva(1,'','');
+            this.listarPosibles();
         }
     }
 </script>
