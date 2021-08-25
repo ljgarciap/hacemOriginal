@@ -102,7 +102,7 @@
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Productos &nbsp;
-                            <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
+                            <button type="submit" @click="abrirModal('rela','crear')" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
                             <productossimulacion v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarProducto"></productossimulacion>
@@ -404,7 +404,6 @@
                 let me=this;
                 axios.put('/rela/update',{
                    'id': this.id,
-                   'idProducto': this.idProducto,
                    'unidades': this.unidades,
                    'tiempo': this.tiempo,
                    'idSimulacion':this.identificador
@@ -500,7 +499,7 @@
                 this.errorMensaje = [],
                 this.forceRerender();
             },
-            abrirModal(modelo, accion, identificador){
+            abrirModal(modelo, accion,data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
                     case "simulacion":
@@ -510,6 +509,7 @@
                                 this.modal=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
                                 this.tituloModal='Crear nueva simulación';
+                                this.idSimulacion=this.identificador;
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
                                 break;
@@ -530,16 +530,15 @@
                                 break;
                             }
                            case 'actualizar':{
-                            //console.log(data);
+                            console.log(data);
                             this.modal=1;
                             this.tipoModal=4;
-                            this.tituloModal='Editar productos';
-                            this.tipoAccion= 2;
                             this.id=data['id'];
-                            this.idProducto=data['idProducto'];
                             this.unidades=data['unidades'];
                             this.tiempo=data['tiempo'];
-                            this.idSimulacion=data['idSimulacion'];
+                            this.idSimulacion=this.identificador;
+                            this.tituloModal='Editar productos';
+                            this.tipoAccion= 2;
                             break;
                            }
                         }
