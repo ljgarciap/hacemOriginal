@@ -19,6 +19,7 @@
                 <thead>
                     <tr>
                         <th>Opciones</th>
+                        <th>id</th>
                         <th>Producto</th>
                         <th>Referencia</th>
                         <th>Descripción</th>
@@ -27,15 +28,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="producto in arrayProductos" :key="producto.id">
+                    <tr v-for="producto in arrayProductos" :key="producto.idRegistro">
                         <td>
-                            <button type="button" @click="$emit('abrirmodal','rela','actualizar',producto)" class="btn btn-warning btn-sm">
+                            <button type="button" @click="$emit('abrirmodal','rela','actualizar',identificador,producto)" class="btn btn-warning btn-sm">
                             <i class="icon-pencil"></i>
                             </button> &nbsp;
-                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',producto.id)">
+                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',producto)">
                                 <i class="icon-trash"></i>
                             </button>
                         </td>
+                        <td v-text="producto.idRegistro"></td>
                         <td v-text="producto.producto"></td>
                         <td v-text="producto.referencia"></td>
                         <td v-text="producto.descripcion"></td>

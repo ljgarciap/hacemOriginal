@@ -43,13 +43,13 @@ class Tb_rela_simulacionController extends Controller
 
         if ($buscar=='') {
             $productos = Tb_rela_simulacion::join('tb_producto','tb_rela_simulacion.idProducto','=','tb_producto.id')
-            ->select('tb_rela_simulacion.id','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto','tb_producto.referencia','tb_producto.descripcion')
+            ->select('tb_rela_simulacion.id as idRegistro','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto','tb_producto.referencia','tb_producto.descripcion')
             ->where('tb_rela_simulacion.idSimulacion', '=', $identificador)
             ->orderBy('tb_rela_simulacion.id','desc')->paginate(5);
         }
         else if($criterio=='producto'){
             $productos = Tb_rela_simulacion::join('tb_producto','tb_rela_simulacion.idProducto','=','tb_producto.id')
-            ->select('tb_rela_simulacion.id','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto','tb_producto.referencia','tb_producto.descripcion')
+            ->select('tb_rela_simulacion.id as idRegistro','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto','tb_producto.referencia','tb_producto.descripcion')
             ->where([
                 ['tb_producto.producto', 'like', '%'. $buscar . '%'],
                 ['tb_rela_simulacion.idSimulacion', '=', $identificador],
@@ -58,7 +58,7 @@ class Tb_rela_simulacionController extends Controller
         }
         else if($criterio=='referencia'){
             $productos = Tb_rela_simulacion::join('tb_producto','tb_rela_simulacion.idProducto','=','tb_producto.id')
-            ->select('tb_rela_simulacion.id','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto','tb_producto.referencia','tb_producto.descripcion')
+            ->select('tb_rela_simulacion.id as idRegistro','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto','tb_producto.referencia','tb_producto.descripcion')
             ->where([
                 ['tb_producto.referencia', 'like', '%'. $buscar . '%'],
                 ['tb_rela_simulacion.idSimulacion', '=', $identificador],
@@ -68,7 +68,7 @@ class Tb_rela_simulacionController extends Controller
         else {
             # code...
             $productos = Tb_rela_simulacion::join('tb_producto','tb_rela_simulacion.idProducto','=','tb_producto.id')
-            ->select('tb_rela_simulacion.id','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto','tb_producto.referencia','tb_producto.descripcion')
+            ->select('tb_rela_simulacion.id as idRegistro','tb_rela_simulacion.unidades','tb_rela_simulacion.tiempo','tb_producto.producto','tb_producto.referencia','tb_producto.descripcion')
             ->where([
                 ['tb_producto.id', 'like', '%'. $buscar . '%'],
                 ['tb_rela_simulacion.idSimulacion', '=', $identificador],

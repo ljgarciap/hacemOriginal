@@ -530,10 +530,13 @@
                                 break;
                             }
                            case 'actualizar':{
+                            console.log("data de salida:");
                             console.log(data);
                             this.modal=1;
                             this.tipoModal=4;
-                            this.id=data['id'];
+                            this.id=data['idRegistro'];
+                            console.log("Id de producto:");
+                            console.log(this.id);
                             this.unidades=data['unidades'];
                             this.tiempo=data['tiempo'];
                             this.idSimulacion=this.identificador;
