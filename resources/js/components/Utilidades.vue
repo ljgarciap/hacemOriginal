@@ -139,7 +139,7 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Razón Corriente: {{ parseInt(activocorriente)/parseInt(pasivocorriente)}}</label>
+                                        <label for="puntoequilibriopesos">Razón Corriente: {{ parseFloat(parseInt(activocorriente)/parseInt(pasivocorriente)).toFixed(2)}}</label>
                                     </div>
 
                         </div>
@@ -180,8 +180,9 @@
                                         <label for="puntoequilibriopesos">Pasivo Corriente: {{ parseInt(pasivocorriente) }}</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Prueba ácida: {{ ((parseInt(activocorriente)-parseInt(inventario))/parseInt(pasivocorriente)) }}</label>
+                                        <label for="puntoequilibriopesos">Prueba ácida: {{ parseFloat((parseInt(activocorriente)-parseInt(inventario))/parseInt(pasivocorriente)).toFixed(3) }}</label>
                                     </div>
+
                         </div>
                     </div>
                     </vs-tab>
@@ -190,9 +191,87 @@
                     <div class="card">
                         <div class="card-body">
 
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Activo total</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="activototal" class="form-control" placeholder="Pasivo total">
+                                            <span class="help-block">(*) Ingrese el valor del activo total</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo total</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="pasivototal" class="form-control" placeholder="Pasivo total">
+                                            <span class="help-block">(*) Ingrese el valor del pasivo total</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Patrimonio total</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="patrimoniototal" class="form-control" placeholder="Patrimonio total">
+                                            <span class="help-block">(*) Ingrese el valor del patrimonio total</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Endeudamiento total: {{ parseFloat(parseInt(pasivototal)/parseInt(activototal)).toFixed(3) }}</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Endeudamiento leverage: {{ parseFloat(parseInt(pasivototal)/parseInt(patrimoniototal)).toFixed(3) }}</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Concentración Endeudamiento corto plazo: {{ parseFloat(parseInt(pasivocorriente)/parseInt(pasivototal)).toFixed(3) }}</label>
+                                    </div>
+
                         </div>
                     </div>
                     </vs-tab>
+
+                    <vs-tab label="Indicadores de rentabilidad" icon="open_with" @click="colorx = '#FFA500'">
+                    <div class="card">
+                        <div class="card-body">
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad bruta</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="utilidadbruta" class="form-control" placeholder="Utilidad bruta">
+                                            <span class="help-block">(*) Ingrese el valor de la Utilidad bruta</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad operacional</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="utilidadoperacional" class="form-control" placeholder="Utilidad operacional">
+                                            <span class="help-block">(*) Ingrese el valor de la Utilidad operacional</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad neta</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="utilidadneta" class="form-control" placeholder="Utilidad neta">
+                                            <span class="help-block">(*) Ingrese el valor de la Utilidad neta</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Ingresos totales</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="ingresostotales" class="form-control" placeholder="Ingresos totales">
+                                            <span class="help-block">(*) Ingrese el valor de los ingresos totales</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Margen bruto: {{ parseFloat(parseInt(utilidadbruta)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Margen operacional: {{ parseFloat(parseInt(utilidadoperacional)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Margen neto: {{ parseFloat(parseInt(utilidadneta)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                    </div>
+
+                        </div>
+                    </div>
+                    </vs-tab>
+
                 </vs-tabs>
                     <!-- Fin ejemplo de tabla Listado -->
                 </div>
@@ -219,6 +298,12 @@
                 activocorriente:0,
                 pasivocorriente:0,
                 inventario:0,
+                pasivototal:0,
+                patrimoniototal:0,
+                utilidadbruta:0,
+                utilidadoperacional:0,
+                utilidadneta:0,
+                ingresostotales:0,
                 arrayPosibles : [],
                 errorVinculacion : 0,
                 errorMensaje : [],
