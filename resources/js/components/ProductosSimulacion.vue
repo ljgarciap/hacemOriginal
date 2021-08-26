@@ -33,7 +33,7 @@
                             <button type="button" @click="$emit('abrirmodal','rela','actualizar',identificador,producto)" class="btn btn-warning btn-sm">
                             <i class="icon-pencil"></i>
                             </button> &nbsp;
-                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',producto)">
+                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',producto.idRegistro)">
                                 <i class="icon-trash"></i>
                             </button>
                         </td>
