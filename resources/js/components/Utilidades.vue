@@ -18,7 +18,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Producto</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idProducto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
                                                 <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
                                             </select>
@@ -29,7 +29,8 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Costo producción</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="costo" class="form-control" placeholder="Costo producto">
-                                            <span class="help-block">(*) Ingrese el costo de producción</span>
+                                            <br><span class="help-block">(*) Ingrese el costo de producción</span>
+                                            <br><span class="help-block">(*) Costo de producción {{this.valorpar}}</span>
                                         </div>
                                     </div>
 
@@ -60,6 +61,7 @@
                                         <div class="col-md-9">
                                             <input type="text" v-model="costosfijos" class="form-control" placeholder="Costos fijos">
                                             <span class="help-block">(*) Ingrese los costos fijos</span>
+                                            <br><span class="help-block">(*) Costos fijos {{this.valorcif}}</span>
                                         </div>
                                     </div>
 
@@ -76,6 +78,7 @@
                                         <div class="col-md-9">
                                             <input type="text" v-model="materiaprima" class="form-control" placeholder="Materia prima">
                                             <span class="help-block">(*) Ingrese el valor de materia prima</span>
+                                            <br><span class="help-block">(*) Materia prima {{this.valormatprima}}</span>
                                         </div>
                                     </div>
 
@@ -84,6 +87,7 @@
                                         <div class="col-md-9">
                                             <input type="text" v-model="manodeobradirecta" class="form-control" placeholder="Mano de obra directa">
                                             <span class="help-block">(*) Ingrese el valor de mano de obra directa</span>
+                                            <br><span class="help-block">(*) Mano de obra {{this.valormanobra}}</span>
                                         </div>
                                     </div>
 
@@ -289,6 +293,10 @@
                 listado: 1,
                 idProducto:0,
                 flag: 0,
+                valorpar:0,
+                valorcif:0,
+                valormatprima:0,
+                valormanobra:0,
                 costo:0,
                 porcentaje:0,
                 costosfijos:0,
@@ -350,6 +358,27 @@
             }
         },
         methods : {
+            onChange(event) {
+                console.log(event.target.value);
+                this.identificadorHoja=event.target.value;
+                let me=this;
+                var url='/hojadecosto/unitariogen/?identificador='+this.identificadorHoja;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.valorpar=respuesta.costopar;
+                me.valorcif=respuesta.acumuladocift;
+                me.valormatprima=respuesta.acumuladomp;
+                me.valormanobra=respuesta.acumuladomo;
+                console.log(me.valorpar);
+                console.log(me.valorcif);
+                console.log(me.valormatprima);
+                console.log(me.valormanobra);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             cambiarPagina(page,buscar,criterio){
                 let me = this;
                 //Actualiza la pagina actual
