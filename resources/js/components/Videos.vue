@@ -16,19 +16,19 @@
         </div>
         <div class="row galeria-row">
             <div class="col-lg-4 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
-                	<source src="Videos/Video_Tutorial_Administracion_Area.mp4" type="video/mp4">
+                <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Areas.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Areas</label>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 galeria-video">
-               <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
-                	<source src="Videos/Video_Tutorial_Procesos.mp4" type="video/mp4">
+               <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Proceso.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Procesos</label>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 galeria-video">
-               <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+               <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
                 	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Perfiles</label>
@@ -39,13 +39,13 @@
         </div>
         <div class="row galeria-row">
             <div align="left" class="col-lg-4 col-md-6 col-sm-12 galeria-video">
-                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
                 	<source src="Videos/Video_Tutorial_Conceptos_Cif.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Conceptos cif</label>
             </div>
             <div align="right" class="col-lg-4 col-md-6 col-sm-12 galeria-video">
-                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
                 	<source src="Videos/Video_Tutorial_Maquinaria.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Maquinaria</label>
@@ -56,20 +56,20 @@
         </div>
         <div class="row galeria-row">
             <div class="col-lg-4 col-md-6 col-sm-12 galeria-video">
-                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
                 	<source src="Videos/Video_Tutorial_Unidades.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Unidades</label>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 galeria-video">
-                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
-                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Clasificacion.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Clasificación</label>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 galeria-video">
-                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
-                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Materias_Primas.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Materias Primas</label>
             </div>
@@ -79,28 +79,48 @@
         </div>
         <div class="row galeria-row">
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
-                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Colecciones.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Colecciones</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
-                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Productos.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Productos</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
-                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Hoja_Costo.mp4" type="video/mp4">
                 </video>
                 <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Hojas de Costo</label>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
-                <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg" preload='none'>
-                	<source src="Videos/Video_Tutorial_Perfiles.mp4" type="video/mp4">
+                <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Hoja_Costo_Materia_Prima.mp4" type="video/mp4">
                 </video>
-                <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Simulador</label>
+                <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Hoja de Costo Materia Prima</label>
+            </div>
+        </div>
+        <div class="row galeria-row">
+            <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Hoja_Costo_Mano_Obra.mp4" type="video/mp4">
+                </video>
+                <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Hoja de Costo Mano de Obra</label>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Hoja_Costo_Detalle.mp4" type="video/mp4">
+                </video>
+                <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial Hoja de Costo Detalle</label>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 galeria-video">
+                 <video class="galeria-video-frame" width="100%" height="260" controls poster="img/bg.jpg">
+                	<source src="Videos/Video_Tutorial_Simulacion.mp4" type="video/mp4">
+                </video>
+                <label class="text-center form-control btn-warning cursor custom-label">Video Tutorial de Simulación</label>
             </div>
         </div>
     </div>
@@ -109,48 +129,43 @@
 </template>
 <style>
    .custom {
-   font-family: arial;
-   font-size: 2em;
+    font-family: arial;
+    font-size: 2em;
     }
-    .custom-label{
-        font-family: arial;
-        font-size: 15px;
-        background:rgba(253, 217, 10, 0.966);
+   .custom-label{
+    font-family: arial;
+    font-size: 15px;
+    background:rgba(253, 217, 10, 0.966);
     }
-     .parrafo {
-   font-size:15px;
-   font-family: Arial, Helvetica, sans-serif, "new times roman", lato;
-   font-weight:bolder;
-   line-height:30px;
-   letter-spacing:5px;
-   text-transform:capitalize;
-   text-align:center;
-   text-indent:30px;
-  }
-    .galeria-video-container {
-        padding-top: 20px;
-        background: rgb(241, 243, 243);
-        font-family: Lato;
+   .parrafo {
+    font-size:15px;
+    font-family: Arial, Helvetica, sans-serif, "new times roman", lato;
+    font-weight:bolder;
+    line-height:30px;
+    letter-spacing:5px;
+    text-transform:capitalize;
+    text-align:center;
+    text-indent:30px;
     }
-
-    .galeria-video {
-        padding: 10px;
+   .galeria-video-container {
+    padding-top: 20px;
+    background: rgb(241, 243, 243);
+    font-family: Lato;
     }
-
-        .galeria-video:hover {
-            background: #c1c6ce;
-            cursor: pointer;
-        }
-
-    .galeria-video-frame {
-        transition: width 1s, height 1s;
+   .galeria-video {
+    padding: 10px;
     }
-
-        .galeria-video-frame:hover {
-            height: 300px;
-        }
-
-    .galeria-row {
-        margin-bottom: 10px;
+   .galeria-video:hover {
+    background: #c1c6ce;
+    cursor: pointer;
+    }
+   .galeria-video-frame {
+    transition: width 1s, height 1s;
+    }
+   .galeria-video-frame:hover {
+    height: 300px;
+    }
+   .galeria-row {
+    margin-bottom: 10px;
     }
 </style>
