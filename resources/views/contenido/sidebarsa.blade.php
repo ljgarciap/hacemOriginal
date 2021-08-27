@@ -152,13 +152,19 @@
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-basket"></i> <b>Gestión financiera</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=34" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Indicadores financieros</a>
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Punto de equilibrio</a>
                     </li>
                     <li @click="menu=35" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Endeudamiento y rentabilidad</a>
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Indicadores financieros</a>
                     </li>
                     <li @click="menu=36" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Simulador multiproducto</a>
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Rentabilidad</a>
+                    </li>
+                    <li @click="menu=37" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Actividades o gestión</a>
+                    </li>
+                    <li @click="menu=38" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Punto de equilibrio multiproducto</a>
                     </li>
                 </ul>
             </li>

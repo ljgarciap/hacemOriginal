@@ -3,7 +3,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Utilidades</li>
+                    <li class="breadcrumb-item active">Precio de venta y punto de equilibrio</li>
                 </ol>
 
                 <template v-if="listado">
@@ -90,7 +90,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="puntoequilibriounidad">Punto de equilibrio: {{parseFloat((parseInt(costosfijos)+parseInt(gastosfijos))/
-                                            (( parseInt((this.costo)/((100-this.porcentaje)/100)) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)))).toFixed(3)}}</label>
+                                            (( parseInt((this.costo)/((100-this.porcentaje)/100)) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)))).toFixed(3)}} unidades</label>
                                         </div>
                                     </div>
 
@@ -110,75 +110,6 @@
                                         <div class="col-md-6">
                                             <label for="puntoequilibriopesos">Costo unitario: {{ parseInt(materiaprima)+parseInt(manodeobradirecta)}}</label>
                                         </div>
-                                    </div>
-
-                        </div>
-                    </div>
-                    </vs-tab>
-
-                    <vs-tab label="Razón corriente" icon="open_with" @click="colorx = '#FFA500'">
-                    <div class="card">
-                        <div class="card-body">
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Activo corriente</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="activocorriente" class="form-control" placeholder="Costos fijos">
-                                            <span class="help-block">(*) Ingrese el activo corriente</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo corriente</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="pasivocorriente" class="form-control" placeholder="Gastos fijos">
-                                            <span class="help-block">(*) Ingrese el pasivo corriente</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Razón Corriente: {{ parseFloat(parseInt(activocorriente)/parseInt(pasivocorriente)).toFixed(2)}}</label>
-                                    </div>
-
-                        </div>
-                    </div>
-                    </vs-tab>
-
-                    <vs-tab label="Capital de trabajo" icon="open_with" @click="colorx = '#FFA500'">
-                    <div class="card">
-                        <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Activo corriente: {{ parseInt(activocorriente) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Pasivo Corriente: {{ parseInt(pasivocorriente) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Capital de trabajo: {{ parseInt(activocorriente)-parseInt(pasivocorriente) }}</label>
-                                    </div>
-                        </div>
-                    </div>
-                    </vs-tab>
-
-                    <vs-tab label="Prueba ácida" icon="open_with" @click="colorx = '#FFA500'">
-                    <div class="card">
-                        <div class="card-body">
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Inventario</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="inventario" class="form-control" placeholder="Gastos fijos">
-                                            <span class="help-block">(*) Ingrese el valor del inventario</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Activo corriente: {{ parseInt(activocorriente) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Pasivo Corriente: {{ parseInt(pasivocorriente) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Prueba ácida: {{ parseFloat((parseInt(activocorriente)-parseInt(inventario))/parseInt(pasivocorriente)).toFixed(3) }}</label>
                                     </div>
 
                         </div>

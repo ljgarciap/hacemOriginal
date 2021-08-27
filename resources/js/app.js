@@ -133,13 +133,14 @@ Vue.component('carganovedades', require('./components/CargaNovedades.vue').defau
 Vue.component('cierrenomina', require('./components/CierreNomina.vue').default);
 Vue.component('detallenomina', require('./components/DetalleNomina.vue').default);
 
+Vue.component('utilidades', require('./components/Utilidades.vue').default);
+Vue.component('endeudamiento', require('./components/Endeudamiento.vue').default);
+Vue.component('rentabilidad', require('./components/Rentabilidad.vue').default);
+Vue.component('rotaciones', require('./components/Rotaciones.vue').default);
+
 Vue.component('hojadecostossimuladorfinanciero', require('./components/HojaDeCostosSimuladorFinanciero.vue').default);
 Vue.component('simuladorfinanciero', require('./components/SimuladorFinanciero.vue').default);
 Vue.component('productossimuladorfinanciero', require('./components/ProductosSimuladorFinanciero.vue').default);
-
-
-Vue.component('utilidades', require('./components/Utilidades.vue').default);
-Vue.component('endeudamiento', require('./components/Endeudamiento.vue').default);
 
 Vue.component('pruebas', require('./components/Pruebas.vue').default);
 /**

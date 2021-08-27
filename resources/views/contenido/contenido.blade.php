@@ -146,6 +146,14 @@
     </template>
 
     <template v-if="menu==36">
+        <rentabilidad></rentabilidad>
+    </template>
+
+    <template v-if="menu==37">
+        <rotaciones></rotaciones>
+    </template>
+
+    <template v-if="menu==38">
         <simuladorfinanciero></simuladorfinanciero>
     </template>
 
