@@ -23,6 +23,14 @@
                                             <span class="help-block">(*) Ingrese el valor del activo total</span>
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo corriente</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="pasivocorriente" class="form-control" placeholder="Pasivo corriente">
+                                            <span class="help-block">(*) Ingrese el valor del pasivo corriente</span>
+                                        </div>
+                                    </div>
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Pasivo total</label>
                                         <div class="col-md-9">
