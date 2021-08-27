@@ -138,11 +138,15 @@
     </template>
 
     <template v-if="menu==34">
-        <simuladorfinanciero></simuladorfinanciero>
+        <utilidades></utilidades>
     </template>
 
     <template v-if="menu==35">
-        <utilidades></utilidades>
+        <endeudamiento></endeudamiento>
+    </template>
+
+    <template v-if="menu==36">
+        <simuladorfinanciero></simuladorfinanciero>
     </template>
 
     <template v-if="menu==99">

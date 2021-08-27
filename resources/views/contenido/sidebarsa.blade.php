@@ -152,10 +152,13 @@
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-basket"></i> <b>Gestión financiera</b></a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=34" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Simulador</a>
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Indicadores financieros</a>
                     </li>
                     <li @click="menu=35" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Utilidades</a>
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Endeudamiento y rentabilidad</a>
+                    </li>
+                    <li @click="menu=36" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Simulador multiproducto</a>
                     </li>
                 </ul>
             </li>

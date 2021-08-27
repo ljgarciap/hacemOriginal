@@ -29,8 +29,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Costo producción</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="costo" class="form-control" placeholder="Costo producto">
-                                            <br><span class="help-block">(*) Ingrese el costo de producción</span>
-                                            <br><span class="help-block">(*) Costo de producción {{this.valorpar}}</span>
+                                            <br><span class="help-block">(*) Ingrese el costo de producción - (De hoja: {{this.valorpar}}))</span>
                                         </div>
                                     </div>
 
@@ -60,8 +59,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Costos fijos</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="costosfijos" class="form-control" placeholder="Costos fijos">
-                                            <span class="help-block">(*) Ingrese los costos fijos</span>
-                                            <br><span class="help-block">(*) Costos fijos {{this.valorcif}}</span>
+                                            <span class="help-block">(*) Ingrese los costos fijos - (De hoja: {{this.valorcif}})</span>
                                         </div>
                                     </div>
 
@@ -77,8 +75,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Valor materia prima</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="materiaprima" class="form-control" placeholder="Materia prima">
-                                            <span class="help-block">(*) Ingrese el valor de materia prima</span>
-                                            <br><span class="help-block">(*) Materia prima {{this.valormatprima}}</span>
+                                            <span class="help-block">(*) Ingrese el valor de materia prima - (De hoja: {{this.valormatprima}})</span>
                                         </div>
                                     </div>
 
@@ -86,8 +83,7 @@
                                         <label class="col-md-3 form-control-label" for="text-input">Valor mano de obra</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="manodeobradirecta" class="form-control" placeholder="Mano de obra directa">
-                                            <span class="help-block">(*) Ingrese el valor de mano de obra directa</span>
-                                            <br><span class="help-block">(*) Mano de obra {{this.valormanobra}}</span>
+                                            <span class="help-block">(*) Ingrese el valor de mano de obra directa - (De hoja: {{this.valormanobra}})</span>
                                         </div>
                                     </div>
 
@@ -95,14 +91,12 @@
                                         <div class="col-md-6">
                                             <label for="puntoequilibriounidad">Punto de equilibrio: {{parseFloat((parseInt(costosfijos)+parseInt(gastosfijos))/
                                             (( parseInt((this.costo)/((100-this.porcentaje)/100)) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)))).toFixed(3)}}</label>
-                                            <span class="help-block">(*) Costos fijos + Gastos fijos / el resto</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="puntoequilibriopesos">Costos + gastos: {{parseInt(costosfijos)+parseInt(gastosfijos)}}</label>
-                                            <span class="help-block">(*) Costos fijos + Gastos fijos</span>
                                         </div>
                                     </div>
 
@@ -185,91 +179,6 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="puntoequilibriopesos">Prueba ácida: {{ parseFloat((parseInt(activocorriente)-parseInt(inventario))/parseInt(pasivocorriente)).toFixed(3) }}</label>
-                                    </div>
-
-                        </div>
-                    </div>
-                    </vs-tab>
-
-                    <vs-tab label="Endeudamiento total" icon="open_with" @click="colorx = '#FFA500'">
-                    <div class="card">
-                        <div class="card-body">
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Activo total</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="activototal" class="form-control" placeholder="Pasivo total">
-                                            <span class="help-block">(*) Ingrese el valor del activo total</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo total</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="pasivototal" class="form-control" placeholder="Pasivo total">
-                                            <span class="help-block">(*) Ingrese el valor del pasivo total</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Patrimonio total</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="patrimoniototal" class="form-control" placeholder="Patrimonio total">
-                                            <span class="help-block">(*) Ingrese el valor del patrimonio total</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Endeudamiento total: {{ parseFloat(parseInt(pasivototal)/parseInt(activototal)).toFixed(3) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Endeudamiento leverage: {{ parseFloat(parseInt(pasivototal)/parseInt(patrimoniototal)).toFixed(3) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Concentración Endeudamiento corto plazo: {{ parseFloat(parseInt(pasivocorriente)/parseInt(pasivototal)).toFixed(3) }}</label>
-                                    </div>
-
-                        </div>
-                    </div>
-                    </vs-tab>
-
-                    <vs-tab label="Indicadores de rentabilidad" icon="open_with" @click="colorx = '#FFA500'">
-                    <div class="card">
-                        <div class="card-body">
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad bruta</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="utilidadbruta" class="form-control" placeholder="Utilidad bruta">
-                                            <span class="help-block">(*) Ingrese el valor de la Utilidad bruta</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad operacional</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="utilidadoperacional" class="form-control" placeholder="Utilidad operacional">
-                                            <span class="help-block">(*) Ingrese el valor de la Utilidad operacional</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad neta</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="utilidadneta" class="form-control" placeholder="Utilidad neta">
-                                            <span class="help-block">(*) Ingrese el valor de la Utilidad neta</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Ingresos totales</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="ingresostotales" class="form-control" placeholder="Ingresos totales">
-                                            <span class="help-block">(*) Ingrese el valor de los ingresos totales</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen bruto: {{ parseFloat(parseInt(utilidadbruta)/parseInt(ingresostotales)).toFixed(3) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen operacional: {{ parseFloat(parseInt(utilidadoperacional)/parseInt(ingresostotales)).toFixed(3) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen neto: {{ parseFloat(parseInt(utilidadneta)/parseInt(ingresostotales)).toFixed(3) }}</label>
                                     </div>
 
                         </div>
@@ -366,9 +275,13 @@
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.valorpar=respuesta.costopar;
+                me.costo=respuesta.costopar;
                 me.valorcif=respuesta.acumuladocift;
+                me.costosfijos=respuesta.acumuladocift;
                 me.valormatprima=respuesta.acumuladomp;
+                me.materiaprima=respuesta.acumuladomp;
                 me.valormanobra=respuesta.acumuladomo;
+                me.manodeobradirecta=respuesta.acumuladomo;
                 console.log(me.valorpar);
                 console.log(me.valorcif);
                 console.log(me.valormatprima);
