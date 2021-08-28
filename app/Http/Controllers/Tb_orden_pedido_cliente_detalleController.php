@@ -46,7 +46,7 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
 
         if ($buscar=='') {
             $productos = Tb_orden_pedido_cliente_detalle::join('tb_producto','tb_orden_pedido_cliente_detalle.idProducto','=','tb_producto.id')
-            ->select('tb_orden_pedido_cliente_detalle.id','tb_orden_pedido_cliente_detalle.idProducto','tb_orden_pedido_cliente_detalle.cantidad',
+            ->select('tb_orden_pedido_cliente_detalle.id as idRegistro','tb_orden_pedido_cliente_detalle.idProducto','tb_orden_pedido_cliente_detalle.cantidad',
             'tb_orden_pedido_cliente_detalle.precioCosto','tb_orden_pedido_cliente_detalle.precioVenta','tb_orden_pedido_cliente_detalle.estado',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where('tb_orden_pedido_cliente_detalle.idOrdenPedido', '=', $identificador)
@@ -54,7 +54,7 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
         }
         else if($criterio=='producto'){
             $productos = Tb_orden_pedido_cliente_detalle::join('tb_producto','tb_orden_pedido_cliente_detalle.idProducto','=','tb_producto.id')
-            ->select('tb_orden_pedido_cliente_detalle.id','tb_orden_pedido_cliente_detalle.idProducto','tb_orden_pedido_cliente_detalle.cantidad',
+            ->select('tb_orden_pedido_cliente_detalle.id as idRegistro','tb_orden_pedido_cliente_detalle.idProducto','tb_orden_pedido_cliente_detalle.cantidad',
             'tb_orden_pedido_cliente_detalle.precioCosto','tb_orden_pedido_cliente_detalle.precioVenta','tb_orden_pedido_cliente_detalle.estado',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where([
@@ -65,7 +65,7 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
         }
         else if($criterio=='referencia'){
             $productos = Tb_orden_pedido_cliente_detalle::join('tb_producto','tb_orden_pedido_cliente_detalle.idProducto','=','tb_producto.id')
-            ->select('tb_orden_pedido_cliente_detalle.id','tb_orden_pedido_cliente_detalle.idProducto','tb_orden_pedido_cliente_detalle.cantidad',
+            ->select('tb_orden_pedido_cliente_detalle.id as idRegistro','tb_orden_pedido_cliente_detalle.idProducto','tb_orden_pedido_cliente_detalle.cantidad',
             'tb_orden_pedido_cliente_detalle.precioCosto','tb_orden_pedido_cliente_detalle.precioVenta','tb_orden_pedido_cliente_detalle.estado',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where([
@@ -77,7 +77,7 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
         else {
             # code...
             $productos = Tb_orden_pedido_cliente_detalle::join('tb_producto','tb_orden_pedido_cliente_detalle.idProducto','=','tb_producto.id')
-            ->select('tb_orden_pedido_cliente_detalle.id','tb_orden_pedido_cliente_detalle.idProducto','tb_orden_pedido_cliente_detalle.cantidad',
+            ->select('tb_orden_pedido_cliente_detalle.id as idRegistro','tb_orden_pedido_cliente_detalle.idProducto','tb_orden_pedido_cliente_detalle.cantidad',
             'tb_orden_pedido_cliente_detalle.precioCosto','tb_orden_pedido_cliente_detalle.precioVenta','tb_orden_pedido_cliente_detalle.estado',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where([
@@ -387,5 +387,20 @@ class Tb_orden_pedido_cliente_detalleController extends Controller
             'productos' =>  $productos
         ];
 
+    }
+    public function update(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $tb_orden_pedido_cliente_detalle = Tb_orden_pedido_cliente_detalle::findOrFail($request->id);
+        $tb_orden_pedido_cliente_detalle->cantidad=$request->cantidad;
+        $tb_orden_pedido_cliente_detalle->precioVenta=$request->precioVenta;
+        $tb_orden_pedido_cliente_detalle->idOrdenPedido=$request->idOrdenPedido;
+        $tb_orden_pedido_cliente_detalle->save();
+    }
+    public function delete(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $tb_orden_pedido_cliente_detalle = Tb_orden_pedido_cliente_detalle::findOrFail($request->id);
+        $tb_orden_pedido_cliente_detalle->delete();
     }
 }

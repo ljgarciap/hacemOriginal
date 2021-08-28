@@ -95,10 +95,10 @@
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Productos &nbsp;
-                            <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
+                            <button type="submit" @click="abrirModal('rela','crear')" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
-                            <productosordenpedido v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></productosordenpedido>
+                            <productosordenpedido v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarproducto="eliminarProducto"></productosordenpedido>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -183,6 +183,14 @@
                                         </div>
                                     </div>
 
+                                    <div v-if="tipoModal==4" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Unidades</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="cantidad" class="form-control" placeholder="Unidades a producir">
+                                            <span class="help-block">(*) Ingrese la cantidad solicitada</span>
+                                        </div>
+                                    </div>
+
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Costo producción</label>
                                         <div class="col-md-9">
@@ -192,6 +200,14 @@
                                     </div>
 
                                     <div v-if="tipoModal==2" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Precio Venta</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="precioVenta" class="form-control" placeholder="Precio venta unidad">
+                                            <span class="help-block">(*) Ingrese el precio acordado. El costo es {{costopar}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="tipoModal==4" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Precio Venta</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="precioVenta" class="form-control" placeholder="Precio venta unidad">
@@ -220,6 +236,10 @@
                                 <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                                 <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearRelacion()">Guardar</button>
                             </div>
+                            <div v-if="tipoModal==4" class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                                <button type="button" v-if="tipoAccion==2" class="btn btn-warning" @click="editarRelacion()">Editar</button>
+                            </div>
                         </div>
                         <!-- /.modal-content -->
                     </div>
@@ -240,7 +260,7 @@
         },
         data(){
             return{
-                idOrden:0,
+                idOrdenPedido:0,
                 id:'',
                 identificador:'',
                 observacion:'',
@@ -256,6 +276,8 @@
                 modal : 0,
                 listado : 0,
                 tituloModal : '',
+                tipoModal : 0,
+                tipoAccion : 0,
                 variable : '',
                 registro:'',
                 idProducto: 0,
@@ -263,8 +285,6 @@
                 costopar:0,
                 cantidad:'',
                 precioVenta:'',
-                tipoModal : 0,
-                tipoAccion : 0,
                 errorOrden : 0,
                 errorMensaje : [],
                 pagination : {
@@ -393,20 +413,6 @@
                     console.log(error);
                 })
             },
-            eliminarProducto(){
-                /*
-                let me=this;
-                axios.put('/materiaprimaproducto/deactivate',{
-                    'id': this.id
-                }).then(function (response) {
-                me.forceRerender();
-                me.listarProducto(1,'','materiaprima');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-                */
-            },
             crearOrden(){
                  //valido con el metodo de validacion creado
                 if(this.validarOrden()){
@@ -444,6 +450,60 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+            editarRelacion(){
+                let me=this;
+                axios.put('/ordenpedidocliente/update',{
+                   'id': this.id,
+                   'cantidad': this.cantidad,
+                   'precioVenta': this.precioVenta,
+                   'idOrdenPedido': this.identificador,
+                }).then(function (response) {
+                me.cerrarModal();
+                me.forceRerender();
+                me.listarOrdenPedido(1,'','orden');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+             eliminarProducto(id){
+                let me=this;
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+                })
+                swalWithBootstrapButtons.fire({
+                title: 'Quiere eliminar este producto?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fa fa-check fa-2x"></i> Eliminar!',
+                cancelButtonText:  '<i class="fa fa-times fa-2x"></i> Cancelar',
+                reverseButtons: true
+                }).then((result) => {
+                if (result.value) {
+                    let me=this;
+                    axios.put('/ordenpedidocliente/delete',{
+                        'id': id
+                    }).then(function (response) {
+                    me.forceRerender();
+                    me.listarOrdenPedido(1,'','orden');
+                    swalWithBootstrapButtons.fire(
+                    'Producto eliminado!'
+                    )
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    me.listarOrdenPedido();
+                }
+                })
             },
             mostrarProductos(id){
                 this.listado=1;
@@ -510,7 +570,7 @@
                 this.errorMensaje = [],
                 this.forceRerender();
             },
-            abrirModal(modelo, accion, identificador){
+            abrirModal(modelo, accion, identificador,data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
                     case "ordendepedido":
@@ -539,7 +599,23 @@
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 break;
                             }
+                            case 'actualizar':{
+                            console.log("data de salida:");
+                            console.log(data);
+                            this.modal=1;
+                            this.tipoModal=4;
+                            this.id=data['idRegistro'];
+                            console.log("Id de producto:");
+                            console.log(this.id);
+                            this.cantidad=data['cantidad'];
+                            this.precioVenta=data['precioVenta'];
+                            this.idOrdenPedido=this.identificador;
+                            this.tituloModal='Editar productos';
+                            this.tipoAccion= 2;
+                            break;
+                           }
                         }
+                        this.listarPosibles(this.identificador);
                         break;
                     }
 
