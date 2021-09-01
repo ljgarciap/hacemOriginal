@@ -49,7 +49,7 @@ class Tb_detalle_cotizacionController extends Controller
 
         if ($buscar=='') {
             $productos = Tb_detalle_cotizacion::join('tb_producto','tb_detalle_cotizacion.idProducto','=','tb_producto.id')
-            ->select('tb_detalle_cotizacion.id','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
+            ->select('tb_detalle_cotizacion.id as idRegistro','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
             'tb_detalle_cotizacion.precioVenta','tb_detalle_cotizacion.idProducto','tb_detalle_cotizacion.idCotizacion',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where('tb_detalle_cotizacion.idCotizacion', '=', $identificador)
@@ -57,7 +57,7 @@ class Tb_detalle_cotizacionController extends Controller
         }
         else if($criterio=='producto'){
             $productos = Tb_detalle_cotizacion::join('tb_producto','tb_detalle_cotizacion.idProducto','=','tb_producto.id')
-            ->select('tb_detalle_cotizacion.id','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
+            ->select('tb_detalle_cotizacion.id as idRegistro','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
             'tb_detalle_cotizacion.precioVenta','tb_detalle_cotizacion.idProducto','tb_detalle_cotizacion.idCotizacion',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where([
@@ -68,7 +68,7 @@ class Tb_detalle_cotizacionController extends Controller
         }
         else if($criterio=='referencia'){
             $productos = Tb_detalle_cotizacion::join('tb_producto','tb_detalle_cotizacion.idProducto','=','tb_producto.id')
-            ->select('tb_detalle_cotizacion.id','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
+            ->select('tb_detalle_cotizacion.id as idRegistro','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
             'tb_detalle_cotizacion.precioVenta','tb_detalle_cotizacion.idProducto','tb_detalle_cotizacion.idCotizacion',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where([
@@ -80,7 +80,7 @@ class Tb_detalle_cotizacionController extends Controller
         else {
             # code...
             $productos = Tb_detalle_cotizacion::join('tb_producto','tb_detalle_cotizacion.idProducto','=','tb_producto.id')
-            ->select('tb_detalle_cotizacion.id','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
+            ->select('tb_detalle_cotizacion.id as idRegistro','tb_detalle_cotizacion.cantidad','tb_detalle_cotizacion.valor',
             'tb_detalle_cotizacion.precioVenta','tb_detalle_cotizacion.idProducto','tb_detalle_cotizacion.idCotizacion',
             'tb_producto.producto','tb_producto.referencia','tb_producto.descripcion','tb_producto.foto')
             ->where([
@@ -300,5 +300,20 @@ class Tb_detalle_cotizacionController extends Controller
         $tb_detalle_cotizacion->idProducto=$request->idProducto;
         $tb_detalle_cotizacion->idCotizacion=$request->idCotizacion;
         $tb_detalle_cotizacion->save();
+    }
+    public function update(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $tb_detalle_cotizacion = Tb_detalle_cotizacion::findOrFail($request->id);
+        $tb_detalle_cotizacion->cantidad=$request->cantidad;
+        $tb_detalle_cotizacion->precioVenta=$request->precioVenta;
+        $tb_detalle_cotizacion->idCotizacion=$request->idCotizacion;
+        $tb_detalle_cotizacion->save();
+    }
+    public function delete(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+        $tb_detalle_cotizacion = Tb_detalle_cotizacion::findOrFail($request->id);
+        $tb_detalle_cotizacion->delete();
     }
 }

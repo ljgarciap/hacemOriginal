@@ -5,9 +5,9 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="id">Id</option>    
                                         <option value="producto">Producto</option>
                                         <option value="referencia">Referencia</option>
-                                        <option value="id">Id</option>
                                         </select>
                                         <input type="text" v-model="buscar" @keyup.enter="listarProductosOrden(1,buscar,criterio,identificador)" class="form-control" placeholder="Texto a buscar">
                                         <button type="submit" @click="listarProductosOrden(1,buscar,criterio,identificador)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -19,6 +19,7 @@
                 <thead>
                     <tr>
                         <th>Opciones</th>
+                        <th>id</th>
                         <th>Producto</th>
                         <th>Referencia</th>
                         <th>Unidades</th>
@@ -27,15 +28,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="producto in arrayProductos" :key="producto.id">
+                    <tr v-for="producto in arrayProductos" :key="producto.idRegistro">
                         <td>
-                            <button type="button" @click="$emit('abrirmodal','gestionMateria','actualizar',producto)" class="btn btn-warning btn-sm">
+                            <button type="button" @click="$emit('abrirmodal','rela','actualizar',identificador,producto)" class="btn btn-warning btn-sm">
                             <i class="icon-pencil"></i>
                             </button> &nbsp;
-                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarmateria',producto.id)">
+                            <button type="button" class="btn btn-danger btn-sm" @click="$emit('eliminarproducto',producto.idRegistro)">
                                 <i class="icon-trash"></i>
                             </button>
                         </td>
+                        <td v-text="producto.idRegistro"></td>
                         <td v-text="producto.producto"></td>
                         <td v-text="producto.referencia"></td>
                         <td v-text="producto.cantidad"></td>

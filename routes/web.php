@@ -204,6 +204,8 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/ordenpedidocliente/posibles", "Tb_orden_pedido_cliente_detalleController@posibles");
         Route::get("/ordenpedidocliente/costo", "Tb_orden_pedido_cliente_detalleController@costo");
         Route::post("/ordenpedidocliente/store", "Tb_orden_pedido_cliente_detalleController@store");
+        Route::put("/ordenpedidocliente/update", "Tb_orden_pedido_cliente_detalleController@update");
+        Route::put("/ordenpedidocliente/delete", "Tb_orden_pedido_cliente_detalleController@delete");
 
         Route::get("/simulacion", "Tb_simulacionController@index");
         Route::post("/simulacion/store", "Tb_simulacionController@store");
@@ -262,6 +264,8 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/cotizacioncliente/posibles", "Tb_detalle_cotizacionController@posibles");
         Route::get("/cotizacioncliente/precioproductos", "Tb_detalle_cotizacionController@precioproductos");
         Route::post("/cotizacioncliente/store", "Tb_detalle_cotizacionController@store");
+        Route::put("/cotizacioncliente/update", "Tb_detalle_cotizacionController@update");
+        Route::put("/cotizacioncliente/delete", "Tb_detalle_cotizacionController@delete");
 
         Route::get("/kardexproducto", "Tb_kardex_producto_terminadoController@index");
         Route::get("/kardexproducto/listar", "Tb_kardex_producto_terminadoController@listar");
