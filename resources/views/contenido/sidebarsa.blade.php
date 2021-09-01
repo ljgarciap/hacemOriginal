@@ -158,7 +158,7 @@
                         <a class="nav-link" href="#"><i class="icon-wallet"></i> Indicadores financieros</a>
                     </li>
                     <li @click="menu=36" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Rentabilidad</a>
+                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Endeudamiento y Rentabilidad</a>
                     </li>
                     <li @click="menu=37" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-wallet"></i> Actividades o gestión</a>

@@ -3,7 +3,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Rentabilidad</li>
+                    <li class="breadcrumb-item active">Endeudamiento y Rentabilidad</li>
                 </ol>
 
                 <template v-if="listado">
@@ -11,6 +11,53 @@
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
                 <vs-tabs :color="colorx">
+
+                    <vs-tab label="Endeudamiento total" icon="open_with" @click="colorx = '#FFA500'">
+                    <div class="card">
+                        <div class="card-body">
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Activo total</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="activototal" class="form-control" placeholder="Activo total">
+                                            <span class="help-block">(*) Ingrese el valor del activo total</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo corriente</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="pasivocorriente" class="form-control" placeholder="Pasivo corriente">
+                                            <span class="help-block">(*) Ingrese el valor del pasivo corriente</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo total</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="pasivototal" class="form-control" placeholder="Pasivo total">
+                                            <span class="help-block">(*) Ingrese el valor del pasivo total</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Patrimonio total</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="patrimoniototal" class="form-control" placeholder="Patrimonio total">
+                                            <span class="help-block">(*) Ingrese el valor del patrimonio total</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row"> <!--Deberia multiplicarlo por 100--->
+                                        <label for="puntoequilibriopesos">Endeudamiento total: {{ parseFloat(100*pasivototal/activototal).toFixed(2) }} %</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Endeudamiento leverage: {{ parseFloat(100*pasivototal/patrimoniototal).toFixed(2) }} %</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="puntoequilibriopesos">Concentración Endeudamiento corto plazo: {{ parseFloat(100*pasivocorriente/pasivototal).toFixed(2) }} %</label>
+                                    </div>
+
+                        </div>
+                    </div>
+                    </vs-tab>
 
                     <vs-tab label="Indicadores de rentabilidad" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
@@ -44,14 +91,14 @@
                                             <span class="help-block">(*) Ingrese el valor de los ingresos totales</span>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen bruto: {{ parseFloat(parseInt(utilidadbruta)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                    <div class="form-group row"><!--Deberia multiplicarlo por 100--->
+                                        <label for="puntoequilibriopesos">Margen bruto: {{ parseFloat(parseInt(utilidadbruta)/parseInt(ingresostotales)).toFixed(3) }} %</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen operacional: {{ parseFloat(parseInt(utilidadoperacional)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                        <label for="puntoequilibriopesos">Margen operacional: {{ parseFloat(parseInt(utilidadoperacional)/parseInt(ingresostotales)).toFixed(3) }} %</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen neto: {{ parseFloat(parseInt(utilidadneta)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                        <label for="puntoequilibriopesos">Margen neto: {{ parseFloat(parseInt(utilidadneta)/parseInt(ingresostotales)).toFixed(3) }} %</label>
                                     </div>
 
                         </div>

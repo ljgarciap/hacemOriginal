@@ -90,7 +90,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="puntoequilibriounidad">Punto de equilibrio: {{parseFloat((parseInt(costosfijos)+parseInt(gastosfijos))/
-                                            (( parseInt((this.costo)/((100-this.porcentaje)/100)) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)))).toFixed(3)}} unidades</label>
+                                            (( parseInt((this.costo)/((100-this.porcentaje)/100)) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)))).toFixed(3)}} pares</label>
                                         </div>
                                     </div>
 
