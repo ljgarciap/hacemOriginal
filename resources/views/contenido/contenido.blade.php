@@ -138,22 +138,30 @@
     </template>
 
     <template v-if="menu==34">
-        <utilidades></utilidades>
+        <precioventa></precioventa>
     </template>
 
     <template v-if="menu==35">
-        <endeudamiento></endeudamiento>
+        <puntoequilibrio></puntoequilibrio>
     </template>
 
     <template v-if="menu==36">
-        <rentabilidad></rentabilidad>
+        <endeudamiento></endeudamiento>
     </template>
 
     <template v-if="menu==37">
-        <rotaciones></rotaciones>
+        <liquidez></liquidez>
     </template>
 
     <template v-if="menu==38">
+        <rentabilidad></rentabilidad>
+    </template>
+
+    <template v-if="menu==39">
+        <rotaciones></rotaciones>
+    </template>
+
+    <template v-if="menu==40">
         <simuladorfinanciero></simuladorfinanciero>
     </template>
 

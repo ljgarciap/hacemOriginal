@@ -3,7 +3,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Indicadores financieros</li>
+                    <li class="breadcrumb-item active">Endeudamiento</li>
                 </ol>
 
                 <template v-if="listado">
@@ -12,70 +12,49 @@
                     <!-- Ejemplo de tabla Listado -->
                 <vs-tabs :color="colorx">
 
-                    <vs-tab label="Razón corriente" icon="open_with" @click="colorx = '#FFA500'">
+                    <vs-tab label="Endeudamiento total" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
                         <div class="card-body">
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Activo corriente</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Activo total</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="activocorriente" class="form-control" placeholder="Costos fijos">
-                                            <span class="help-block">(*) Ingrese el activo corriente</span>
+                                            <input type="text" v-model="activototal" class="form-control" placeholder="Activo total">
+                                            <span class="help-block">(*) Ingrese el valor del activo total</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Pasivo corriente</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="pasivocorriente" class="form-control" placeholder="Gastos fijos">
-                                            <span class="help-block">(*) Ingrese el pasivo corriente</span>
+                                            <input type="text" v-model="pasivocorriente" class="form-control" placeholder="Pasivo corriente">
+                                            <span class="help-block">(*) Ingrese el valor del pasivo corriente</span>
                                         </div>
                                     </div>
-
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Razón Corriente: $ {{ parseFloat(parseInt(activocorriente)/parseInt(pasivocorriente)).toFixed(2)}}</label>
-                                    </div>
-
-                        </div>
-                    </div>
-                    </vs-tab>
-
-                    <vs-tab label="Capital de trabajo" icon="open_with" @click="colorx = '#FFA500'">
-                    <div class="card">
-                        <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Activo corriente: $ {{ parseInt(activocorriente) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Pasivo Corriente: $ {{ parseInt(pasivocorriente) }}</label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Capital de trabajo: $ {{ parseInt(activocorriente)-parseInt(pasivocorriente) }}</label>
-                                    </div>
-                        </div>
-                    </div>
-                    </vs-tab>
-
-                    <vs-tab label="Prueba ácida" icon="open_with" @click="colorx = '#FFA500'">
-                    <div class="card">
-                        <div class="card-body">
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Inventario</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo total</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="inventario" class="form-control" placeholder="Gastos fijos">
-                                            <span class="help-block">(*) Ingrese el valor del inventario</span>
+                                            <input type="text" v-model="pasivototal" class="form-control" placeholder="Pasivo total">
+                                            <span class="help-block">(*) Ingrese el valor del pasivo total</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Activo corriente: $ {{ parseInt(activocorriente) }}</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Patrimonio total</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="patrimoniototal" class="form-control" placeholder="Patrimonio total">
+                                            <span class="help-block">(*) Ingrese el valor del patrimonio total</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row"> <!--Deberia multiplicarlo por 100--->
+                                        <label for="puntoequilibriopesos">Endeudamiento total: {{ parseFloat(100*pasivototal/activototal).toFixed(2) }} %</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Pasivo Corriente: $ {{ parseInt(pasivocorriente) }}</label>
+                                        <label for="puntoequilibriopesos">Endeudamiento leverage: {{ parseFloat(100*pasivototal/patrimoniototal).toFixed(2) }} %</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Prueba ácida: $ {{ parseFloat((parseInt(activocorriente)-parseInt(inventario))/parseInt(pasivocorriente)).toFixed(3) }}</label>
+                                        <label for="puntoequilibriopesos">Concentración Endeudamiento corto plazo: {{ parseFloat(100*pasivocorriente/pasivototal).toFixed(2) }} %</label>
                                     </div>
+
                         </div>
                     </div>
                     </vs-tab>

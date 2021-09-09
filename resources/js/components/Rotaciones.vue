@@ -12,93 +12,148 @@
                     <!-- Ejemplo de tabla Listado -->
                 <vs-tabs :color="colorx">
 
-                    <vs-tab label="Endeudamiento total" icon="open_with" @click="colorx = '#FFA500'">
+                    <vs-tab label="Rotación inventario" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
                         <div class="card-body">
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Activo total</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha Inicial</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="activototal" class="form-control" placeholder="Activo total">
-                                            <span class="help-block">(*) Ingrese el valor del activo total</span>
+                                            <input type="date" v-model="fechainicial" class="form-control">
+                                            <span class="help-block">(*) Ingrese el valor de la fecha inicial</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha Final</label>
+                                        <div class="col-md-9">
+                                            <input type="date" v-model="fechafinal" class="form-control">
+                                            <span class="help-block">(*) Ingrese el valor de la fecha final</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo corriente</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo de periodo a calcular</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="pasivocorriente" class="form-control" placeholder="Pasivo corriente">
-                                            <span class="help-block">(*) Ingrese el valor del pasivo corriente</span>
+                                                <select class="form-control" v-model="tipoperiodo">
+                                                <option value="0" disabled>Elija su opción</option>
+                                                <option value="1">Meses</option>
+                                                <option value="2">Dias</option>
+                                                </select>
+                                                <span class="help-block">(*) Ingrese el tipo de periodo a calcular</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Saldo periodo actual</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="saldoperiodoactual" class="form-control" placeholder="Saldo periodo actual">
+                                            <span class="help-block">(*) Ingrese el valor del saldo periodo actual</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Saldo periodo anterior</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="saldoperiodoanterior" class="form-control" placeholder="Saldo periodo anterior">
+                                            <span class="help-block">(*) Ingrese el valor del saldo periodo anterior</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Pasivo total</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Costo de ventas</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="pasivototal" class="form-control" placeholder="Pasivo total">
-                                            <span class="help-block">(*) Ingrese el valor del pasivo total</span>
+                                            <input type="text" v-model="costodeventas" class="form-control" placeholder="Costo de ventas">
+                                            <span class="help-block">(*) Ingrese el valor del costo de ventas</span>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Patrimonio total</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="patrimoniototal" class="form-control" placeholder="Patrimonio total">
-                                            <span class="help-block">(*) Ingrese el valor del patrimonio total</span>
-                                        </div>
+                                        <label for="puntoequilibriopesos">Suma saldos: {{ parseInt(parseInt(saldoperiodoactual)+parseInt(saldoperiodoanterior)) }}</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Endeudamiento total: {{ parseFloat(parseInt(pasivototal)/parseInt(activototal)).toFixed(3) }}</label>
+                                        <label for="puntoequilibriopesos">Promedio saldos: {{ parseInt(parseInt(parseInt(saldoperiodoactual)+parseInt(saldoperiodoanterior))/2) }}</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Endeudamiento leverage: {{ parseFloat(parseInt(pasivototal)/parseInt(patrimoniototal)).toFixed(3) }}</label>
+                                        <label for="puntoequilibriopesos">Rotación de inventario en veces: {{ parseFloat(costodeventas/(parseInt(parseInt(saldoperiodoactual)+parseInt(saldoperiodoanterior))/2)).toFixed(2) }}</label>
                                     </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Concentración Endeudamiento corto plazo: {{ parseFloat(parseInt(pasivocorriente)/parseInt(pasivototal)).toFixed(3) }}</label>
+                                    <div class="form-group row" v-if="tipoperiodo==1">
+                                        <label for="puntoequilibriopesos">Rotación de inventario en meses: {{ parseFloat(12/(costodeventas/(parseInt(parseInt(saldoperiodoactual)+parseInt(saldoperiodoanterior))/2))).toFixed(2) }}</label>
+                                    </div>
+                                    <div class="form-group row" v-if="tipoperiodo==2">
+                                        <label for="puntoequilibriopesos">Rotación de inventario en dias: {{ parseFloat(360/(costodeventas/(parseInt(parseInt(saldoperiodoactual)+parseInt(saldoperiodoanterior))/2))).toFixed(2) }}</label>
                                     </div>
 
                         </div>
                     </div>
                     </vs-tab>
 
-                    <vs-tab label="Indicadores de rentabilidad" icon="open_with" @click="colorx = '#FFA500'">
+                    <vs-tab label="Rotación cartera" icon="open_with" @click="colorx = '#FFA500'">
                     <div class="card">
                         <div class="card-body">
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad bruta</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha Inicial</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="utilidadbruta" class="form-control" placeholder="Utilidad bruta">
-                                            <span class="help-block">(*) Ingrese el valor de la Utilidad bruta</span>
+                                            <input type="date" v-model="fechainicial1" class="form-control">
+                                            <span class="help-block">(*) Ingrese el valor de la fecha inicial</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad operacional</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Fecha Final</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="utilidadoperacional" class="form-control" placeholder="Utilidad operacional">
-                                            <span class="help-block">(*) Ingrese el valor de la Utilidad operacional</span>
+                                            <input type="date" v-model="fechafinal1" class="form-control">
+                                            <span class="help-block">(*) Ingrese el valor de la fecha final</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Tipo de periodo a calcular</label>
+                                        <div class="col-md-9">
+                                                <select class="form-control" v-model="tipoperiodo1">
+                                                <option value="0" disabled>Elija su opción</option>
+                                                <option value="1">Meses</option>
+                                                <option value="2">Dias</option>
+                                                </select>
+                                                <span class="help-block">(*) Ingrese el tipo de periodo a calcular</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Saldo periodo actual</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="saldoperiodoactual1" class="form-control" placeholder="Saldo periodo actual">
+                                            <span class="help-block">(*) Ingrese el valor del saldo periodo actual</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Saldo periodo anterior</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="saldoperiodoanterior1" class="form-control" placeholder="Saldo periodo anterior">
+                                            <span class="help-block">(*) Ingrese el valor del saldo periodo anterior</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Utilidad neta</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Valor de ventas</label>
                                         <div class="col-md-9">
-                                            <input type="text" v-model="utilidadneta" class="form-control" placeholder="Utilidad neta">
-                                            <span class="help-block">(*) Ingrese el valor de la Utilidad neta</span>
+                                            <input type="text" v-model="costodeventas1" class="form-control" placeholder="Valor de ventas">
+                                            <span class="help-block">(*) Ingrese el valor del costo de ventas</span>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Ingresos totales</label>
-                                        <div class="col-md-9">
-                                            <input type="text" v-model="ingresostotales" class="form-control" placeholder="Ingresos totales">
-                                            <span class="help-block">(*) Ingrese el valor de los ingresos totales</span>
-                                        </div>
+                                        <label for="puntoequilibriopesos">Suma saldos: {{ parseInt(parseInt(saldoperiodoactual1)+parseInt(saldoperiodoanterior1)) }}</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen bruto: {{ parseFloat(parseInt(utilidadbruta)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                        <label for="puntoequilibriopesos">Promedio cuentas por cobrar: {{ parseInt(parseInt(parseInt(saldoperiodoactual1)+parseInt(saldoperiodoanterior1))/2) }}</label>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen operacional: {{ parseFloat(parseInt(utilidadoperacional)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                        <label for="puntoequilibriopesos">Rotación de cartera en veces: {{ parseFloat(costodeventas1/(parseInt(parseInt(saldoperiodoactual1)+parseInt(saldoperiodoanterior1))/2)).toFixed(2) }}</label>
                                     </div>
-                                    <div class="form-group row">
-                                        <label for="puntoequilibriopesos">Margen neto: {{ parseFloat(parseInt(utilidadneta)/parseInt(ingresostotales)).toFixed(3) }}</label>
+                                    <div class="form-group row" v-if="tipoperiodo1==1">
+                                        <label for="puntoequilibriopesos">Rotación de cartera en meses: {{ parseFloat(12/(costodeventas1/(parseInt(parseInt(saldoperiodoactual1)+parseInt(saldoperiodoanterior1))/2))).toFixed(2) }}</label>
+                                    </div>
+                                    <div class="form-group row" v-if="tipoperiodo1==2">
+                                        <label for="puntoequilibriopesos">Rotación de cartera en dias: {{ parseFloat(360/(costodeventas1/(parseInt(parseInt(saldoperiodoactual1)+parseInt(saldoperiodoanterior1))/2))).toFixed(2) }}</label>
                                     </div>
 
                         </div>
@@ -122,26 +177,20 @@
                 listado: 1,
                 idProducto:0,
                 flag: 0,
-                valorpar:0,
-                valorcif:0,
-                valormatprima:0,
-                valormanobra:0,
-                costo:0,
-                porcentaje:0,
-                costosfijos:0,
-                materiaprima:0,
-                manodeobradirecta:0,
-                gastosfijos:0,
-                activocorriente:0,
-                pasivocorriente:0,
-                activototal:0,
-                inventario:0,
-                pasivototal:0,
-                patrimoniototal:0,
-                utilidadbruta:0,
-                utilidadoperacional:0,
-                utilidadneta:0,
+                saldoperiodoactual:0,
+                saldoperiodoanterior:0,
+                fechainicial:'',
+                fechafinal:'',
+                costodeventas:0,
                 ingresostotales:0,
+                tipoperiodo:0,
+                saldoperiodoactual1:0,
+                saldoperiodoanterior1:0,
+                fechainicial1:'',
+                fechafinal1:'',
+                costodeventas1:0,
+                ingresostotales1:0,
+                tipoperiodo1:0,
                 arrayPosibles : [],
                 errorVinculacion : 0,
                 errorMensaje : [],

@@ -379,6 +379,9 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/factores/update", "Tb_factoresController@update");
         Route::post("/factores/actualizar", "Tb_factoresController@actualizar");
 
+        Route::post("/simulaciones/storePuntoEquilibrio", "Tb_simulacionesController@storePuntoEquilibrio");
+        Route::post("/simulaciones/storePrecioVenta", "Tb_simulacionesController@storePrecioVenta");
+
     });
 
 // comentario de funcion para compilar
@@ -387,12 +390,12 @@ Route::group(['middleware' => ['guest']], function () {
         $nominaid=2;
         $tb_nomina=Tb_nomina::findOrFail($nominaid);
         $flag=$tb_nomina->tipo;
-        
+
         $nominaFija='detalle_nomina_fija_';
         $nominaDestajo='detalle_nomina_destajo_';
         $xls='.xls';
         $fecha=date('Y-m-d_H_i_s');
-        
+
         $tb_nomina->save();
         if ($flag==1){
             return (new DetalleNominaFija)->download('Nomina_Fija_'.date('Y-m-d_H_i_s').'.xlsx');
