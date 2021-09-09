@@ -19,6 +19,9 @@ class Tb_simulacionesController extends Controller
 
         $idProducto=$request->idProducto;
         $porcentaje=$request->porcentaje;
+        $costosfijos=$request->costosfijos;
+        $materiaprima=$request->materiaprima;
+        $manodeobradirecta=$request->manodeobradirecta;
         $costo=$request->costo;
         $valorparcial=(100-$porcentaje)/100;
         if($valorparcial==0){
@@ -42,6 +45,9 @@ class Tb_simulacionesController extends Controller
         $tb_precios_venta->costo=$costo;
         $tb_precios_venta->porcentaje=$porcentaje;
         $tb_precios_venta->preciodeventa=$precioventa;
+        $tb_precios_venta->costosfijos=$costosfijos;
+        $tb_precios_venta->materiaprima=$materiaprima;
+        $tb_precios_venta->manodeobradirecta=$manodeobradirecta;
         $tb_precios_venta->detalle=$detalle;
 
         $tb_precios_venta->save();

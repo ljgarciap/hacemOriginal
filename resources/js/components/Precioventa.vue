@@ -70,6 +70,18 @@
                                         </div>
                                     </div>
 
+                                    <p v-show="condicion">
+                                        <input type="text" v-model="costosfijos">
+                                    </p>
+
+                                    <p v-show="condicion">
+                                        <input type="text" v-model="materiaprima">
+                                    </p>
+
+                                    <p v-show="condicion">
+                                        <input type="text" v-model="manodeobradirecta">
+                                    </p>
+
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="precioventa">Precio de venta: {{parseInt((this.costo)/((100-this.porcentaje)/100))}}</label>
@@ -106,6 +118,7 @@
             return{
                 colorx: '#8B0000',
                 listado: 1,
+                condicion:false,
                 idProducto:0,
                 flag: 0,
                 valorpar:0,
