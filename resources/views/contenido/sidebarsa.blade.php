@@ -176,12 +176,18 @@
                             </li>
                         </ul>
                     </li>
-                    <li @click="menu=38" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Rentabilidad</a>
+                    <li class="nav-item nav-dropdown">
+                        <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-basket"></i> <b>Actividades o gestión</b></a>
+                        <ul class="nav-dropdown-items">
+                            <li @click="menu=38" class="nav-item">
+                                <a class="nav-link" href="#"><i class="icon-wallet"></i> Rotación inventario</a>
+                            </li>
+                            <li @click="menu=39" class="nav-item">
+                                <a class="nav-link" href="#"><i class="icon-wallet"></i> Rotación cartera</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li @click="menu=39" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Actividades o gestión</a>
-                    </li>
+
                 </ul>
             </li>
         </ul>

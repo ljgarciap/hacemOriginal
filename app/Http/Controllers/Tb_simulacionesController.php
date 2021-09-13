@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Tb_puntos_equilibrio;
 use App\tb_precios_venta;
 use App\Tb_producto;
+use App\Tb_liquidez;
+use App\Tb_rentabilidad;
+use App\Tb_endeudamiento;
+use App\Tb_rotacioninventario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -53,6 +57,25 @@ class Tb_simulacionesController extends Controller
         $tb_precios_venta->save();
     }
 
+    public function listarPrecios()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $precios = Tb_precios_venta::orderBy('id','desc')->paginate(5);
+
+        return [
+        'pagination' => [
+                'total'         =>$precios->total(),
+                'current_page'  =>$precios->currentPage(),
+                'per_page'      =>$precios->perPage(),
+                'last_page'     =>$precios->lastPage(),
+                'from'          =>$precios->firstItem(),
+                'to'            =>$precios->lastItem(),
+            ],
+                'precios' => $precios
+        ];
+    }
+
     public function storePuntoEquilibrio(Request $request)
     {
         //if(!$request->ajax()) return redirect('/');
@@ -95,5 +118,301 @@ class Tb_simulacionesController extends Controller
 
         $tb_puntos_equilibrio->save();
     }
+
+    public function listarPuntos()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $puntos = Tb_puntos_equilibrio::orderBy('id','desc')->paginate(5);
+
+        return [
+        'pagination' => [
+                'total'         =>$puntos->total(),
+                'current_page'  =>$puntos->currentPage(),
+                'per_page'      =>$puntos->perPage(),
+                'last_page'     =>$puntos->lastPage(),
+                'from'          =>$puntos->firstItem(),
+                'to'            =>$puntos->lastItem(),
+            ],
+                'puntos' => $puntos
+        ];
+    }
+
+    public function storeLiquidez(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $hoy = date("Y-m-d");
+
+        $activocorriente=$request->activocorriente;
+        $pasivocorriente=$request->pasivocorriente;
+        $inventario=$request->inventario;
+
+        $capitaldetrabajo=$activocorriente-$pasivocorriente;
+
+        if($pasivocorriente==0){
+            $razoncorriente=0;
+            $pruebaacida=0;
+        }
+        else{
+            $razoncorriente=$activocorriente/$pasivocorriente;
+            $pruebaacida=($activocorriente-$inventario)/$pasivocorriente;
+        }
+
+        $producto='Indicadores de liquidez';
+
+        $detalle=$producto."-".$hoy;
+
+        $tb_liquidez=new Tb_liquidez();
+        $tb_liquidez->activocorriente=$activocorriente;
+        $tb_liquidez->pasivocorriente=$pasivocorriente;
+        $tb_liquidez->razoncorriente=$razoncorriente;
+        $tb_liquidez->capitaldetrabajo=$capitaldetrabajo;
+        $tb_liquidez->inventario=$inventario;
+        $tb_liquidez->pruebaacida=$pruebaacida;
+        $tb_liquidez->detalle=$detalle;
+
+        $tb_liquidez->save();
+    }
+
+    public function listarLiquidez()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $liquidez = Tb_liquidez::orderBy('id','desc')->paginate(5);
+
+        return [
+        'pagination' => [
+                'total'         =>$liquidez->total(),
+                'current_page'  =>$liquidez->currentPage(),
+                'per_page'      =>$liquidez->perPage(),
+                'last_page'     =>$liquidez->lastPage(),
+                'from'          =>$liquidez->firstItem(),
+                'to'            =>$liquidez->lastItem(),
+            ],
+                'liquidez' => $liquidez
+        ];
+    }
+
+    public function storeEndeudamiento(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $hoy = date("Y-m-d");
+
+        $activototal=$request->activototal;
+        $pasivototal=$request->pasivototal;
+        $pasivocorriente=$request->pasivocorriente;
+        $patrimoniototal=$request->patrimoniototal;
+
+        if($activototal==0){
+            $endeudamientototal=0;
+        }
+        else{
+            $endeudamientototal=($pasivototal/$activototal)*100;
+        }
+
+        if($patrimoniototal==0){
+            $leverage=0;
+        }
+        else{
+            $leverage=($pasivototal/$patrimoniototal)*100;
+        }
+
+        if($pasivototal==0){
+            $cortoplazo=0;
+        }
+        else{
+            $cortoplazo=($pasivocorriente/$pasivototal)*100;
+        }
+
+        $producto='Indicadores de endeudamiento';
+
+        $detalle=$producto."-".$hoy;
+
+        $tb_endeudamiento=new Tb_endeudamiento();
+        $tb_endeudamiento->activototal=$activototal;
+        $tb_endeudamiento->pasivototal=$pasivototal;
+        $tb_endeudamiento->pasivocorriente=$pasivocorriente;
+        $tb_endeudamiento->patrimoniototal=$patrimoniototal;
+        $tb_endeudamiento->endeudamientototal=$endeudamientototal;
+        $tb_endeudamiento->leverage=$leverage;
+        $tb_endeudamiento->cortoplazo=$cortoplazo;
+        $tb_endeudamiento->detalle=$detalle;
+        $tb_endeudamiento->save();
+    }
+
+    public function listarEndeudamiento()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $endeudamiento = Tb_endeudamiento::orderBy('id','desc')->paginate(5);
+
+        return [
+        'pagination' => [
+                'total'         =>$endeudamiento->total(),
+                'current_page'  =>$endeudamiento->currentPage(),
+                'per_page'      =>$endeudamiento->perPage(),
+                'last_page'     =>$endeudamiento->lastPage(),
+                'from'          =>$endeudamiento->firstItem(),
+                'to'            =>$endeudamiento->lastItem(),
+            ],
+                'endeudamiento' => $endeudamiento
+        ];
+    }
+
+    public function storeRentabilidad(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $hoy = date("Y-m-d");
+
+        $utilidadbruta=$request->utilidadbruta;
+        $utilidadoperacional=$request->utilidadoperacional;
+        $utilidadneta=$request->utilidadneta;
+        $ingresostotales=$request->ingresostotales;
+
+        if($ingresostotales==0){
+            $margenbruto=0;
+            $margenoperacional=0;
+            $margenneto=0;
+        }
+        else{
+            $margenbruto=($utilidadbruta/$ingresostotales)*100;
+            $margenoperacional=($utilidadoperacional/$ingresostotales)*100;
+            $margenneto=($utilidadneta/$ingresostotales)*100;
+        }
+
+        $producto='Indicadores de endeudamiento';
+
+        $detalle=$producto."-".$hoy;
+
+        $tb_rentabilidad=new Tb_rentabilidad();
+        $tb_rentabilidad->utilidadbruta=$utilidadbruta;
+        $tb_rentabilidad->utilidadoperacional=$utilidadoperacional;
+        $tb_rentabilidad->utilidadneta=$utilidadneta;
+        $tb_rentabilidad->ingresostotales=$ingresostotales;
+        $tb_rentabilidad->margenbruto=$margenbruto;
+        $tb_rentabilidad->margenoperacional=$margenoperacional;
+        $tb_rentabilidad->margenneto=$margenneto;
+        $tb_rentabilidad->detalle=$detalle;
+        $tb_rentabilidad->save();
+    }
+
+    public function listarRentabilidad()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $rentabilidad = Tb_rentabilidad::orderBy('id','desc')->paginate(5);
+
+        return [
+        'pagination' => [
+                'total'         =>$rentabilidad->total(),
+                'current_page'  =>$rentabilidad->currentPage(),
+                'per_page'      =>$rentabilidad->perPage(),
+                'last_page'     =>$rentabilidad->lastPage(),
+                'from'          =>$rentabilidad->firstItem(),
+                'to'            =>$rentabilidad->lastItem(),
+            ],
+                'rentabilidad' => $rentabilidad
+        ];
+    }
+
+    public function storeRotacioninventario(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $hoy = date("Y-m-d");
+
+        $fechainicial=$request->fechainicial;
+        $fechafinal=$request->fechafinal;
+        $tipoperiodo=$request->tipoperiodo;
+        $saldoperiodoactual=$request->saldoperiodoactual;
+        $saldoperiodoanterior=$request->saldoperiodoanterior;
+        $costodeventas=$request->costodeventas;
+
+        if($ingresostotales==0){
+            $margenbruto=0;
+            $margenoperacional=0;
+            $margenneto=0;
+        }
+        else{
+            $margenbruto=($utilidadbruta/$ingresostotales)*100;
+            $margenoperacional=($utilidadoperacional/$ingresostotales)*100;
+            $margenneto=($utilidadneta/$ingresostotales)*100;
+        }
+
+        $producto='Indicadores de endeudamiento';
+
+        $detalle=$producto."-".$hoy;
+
+        $tb_rotacioninventario=new Tb_rotacioninventario();
+        $tb_rotacioninventario->utilidadbruta=$utilidadbruta;
+        $tb_rotacioninventario->utilidadoperacional=$utilidadoperacional;
+        $tb_rotacioninventario->utilidadneta=$utilidadneta;
+        $tb_rotacioninventario->ingresostotales=$ingresostotales;
+        $tb_rotacioninventario->margenbruto=$margenbruto;
+        $tb_rotacioninventario->margenoperacional=$margenoperacional;
+        $tb_rotacioninventario->margenneto=$margenneto;
+        $tb_rotacioninventario->detalle=$detalle;
+        $tb_rotacioninventario->save();
+    }
+
+    public function listarRotacioninventario()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $rotacioninventario = Tb_rotacioninventario::orderBy('id','desc')->paginate(5);
+
+        return [
+        'pagination' => [
+                'total'         =>$rotacioninventario->total(),
+                'current_page'  =>$rotacioninventario->currentPage(),
+                'per_page'      =>$rotacioninventario->perPage(),
+                'last_page'     =>$rotacioninventario->lastPage(),
+                'from'          =>$rotacioninventario->firstItem(),
+                'to'            =>$rotacioninventario->lastItem(),
+            ],
+                'rotacioninventario' => $rotacioninventario
+        ];
+    }
+
+    public function posibles()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $posibles = Tb_precios_venta::orderBy('detalle','asc')->get();
+
+        return [
+                'posibles' => $posibles
+        ];
+    }
+
+    public function unitariogen(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $idProducto=$request->identificador;
+
+        $puntos = Tb_precios_venta::where('id','=',$idProducto)->orderBy('id','asc')->get();
+
+        foreach($puntos as $totalg){
+
+            $idProducto= $totalg->idProducto;
+            $costopar= $totalg->costo;
+            $porcentaje= $totalg->porcentaje;
+            $acumuladocift= $totalg->costosfijos;
+            $acumuladomp= $totalg->materiaprima;
+            $acumuladomo= $totalg->manodeobradirecta;
+            $precioventa= $totalg->preciodeventa;
+            $detalle= $totalg->detalle;
+        }
+        return [
+            'idProducto'    => $idProducto,
+            'costopar'      => $costopar,
+            'porcentaje'    => $porcentaje,
+            'acumuladocift' => $acumuladocift,
+            'acumuladomp'   => $acumuladomp,
+            'acumuladomo'   => $acumuladomo,
+            'precioventa'   => $precioventa,
+            'detalle'       => $detalle
+        ];
+    }
+
 
 }

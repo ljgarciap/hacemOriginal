@@ -12,12 +12,13 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Areas &nbsp;
+                            <i class="fa fa-align-justify"></i> Precio de venta &nbsp;
                             <button type="button" @click="mostrarDetalle()" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
                         <div class="card-body">
+                            <!--
                             <div class="form-group row">
                                 <div class="col-md-9">
                                     <div class="input-group">
@@ -30,6 +31,42 @@
                                     </div>
                                 </div>
                             </div>
+                            -->
+                            <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Detalle</th>
+                                        <th>Costo</th>
+                                        <th>Porcentaje</th>
+                                        <th>Precio de venta</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr v-for="precio in arrayPrecios" :key="precio.id">
+                                        <td v-text="precio.detalle"></td>
+                                        <td v-text="precio.costo"></td>
+                                        <td v-text="precio.porcentaje"></td>
+                                        <td v-text="precio.preciodeventa"></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item" v-if="pagination.current_page > 1">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                                    </li>
+                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                                    </li>
+                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -152,8 +189,6 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'vinculacion',
-                buscar : '',
                 componentKey:0
             }
         },
@@ -163,7 +198,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -182,7 +217,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -212,13 +246,25 @@
                     console.log(error);
                 })
             },
-            cambiarPagina(page,buscar,criterio){
+            listarPrecios(page){
+                let me=this;
+                var url='/simulaciones/listarPrecios?page=' + page;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayPrecios=respuesta.precios.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
+            cambiarPagina(page){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarVinculacion(page,buscar,criterio);
-                this.listarVinculacionInactiva(page,buscar,criterio);
+                me.listarPrecios(page);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -231,6 +277,7 @@
             ocultarDetalle(){
                 this.listado=1;
                 this.identificador=0;
+                this.listarPrecios(1);
             },
             validarVinculacion(){
                 this.errorVinculacion=0;
@@ -286,6 +333,7 @@
         },
         mounted() {
             this.listarPosibles();
+            this.listarPrecios(1);
         }
     }
 </script>

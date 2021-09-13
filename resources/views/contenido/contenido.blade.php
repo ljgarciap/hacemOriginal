@@ -154,11 +154,11 @@
     </template>
 
     <template v-if="menu==38">
-        <rentabilidad></rentabilidad>
+        <rotacioninventario></rotacioninventario>
     </template>
 
     <template v-if="menu==39">
-        <rotaciones></rotaciones>
+        <rotacioncartera></rotacioncartera>
     </template>
 
     <template v-if="menu==40">

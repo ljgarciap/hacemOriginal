@@ -138,7 +138,8 @@ Vue.component('precioventa', require('./components/Precioventa.vue').default);
 Vue.component('endeudamiento', require('./components/Endeudamiento.vue').default);
 Vue.component('liquidez', require('./components/Liquidez.vue').default);
 Vue.component('rentabilidad', require('./components/Rentabilidad.vue').default);
-Vue.component('rotaciones', require('./components/Rotaciones.vue').default);
+Vue.component('rotacioninventario', require('./components/Rotacioninventario.vue').default);
+Vue.component('rotacioncartera', require('./components/Rotacioncartera.vue').default);
 
 Vue.component('hojadecostossimuladorfinanciero', require('./components/HojaDeCostosSimuladorFinanciero.vue').default);
 Vue.component('simuladorfinanciero', require('./components/SimuladorFinanciero.vue').default);

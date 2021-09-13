@@ -12,12 +12,13 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Areas &nbsp;
+                            <i class="fa fa-align-justify"></i> Punto de equilibrio individual &nbsp;
                             <button type="button" @click="mostrarDetalle()" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
                         </div>
                         <div class="card-body">
+                            <!--
                             <div class="form-group row">
                                 <div class="col-md-9">
                                     <div class="input-group">
@@ -30,6 +31,39 @@
                                     </div>
                                 </div>
                             </div>
+                            -->
+                            <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Detalle</th>
+                                        <th>Precio de venta</th>   
+                                        <th>Punto de equilibrio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr v-for="precio in arrayPrecios" :key="precio.id">
+                                        <td v-text="precio.detalle"></td>
+                                        <td v-text="precio.preciodeventa"></td>
+                                        <td v-text="precio.puntodeequilibrio"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item" v-if="pagination.current_page > 1">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                                    </li>
+                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                                    </li>
+                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -50,7 +84,7 @@
                                         <div class="col-md-9">
                                             <select class="form-control" v-model="idProducto" @change='onChange($event)'>
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
+                                                <option v-for="posible in arrayPosibles" :key="posible.id" :value="posible.id" v-text="posible.detalle"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -90,7 +124,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="puntoequilibriounidad">Punto de equilibrio: {{parseFloat((parseInt(costosfijos)+parseInt(gastosfijos))/
-                                            (( parseInt((this.costo)/((100-this.porcentaje)/100)) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)))).toFixed(3)}} pares</label>
+                                            (( parseInt(this.preciodeventa) )-(parseInt(materiaprima)+parseInt(manodeobradirecta)))).toFixed(3)}} pares</label>
                                         </div>
                                     </div>
 
@@ -102,7 +136,7 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label for="puntoequilibriopesos">Precio venta: {{parseInt((this.costo)/((100-this.porcentaje)/100))}}</label>
+                                            <label for="puntoequilibriopesos">Precio venta: {{parseInt(this.preciodeventa)}}</label>
                                         </div>
                                     </div>
 
@@ -112,13 +146,24 @@
                                         </div>
                                     </div>
 
+                                    <p v-show="condicion">
+                                        <input type="text" v-model="idProducto">
+                                    </p>
+
+                                    <p v-show="condicion">
+                                        <input type="text" v-model="preciodeventa">
+                                    </p>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-primary" @click="crearPuntoEquilibrio(),ocultarDetalle()">Guardar</button>
+                                        </div>
+                                    </div>
+
                         </div>
                     </div>
                     </vs-tab>
 
-                    <!-- <vs-tab><button type="button" class="btn btn-primary" @click="crearPuntoEquilibrio()">Guardar</button></vs-tab> -->
-                    <vs-tab label="Guardar" icon="cancel_schedule_send" @click="crearPuntoEquilibrio()"></vs-tab>
-                    <!-- <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="crearPuntoEquilibrio()">Guardar</button> -->
                     <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
                     </vs-tab>
 
@@ -136,9 +181,11 @@
         data(){
             return{
                 colorx: '#8B0000',
+                condicion:false,
                 listado: 1,
                 idProducto:0,
                 flag: 0,
+                preciodeventa:0,
                 valorpar:0,
                 valorcif:0,
                 valormatprima:0,
@@ -170,8 +217,6 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'vinculacion',
-                buscar : '',
                 componentKey:0
             }
         },
@@ -181,7 +226,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -200,7 +245,6 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
@@ -209,11 +253,13 @@
                 console.log(event.target.value);
                 this.identificadorHoja=event.target.value;
                 let me=this;
-                var url='/hojadecosto/unitariogen/?identificador='+this.identificadorHoja;
+                //var url='/hojadecosto/unitariogen/?identificador='+this.identificadorHoja;
+                var url='/simulaciones/unitariogen/?identificador='+this.identificadorHoja;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
                 me.valorpar=respuesta.costopar;
                 me.costo=respuesta.costopar;
+                me.preciodeventa=respuesta.precioventa;
                 me.valorcif=respuesta.acumuladocift;
                 me.costosfijos=respuesta.acumuladocift;
                 me.valormatprima=respuesta.acumuladomp;
@@ -230,14 +276,6 @@
                     console.log(error);
                 })
             },
-            cambiarPagina(page,buscar,criterio){
-                let me = this;
-                //Actualiza la pagina actual
-                me.pagination.current_page = page;
-                //envia peticion para ver los valores asociados a esa pagina
-                me.listarVinculacion(page,buscar,criterio);
-                this.listarVinculacionInactiva(page,buscar,criterio);
-            },
             indexChange: function(args) {
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)
@@ -252,6 +290,7 @@
             ocultarDetalle(){
                 this.listado=1;
                 this.identificador=0;
+                this.listarPrecios(1);
             },
             validarVinculacion(){
                 this.errorVinculacion=0;
@@ -272,8 +311,7 @@
 
                 axios.post('/simulaciones/storePuntoEquilibrio',{
                     'idProducto': this.idProducto,
-                    'costo': this.costo,
-                    'porcentaje': this.porcentaje,
+                    'preciodeventa': this.preciodeventa,
                     'costosfijos': this.costosfijos,
                     'gastosfijos': this.gastosfijos,
                     'materiaprima': this.materiaprima,
@@ -289,9 +327,30 @@
             forceRerender() {
                 this.componentKey += 1;
                },
+            listarPrecios(page){
+                let me=this;
+                var url='/simulaciones/listarPuntos?page=' + page;
+                axios.get(url).then(function (response) {
+                var respuesta=response.data;
+                me.arrayPrecios=respuesta.puntos.data;
+                me.pagination=respuesta.pagination;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },       
+            cambiarPagina(page){
+                let me = this;
+                //Actualiza la pagina actual
+                me.pagination.current_page = page;
+                //envia peticion para ver los valores asociados a esa pagina
+                me.listarPrecios(page);
+            },    
             listarPosibles(id){
                 let me=this;
-                var url='/relaf/posibles?id=' + this.identificador;
+                //var url='/relaf/posibles?id=' + this.identificador;
+                var url='/simulaciones/posibles?id=' + this.identificador;
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -307,6 +366,7 @@
         },
         mounted() {
             this.listarPosibles();
+            this.listarPrecios(1);
         }
     }
 </script>

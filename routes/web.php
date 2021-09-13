@@ -380,7 +380,21 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/factores/actualizar", "Tb_factoresController@actualizar");
 
         Route::post("/simulaciones/storePuntoEquilibrio", "Tb_simulacionesController@storePuntoEquilibrio");
+        Route::get("/simulaciones/listarPuntos", "Tb_simulacionesController@listarPuntos");
         Route::post("/simulaciones/storePrecioVenta", "Tb_simulacionesController@storePrecioVenta");
+        Route::get("/simulaciones/listarPrecios", "Tb_simulacionesController@listarPrecios");
+        Route::post("/simulaciones/storeLiquidez", "Tb_simulacionesController@storeLiquidez");
+        Route::get("/simulaciones/listarLiquidez", "Tb_simulacionesController@listarLiquidez");
+        Route::post("/simulaciones/storeEndeudamiento", "Tb_simulacionesController@storeEndeudamiento");
+        Route::get("/simulaciones/listarEndeudamiento", "Tb_simulacionesController@listarEndeudamiento");
+        Route::post("/simulaciones/storeRentabilidad", "Tb_simulacionesController@storeRentabilidad");
+        Route::get("/simulaciones/listarRentabilidad", "Tb_simulacionesController@listarRentabilidad");
+        Route::post("/simulaciones/storeRotacioninventario", "Tb_simulacionesController@storeRotacioninventario");
+        Route::get("/simulaciones/listarRotacioninventario", "Tb_simulacionesController@listarRotacioninventario");
+        Route::post("/simulaciones/storeRotacioncartera", "Tb_simulacionesController@storeRotacioncartera");
+        Route::get("/simulaciones/listarRotacioncartera", "Tb_simulacionesController@listarRotacioncartera");
+        Route::get("/simulaciones/posibles", "Tb_simulacionesController@posibles");
+        Route::get("/simulaciones/unitariogen", "Tb_simulacionesController@unitariogen");
 
     });
 

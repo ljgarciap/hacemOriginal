@@ -6,7 +6,79 @@
                     <li class="breadcrumb-item active">Endeudamiento</li>
                 </ol>
 
-                <template v-if="listado">
+                <template v-if="listado==1">
+                <div class="container-fluid">
+                    <!-- Ejemplo de tabla Listado -->
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Endeudamiento &nbsp;
+                            <button type="button" @click="mostrarDetalle()" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Nuevo
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!--
+                            <div class="form-group row">
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="id">Id</option>
+                                        <option value="area">Area</option>
+                                        </select>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarArea(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarArea(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                            <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Detalle</th>
+                                        <th>Activo total</th>
+                                        <th>Pasivo total</th>
+                                        <th>Pasivo corriente</th>
+                                        <th>Patrimonio total</th>
+                                        <th>Endeudamiento total</th>
+                                        <th>Leverage</th>
+                                        <th>Corto plazo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="precio in arrayPrecios" :key="precio.id">
+                                        <td v-text="precio.detalle"></td>
+                                        <td v-text="precio.activototal"></td>
+                                        <td v-text="precio.pasivototal"></td>
+                                        <td v-text="precio.pasivocorriente"></td>
+                                        <td v-text="precio.patrimoniototal"></td>
+                                        <td v-text="precio.endeudamientototal"></td>
+                                        <td v-text="precio.leverage"></td>
+                                        <td v-text="precio.cortoplazo"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item" v-if="pagination.current_page > 1">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                                    </li>
+                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                                    </li>
+                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                </template>
+
+                <template v-if="listado==2">
 
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
@@ -55,8 +127,17 @@
                                         <label for="puntoequilibriopesos">Concentración Endeudamiento corto plazo: {{ parseFloat(100*pasivocorriente/pasivototal).toFixed(2) }} %</label>
                                     </div>
 
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-primary" @click="crearPuntoEquilibrio(),ocultarDetalle()">Guardar</button>
+                                        </div>
+                                    </div>
+
                         </div>
                     </div>
+                    </vs-tab>
+
+                    <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
                     </vs-tab>
 
                 </vs-tabs>
@@ -76,26 +157,11 @@
                 listado: 1,
                 idProducto:0,
                 flag: 0,
-                valorpar:0,
-                valorcif:0,
-                valormatprima:0,
-                valormanobra:0,
-                costo:0,
-                porcentaje:0,
-                costosfijos:0,
-                materiaprima:0,
-                manodeobradirecta:0,
-                gastosfijos:0,
-                activocorriente:0,
-                pasivocorriente:0,
                 activototal:0,
-                inventario:0,
                 pasivototal:0,
+                pasivocorriente:0,
                 patrimoniototal:0,
-                utilidadbruta:0,
-                utilidadoperacional:0,
-                utilidadneta:0,
-                ingresostotales:0,
+                pasivototal:0,
                 arrayPosibles : [],
                 errorVinculacion : 0,
                 errorMensaje : [],
@@ -107,9 +173,7 @@
                     'from' : 0,
                     'to' : 0,
                 },
-                offset : 3,
-                criterio : 'vinculacion',
-                buscar : ''
+                offset : 3
             }
         },
         computed:{
@@ -142,34 +206,46 @@
             }
         },
         methods : {
-            onChange(event) {
-                console.log(event.target.value);
-                this.identificadorHoja=event.target.value;
+            crearPuntoEquilibrio(){
+                //valido con el metodo de validacion creado
+                /*
+                if(this.validarManoDeObraProducto()){
+                    return;
+                }
+                */
+
+                axios.post('/simulaciones/storeEndeudamiento',{
+                    'activototal': this.activototal,
+                    'pasivototal': this.pasivototal,
+                    'pasivocorriente': this.pasivocorriente,
+                    'patrimoniototal': this.patrimoniototal
+                }).then(function (response) {
+                this.ocultarDetalle();
+                this.forceRerender();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            listarEndeudamiento(page){
                 let me=this;
-                var url='/hojadecosto/unitariogen/?identificador='+this.identificadorHoja;
+                var url='/simulaciones/listarEndeudamiento?page=' + page;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.valorpar=respuesta.costopar;
-                me.valorcif=respuesta.acumuladocift;
-                me.valormatprima=respuesta.acumuladomp;
-                me.valormanobra=respuesta.acumuladomo;
-                console.log(me.valorpar);
-                console.log(me.valorcif);
-                console.log(me.valormatprima);
-                console.log(me.valormanobra);
+                me.arrayPrecios=respuesta.endeudamiento.data;
+                me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
-            cambiarPagina(page,buscar,criterio){
+            cambiarPagina(page){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarVinculacion(page,buscar,criterio);
-                this.listarVinculacionInactiva(page,buscar,criterio);
+                me.listarEndeudamiento(page);
             },
             indexChange: function(args) {
                 let newIndex = args.value
@@ -178,41 +254,18 @@
             forceRerender() {
                 this.componentKey += 1;
                },
-            mostrarDetalle(id,producto,area){
-                this.listado=0;
+            mostrarDetalle(){
+                this.listado=2;
                 this.identificador=0;
             },
             ocultarDetalle(){
                 this.listado=1;
                 this.identificador=0;
-            },
-            validarVinculacion(){
-                this.errorVinculacion=0;
-                this.errorMensaje=[];
-
-                //if (!this.idEmpleado) this.errorMensaje.push("El nombre del empleado no puede estar vacio");
-                if (this.errorMensaje.length) this.errorVinculacion=1;
-
-                return this.errorVinculacion;
-            },
-            listarPosibles(id){
-                let me=this;
-                var url='/relaf/posibles?id=' + this.identificador;
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayPosibles=respuesta.posibles;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
+                this.listarEndeudamiento(1);
             }
         },
         mounted() {
-            this.listarPosibles();
+            this.listarEndeudamiento();
         }
     }
 </script>

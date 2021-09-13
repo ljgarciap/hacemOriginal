@@ -198,13 +198,6 @@
                     console.log(error);
                 })
             },
-            cambiarPagina(page,buscar,criterio){
-                let me = this;
-                //Actualiza la pagina actual
-                me.pagination.current_page = page;
-                //envia peticion para ver los valores asociados a esa pagina
-                me.listarArea(page,buscar,criterio);
-            },
             indexChange: function(args) {
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)

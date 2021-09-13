@@ -6,7 +6,78 @@
                     <li class="breadcrumb-item active">Liquidez</li>
                 </ol>
 
-                <template v-if="listado">
+                <template v-if="listado==1">
+                <div class="container-fluid">
+                    <!-- Ejemplo de tabla Listado -->
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Liquidez &nbsp;
+                            <button type="button" @click="mostrarDetalle()" class="btn btn-secondary">
+                                <i class="icon-plus"></i>&nbsp;Nuevo
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!--
+                            <div class="form-group row">
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        <select class="form-control col-md-3" v-model="criterio">
+                                        <option value="id">Id</option>
+                                        <option value="area">Area</option>
+                                        </select>
+                                        <input type="text" v-model="buscar" @keyup.enter="listarArea(1,buscar,criterio)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarArea(1,buscar,criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                            <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Detalle</th>
+                                        <th>Activo corriente</th>   
+                                        <th>Pasivo corriente</th>
+                                        <th>Razón corriente</th>   
+                                        <th>Capital de trabajo</th>
+                                        <th>Inventario</th>   
+                                        <th>Prueba ácida</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr v-for="precio in arrayPrecios" :key="precio.id">
+                                        <td v-text="precio.detalle"></td>
+                                        <td v-text="precio.activocorriente"></td>
+                                        <td v-text="precio.pasivocorriente"></td>
+                                        <td v-text="precio.razoncorriente"></td>
+                                        <td v-text="precio.capitaldetrabajo"></td>
+                                        <td v-text="precio.inventario"></td>
+                                        <td v-text="precio.pruebaacida"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            <nav>
+                                <ul class="pagination">
+                                    <li class="page-item" v-if="pagination.current_page > 1">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1,buscar,criterio)">Ant</a>
+                                    </li>
+                                    <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(page,buscar,criterio)" v-text="page"></a>
+                                    </li>
+                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                        <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1,buscar,criterio)">Sig</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                </template>
+
+                <template v-if="listado==2">
 
                 <div class="container-fluid">
                     <!-- Ejemplo de tabla Listado -->
@@ -76,8 +147,17 @@
                                     <div class="form-group row">
                                         <label for="puntoequilibriopesos">Prueba ácida: $ {{ parseFloat((parseInt(activocorriente)-parseInt(inventario))/parseInt(pasivocorriente)).toFixed(3) }}</label>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-primary" @click="crearPuntoEquilibrio(),ocultarDetalle()">Guardar</button>
+                                        </div>
+                                    </div>
                         </div>
                     </div>
+                    </vs-tab>
+
+                    <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
                     </vs-tab>
 
                 </vs-tabs>
@@ -128,9 +208,7 @@
                     'from' : 0,
                     'to' : 0,
                 },
-                offset : 3,
-                criterio : 'vinculacion',
-                buscar : ''
+                offset : 3
             }
         },
         computed:{
@@ -139,7 +217,7 @@
             },
             //Calcula los elementos de la paginacion
             pagesNumber: function(){
-                if (this.pagination.to) {
+                if (!this.pagination.to) {
                     return[];
                 }
 
@@ -158,40 +236,50 @@
                     pagesArray.push(from);
                     from++;
                 }
-
                 return pagesArray;
             }
         },
         methods : {
-            onChange(event) {
-                console.log(event.target.value);
-                this.identificadorHoja=event.target.value;
+            crearPuntoEquilibrio(){
+                //valido con el metodo de validacion creado
+                /*
+                if(this.validarManoDeObraProducto()){
+                    return;
+                }
+                */
+
+                axios.post('/simulaciones/storeLiquidez',{
+                    'activocorriente': this.activocorriente,
+                    'pasivocorriente': this.pasivocorriente,
+                    'inventario': this.inventario
+                }).then(function (response) {
+                this.ocultarDetalle();
+                this.forceRerender();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            listarLiquidez(page){
                 let me=this;
-                var url='/hojadecosto/unitariogen/?identificador='+this.identificadorHoja;
+                var url='/simulaciones/listarLiquidez?page=' + page;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.valorpar=respuesta.costopar;
-                me.valorcif=respuesta.acumuladocift;
-                me.valormatprima=respuesta.acumuladomp;
-                me.valormanobra=respuesta.acumuladomo;
-                console.log(me.valorpar);
-                console.log(me.valorcif);
-                console.log(me.valormatprima);
-                console.log(me.valormanobra);
+                me.arrayPrecios=respuesta.liquidez.data;
+                me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
-            },
-            cambiarPagina(page,buscar,criterio){
+            }, 
+            cambiarPagina(page){
                 let me = this;
                 //Actualiza la pagina actual
                 me.pagination.current_page = page;
                 //envia peticion para ver los valores asociados a esa pagina
-                me.listarVinculacion(page,buscar,criterio);
-                this.listarVinculacionInactiva(page,buscar,criterio);
-            },
+                me.listarLiquidez(page);
+            },   
             indexChange: function(args) {
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)
@@ -199,13 +287,14 @@
             forceRerender() {
                 this.componentKey += 1;
                },
-            mostrarDetalle(id,producto,area){
-                this.listado=0;
+            mostrarDetalle(){
+                this.listado=2;
                 this.identificador=0;
             },
             ocultarDetalle(){
                 this.listado=1;
                 this.identificador=0;
+                this.listarLiquidez(1);
             },
             validarVinculacion(){
                 this.errorVinculacion=0;
@@ -215,25 +304,10 @@
                 if (this.errorMensaje.length) this.errorVinculacion=1;
 
                 return this.errorVinculacion;
-            },
-            listarPosibles(id){
-                let me=this;
-                var url='/relaf/posibles?id=' + this.identificador;
-                // Make a request for a user with a given ID
-                axios.get(url).then(function (response) {
-                    // handle success
-                var respuesta=response.data;
-                me.arrayPosibles=respuesta.posibles;
-                    //console.log(response);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
             }
         },
         mounted() {
-            this.listarPosibles();
+            this.listarLiquidez(1);
         }
     }
 </script>
