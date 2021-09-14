@@ -270,7 +270,7 @@
                 var url='/simulaciones/listarRotacioninventario?page=' + page;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayPrecios=respuesta.rentabilidad.data;
+                me.arrayPrecios=respuesta.rotacioninventario.data;
                 me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {

@@ -9,6 +9,7 @@ use App\Tb_liquidez;
 use App\Tb_rentabilidad;
 use App\Tb_endeudamiento;
 use App\Tb_rotacioninventario;
+use App\Tb_rotacioncartera;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -280,7 +281,7 @@ class Tb_simulacionesController extends Controller
             $margenneto=($utilidadneta/$ingresostotales)*100;
         }
 
-        $producto='Indicadores de endeudamiento';
+        $producto='Indicadores de rentabilidad';
 
         $detalle=$producto."-".$hoy;
 
@@ -327,31 +328,33 @@ class Tb_simulacionesController extends Controller
         $saldoperiodoanterior=$request->saldoperiodoanterior;
         $costodeventas=$request->costodeventas;
 
-        if($ingresostotales==0){
-            $margenbruto=0;
-            $margenoperacional=0;
-            $margenneto=0;
+        $sumasaldos=$saldoperiodoactual+$saldoperiodoanterior;
+        $promediosaldos=$sumasaldos/2;
+
+        if($promediosaldos==0){
+            $rotacioninventario=0;
         }
         else{
-            $margenbruto=($utilidadbruta/$ingresostotales)*100;
-            $margenoperacional=($utilidadoperacional/$ingresostotales)*100;
-            $margenneto=($utilidadneta/$ingresostotales)*100;
+            $rotacioninventario=$costodeventas/$promediosaldos;
         }
 
-        $producto='Indicadores de endeudamiento';
+        $producto='Rotación de inventario';
 
         $detalle=$producto."-".$hoy;
 
         $tb_rotacioninventario=new Tb_rotacioninventario();
-        $tb_rotacioninventario->utilidadbruta=$utilidadbruta;
-        $tb_rotacioninventario->utilidadoperacional=$utilidadoperacional;
-        $tb_rotacioninventario->utilidadneta=$utilidadneta;
-        $tb_rotacioninventario->ingresostotales=$ingresostotales;
-        $tb_rotacioninventario->margenbruto=$margenbruto;
-        $tb_rotacioninventario->margenoperacional=$margenoperacional;
-        $tb_rotacioninventario->margenneto=$margenneto;
+        $tb_rotacioninventario->fechainicial=$fechainicial;
+        $tb_rotacioninventario->fechafinal=$fechafinal;
+        $tb_rotacioninventario->tipoperiodo=$tipoperiodo;
+        $tb_rotacioninventario->saldoperiodoactual=$saldoperiodoactual;
+        $tb_rotacioninventario->saldoperiodoanterior=$saldoperiodoanterior;
+        $tb_rotacioninventario->costodeventas=$costodeventas;
+        $tb_rotacioninventario->sumasaldos=$sumasaldos;
+        $tb_rotacioninventario->promediosaldos=$promediosaldos;
+        $tb_rotacioninventario->rotacioninventario=$rotacioninventario;
         $tb_rotacioninventario->detalle=$detalle;
         $tb_rotacioninventario->save();
+
     }
 
     public function listarRotacioninventario()
@@ -370,6 +373,66 @@ class Tb_simulacionesController extends Controller
                 'to'            =>$rotacioninventario->lastItem(),
             ],
                 'rotacioninventario' => $rotacioninventario
+        ];
+    }
+
+    public function storeRotacioncartera(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $hoy = date("Y-m-d");
+
+        $fechainicial=$request->fechainicial;
+        $fechafinal=$request->fechafinal;
+        $tipoperiodo=$request->tipoperiodo;
+        $saldoperiodoactual=$request->saldoperiodoactual;
+        $saldoperiodoanterior=$request->saldoperiodoanterior;
+        $costodeventas=$request->costodeventas;
+
+        $sumasaldos=$saldoperiodoactual+$saldoperiodoanterior;
+        $promediosaldos=$sumasaldos/2;
+
+        if($promediosaldos==0){
+            $rotacioncartera=0;
+        }
+        else{
+            $rotacioncartera=$costodeventas/$promediosaldos;
+        }
+
+        $producto='Rotación de cartera';
+
+        $detalle=$producto."-".$hoy;
+
+        $tb_rotacioncartera=new Tb_rotacioncartera();
+        $tb_rotacioncartera->fechainicial=$fechainicial;
+        $tb_rotacioncartera->fechafinal=$fechafinal;
+        $tb_rotacioncartera->tipoperiodo=$tipoperiodo;
+        $tb_rotacioncartera->saldoperiodoactual=$saldoperiodoactual;
+        $tb_rotacioncartera->saldoperiodoanterior=$saldoperiodoanterior;
+        $tb_rotacioncartera->costodeventas=$costodeventas;
+        $tb_rotacioncartera->sumasaldos=$sumasaldos;
+        $tb_rotacioncartera->promediosaldos=$promediosaldos;
+        $tb_rotacioncartera->rotacioncartera=$rotacioncartera;
+        $tb_rotacioncartera->detalle=$detalle;
+        $tb_rotacioncartera->save();
+
+    }
+
+    public function listarRotacioncartera()
+    {
+        //if(!$request->ajax()) return redirect('/');
+
+        $rotacioncartera = Tb_rotacioncartera::orderBy('id','desc')->paginate(5);
+
+        return [
+        'pagination' => [
+                'total'         =>$rotacioncartera->total(),
+                'current_page'  =>$rotacioncartera->currentPage(),
+                'per_page'      =>$rotacioncartera->perPage(),
+                'last_page'     =>$rotacioncartera->lastPage(),
+                'from'          =>$rotacioncartera->firstItem(),
+                'to'            =>$rotacioncartera->lastItem(),
+            ],
+                'rotacioncartera' => $rotacioncartera
         ];
     }
 

@@ -3,7 +3,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Rotación de inventario</li>
+                    <li class="breadcrumb-item active">Rotación de cartera</li>
                 </ol>
 
                 <template v-if="listado==1">
@@ -12,7 +12,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Rotación de inventario &nbsp;
+                            <i class="fa fa-align-justify"></i> Rotación de cartera &nbsp;
                             <button type="button" @click="mostrarDetalle()" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nuevo
                             </button>
@@ -59,7 +59,7 @@
                                         <td v-text="precio.costodeventas"></td>
                                         <td v-text="precio.sumasaldos"></td>
                                         <td v-text="precio.promediosaldos"></td>
-                                        <td v-text="precio.rotacioninventario"></td>
+                                        <td v-text="precio.rotacioncartera"></td>
                                         <td v-if="precio.tipoperiodo==1">Mensual</td>
                                         <td v-if="precio.tipoperiodo==2">Diario</td>
                                     </tr>
@@ -272,7 +272,7 @@
                 var url='/simulaciones/listarRotacioncartera?page=' + page;
                 axios.get(url).then(function (response) {
                 var respuesta=response.data;
-                me.arrayPrecios=respuesta.rentabilidad.data;
+                me.arrayPrecios=respuesta.rotacioncartera.data;
                 me.pagination=respuesta.pagination;
                 })
                 .catch(function (error) {
