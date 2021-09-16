@@ -102,10 +102,10 @@
                     <div class="card">
                         <div class="card-header">
                             <i class="fa fa-align-justify"></i> Productos &nbsp;
-                            <button type="submit" @click="abrirModal('rela','crear',identificador)" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
+                            <button type="submit" @click="abrirModal('rela','crear')" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
-                            <productossimuladorfinanciero v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarProducto"></productossimuladorfinanciero>
+                            <productossimulacion v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarProducto"></productossimulacion>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -119,7 +119,7 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <hojadecostossimuladorfinanciero v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></hojadecostossimuladorfinanciero>
+                            <hojadecostossimulador v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></hojadecostossimulador>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -404,7 +404,6 @@
                 let me=this;
                 axios.put('/relaf/update',{
                    'id': this.id,
-                   'idProducto': this.idProducto,
                    'unidades': this.unidades,
                    'tiempo': this.tiempo,
                    'idSimulacion':this.identificador
@@ -435,7 +434,7 @@
                 }).then((result) => {
                 if (result.value) {
                     let me=this;
-                    axios.put('/rela/delete',{
+                    axios.put('/relaf/delete',{
                         'id': id
                     }).then(function (response) {
                     me.forceRerender();
@@ -500,7 +499,7 @@
                 this.errorMensaje = [],
                 this.forceRerender();
             },
-            abrirModal(modelo, accion, identificador){
+            abrirModal(modelo, accion,identificador,data=[]){
             //tres argumentos, el modelo a modificar o crear, la accion como tal y el arreglo del registro en la tabla
             switch(modelo){
                     case "simulacion":
@@ -510,6 +509,7 @@
                                 this.modal=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
                                 this.tituloModal='Crear nueva simulación';
+                                this.idSimulacion=this.identificador;
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
                                 break;
@@ -530,16 +530,18 @@
                                 break;
                             }
                            case 'actualizar':{
-                            //console.log(data);
+                            console.log("data de salida:");
+                            console.log(data);
                             this.modal=1;
                             this.tipoModal=4;
-                            this.tituloModal='Editar productos';
-                            this.tipoAccion= 2;
-                            this.id=data['id'];
-                            this.idProducto=data['idProducto'];
+                            this.id=data['idRegistro'];
+                            console.log("Id de producto:");
+                            console.log(this.id);
                             this.unidades=data['unidades'];
                             this.tiempo=data['tiempo'];
-                            this.idSimulacion=data['idSimulacion'];
+                            this.idSimulacion=this.identificador;
+                            this.tituloModal='Editar productos';
+                            this.tipoAccion= 2;
                             break;
                            }
                         }

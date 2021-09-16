@@ -18,7 +18,6 @@ class CreateTbSimuladorTable extends Migration
             $table->id();
             $table->string('descripcion', 255);
             $table->date('fecha');
-            $table->integer('tipoCif')->unsigned();
             $table->boolean('estado')->default(1);
             //$table->timestamps();
         });

@@ -67,6 +67,7 @@ class Tb_simuladorController extends Controller
     }
 
 //---------------------Funcion para generar las relaciones en las tablas que quedan con los datos-----------------------------------//
+//---------------------Esta es la que voy a usar para almacenar lo que hago al calcular punto equ-----------------------------------//
 
     public function estado(Request $request)
     {

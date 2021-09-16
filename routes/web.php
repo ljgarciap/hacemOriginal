@@ -168,45 +168,6 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/hojadecosto/unitariogen/", "Hoja_De_CostosController@unitarioTotalGen");
         Route::get("/hojadecosto/detallegen/", "Hoja_De_CostosController@hojaDetalleGen");
 
-        Route::get("/simulador", "Tb_simuladorController@index");
-        Route::post("/simulador/store", "Tb_simuladorController@store");
-        Route::post("/simulador/estado", "Tb_simuladorController@estado");
-        Route::get("/simulador/selectArea", "Tb_simuladorController@selectArea");
-        Route::put("/simulador/update", "Tb_simuladorController@update");
-        Route::get("/simulador/ciftiempos/{identificador}", "Tb_simuladorController@cifTiempos");
-        Route::get("/simulador/unitario/", "Tb_simuladorController@unitarioTotal");
-        Route::get("/simulador/detalle/", "Tb_simuladorController@hojaDetalle");
-        Route::get("/simulador/unitariogen/", "Tb_simuladorController@unitarioTotalGen");
-        Route::get("/simulador/detallegen/", "Tb_simuladorController@hojaDetalleGen");
-
-        Route::get("/relaf", "Tb_rela_simuladorController@index");
-        Route::get("/relaf/listar", "Tb_rela_simuladorController@listar");
-        Route::get("/relaf/posibles", "Tb_rela_simuladorController@posibles");
-        Route::post("/relaf/store", "Tb_rela_simuladorController@store");
-        Route::put("/relaf/update", "Tb_rela_simuladorController@update");
-        Route::put("/relaf/delete", "Tb_rela_simuladorController@delete");
-        Route::get("/relaf/selectArea", "Tb_rela_simuladorController@selectArea");
-
-        Route::get("/utilidades/calculomargen", "Tb_utilidadesController@calculomargen");
-
-        Route::get("/ordenpedido", "Tb_orden_pedido_clienteController@index");
-        Route::post("/ordenpedido/store", "Tb_orden_pedido_clienteController@store");
-        Route::post("/ordenpedido/estado", "Tb_orden_pedido_clienteController@estado");
-        Route::get("/ordenpedido/clientes", "Tb_orden_pedido_clienteController@clientes");
-        Route::put("/ordenpedido/update", "Tb_orden_pedido_clienteController@update");
-        Route::get("/ordenpedido/ciftiempos/{identificador}", "Tb_orden_pedido_clienteController@cifTiempos");
-
-        Route::get("/ordenpedidocliente", "Tb_orden_pedido_cliente_detalleController@index");
-        Route::get("/ordenpedidocliente/listar", "Tb_orden_pedido_cliente_detalleController@listar");
-        Route::get("/ordenpedidocliente/listarpendientes", "Tb_orden_pedido_cliente_detalleController@listarPendientes");
-        Route::get("/ordenpedidocliente/listarsobrantes", "Tb_orden_pedido_cliente_detalleController@listarSobrantes");
-        Route::get("/ordenpedidocliente/listarcompletos", "Tb_orden_pedido_cliente_detalleController@listarCompletos");
-        Route::get("/ordenpedidocliente/posibles", "Tb_orden_pedido_cliente_detalleController@posibles");
-        Route::get("/ordenpedidocliente/costo", "Tb_orden_pedido_cliente_detalleController@costo");
-        Route::post("/ordenpedidocliente/store", "Tb_orden_pedido_cliente_detalleController@store");
-        Route::put("/ordenpedidocliente/update", "Tb_orden_pedido_cliente_detalleController@update");
-        Route::put("/ordenpedidocliente/delete", "Tb_orden_pedido_cliente_detalleController@delete");
-
         Route::get("/simulacion", "Tb_simulacionController@index");
         Route::post("/simulacion/store", "Tb_simulacionController@store");
         Route::post("/simulacion/estado", "Tb_simulacionController@estado");
@@ -225,6 +186,24 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/rela/update", "Tb_rela_simulacionController@update");
         Route::put("/rela/delete", "Tb_rela_simulacionController@delete");
         Route::get("/rela/selectArea", "Tb_rela_simulacionController@selectArea");
+
+        Route::get("/ordenpedido", "Tb_orden_pedido_clienteController@index");
+        Route::post("/ordenpedido/store", "Tb_orden_pedido_clienteController@store");
+        Route::post("/ordenpedido/estado", "Tb_orden_pedido_clienteController@estado");
+        Route::get("/ordenpedido/clientes", "Tb_orden_pedido_clienteController@clientes");
+        Route::put("/ordenpedido/update", "Tb_orden_pedido_clienteController@update");
+        Route::get("/ordenpedido/ciftiempos/{identificador}", "Tb_orden_pedido_clienteController@cifTiempos");
+
+        Route::get("/ordenpedidocliente", "Tb_orden_pedido_cliente_detalleController@index");
+        Route::get("/ordenpedidocliente/listar", "Tb_orden_pedido_cliente_detalleController@listar");
+        Route::get("/ordenpedidocliente/listarpendientes", "Tb_orden_pedido_cliente_detalleController@listarPendientes");
+        Route::get("/ordenpedidocliente/listarsobrantes", "Tb_orden_pedido_cliente_detalleController@listarSobrantes");
+        Route::get("/ordenpedidocliente/listarcompletos", "Tb_orden_pedido_cliente_detalleController@listarCompletos");
+        Route::get("/ordenpedidocliente/posibles", "Tb_orden_pedido_cliente_detalleController@posibles");
+        Route::get("/ordenpedidocliente/costo", "Tb_orden_pedido_cliente_detalleController@costo");
+        Route::post("/ordenpedidocliente/store", "Tb_orden_pedido_cliente_detalleController@store");
+        Route::put("/ordenpedidocliente/update", "Tb_orden_pedido_cliente_detalleController@update");
+        Route::put("/ordenpedidocliente/delete", "Tb_orden_pedido_cliente_detalleController@delete");
 
         Route::get("/empleado", "Tb_empleadoController@index");
         Route::post("/empleado/store", "Tb_empleadoController@store");
@@ -378,6 +357,29 @@ Route::group(['middleware' => ['guest']], function () {
         Route::post("/factores/store", "Tb_factoresController@store");
         Route::put("/factores/update", "Tb_factoresController@update");
         Route::post("/factores/actualizar", "Tb_factoresController@actualizar");
+
+//--------------------------------Seccion para el uso de la copia de simulador para el punto multiproducto -----------------------------------//
+
+        Route::get("/simulador", "Tb_simuladorController@index");
+        Route::post("/simulador/store", "Tb_simuladorController@store");
+        Route::post("/simulador/estado", "Tb_simuladorController@estado");
+        Route::get("/simulador/selectArea", "Tb_simuladorController@selectArea");
+        Route::put("/simulador/update", "Tb_simuladorController@update");
+        Route::get("/simulador/ciftiempos/{identificador}", "Tb_simuladorController@cifTiempos");
+        Route::get("/simulador/unitario/", "Tb_simuladorController@unitarioTotal");
+        Route::get("/simulador/detalle/", "Tb_simuladorController@hojaDetalle");
+        Route::get("/simulador/unitariogen/", "Tb_simuladorController@unitarioTotalGen");
+        Route::get("/simulador/detallegen/", "Tb_simuladorController@hojaDetalleGen");
+
+        Route::get("/relaf", "Tb_rela_simuladorController@index");
+        Route::get("/relaf/listar", "Tb_rela_simuladorController@listar");
+        Route::get("/relaf/posibles", "Tb_rela_simuladorController@posibles");
+        Route::post("/relaf/store", "Tb_rela_simuladorController@store");
+        Route::put("/relaf/update", "Tb_rela_simuladorController@update");
+        Route::put("/relaf/delete", "Tb_rela_simuladorController@delete");
+        Route::get("/relaf/selectArea", "Tb_rela_simuladorController@selectArea");
+
+//--------------------------------Cierre Seccion para el uso de la copia de simulador para el punto multiproducto -----------------------------------//
 
         Route::post("/simulaciones/storePuntoEquilibrio", "Tb_simulacionesController@storePuntoEquilibrio");
         Route::get("/simulaciones/listarPuntos", "Tb_simulacionesController@listarPuntos");
