@@ -54,7 +54,6 @@ class Tb_simuladorController extends Controller
         $Tb_simulador=new Tb_simulador();
         $Tb_simulador->descripcion=$request->detalle;
         $Tb_simulador->fecha=$request->fecha;
-        $Tb_simulador->tipoCif=$request->tipoCif;
         $Tb_simulador->save();
     }
 
@@ -105,7 +104,7 @@ class Tb_simuladorController extends Controller
             $tb_concepto_cif_simulador->save();
         }
 
-        $productos = DB::table('tb_rela_simulador')->where('tb_rela_simulador.idSimulacion', '=', $idSimulacion)->get();
+        $productos = DB::table('tb_rela_simulador')->where('tb_rela_simulador.idSimulador', '=', $idSimulacion)->get();
         foreach ($productos as $producto) {
             $idProducto=$producto->idProducto;
 
@@ -146,6 +145,7 @@ class Tb_simuladorController extends Controller
         }
     }
 
+//---------------------Cierre de funcion que voy a usar para almacenar lo que hago al calcular punto equ-----------------------------------//
 //---------------------------------------------------------------------------------------------------------------------------------//
 public function cifTiempos($identificador)
 {

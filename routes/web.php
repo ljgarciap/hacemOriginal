@@ -373,7 +373,9 @@ Route::group(['middleware' => ['guest']], function () {
 
         Route::get("/relaf", "Tb_rela_simuladorController@index");
         Route::get("/relaf/listar", "Tb_rela_simuladorController@listar");
+        Route::get("/relaf/productos", "Tb_rela_simuladorController@productos");
         Route::get("/relaf/posibles", "Tb_rela_simuladorController@posibles");
+        Route::get("/relaf/posiblesPrecios", "Tb_rela_simuladorController@posiblesPrecios");
         Route::post("/relaf/store", "Tb_rela_simuladorController@store");
         Route::put("/relaf/update", "Tb_rela_simuladorController@update");
         Route::put("/relaf/delete", "Tb_rela_simuladorController@delete");

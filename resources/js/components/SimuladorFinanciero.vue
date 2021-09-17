@@ -3,7 +3,7 @@
                 <!-- Breadcrumb -->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">Simulador</li>
+                    <li class="breadcrumb-item active">Punto de equilibrio multiproducto</li>
                 </ol>
 
                 <template v-if="listado==0">
@@ -12,7 +12,7 @@
 
                     <div class="card">
                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Simulación
+                            <i class="fa fa-align-justify"></i> Cálculo de punto de equilibrio multiproducto
                             <button type="button" @click="abrirModal('simulacion','crear')" class="btn btn-secondary">
                                 <i class="icon-plus"></i>&nbsp;Nueva
                             </button>
@@ -39,7 +39,6 @@
                                         <th>Id</th>
                                         <th>Fecha</th>
                                         <th>Detalle</th>
-                                        <th>Tipo cálculo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,14 +62,6 @@
                                         <td v-text="simulacion.id"></td>
                                         <td v-text="simulacion.fecha"></td>
                                         <td v-text="simulacion.descripcion"></td>
-                                        <td>
-                                            <div v-if="simulacion.tipoCif==1">
-                                            <span class="badge badge-warning">Cálculo por horas mano de obra</span>
-                                            </div>
-                                            <div v-else>
-                                            <span class="badge badge-info">Cálculo por horas máquina</span>
-                                            </div>
-                                        </td>
                                     </tr>
 
                                 </tbody>
@@ -105,7 +96,7 @@
                             <button type="submit" @click="abrirModal('rela','crear')" class="btn btn-secondary"><i class="fa fa-plus"></i> Nuevo producto</button>
                             </div>
                         <div class="card-body">
-                            <productossimulacion v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarProducto"></productossimulacion>
+                            <productossimuladorfinanciero v-bind:identificador="identificador" :key="componentKey" @abrirmodal="abrirModal" @eliminarmateria="eliminarProducto"></productossimuladorfinanciero>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -119,7 +110,7 @@
                 <template v-if="listado==2">
                     <div class="container-fluid">
                         <div class="card">
-                            <hojadecostossimulador v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></hojadecostossimulador>
+                            <hojadecostossimuladorfinanciero v-bind:identificador="identificador" :key="componentKey" @eliminarproducto="eliminarProducto"></hojadecostossimuladorfinanciero>
                             <p align="right">
                                 <button class="btn btn-danger" @click="ocultarDetalle()" aria-label="Close">Cerrar</button>
                             </p>
@@ -141,21 +132,10 @@
                                 <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
                                     <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Nombre simulación</label>
+                                        <label class="col-md-3 form-control-label" for="text-input">Nombre punto de equilibrio</label>
                                         <div class="col-md-9">
                                             <input type="text" v-model="detalle" class="form-control" placeholder="Descripción de simulación">
-                                            <span class="help-block">(*) Ingrese la Descripción de la Simulación</span>
-                                        </div>
-                                    </div>
-
-                                    <div v-if="tipoModal==1" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Tipo de cálculo</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control" v-model="tipocif">
-                                                <option value="0" disabled>Elija tipo de cálculo</option>
-                                                <option value="1">Hora hombre</option>
-                                                <option value="2">Hora máquina</option>
-                                            </select>
+                                            <span class="help-block">(*) Ingrese la Descripción del punto de equilibrio</span>
                                         </div>
                                     </div>
 
@@ -170,9 +150,9 @@
                                     <div v-if="tipoModal==2" class="form-group row">
                                         <label class="col-md-3 form-control-label" for="text-input">Producto</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" v-model="idProducto">
+                                            <select class="form-control" v-model="idRelacion">
                                                 <option value="0" disabled>Seleccione un producto</option>
-                                                <option v-for="posible in arrayPosibles" :key="posible.idProducto" :value="posible.idProducto" v-text="posible.producto"></option>
+                                                <option v-for="posible in arrayPosibles" :key="posible.id" :value="posible.id" v-text="posible.producto"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -189,20 +169,6 @@
                                         <div class="col-md-9">
                                             <input type="text" v-model="unidades" class="form-control" placeholder="Unidades a producir">
                                             <span class="help-block">(*) Ingrese la cantidad a producir</span>
-                                        </div>
-                                    </div>
-                                    <div v-if="tipoModal==2" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Tiempo</label>
-                                        <div class="col-md-9">
-                                            <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
-                                            <span class="help-block">(*) Ingrese el tiempo de mano de obra en horas</span>
-                                        </div>
-                                    </div>
-                                     <div v-if="tipoModal==4" class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="email-input">Tiempo</label>
-                                        <div class="col-md-9">
-                                            <input type="number" step="0.01" v-model="tiempo" class="form-control" placeholder="Tiempo estandar de mano de obra">
-                                            <span class="help-block">(*) Ingrese el tiempo de mano de obra en horas</span>
                                         </div>
                                     </div>
                                     <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorSimulacion">
@@ -253,7 +219,6 @@
                 idSimulacion:0,
                 id:'',
                 identificador:'',
-                detalle:'',
                 estado:'',
                 arraySimulaciones : [],
                 modal : 0,
@@ -261,7 +226,7 @@
                 listado : 0,
                 tituloModal : '',
                 variable : '',
-                fecha : '',
+                detalle:'',
                 registro:'',
                 idProducto: 0,
                 unidades:'',
@@ -351,7 +316,7 @@
                },
             listarPosibles(id){
                 let me=this;
-                var url='/relaf/posibles?id=' + this.identificador;
+                var url='/relaf/posiblesPrecios';
                 // Make a request for a user with a given ID
                 axios.get(url).then(function (response) {
                     // handle success
@@ -373,8 +338,7 @@
                 let me=this;
                 axios.post('/simulador/store',{
                     'detalle': this.detalle,
-                    'fecha': this.fecha,
-                    'tipoCif': this.tipocif
+                    'fecha': this.fecha
                 }).then(function (response) {
                 me.cerrarModal('0');
                 me.listarSimulacion(1,'','');
@@ -387,9 +351,8 @@
                 //valido con el metodo de validacion creado
                 let me=this;
                 axios.post('/relaf/store',{
-                    'idProducto': this.idProducto,
+                    'idRelacion': this.idRelacion,
                     'unidades': this.unidades,
-                    'tiempo': this.tiempo,
                     'idSimulacion': this.identificador
                 }).then(function (response) {
                 me.cerrarModal('0');
@@ -483,7 +446,6 @@
                 this.errorMensaje=[];
 
                 if (!this.detalle) this.errorMensaje.push("El nombre de la simulación no puede estar vacio");
-                if (!this.tipocif) this.errorMensaje.push("El tipo de calculo no puede estar vacio");
                 if (this.errorMensaje.length) this.errorSimulacion=1;
 
                 return this.errorSimulacion;
@@ -496,7 +458,8 @@
                 this.idProducto='';
                 this.unidades='';
                 this.tiempo='';
-                this.errorMensaje = [],
+                this.errorMensaje = [];
+                this.cargardetalle();
                 this.forceRerender();
             },
             abrirModal(modelo, accion,identificador,data=[]){
@@ -508,10 +471,11 @@
                             case 'crear':{
                                 this.modal=1;
                                 this.tipoModal=1; //carga tipos de campos y footers
-                                this.tituloModal='Crear nueva simulación';
+                                this.tituloModal='Crear nuevo punto de equilibrio';
                                 this.idSimulacion=this.identificador;
                                 this.tipoAccion= 1; //carga tipos de botón en el footer
                                 this.fecha= moment().format('YYYY-MM-DD');
+                                this.cargardetalle();
                                 break;
                             }
                         }
@@ -565,10 +529,15 @@
                     }
 
                 }
+            },
+            cargardetalle(){
+                this.fecha= moment().format('YYYY-MM-DD');
+                this.detalle='Punto de equilibrio multiproducto - '+this.fecha;
             }
         },
         mounted() {
             this.listarSimulacion(1,this.buscar,this.criterio);
+            this.cargardetalle();
         }
     }
 </script>

@@ -23,7 +23,7 @@
                         <th>Referencia</th>
                         <th>Descripción</th>
                         <th>Unidades</th>
-                        <th>Tiempo par</th>
+                        <th>Precio venta</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,7 @@
                         <td v-text="producto.referencia"></td>
                         <td v-text="producto.descripcion"></td>
                         <td v-text="producto.unidades"></td>
-                        <td v-text="producto.tiempo"></td>
+                        <td v-text="producto.preciodeventa"></td>
                     </tr>
                 </tbody>
             </table>
