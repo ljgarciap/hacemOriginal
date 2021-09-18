@@ -53,6 +53,7 @@ class Tb_simuladorController extends Controller
         if(!$request->ajax()) return redirect('/');
         $Tb_simulador=new Tb_simulador();
         $Tb_simulador->descripcion=$request->detalle;
+        $Tb_simulador->gastosfijos=$request->gastosfijos;
         $Tb_simulador->fecha=$request->fecha;
         $Tb_simulador->save();
     }
@@ -145,6 +146,151 @@ class Tb_simuladorController extends Controller
         }
     }
 
+
+    public function unitarioEquilibrio(Request $request)
+    {
+        $identificador= $request->identificador;
+        $simulacion= $request->simulacion;
+
+        $total = 0;
+        $acumuladomd = 0;
+        $acumuladomi = 0;
+        $acumuladomo = 0;
+
+        $productos = Tb_producto::where('id','=',$identificador)
+        ->select('producto','referencia','foto')->get();
+        foreach($productos as $producto){
+            $nombrep = $producto->producto;
+            $referenciap = $producto->referencia;
+            $fotop = $producto->foto;
+            }
+
+        $simulate = Tb_simulador::where('id','=',$simulacion)
+        ->select('descripcion')
+        ->get();
+        foreach($simulate as $simula){
+            $simuladet = $simula->descripcion;
+            }
+
+        //directa
+        $query = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto_simulador.cantidad*tb_materia_prima_producto_simulador.precio) IS NULL THEN 0
+        ELSE ROUND(SUM(tb_materia_prima_producto_simulador.cantidad*tb_materia_prima_producto_simulador.precio),0) END) as acumuladomd");
+        $materiadirecta = DB::table('tb_materia_prima_producto_simulador')
+        ->select($query)
+        ->where([
+            ['tb_materia_prima_producto_simulador.idProducto','=',$identificador],
+            ['tb_materia_prima_producto_simulador.idSimulacion','=',$simulacion],
+            ['tb_materia_prima_producto_simulador.tipoDeCosto', '=', 'Directo'],
+        ])->get();
+        foreach($materiadirecta as $materiad){
+        $acumuladomd = $materiad->acumuladomd + $acumuladomd;
+        }
+
+        //indirecta
+        $query1 = DB::raw("(CASE WHEN SUM(tb_materia_prima_producto_simulador.cantidad*tb_materia_prima_producto_simulador.precio) IS NULL THEN 0
+        ELSE ROUND(SUM(tb_materia_prima_producto_simulador.cantidad*tb_materia_prima_producto_simulador.precio),0) END) as acumuladomi");
+        $materiaindirecta = DB::table('tb_materia_prima_producto_simulador')
+        ->select($query1)
+        ->where([
+            ['tb_materia_prima_producto_simulador.idProducto','=',$identificador],
+            ['tb_materia_prima_producto_simulador.idSimulacion','=',$simulacion],
+            ['tb_materia_prima_producto_simulador.tipoDeCosto', '=', 'Indirecto'],
+        ])->get();
+        foreach($materiaindirecta as $materiaind){
+            $acumuladomi = $materiaind->acumuladomi + $acumuladomi;
+        }
+
+        //manodeobra
+        $query2 = DB::raw("(CASE WHEN SUM(tb_mano_de_obra_producto_simulador.tiempo*tb_mano_de_obra_producto_simulador.precio) IS NULL THEN 0
+        ELSE ROUND(SUM(tb_mano_de_obra_producto_simulador.tiempo*tb_mano_de_obra_producto_simulador.precio),0) END) as acumuladomo");
+        $manodeobra = DB::table('tb_mano_de_obra_producto_simulador')
+        ->select($query2)
+        ->where([
+            ['tb_mano_de_obra_producto_simulador.idProducto','=',$identificador],
+            ['tb_mano_de_obra_producto_simulador.idSimulacion','=',$simulacion],
+        ])->get();
+
+        foreach($manodeobra as $manodeo){
+            $acumuladomo = $manodeo->acumuladomo + $acumuladomo;
+        }
+
+        //cif
+        $acumuladocift = 0;
+
+        //cif
+        $query3 = DB::raw("(CASE WHEN SUM(tb_concepto_cif_simulador.valor) IS NULL THEN 0
+        ELSE SUM(tb_concepto_cif_simulador.valor) END) as acumuladocif");
+        $ciftotales = DB::table('tb_concepto_cif_simulador')
+        ->where('tb_concepto_cif_simulador.idSimulacion', '=', $simulacion)
+        ->select($query3)
+        ->get();
+        foreach($ciftotales as $ciftotal){
+            $acumuladocift = $ciftotal->acumuladocif + $acumuladocift;
+        }
+
+        //capacidadproduccion producto
+        $unidadprod=0;
+        $tiempoprod=0;
+
+        $queryu = DB::raw("tb_rela_simulador.unidades,Tb_rela_simulador.tiempo");
+        $totalprodu = DB::table('tb_rela_simulador')
+        ->where([
+            ['idSimulacion','=',$simulacion],
+            ['idProducto','=',$identificador],
+        ])
+        ->select($queryu)
+        ->get();
+
+        foreach($totalprodu as $totalpru){
+            $unidadprod = $totalpru->unidades + $unidadprod;
+            $tiempoprod = $totalpru->tiempo + $tiempoprod;
+        }
+        $unidadesprod = $unidadprod * $tiempoprod;
+
+        //capacidadproduccion total
+        $totalcant=0;
+        $totalcantiempo=0;
+        $acumuladocalculo=0;
+
+        $querys = DB::raw("SUM(tb_rela_simulador.unidades * tb_rela_simulador.tiempo) as acumuladocalc");
+        $totalprod = DB::table('tb_rela_simulador')->where('idSimulacion','=',$simulacion)
+        ->select($querys)
+        ->get();
+
+        foreach($totalprod as $totalpr){
+            $acumuladocalculo = $totalpr->acumuladocalc + $acumuladocalculo;
+        }
+
+        //$tiempo = round($acumuladotiempo, 2);
+        $parcial=($acumuladocift/$acumuladocalculo);
+        $valorbase=round($parcial,2);
+
+        $cifproducto=($valorbase*$unidadesprod);
+        $cifunitario=($cifproducto/$unidadprod);
+        $cifunitariored=round($cifunitario,0);
+
+        $total = $acumuladomd + $acumuladomi + $acumuladomo + $cifunitariored;
+        $acumuladomp= $acumuladomd + $acumuladomi;
+
+        return [
+            'acumuladomd'         => $acumuladomd,
+            'acumuladomi'         => $acumuladomi,
+            'acumuladomp'         => $acumuladomp,
+            'acumuladomo'         => $acumuladomo,
+            'cifunitario'         => $cifunitariored,
+            'capacidadproducto'   => $unidadesprod,
+            'acumuladocift'       => $acumuladocift,
+            'nombrep'             => $nombrep,
+            'referenciap'         => $referenciap,
+            'fotop'               => $fotop,
+            'simuladet'           => $simuladet,
+            'costopar'            => $total,
+            'totalvariable'       => $acumuladocalculo,
+            'cifproduccion'       => $cifproducto,
+            'estimadoproduccion'  => $unidadprod
+        ];
+
+    }
 //---------------------Cierre de funcion que voy a usar para almacenar lo que hago al calcular punto equ-----------------------------------//
 //---------------------------------------------------------------------------------------------------------------------------------//
 public function cifTiempos($identificador)

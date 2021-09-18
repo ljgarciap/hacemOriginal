@@ -17,7 +17,7 @@ class CreateTbConceptoCifSimuladorTable extends Migration
             $table->id();
             $table->string('concepto', 255);
             $table->integer('valor');
-            $table->foreignId('idSimulacion')->constrained('tb_simulacion');
+            $table->foreignId('idSimulacion')->constrained('tb_simulador');
             //$table->timestamps();
         });
     }

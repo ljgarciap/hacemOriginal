@@ -20,7 +20,7 @@ class CreateTbManoDeObraProductoSimuladorTable extends Migration
             $table->integer('precio')->unsigned();
             $table->integer('tipoPago')->unsigned();
             $table->foreignId('idProducto')->constrained('tb_producto');
-            $table->foreignId('idSimulacion')->constrained('tb_simulacion');
+            $table->foreignId('idSimulacion')->constrained('tb_simulador');
             //$table->timestamps();
         });
     }

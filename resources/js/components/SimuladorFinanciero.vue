@@ -171,6 +171,15 @@
                                             <span class="help-block">(*) Ingrese la cantidad a producir</span>
                                         </div>
                                     </div>
+
+                                    <div v-if="tipoModal==1" class="form-group row">
+                                        <label class="col-md-3 form-control-label" for="text-input">Gastos Fijos</label>
+                                        <div class="col-md-9">
+                                            <input type="text" v-model="gastosfijos" class="form-control" placeholder="Valor de gastos fijos">
+                                            <span class="help-block">(*) Ingrese el valor de gastos fijos</span>
+                                        </div>
+                                    </div>
+
                                     <div v-if="tipoModal==2" class="form-group row div-error" v-show="errorSimulacion">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
@@ -229,6 +238,7 @@
                 detalle:'',
                 registro:'',
                 idProducto: 0,
+                gastosfijos: 0,
                 unidades:'',
                 tiempo:'',
                 tipoModal : 0,
@@ -338,6 +348,7 @@
                 let me=this;
                 axios.post('/simulador/store',{
                     'detalle': this.detalle,
+                    'gastosfijos': this.gastosfijos,
                     'fecha': this.fecha
                 }).then(function (response) {
                 me.cerrarModal('0');
