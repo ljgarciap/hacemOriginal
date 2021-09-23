@@ -18,6 +18,7 @@ class CreateTbPreciosVentaTable extends Migration
             $table->foreignId('idProducto')->constrained('tb_producto');
             $table->integer('costo')->unsigned();
             $table->float('porcentaje');
+            $table->integer('cifunitario')->unsigned();
             $table->integer('costosfijos')->unsigned();
             $table->integer('materiaprima')->unsigned();
             $table->integer('manodeobradirecta')->unsigned();

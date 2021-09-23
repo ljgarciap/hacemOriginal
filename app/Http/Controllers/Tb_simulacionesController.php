@@ -24,6 +24,7 @@ class Tb_simulacionesController extends Controller
 
         $idProducto=$request->idProducto;
         $porcentaje=$request->porcentaje;
+        $cifunitario=$request->cifunitario;
         $costosfijos=$request->costosfijos;
         $materiaprima=$request->materiaprima;
         $manodeobradirecta=$request->manodeobradirecta;
@@ -48,6 +49,7 @@ class Tb_simulacionesController extends Controller
         $tb_precios_venta=new Tb_precios_venta();
         $tb_precios_venta->idProducto=$idProducto;
         $tb_precios_venta->costo=$costo;
+        $tb_precios_venta->cifunitario=$cifunitario;
         $tb_precios_venta->porcentaje=$porcentaje;
         $tb_precios_venta->preciodeventa=$precioventa;
         $tb_precios_venta->costosfijos=$costosfijos;

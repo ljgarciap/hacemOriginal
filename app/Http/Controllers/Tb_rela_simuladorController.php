@@ -155,4 +155,19 @@ class Tb_rela_simuladorController extends Controller
         $tb_rela_simulador->delete();
         //return ['productos' => $productos];
     }
+
+    public function pruebasPosibles(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $idSimulador=$request->idSimulador;
+
+        $posibles = DB::table('tb_precios_venta')
+        ->join('tb_rela_simulador','tb_rela_simulador.idProducto','=','tb_precios_venta.idProducto')
+        ->where('tb_rela_simulador.idSimulador','=',$idSimulador)
+        ->select('tb_precios_venta.id','tb_precios_venta.idProducto','tb_precios_venta.detalle as producto')
+        ->whereNotIn('tb_precios_venta.idProducto', DB::table('tb_rela_simulador')->select('idProducto')->where('idSimulador', '=', $idSimulador))
+        ->get();
+
+        return ['posibles' => $posibles];
+    }
 }

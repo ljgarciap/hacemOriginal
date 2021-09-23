@@ -257,7 +257,7 @@
                                         <div v-else-if="flag==6" class="col-md-9">
                                             <select class="form-control" v-model="idProducto" @change='precioMateriaOrden($event)'>
                                                 <option value="0" disabled>Seleccione una materia</option>
-                                                <option v-for="materia in arrayMateriaPrima" :key="materia.id" :value="materia.id" v-text="materia.producto"></option>
+                                                <option v-for="materia in arrayMateriaPrima" :key="materia.idMateria" :value="materia.idMateria" v-text="materia.materia"></option>
                                             </select>
                                              <span class="help-block">(*) Seleccione la materia prima</span>
                                         </div>

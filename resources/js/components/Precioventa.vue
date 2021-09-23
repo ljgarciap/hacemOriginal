@@ -119,6 +119,10 @@
                                         <input type="text" v-model="manodeobradirecta">
                                     </p>
 
+                                    <p v-show="condicion">
+                                        <input type="text" v-model="cifunitario">
+                                    </p>
+
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label for="precioventa">Precio de venta: {{parseInt((this.costo)/((100-this.porcentaje)/100))}}</label>
@@ -231,6 +235,7 @@
                 me.valorpar=respuesta.costopar;
                 me.costo=respuesta.costopar;
                 me.valorcif=respuesta.acumuladocift;
+                me.cifunitario=respuesta.cifunitario;
                 me.costosfijos=respuesta.acumuladocift;
                 me.valormatprima=respuesta.acumuladomp;
                 me.materiaprima=respuesta.acumuladomp;
@@ -299,6 +304,7 @@
                 axios.post('/simulaciones/storePrecioVenta',{
                     'idProducto': this.idProducto,
                     'costo': this.costo,
+                    'cifunitario': this.cifunitario,
                     'porcentaje': this.porcentaje,
                     'costosfijos': this.costosfijos,
                     'gastosfijos': this.gastosfijos,

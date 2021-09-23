@@ -5,13 +5,11 @@ namespace App\Http\Controllers;
 use App\Tb_simulador;
 use App\Tb_materia_prima_producto;
 use App\Tb_mano_de_obra_producto;
-use App\Tb_gestion_materia_prima;
-use App\Tb_proceso;
-use App\tb_hoja_de_costo;
 use App\Tb_concepto_cif;
-use App\Tb_maquinaria;
+use App\Tb_precios_venta;
 use App\Tb_producto;
 use App\Tb_rela_simulador;
+use App\Tb_detallado_simulador;
 use App\Tb_mano_de_obra_producto_simulador;
 use App\Tb_materia_prima_producto_simulador;
 use App\Tb_concepto_cif_simulador;
@@ -142,9 +140,127 @@ class Tb_simuladorController extends Controller
                 $tb_materia_prima_producto_simulador->idSimulacion=$idSimulacion;
                 $tb_materia_prima_producto_simulador->save();
             }
+        }
+/* Hasta aca estoy alimentando las tablas de respaldo, de aca para abajo voy a sacar los datos */
+//grupo de consultas para sacar datos globales: costosfijos, gastosfijos, sumapromedioponderado, puntoequilibriototal
+        //cif global
+            $acumuladocifglobal = 0;
+
+            $ciftotales = DB::table('tb_concepto_cif_simulador')->where('tb_concepto_cif_simulador.idSimulacion', '=', $idSimulacion)->get();
+            foreach($ciftotales as $ciftotal){
+                $acumuladocif=$ciftotal->valor;
+                $acumuladocifglobal = $acumuladocifglobal + $acumuladocif;
+            }
+        //gastos fijos global
+            $gastosfijos=0;
+
+            $simuladorgastosfijos = Tb_simulador::where('id','=',$idSimulacion)
+            ->select('gastosfijos')->get();
+            foreach($simuladorgastosfijos as $simuladorgastos){
+                $simuladorgastosf = $simuladorgastos->gastosfijos;
+
+                $gastosfijos=$gastosfijos+$simuladorgastosf;
+            }
+
+            //unidades global
+            $acumuladounidades=0;
+
+            $productossimuladorunidades = Tb_rela_simulador::where('idSimulador','=',$idSimulacion)
+            ->select('idProducto', 'unidades', 'idPrecio', 'idSimulador')->get();
+            foreach($productossimuladorunidades as $productosimuladorunidades){
+                $unidadessimuladorunidades = $productosimuladorunidades->unidades;
+
+                $acumuladounidades=$acumuladounidades+$unidadessimuladorunidades;
+            }
+
+//---------------------Desde aca voy a recorrer todos los productos de la simulacion-----------------------//
+            //sumapromedioponderado global
+
+            $productosglobales = Tb_rela_simulador::where('idSimulador','=',$idSimulacion)
+            ->select('idProducto', 'unidades', 'idPrecio', 'idSimulador')->get();
+
+            $sumapromedioponderado=0;
+
+            foreach($productosglobales as $productosglobal){
+                $idproductoglobal = $productosglobal->idProducto;
+                $unidadesglobal = $productosglobal->unidades;
+                $idPrecioglobal = $productosglobal->idPrecio;
+
+                $porcentajeparticipacion=($unidadesglobal/$acumuladounidades)*100;
+
+                $productospreciosglobal = Tb_precios_venta::where('id','=',$idPrecioglobal)
+                ->select('costo','cifunitario','porcentaje','costosfijos','materiaprima','manodeobradirecta','preciodeventa','detalle')->get();
+                foreach($productospreciosglobal as $productopreciosglobal){
+                    $productomateriaprima = $productopreciosglobal->materiaprima;
+                    $productomanodeobradirecta = $productopreciosglobal->manodeobradirecta;
+
+                    $productopreciodeventa = $productopreciosglobal->preciodeventa;
+
+                    $costovariableunitario=$productomateriaprima+$productomanodeobradirecta;
+
+                    $margencontribucion=$productopreciodeventa-$costovariableunitario;
+                }
+
+                $promedioponderado=$porcentajeparticipacion*$margencontribucion;
+
+                $sumapromedioponderado=$sumapromedioponderado+$promedioponderado;
+            }
+
+            $puntoequilibriototal=  ($acumuladocifglobal+$gastosfijos)/$sumapromedioponderado;
+//----------------------Hasta aca, esto me sirve para traer datos globales de los productos----------------------//
+
+//----------------------Desde aca vuelvo a recorrer productos para buscar datos individuales----------------------//
+
+            $productossimulador = Tb_rela_simulador::where('idSimulador','=',$idSimulacion)
+            ->select('idProducto', 'unidades', 'idPrecio', 'idSimulador')->get();
+            foreach($productossimulador as $productosimulador){
+                $idProductoSimulador = $productosimulador->idProducto;
+                $unidadesSimulador = $productosimulador->unidades;
+                $idPrecioSimulador = $productosimulador->idPrecio;
+// hasta este punto saco los productos de la simulacion y uno a uno voy a calcularles los valores de materia mano cif porcentaje de las tablas nuevas
+                $productosprecios = Tb_precios_venta::where('id','=',$idPrecioSimulador)
+                ->select('costo','cifunitario','porcentaje','costosfijos','materiaprima','manodeobradirecta','preciodeventa','detalle')->get();
+                foreach($productosprecios as $productoprecios){
+                    $productocosto = $productoprecios->costo;
+                    $productocifunitario = $productoprecios->cifunitario;
+                    $productoporcentaje = $productoprecios->porcentaje;
+                    $productocostosfijos = $productoprecios->costosfijos;
+                    $productomateriaprima = $productoprecios->materiaprima;
+                    $productomanodeobradirecta = $productoprecios->manodeobradirecta;
+                    $productopreciodeventa = $productoprecios->preciodeventa;
+
+                    $costovariableunitario=$productomateriaprima+$productomanodeobradirecta;
+                    $costototal=$costovariableunitario+$productocifunitario;
+
+                    $participacion=($unidadesSimulador/$acumuladounidades)*100;
+                    $margencontribucion=$productopreciodeventa-$costovariableunitario;
+                    $promedioponderado=($participacion*$margencontribucion)/100;
+                    var_dump($promedioponderado);
+                    $puntoequilibrioproduccion=  $participacion*$puntoequilibriototal;
+
+                    $tb_detallado_simulador=new Tb_detallado_simulador();
+                    $tb_detallado_simulador->materiaprima=$productomateriaprima;
+                    $tb_detallado_simulador->manodeobradirecta=$productomanodeobradirecta;
+                    $tb_detallado_simulador->costovariableunitario=$costovariableunitario;
+                    $tb_detallado_simulador->cifaterrizados=$productocifunitario;
+                    $tb_detallado_simulador->costototal=$costototal;
+                    $tb_detallado_simulador->porcentajeganancia=$productoporcentaje;
+                    $tb_detallado_simulador->costosfijostotales=$acumuladocifglobal;
+                    $tb_detallado_simulador->gastosfijos=$gastosfijos;
+                    $tb_detallado_simulador->porcentajeparticipacion=$participacion;
+                    $tb_detallado_simulador->unidadesavender=$unidadesSimulador;
+                    $tb_detallado_simulador->precioventaunitario=$productopreciodeventa;
+                    $tb_detallado_simulador->margencontribucion=$margencontribucion;
+                    $tb_detallado_simulador->promedioponderado=$promedioponderado;
+                    $tb_detallado_simulador->puntodeequilibriototal=$puntoequilibriototal;
+                    $tb_detallado_simulador->puntodeequilibrioproducto=$puntoequilibrioproduccion;
+                    $tb_detallado_simulador->idSimulador=$idSimulacion;
+                    $tb_detallado_simulador->save();
+                }
+
+            }
 
         }
-    }
 
 
     public function unitarioEquilibrio(Request $request)
