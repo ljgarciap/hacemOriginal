@@ -53,9 +53,9 @@
                                         <td v-text="precio.utilidadoperacional"></td>
                                         <td v-text="precio.utilidadneta"></td>
                                         <td v-text="precio.ingresostotales"></td>
-                                        <td v-text="precio.margenbruto"></td>
-                                        <td v-text="precio.margenoperacional"></td>
-                                        <td v-text="precio.margenneto"></td>
+                                        <td>{{precio.margenbruto}} %</td>
+                                        <td>{{precio.margenoperacional}} %</td>
+                                        <td>{{precio.margenneto}} %</td>
                                     </tr>
                                 </tbody>
                             </table>

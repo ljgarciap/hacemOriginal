@@ -174,6 +174,9 @@
                             <li @click="menu=36" class="nav-item">
                                 <a class="nav-link" href="#"><i class="icon-wallet"></i> Endeudamiento</a>
                             </li>
+                            <li @click="menu=41" class="nav-item">
+                                <a class="nav-link" href="#"><i class="icon-wallet"></i> Rentabilidad</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item nav-dropdown">
