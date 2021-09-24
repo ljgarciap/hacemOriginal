@@ -380,6 +380,7 @@ Route::group(['middleware' => ['guest']], function () {
         Route::put("/relaf/update", "Tb_rela_simuladorController@update");
         Route::put("/relaf/delete", "Tb_rela_simuladorController@delete");
         Route::get("/relaf/selectArea", "Tb_rela_simuladorController@selectArea");
+        Route::get("/relaf/selectDetallado", "Tb_rela_simuladorController@selectDetallado");
         Route::get("/relaf/pruebasPosibles", "Tb_rela_simuladorController@pruebasPosibles");
 
 //--------------------------------Cierre Seccion para el uso de la copia de simulador para el punto multiproducto -----------------------------------//

@@ -201,7 +201,7 @@ class Tb_simuladorController extends Controller
                     $margencontribucion=$productopreciodeventa-$costovariableunitario;
                 }
 
-                $promedioponderado=$porcentajeparticipacion*$margencontribucion;
+                $promedioponderado=($porcentajeparticipacion*$margencontribucion)/100;
 
                 $sumapromedioponderado=$sumapromedioponderado+$promedioponderado;
             }
@@ -235,8 +235,8 @@ class Tb_simuladorController extends Controller
                     $participacion=($unidadesSimulador/$acumuladounidades)*100;
                     $margencontribucion=$productopreciodeventa-$costovariableunitario;
                     $promedioponderado=($participacion*$margencontribucion)/100;
-                    var_dump($promedioponderado);
-                    $puntoequilibrioproduccion=  $participacion*$puntoequilibriototal;
+                    //var_dump($promedioponderado);
+                    $puntoequilibrioproduccion=  ($participacion*$puntoequilibriototal)/100;
 
                     $tb_detallado_simulador=new Tb_detallado_simulador();
                     $tb_detallado_simulador->materiaprima=$productomateriaprima;
@@ -254,6 +254,7 @@ class Tb_simuladorController extends Controller
                     $tb_detallado_simulador->promedioponderado=$promedioponderado;
                     $tb_detallado_simulador->puntodeequilibriototal=$puntoequilibriototal;
                     $tb_detallado_simulador->puntodeequilibrioproducto=$puntoequilibrioproduccion;
+                    $tb_detallado_simulador->idProducto=$idProductoSimulador;
                     $tb_detallado_simulador->idSimulador=$idSimulacion;
                     $tb_detallado_simulador->save();
                 }

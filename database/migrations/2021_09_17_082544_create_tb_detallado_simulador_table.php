@@ -27,9 +27,10 @@ class CreateTbDetalladoSimuladorTable extends Migration
             $table->integer('unidadesavender');
             $table->integer('precioventaunitario');
             $table->integer('margencontribucion');
-            $table->double('promedioponderado');
+            $table->float('promedioponderado');
             $table->float('puntodeequilibriototal');
             $table->float('puntodeequilibrioproducto');
+            $table->foreignId('idProducto')->constrained('tb_producto');
             $table->foreignId('idSimulador')->constrained('tb_simulador');
             //$table->timestamps();
         });

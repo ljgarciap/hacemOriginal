@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tb_rela_simulador;
 use App\Tb_producto;
+use App\Tb_detallado_simulador;
 use App\Tb_precios_venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -154,6 +155,19 @@ class Tb_rela_simuladorController extends Controller
         $tb_rela_simulador = Tb_rela_simulador::findOrFail($request->id);
         $tb_rela_simulador->delete();
         //return ['productos' => $productos];
+    }
+
+    public function selectDetallado(Request $request)
+    {
+        //if(!$request->ajax()) return redirect('/');
+        $idSimulador=$request->idSimulador;
+
+        $detallado = DB::table('tb_detallado_simulador')
+        ->join('tb_producto','tb_detallado_simulador.idProducto','=','tb_producto.id')
+        ->where('tb_detallado_simulador.idSimulador','=',$idSimulador)
+        ->get();
+
+        return ['detallado' => $detallado];
     }
 
     public function pruebasPosibles(Request $request)
