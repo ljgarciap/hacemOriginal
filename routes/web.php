@@ -352,6 +352,9 @@ Route::group(['middleware' => ['guest']], function () {
         Route::get("/configuracion/tiponomina", "Tb_configuracion_basicaController@tipoNomina");
         Route::get("/configuracion/cajacompensacion", "Tb_configuracion_basicaController@CajaCompensacion");
         Route::get("/configuracion/arl", "Tb_configuracion_basicaController@Arl");
+        Route::get("/configuracion/eps", "Tb_configuracion_basicaController@Eps");
+        Route::get("/configuracion/pensiones", "Tb_configuracion_basicaController@Pensiones");
+        Route::get("/configuracion/nivelarl", "Tb_configuracion_basicaController@NivelArl");
 
         Route::get("/factores", "Tb_factoresController@index");
         Route::post("/factores/store", "Tb_factoresController@store");

@@ -15,25 +15,20 @@ class Tb_epsSeeder extends Seeder
     {
         //
         DB::table('tb_eps')->insert([
-            'nombreEps' => 'Nueva Eps'
+            'nombreEps' => 'NUEVA EPS'
         ]);
         DB::table('tb_eps')->insert([
-            'nombreEps' => 'Cafesalud'
-        ]);
-        DB::table('tb_eps')->insert([
-            'nombreEps' => 'Salud Total S.A.'
-        ]);
-        DB::table('tb_eps')->insert([
-            'nombreEps' => 'Colseguros'
+            'nombreEps' => 'SANITAS'
         ]);
         DB::table('tb_eps')->insert([
             'nombreEps' => 'SALUD TOTAL'
         ]);
         DB::table('tb_eps')->insert([
-            'nombreEps' => 'SALUDVIDA'
+            'nombreEps' => 'MEDIMAS'
         ]);
         DB::table('tb_eps')->insert([
-            'nombreEps' => 'SURA'
+            'nombreEps' => 'FAMISANAR'
         ]);
+
     }
 }

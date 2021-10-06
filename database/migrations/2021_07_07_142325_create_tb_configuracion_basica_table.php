@@ -20,7 +20,8 @@ class CreateTbConfiguracionBasicaTable extends Migration
             $table->bigInteger('telefono');
             $table->string('cajaCompensacion',255);
             $table->string('arl',255);
-            $table->float('nivelRiesgo',8,3);
+            $table->integer('nivelRiesgo');
+            //$table->float('nivelRiesgo',8,3);
             $table->foreignId('idTipoNomina')->constrained('tb_tipo_nomina');
             //$table->timestamps();
         });

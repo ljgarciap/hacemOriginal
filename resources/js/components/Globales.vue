@@ -66,7 +66,11 @@
                                             Nivel de Riesgo Empresa
                                         </td>
                                         <td>
-                                            <input type="number" v-model="nivelRiesgo" step="0.01" class="form-control" placeholder="Nivel de Riesgo Empresa">
+                                        <select class="form-control" v-model="nivelRiesgo">
+                                        <option value="0" disabled>Seleccione el nivel de riesgo</option>
+                                        <option v-for="nivel in arrayNivel" :key="nivel.id" :value="nivel.id" v-text="nivel.nivelArl">
+                                        </option>
+                                        </select>
                                         </td>
                                     </tr>
                                     <tr>
@@ -114,6 +118,7 @@
                 cajaCompensacion : '',
                 NombreCajaCompensacion:'',
                 arrayCajas:[],
+                arrayNivel:[],
                 arrayConfiguracion:[],
                 arl : '',
                 nombreArl:'',
@@ -189,8 +194,29 @@
                     console.log(error);
                 })
             },
+            listarNivelArl(){
+                let me=this;
+                var url='/configuracion/nivelarl';
+                // Make a request for a user with a given ID
+                axios.get(url).then(function (response) {
+                    // handle success
+                var respuesta=response.data;
+                me.arrayNivel=respuesta.niveles;
+                    //console.log(response);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            },
             guardarDatos(){
                 //valido con el metodo de validacion creado
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success'
+                },
+                buttonsStyling: false
+                })
                 let me=this;
                 axios.post('/configuracion/store',{
                     'nombre' : this.nombre,
@@ -201,6 +227,7 @@
                     'nivelRiesgo' : this.nivelRiesgo,
                     'idTipoNomina' : this.idTipoNomina
                 }).then(function (response) {
+                swalWithBootstrapButtons.fire('Registro creado');
                 me.listarConfiguracionBasica();
                 })
                 .catch(function (error) {
@@ -208,6 +235,12 @@
                 });
             },
             actualizarDatos(nombre,direccion,telefono,cajaCompensacion,arl,nivelRiesgo,idTipoNomina){
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success'
+                },
+                buttonsStyling: false
+                })
                 let me=this;
                 axios.post('/configuracion/actualizar',{
                     'id':1,
@@ -219,7 +252,8 @@
                     'nivelRiesgo' : this.nivelRiesgo,
                     'idTipoNomina' : this.idTipoNomina
                 }).then(function (response) {
-                me.listarConfiguracionBasica()
+                swalWithBootstrapButtons.fire('Registro actualizado');
+                me.listarConfiguracionBasica();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -231,6 +265,7 @@
             this.listarTipoNomina(),
             this.listarCajaCompensacion(),
             this.listarArl();
+            this.listarNivelArl();
         }
     }
 </script>
