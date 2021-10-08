@@ -92,5 +92,29 @@ class UserSeeder extends Seeder
             'password' => bcrypt('boyanneth@misena.edu.co'),
         ]);
 
+        DB::table('users')->insert([
+            'name' => 'Daniel',
+            'email' => 'd.chicaiza@misena.edu.co',
+            'password' => bcrypt('d.chicaiza@misena.edu.co'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Efrain',
+            'email' => 'evegag@sena.edu.co',
+            'password' => bcrypt('evegag@sena.edu.co'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Sara',
+            'email' => 'saraguesan@misena.edu.co',
+            'password' => bcrypt('saraguesan@misena.edu.co'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Nohra',
+            'email' => 'ncristancho@sena.edu.co',
+            'password' => bcrypt('ncristancho@sena.edu.co'),
+        ]);
+
     }
 }
