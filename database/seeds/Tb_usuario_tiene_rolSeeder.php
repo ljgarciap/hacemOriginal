@@ -81,6 +81,10 @@ class Tb_usuario_tiene_rolSeeder extends Seeder
             'idUser' => '17',
             'idRol' => '1'
         ]);
+        DB::table('tb_usuario_tiene_rol')->insert([
+            'idUser' => '18',
+            'idRol' => '1'
+        ]);
 
     }
 }
