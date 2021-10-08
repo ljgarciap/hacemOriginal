@@ -61,5 +61,6 @@ class Tb_usuario_tiene_rolSeeder extends Seeder
             'idUser' => '12',
             'idRol' => '1'
         ]);
+
     }
 }
