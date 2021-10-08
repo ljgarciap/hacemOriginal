@@ -59,7 +59,8 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img src="img/avatars/{{Auth::user()->id}}.jpg" class="img-avatar" alt="{{Auth::user()->email}}">
+                <!-- <img src="img/avatars/{{Auth::user()->id}}.jpg" class="img-avatar" alt="{{Auth::user()->email}}"> -->
+                    <img src="img/avatars/1.jpg" class="img-avatar" alt="{{Auth::user()->email}}">
                     <span class="d-md-down-none">{{Auth::user()->name}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">

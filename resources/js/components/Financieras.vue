@@ -129,6 +129,12 @@
                 })
             },
             actualizarDatos(vacaciones,prima,cesantias,intereses,salud,pension,arl,caja){
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success'
+                },
+                buttonsStyling: false
+                })
                 let me=this;
                 axios.post('/financiera/actualizar',{
                     'id': 1,
@@ -141,6 +147,7 @@
                     'arl' : this.arl,
                     'caja' : this.caja
                 }).then(function (response) {
+                swalWithBootstrapButtons.fire('Registro actualizado');
                 me.listarVariables()
                 })
                 .catch(function (error) {

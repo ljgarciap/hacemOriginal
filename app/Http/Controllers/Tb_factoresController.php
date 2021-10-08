@@ -13,7 +13,7 @@ class Tb_factoresController extends Controller
     {
         //if(!$request->ajax()) return redirect('/');
         $factores = Tb_factores_nomina::where('id','=','1')
-        ->select('id','extraDiurna','extraNocturna','horaDominical','festivaDiurna','festivaNocturna','minimolegal','auxilio')->get();
+        ->select('id','extraDiurna','extraNocturna','horaDominical','festivaDiurna','festivaNocturna','recargos','minimolegal','auxilio')->get();
 
         foreach($factores as $f){
             $extraDiurna = $f->extraDiurna;

@@ -37,9 +37,6 @@
 
                                 </vs-tab>
 
-                                <vs-tab label="Cerrar" icon="cancel_schedule_send" @click="ocultarDetalle()">
-                                </vs-tab>
-
                                 </vs-tabs>
                             </div>
                         </div>
@@ -66,11 +63,7 @@
             indexChange: function(args) {
                 let newIndex = args.value
                 console.log('Current tab index: ' + newIndex)
-                },
-            ocultarDetalle(){
-                this.listado=1;
-                this.identificador=0;
-            }
+                }
         }
     }
 </script>

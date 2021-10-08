@@ -79,7 +79,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                                <button type="button" class="btn btn-success" @click="guardarDatos()">Guardar</button>
+                                <!-- <button type="button" class="btn btn-success" @click="guardarDatos()">Guardar</button> -->
                                 <button v-if="id==1" type="button" class="btn btn-primary" @click="actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna,recargos,minimolegal,auxilio)">Actualizar</button>
                             </form>
                             </div>
@@ -156,6 +156,12 @@
                 });
             },
             actualizarDatos(extraDiurna,extraNocturna,horaDominical,festivaDiurna,festivaNocturna,recargos){
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success'
+                },
+                buttonsStyling: false
+                })
                 let me=this;
                 axios.post('/factores/actualizar',{
                     'id': 1,
@@ -168,6 +174,7 @@
                     'minimolegal' : this.minimolegal,
                     'auxilio' : this.auxilio
                 }).then(function (response) {
+                swalWithBootstrapButtons.fire('Registro actualizado');
                 me.listarFactorNomina()
                 })
                 .catch(function (error) {
