@@ -127,11 +127,11 @@ class Tb_materia_prima_productoController extends Controller
 
         public function deactivate(Request $request)
         {
-            if(!$request->ajax()) return redirect('/');
+            //if(!$request->ajax()) return redirect('/');
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             $tb_materia_prima_producto=Tb_materia_prima_producto::findOrFail($request->id);
             $tb_materia_prima_producto->delete();
-           DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         }
 
 

@@ -43,8 +43,8 @@
                                 <td>{{this.ciftotales | currency}}</td>
                             </tr>
                              <tr>
-                                <td>Costo par</td>
-                                <td>{{this.costopar | currency}}</td>
+                                <td><b>Costo par</b></td>
+                                <td bgcolor="#8bc681" style="color:red;"><b>{{this.costopar | currency}}</b></td>
                             </tr>
                         </tbody>
                     </table>
