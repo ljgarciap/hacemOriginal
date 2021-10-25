@@ -105,6 +105,7 @@ class Tb_productoController extends Controller
         $tb_producto->descripcion=$request->descripcion;
         $tb_producto->idColeccion=$request->idColeccion;
         $tb_producto->idArea=$request->idArea;
+        $tb_producto->presentacion=$request->presentacion;
         $tb_producto->save();
 
         $idProducto=$tb_producto->id;
@@ -136,7 +137,7 @@ class Tb_productoController extends Controller
            if(file_exists($userFoto)){
 
                @unlink($userFoto);
-            
+
            }
        }
        $tb_producto->foto=$name;
