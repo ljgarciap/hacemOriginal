@@ -215,11 +215,20 @@ public function unitarioTotal(Request $request)
     $acumuladomo = 0;
 
     $productos = Tb_producto::where('id','=',$identificador)
-    ->select('producto','referencia','foto')->get();
+    ->select('producto','referencia','foto','presentacion')->get();
     foreach($productos as $producto){
         $nombrep = $producto->producto;
         $referenciap = $producto->referencia;
         $fotop = $producto->foto;
+        $presentacion = $producto->presentacion;
+
+        if($presentacion==4){
+            $presentacion="unidad";
+        }
+        elseif($presentacion==5){
+            $presentacion="par";
+        }
+
         }
 
     $simulate = Tb_simulacion::where('id','=',$simulacion)
@@ -340,6 +349,7 @@ public function unitarioTotal(Request $request)
         'nombrep'             => $nombrep,
         'referenciap'         => $referenciap,
         'fotop'               => $fotop,
+        'presentacion'        => $presentacion,
         'simuladet'           => $simuladet,
         'costopar'            => $total,
         'totalvariable'       => $acumuladocalculo,
@@ -410,7 +420,8 @@ $acumuladocift = 0;
 
 # Modelo::join('tablaqueseune',basicamente un on)
 $productos = Tb_producto::join('tb_hoja_de_costo','tb_producto.id','=','tb_hoja_de_costo.idProducto')
-->select('tb_producto.producto as producto','tb_producto.referencia as referencia','tb_producto.foto as foto','tb_hoja_de_costo.capacidadMensual as capacidadMensual')
+->select('tb_producto.producto as producto','tb_producto.referencia as referencia','tb_producto.foto as foto','tb_producto.presentacion as presentacion',
+'tb_hoja_de_costo.capacidadMensual as capacidadMensual')
 ->where('tb_producto.id','=',$identificador)
 ->get();
 
@@ -418,7 +429,16 @@ foreach($productos as $producto){
 $nombrep = $producto->producto;
 $referenciap = $producto->referencia;
 $fotop = $producto->foto;
+$presentacion = $producto->presentacion;
 $unidadesprod = $producto->capacidadMensual;
+
+if($presentacion==4){
+    $presentacion="unidad";
+}
+elseif($presentacion==5){
+    $presentacion="par";
+}
+
 }
 
 //directa
@@ -503,6 +523,7 @@ return [
 'nombrep'             => $nombrep,
 'referenciap'         => $referenciap,
 'fotop'               => $fotop,
+'presentacion'        => $presentacion,
 'costopar'            => $total
 ];
 
