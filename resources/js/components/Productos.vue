@@ -191,18 +191,6 @@
                                             <span class="help-block">(*) Ingrese la descripcion</span>
                                         </div>
                                     </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label" for="text-input">Presentación</label>
-                                            <div class="col-md-9">
-                                                <select class="form-control" v-model="presentacion">
-                                                    <option value="0" disabled> Seleccione presentación</option>
-                                                    <option value="4">Unidad</option>
-                                                    <option value="5">Par</option>
-                                                </select>
-                                            </div>
-                                    </div>
-
                                     <div class="form-group row div-error" v-show="errorProducto">
                                         <div class="text-center text-error">
                                             <div v-for="error in errorMensaje" :key="error" v-text="error"></div>
@@ -348,13 +336,13 @@
                },
              subirFoto(e){ // subir un nuevo archivo o imagen
               let file = e.target.files[0];
-                let reader = new FileReader();
+                let reader = new FileReader();  
 
                 if(file['size'] < 2111775)
                 {
                     reader.onloadend = (file) => {
                      this.foto = reader.result;
-                    }
+                    }              
                      reader.readAsDataURL(file);
                       reader.onload = e => {
                      this.fotoCarga = e.target.result;
@@ -382,8 +370,7 @@
                     'descripcion': this.descripcion,
                     'idColeccion': this.idColeccion,
                     'idArea': this.idArea,
-                    'capacidadMensual': this.capacidadMensual,
-                    'presentacion': this.presentacion
+                    'capacidadMensual': this.capacidadMensual
                     //'dato': this.dato
                 }).then(function (response) {
                 me.cerrarModal();

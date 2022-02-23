@@ -120,7 +120,6 @@ Vue.component('unidades', require('./components/Unidades.vue').default);
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
 Vue.component('manual', require('./components/Manual.vue').default);
 Vue.component('cartilla', require('./components/Cartilla.vue').default);
-Vue.component('cartilla2', require('./components/Cartilla2.vue').default);
 Vue.component('cartilladigital', require('./components/CartillaDigital.vue').default);
 Vue.component('videotutoriales', require('./components/Videos.vue').default);
 Vue.component('tiempoestandar', require('./components/TiempoEstandar.vue').default);

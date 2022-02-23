@@ -43,8 +43,8 @@
                                 <td>{{this.ciftotales | currency}}</td>
                             </tr>
                              <tr>
-                                <td bgcolor="#a2f1a2"><b>Costo {{this.presentacion}}</b></td>
-                                <td bgcolor="#a2f1a2"><b>{{this.costopar | currency}}</b></td>
+                                <td>Costo par</td>
+                                <td>{{this.costopar | currency}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -64,7 +64,7 @@
                     <table class="table table-bordered table-striped table-sm">
                         <tbody>
                             <tr>
-                                <td>Total por {{this.presentacion}}</td>
+                                <td>Total por par</td>
                                 <td>{{this.acumuladomp | currency}}</td>
                             </tr>
                         </tbody>
@@ -75,7 +75,7 @@
                     <table class="table table-bordered table-striped table-sm">
                         <tbody>
                             <tr>
-                                <td>Total por {{this.presentacion}}</td>
+                                <td>Total por par</td>
                                 <td>{{this.acumuladomo | currency}}</td>
                             </tr>
                         </tbody>
@@ -86,7 +86,7 @@
                     <table class="table table-bordered table-striped table-sm">
                         <tbody>
                             <tr>
-                                <td>Total por {{this.presentacion}}</td>
+                                <td>Total por par</td>
                                 <td>{{this.cifunidad | currency}}</td>
                             </tr>
                         </tbody>
@@ -201,7 +201,6 @@
                 nombrep : '',
                 referenciap : '',
                 fotop : '',
-                presentacion : '',
                 costopar : ''
             }
         },
@@ -219,7 +218,6 @@
                 me.nombrep=respuesta.nombrep;
                 me.referenciap=respuesta.referenciap;
                 me.fotop=respuesta.fotop;
-                me.presentacion=respuesta.presentacion;
                 me.costopar=respuesta.costopar;
                 me.acumuladomd=respuesta.acumuladomd;
                 me.acumuladomi=respuesta.acumuladomi;

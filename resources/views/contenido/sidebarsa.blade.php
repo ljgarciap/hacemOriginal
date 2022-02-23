@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> cdef8bf4b921fa858329a0fa0a5a7b66771127ba
 <div class="sidebar">
     <nav class="sidebar-nav">
         <ul class="nav">
@@ -23,9 +19,6 @@
                     </li>
                     <li @click="menu=29" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-book-open"></i> Cartilla práctica de costos versión digital</a>
-                    </li>
-                    <li @click="menu=42" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-book-open"></i> Revista Gestión Empresarial Manufactura pdf</a>
                     </li>
                     <li @click="menu=30" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-book-open"></i> Video Tutoriales</a>
