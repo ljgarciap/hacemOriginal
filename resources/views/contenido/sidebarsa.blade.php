@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> cdef8bf4b921fa858329a0fa0a5a7b66771127ba
 <div class="sidebar">
     <nav class="sidebar-nav">
         <ul class="nav">
