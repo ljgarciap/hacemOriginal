@@ -1,0 +1,9 @@
+[
+    {"id":"1","rangoSalarioMin":"0.000000","rangoSalarioMax":"3.999999","porcentajeAdicional":"0.0000"},
+    {"id":"2","rangoSalarioMin":"4.000000","rangoSalarioMax":"15.999999","porcentajeAdicional":"0.0100"},
+    {"id":"3","rangoSalarioMin":"16.000000","rangoSalarioMax":"17.000000","porcentajeAdicional":"0.0120"},
+    {"id":"4","rangoSalarioMin":"17.000001","rangoSalarioMax":"18.000000","porcentajeAdicional":"0.0140"},
+    {"id":"5","rangoSalarioMin":"18.000001","rangoSalarioMax":"19.000000","porcentajeAdicional":"0.0160"},
+    {"id":"6","rangoSalarioMin":"19.000001","rangoSalarioMax":"20.000000","porcentajeAdicional":"0.0180"},
+    {"id":"7","rangoSalarioMin":"20.000001","rangoSalarioMax":"25.000000","porcentajeAdicional":"0.0200"}
+]

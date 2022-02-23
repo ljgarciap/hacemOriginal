@@ -1,0 +1,12 @@
+[
+{"IdDocumento":"1","NombreDocumento":"Compra de material"},
+{"IdDocumento":"2","NombreDocumento":"Devolución de producción"},
+{"IdDocumento":"3","NombreDocumento":"Inventario inicial"},
+{"IdDocumento":"4","NombreDocumento":"Devolución a proveedor"},
+{"IdDocumento":"5","NombreDocumento":"Entrega de material"},
+{"IdDocumento":"6","NombreDocumento":"Bajas"},
+{"IdDocumento":"7","NombreDocumento":"Ajuste de inventario"},
+{"IdDocumento":"8","NombreDocumento":"Entrega de orden producción"},
+{"IdDocumento":"9","NombreDocumento":"Devolución orden producción"},
+{"IdDocumento":"10","NombreDocumento":"Entrega pedido"}
+]

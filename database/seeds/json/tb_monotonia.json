@@ -1,0 +1,11 @@
+[
+    {"id":"1","rangoMin":"0.00","rangoMax":"0.00","clasificacion":"Seleccione Monotonia","porcentaje":"0"},
+    {"id":"2","rangoMin":"0.01","rangoMax":"0.05","clasificacion":"A","porcentaje":"8"},
+    {"id":"3","rangoMin":"0.06","rangoMax":"0.25","clasificacion":"B","porcentaje":"5"},
+    {"id":"4","rangoMin":"0.26","rangoMax":"0.50","clasificacion":"C","porcentaje":"4"},
+    {"id":"5","rangoMin":"0.51","rangoMax":"1.00","clasificacion":"D","porcentaje":"2"},
+    {"id":"6","rangoMin":"1.01","rangoMax":"4.00","clasificacion":"E","porcentaje":"2"},
+    {"id":"7","rangoMin":"4.01","rangoMax":"8.00","clasificacion":"F","porcentaje":"1"},
+    {"id":"8","rangoMin":"8.01","rangoMax":"12.00","clasificacion":"G","porcentaje":"1"},
+    {"id":"9","rangoMin":"12.01","rangoMax":"16.00","clasificacion":"H","porcentaje":"0"}
+]

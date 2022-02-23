@@ -1,0 +1,14 @@
+[
+    {"id":"1","rango":"Seleccione Esfuerzo","porcentaje":"0.00","clasificacion":"0"},
+    {"id":"2","rango":"Superior1","porcentaje":"0.13","clasificacion":"A1"},
+    {"id":"3","rango":"Superior2","porcentaje":"0.12","clasificacion":"A2"},
+    {"id":"4","rango":"Excelente1","porcentaje":"0.10","clasificacion":"B1"},
+    {"id":"5","rango":"Excelente2","porcentaje":"0.08","clasificacion":"B2"},
+    {"id":"6","rango":"Bueno1","porcentaje":"0.05","clasificacion":"C1"},
+    {"id":"7","rango":"Bueno2","porcentaje":"0.02","clasificacion":"C2"},
+    {"id":"8","rango":"Promedio","porcentaje":"0.00","clasificacion":"D"},
+    {"id":"9","rango":"Aceptable1","porcentaje":"-0.04","clasificacion":"E1"},
+    {"id":"10","rango":"Aceptable2","porcentaje":"-0.18","clasificacion":"E2"},
+    {"id":"11","rango":"Malo1","porcentaje":"-0.12","clasificacion":"F1"},
+    {"id":"12","rango":"Malo2","porcentaje":"-0.17","clasificacion":"F2"}
+]

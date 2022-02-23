@@ -1,0 +1,8 @@
+[
+    {"id":"1","grado":"Seleccione Esfuerzo Fisico","porcentaje":"0.0"},
+    {"id":"2","grado":"Muy Poco","porcentaje":"1.6"}, 
+    {"id":"3","grado":"Poco","porcentaje":"3.6"},
+    {"id":"4","grado":"Regular","porcentaje":"5.4"},
+    {"id":"5","grado":"Mucho","porcentaje":"7.2"},
+    {"id":"6","grado":"Demasiado","porcentaje":"9.0"}
+]

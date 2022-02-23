@@ -1,0 +1,9 @@
+[
+    {"id":"1","rango":"Seleccione Condiciones","porcentaje":"0.00","clasificacion":"0"},
+    {"id":"2","rango":"Ideal","porcentaje":"0.06","clasificacion":"A"},
+    {"id":"3","rango":"Excelente","porcentaje":"0.04","clasificacion":"B"},
+    {"id":"4","rango":"Bueno","porcentaje":"0.02","clasificacion":"C"},
+    {"id":"5","rango":"Promedio","porcentaje":"0.00","clasificacion":"D"},
+    {"id":"6","rango":"Aceptable","porcentaje":"-0.03","clasificacion":"E"},
+    {"id":"7","rango":"Malo","porcentaje":"-0.07","clasificacion":"F"}
+]

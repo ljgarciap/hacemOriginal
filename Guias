@@ -1,0 +1,70 @@
+Jerarquias
+-------------------------------------------------------
+failed_jobs
+migrations
+password_resets
+users
+tb_rol
+tb_usuario_tiene_rol
+tb_area
+tb_proceso
+tb_perfil
+tb_mano_de_obra_producto
+tb_coleccion
+tb_producto
+tb_hoja_de_costo
+tb_tipo_materia
+tb_unidad_base
+tb_gestion_materia_prima
+tb_materia_prima_producto
+----------------------------------------------------------------------------------------------
+Para crear la tabla
+php artisan make:migration create_tb_rol_table --create=tb_rol
+php artisan make:migration create_tb_usuario_tiene_rol_table --create=tb_usuario_tiene_rol
+php artisan make:migration create_tb_area_table --create=tb_area
+php artisan make:migration create_tb_proceso_table --create=tb_proceso
+php artisan make:migration create_tb_perfil_table --create=tb_perfil
+php artisan make:migration create_tb_mano_de_obra_producto_table --create=tb_mano_de_obra_producto
+php artisan make:migration create_tb_coleccion_table --create=tb_coleccion
+php artisan make:migration create_tb_producto_table --create=tb_producto
+php artisan make:migration create_tb_hoja_de_costo_table --create=tb_hoja_de_costo
+php artisan make:migration create_tb_tipo_materia_table --create=tb_tipo_materia
+php artisan make:migration create_tb_unidad_base_table --create=tb_unidad_base
+php artisan make:migration create_tb_gestion_materia_prima_table --create=tb_gestion_materia_prima
+php artisan make:migration create_tb_materia_prima_producto_table --create=tb_materia_prima_producto
+----------------------------------------------------------------------------------------------
+Estructura de la migracion
+            $table->id();
+            $table->string('perfil', 255);
+            $table->foreignId('idProceso')->constrained('tb_proceso');
+            $table->integer('valorMinuto')->unsigned();
+            $table->boolean('estado')->default(1);
+            //$table->timestamps();
+----------------------------------------------------------------------------------------------
+php artisan migrate //esto sirve para la primera migracion
+php artisan migrate:reset //elimina todas las migraciones
+php artisan migrate:fresh //elimina y rehace las migraciones
+
+php artisan make:controller Tb_rolController// crea un controlador
+php artisan make:seeder Tb_rolSeeder //crea un seeder
+php artisan make:model Tb_rol //crea un modelo
+
+php artisan db:seed //usa los seeders
+----------------------------------------------------------------------------------------------
+
+//para configurar el usuario de git
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+//para clonar repo remoto
+git clone https://github.com/lionheartsq/calculador.git
+
+//despues de clonar para crear la carpeta vendors se hace
+composer install
+
+git add . //añade los archivos nuevos
+git commit -m "Commit message" //para actualizar el repo local
+git push origin master //enviar al repo
+
+//---------------------------------------------------//

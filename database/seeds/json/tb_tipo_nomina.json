@@ -1,0 +1,6 @@
+[
+    {"id":"1","periodicidad":"Semanal","dias":"7"},
+    {"id":"2","periodicidad":"Catorcenal","dias":"14"},
+    {"id":"3","periodicidad":"Quincenal","dias":"15"},
+    {"id":"4","periodicidad":"Mensual","dias":"30"}
+]

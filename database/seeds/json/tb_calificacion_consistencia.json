@@ -1,0 +1,9 @@
+[
+    {"id":"1","rango":"Seleccione Consistencia","porcentaje":"0.00","clasificacion":"0"},
+    {"id":"2","rango":"Perfecta","porcentaje":"0.04","clasificacion":"A"},
+    {"id":"3","rango":"Excelente","porcentaje":"0.03","clasificacion":"B"},
+    {"id":"4","rango":"Buena","porcentaje":"0.01","clasificacion":"C"},
+    {"id":"5","rango":"Promedio","porcentaje":"0.00","clasificacion":"D"},
+    {"id":"6","rango":"Aceptable","porcentaje":"-0.02","clasificacion":"E"},
+    {"id":"7","rango":"Mala","porcentaje":"-0.04","clasificacion":"F"}
+]

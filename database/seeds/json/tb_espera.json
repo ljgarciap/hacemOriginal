@@ -1,0 +1,15 @@
+[   
+    {"id":"1","rangoMin":"0","rangoMax":"0","factor":"0.00"},
+    {"id":"2","rangoMin":"0","rangoMax":"5","factor":"1.00"},
+    {"id":"3","rangoMin":"6","rangoMax":"10","factor":"0.90"},
+    {"id":"4","rangoMin":"11","rangoMax":"15","factor":"0.80"},
+    {"id":"5","rangoMin":"16","rangoMax":"20","factor":"0.71"},
+    {"id":"6","rangoMin":"21","rangoMax":"25","factor":"0.62"},
+    {"id":"7","rangoMin":"26","rangoMax":"30","factor":"0.54"},
+    {"id":"8","rangoMin":"31","rangoMax":"35","factor":"0.46"},
+    {"id":"9","rangoMin":"36","rangoMax":"40","factor":"0.34"},
+    {"id":"10","rangoMin":"41","rangoMax":"45","factor":"0.32"},
+    {"id":"11","rangoMin":"46","rangoMax":"50","factor":"0.26"},
+    {"id":"12","rangoMin":"51","rangoMax":"55","factor":"0.20"},
+    {"id":"13","rangoMin":"56","rangoMax":"60","factor":"0.15"}
+]
