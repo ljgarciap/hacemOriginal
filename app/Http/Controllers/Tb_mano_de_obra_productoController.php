@@ -97,6 +97,7 @@ class Tb_mano_de_obra_productoController extends Controller
         $tb_mano_de_obra_producto=Tb_mano_de_obra_producto::findOrFail($request->id);
         $tb_mano_de_obra_producto->tiempo=$request->tiempo;
         $tb_mano_de_obra_producto->precio=$request->precio;
+        $tb_mano_de_obra_producto->tipoPago=$request->tipoPago;
         $tb_mano_de_obra_producto->save();
     }
 

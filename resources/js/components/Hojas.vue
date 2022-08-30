@@ -841,11 +841,35 @@
                     return;
                 }
 
+                if(this.flag==1){
+                        this.tipoPago=1;
+                        this.tiempo=this.tiempo;
+                        this.precio=this.valor; //este precio debo traerlo de consulta
+                    }
+                else if(this.flag==2) {
+                    this.tiempo=1;
+                    this.precio=parseInt((this.preciom*this.liquidacion*0.073)+(this.preciom*this.parafiscales*0.046)+parseInt(this.preciom));
+
+                    if(this.liquidacion==0 && this.parafiscales==0) {
+                        this.tipoPago=2;
+                    }
+                    else if(this.liquidacion==3 && this.parafiscales==0) {
+                        this.tipoPago=3;
+                    }
+                    else if(this.liquidacion==0 && this.parafiscales==4) {
+                        this.tipoPago=4;
+                    }
+                    else {
+                        this.tipoPago=5;
+                        }
+                   }
+
                 let me=this;
                 axios.put('/manodeobraproducto/update',{
                     'id': this.idManoDeObraProducto,
                     'tiempo': this.tiempo,
-                    'precio': this.preciom
+                    'precio': this.precio,
+                    'tipoPago': this.tipoPago
 
                 }).then(function (response) {
                 me.cerrarModal();
