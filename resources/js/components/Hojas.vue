@@ -752,6 +752,7 @@
                 });
             },
             editarMateriaPrimaProducto(){
+                //ajustado el dia 30
                 if(this.validarMateriaPrimaProducto()){
                     return;
                 }
