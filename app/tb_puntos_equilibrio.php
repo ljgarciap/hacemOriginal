@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class tb_puntos_equilibrio extends Model
+class Tb_puntos_equilibrio extends Model
 {
     //
     protected $table = 'tb_puntos_equilibrio';
